@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Colors: Navy Blue & Gold/Amber */
+  --primary: #0f172a;       /* Slate 900 - Deep Navy */
+  --primary-foreground: #ffffff;
+  
+  --secondary: #f59e0b;     /* Amber 500 - Luxury Gold Accent */
+  --secondary-foreground: #ffffff;
+
+  --background: #f8fafc;    /* Slate 50 - Very light grey (easier on eyes than pure white) */
+  --foreground: #334155;    /* Slate 700 - Dark Grey text */
+
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  --border: #e2e8f0;
+  --radius: 0.75rem;        /* 12px rounded corners (Modern) */
+}
+
+@theme {
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Utilities for "Glass" effect */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
