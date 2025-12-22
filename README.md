@@ -34,3 +34,85 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+```
+myperfecttrips
+├─ eslint.config.mjs
+├─ next.config.ts
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.mjs
+├─ PROJECT_STATE.md
+├─ public
+│  ├─ file.svg
+│  ├─ globe.svg
+│  ├─ next.svg
+│  ├─ vercel.svg
+│  └─ window.svg
+├─ README.md
+├─ src
+│  ├─ app
+│  │  ├─ (marketing)
+│  │  │  ├─ about
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ blog
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [slug]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ contact
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ layout.tsx
+│  │  │  ├─ packages
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [slug]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ page.tsx
+│  │  │  └─ services
+│  │  │     ├─ page.tsx
+│  │  │     └─ schengen-visa
+│  │  │        └─ page.tsx
+│  │  ├─ api
+│  │  ├─ favicon.ico
+│  │  ├─ globals.css
+│  │  ├─ layout.tsx
+│  │  └─ page.tsx
+│  ├─ components
+│  │  ├─ blog
+│  │  │  └─ BlogListClient.tsx
+│  │  ├─ chat
+│  │  │  └─ ChatBot.tsx
+│  │  ├─ contact
+│  │  │  └─ ContactForm.tsx
+│  │  ├─ layout
+│  │  │  ├─ Footer
+│  │  │  │  └─ Footer.tsx
+│  │  │  └─ Header
+│  │  │     ├─ Navbar.tsx
+│  │  │     ├─ NavbarClient.tsx
+│  │  │     └─ NavLinks.tsx
+│  │  ├─ packages
+│  │  │  ├─ DownloadPdfButton.tsx
+│  │  │  ├─ EnquiryForm.tsx
+│  │  │  └─ PackageList.tsx
+│  │  ├─ sections
+│  │  │  └─ home
+│  │  │     ├─ BudgetDestinations.tsx
+│  │  │     ├─ BudgetDestinationsClient.tsx
+│  │  │     ├─ ClientStories.tsx
+│  │  │     ├─ Hero.tsx
+│  │  │     ├─ HeroClient.tsx
+│  │  │     ├─ TrendingPackages.tsx
+│  │  │     └─ WhyChooseUs.tsx
+│  │  ├─ services
+│  │  │  └─ VisaForm.tsx
+│  │  └─ ui
+│  │     ├─ Button.tsx
+│  │     └─ Tabs.tsx
+│  └─ lib
+│     ├─ directus
+│     │  └─ client.ts
+│     └─ utils.ts
+├─ structure.txt
+└─ tsconfig.json
+
+```

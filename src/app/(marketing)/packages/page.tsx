@@ -43,7 +43,7 @@ export default async function PackagesPage() {
       
       {/* HEADER SECTION */}
       <div className="bg-[#0B1120] text-white py-20 border-b border-white/5">
-        <div className="container mx-auto px-4">
+        <div className="container mt-20 mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Find Your Perfect Trip</h1>
           <p className="text-slate-400 text-lg max-w-2xl">
             Explore our handpicked itineraries designed to give you the most memorable experiences across the globe.
