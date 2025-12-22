@@ -1,91 +1,117 @@
-import { Star } from 'lucide-react';
-import directus from '@/lib/directus/client';
-import { readItems } from '@directus/sdk';
+import { Star, Quote } from "lucide-react";
+import directus from "@/lib/directus/client";
+import { readItems } from "@directus/sdk";
 
 export default async function ClientStories() {
   let stories: any[] = [];
-  
+
   try {
-    // 1. Fetch from 'Testimonials' (Capital T)
-    // REMOVED 'sort' to prevent permission errors on system fields
-    stories = await directus.request(readItems('Testimonials', {
-      fields: ['*'],
-      limit: 3,
-    }));
+    stories = await directus.request(
+      readItems("Testimonials", {
+        fields: ["*"],
+        limit: 3,
+      })
+    );
   } catch (err) {
     try {
-      // 2. Fallback to lowercase 'testimonials'
-      stories = await directus.request(readItems('testimonials', {
-        fields: ['*'],
-        limit: 3,
-      }));
+      stories = await directus.request(
+        readItems("testimonials", {
+          fields: ["*"],
+          limit: 3,
+        })
+      );
     } catch (e) {
       console.error("Testimonials Fetch Error:", e);
     }
   }
 
-  // If no data found, return nothing
   if (!stories || stories.length === 0) return null;
 
-  // Helper to get initials
   const getInitials = (name: string) => {
     if (!name) return "CL";
-    const parts = name.trim().split(' ');
+    const parts = name.trim().split(" ");
     if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   };
 
   return (
-    <section className="py-24 bg-white">
+    <section className="pt-32 pb-28 bg-white">
       <div className="container mx-auto px-4">
-        
-        {/* SECTION TITLE */}
-        <h2 className="text-4xl font-bold text-center text-slate-900 mb-16">
-          Client Stories
-        </h2>
 
-        {/* CARDS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {stories.map((story: any) => {
-            // Handle Rating: Cap at 5 stars max
+        {/* HEADER */}
+        <div className="max-w-2xl mx-auto text-center mb-20">
+          <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            Client Stories
+          </h2>
+          <p className="text-slate-500 text-lg">
+            Real experiences from travellers who trusted us with their journeys
+          </p>
+        </div>
+
+        {/* TESTIMONIAL GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {stories.map((story: any, index: number) => {
             const rawRating = story.rating || story.Rating || 5;
             const displayRating = Math.min(Math.max(rawRating, 1), 5);
-            
-            // Handle Field Names (Directus might use client_name or Client_Name)
-            const name = story.client_name || story.Client_Name || story.ClientName || "Happy Client";
-            const loc = story.location || story.Location || "Global";
-            const text = story.quote || story.Quote || "Great service!";
+
+            const name =
+              story.client_name ||
+              story.Client_Name ||
+              story.ClientName ||
+              "Happy Client";
+
+            const loc = story.location || story.Location || "United Kingdom";
+            const text = story.quote || story.Quote || "Wonderful experience.";
+
+            const isFeatured = index === 1; // 👈 middle card highlight
 
             return (
-              <div 
-                key={story.id} 
-                className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300 flex flex-col h-full"
+              <div
+                key={story.id}
+                className={`relative rounded-3xl p-8 transition-all duration-300 bg-white
+                  ${
+                    isFeatured
+                      ? "shadow-2xl -translate-y-2"
+                      : "shadow-md hover:shadow-2xl hover:-translate-y-1"
+                  }`}
               >
+                {/* QUOTE ICON */}
+                <Quote className="absolute -top-5 -left-5 w-10 h-10 text-blue-100" />
+
                 {/* STARS */}
-                <div className="flex gap-1 mb-6">
+                <div className="flex gap-1 mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      className={`w-5 h-5 ${i < displayRating ? 'text-amber-400 fill-amber-400' : 'text-slate-200'}`} 
+                    <Star
+                      key={i}
+                      className={`w-4 h-4 ${
+                        i < displayRating
+                          ? "text-amber-400 fill-amber-400"
+                          : "text-slate-200"
+                      }`}
                     />
                   ))}
                 </div>
 
-                {/* QUOTE */}
-                <blockquote className="text-slate-600 text-lg leading-relaxed italic mb-8 flex-1">
-                  "{text}"
-                </blockquote>
+                {/* QUOTE TEXT – editorial tuning */}
+                <p className="text-slate-600 text-[17px] leading-[1.6] mb-8">
+                  “{text}”
+                </p>
 
-                {/* AUTHOR INFO */}
-                <div className="flex items-center gap-4 mt-auto">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg shrink-0">
+                {/* AUTHOR */}
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white font-semibold text-sm">
                     {getInitials(name)}
                   </div>
                   <div>
-                    <div className="font-bold text-slate-900">{name}</div>
-                    <div className="text-sm text-slate-500">{loc}</div>
+                    <div className="font-semibold text-slate-900">
+                      {name}
+                    </div>
+                    <div className="text-sm text-slate-500">
+                      {loc}
+                    </div>
                   </div>
                 </div>
+
               </div>
             );
           })}

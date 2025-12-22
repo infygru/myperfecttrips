@@ -3,21 +3,78 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/Button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
-import { Plane, Globe, FileText, MapPin, Calendar, Search, CreditCard, ChevronDown } from "lucide-react";
+import {
+  Plane,
+  Globe,
+  FileText,
+  MapPin,
+  Calendar,
+  Search,
+  CreditCard,
+  ChevronDown,
+} from "lucide-react";
 
 export default function HeroClient({ data }: { data: any }) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("packages"); 
+  const [activeTab, setActiveTab] =
+    useState<"flights" | "packages" | "visas">("flights");
 
-  // State for inputs
-  const [flightForm, setFlightForm] = useState({ from: "", to: "", date: "" });
+  const [flightForm, setFlightForm] = useState({
+    from: "",
+    to: "",
+    date: "",
+  });
+
   const [packageQuery, setPackageQuery] = useState("");
 
-  // --- HANDLERS ---
+  /* ---------------- BACKGROUND MEDIA ---------------- */
+  const renderBackgroundMedia = () => {
+    const videoObj = data?.background_video;
+    const videoId = typeof videoObj === "object" ? videoObj?.id : videoObj;
+
+    const imageObj = data?.background_image;
+    let imageUrl = "";
+
+    if (typeof imageObj === "object" && imageObj?.id) {
+      imageUrl = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${imageObj.id}`;
+    } else if (typeof imageObj === "string") {
+      imageUrl = imageObj.startsWith("http")
+        ? imageObj
+        : `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${imageObj}`;
+    }
+
+    const videoUrl = videoId
+      ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${videoId}`
+      : null;
+
+    if (videoUrl) {
+      return (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src={videoUrl} type="video/mp4" />
+        </video>
+      );
+    }
+
+    return (
+      <Image
+        src={imageUrl}
+        alt="Hero Background"
+        fill
+        priority
+        className="object-cover"
+      />
+    );
+  };
+
+  /* ---------------- ACTIONS ---------------- */
   const handleFlightSearch = () => {
-    const params = new URLSearchParams({ type: "flight", from: flightForm.from, to: flightForm.to, date: flightForm.date });
+    const params = new URLSearchParams(flightForm);
     router.push(`/contact?${params.toString()}`);
   };
 
@@ -29,173 +86,212 @@ export default function HeroClient({ data }: { data: any }) {
     router.push("/services");
   };
 
-  // --- MEDIA RENDERER ---
-  const renderBackgroundMedia = () => {
-    const videoObj = data?.background_video;
-    const videoId = typeof videoObj === 'object' ? videoObj?.id : videoObj;
-    const imageObj = data?.background_image;
-    
-    let imageUrl = '';
-    if (typeof imageObj === 'object' && imageObj?.id) {
-       imageUrl = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${imageObj.id}`;
-    } else if (typeof imageObj === 'string') {
-       imageUrl = imageObj.startsWith('http') ? imageObj : `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${imageObj}`;
-    }
-
-    if (!imageUrl) imageUrl = "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80";
-    const videoUrl = videoId ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${videoId}` : null;
-
-    if (videoUrl) {
-      return (
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
-          <source src={videoUrl} type="video/mp4" />
-        </video>
-      );
-    }
-    return <Image src={imageUrl} alt="Hero Background" fill className="object-cover" priority />;
-  };
-
-  // Fallback Text
+  /* ---------------- CONTENT ---------------- */
   const title = data?.title || "Discover the World,<br/>Your Way";
-  const description = data?.description || "Manchester's premier travel consultancy. From seamless Schengen visas to luxury bespoke itineraries.";
+  const description =
+    data?.description ||
+    "Manchester's premier travel consultancy. From seamless Schengen visas to luxury bespoke itineraries.";
   const ratingsText = data?.ratings_text || "Rated 4.9/5 by Travellers";
 
   return (
-    // UPDATED: Added py-20 to ensure top/bottom spacing and min-h-[85vh] for flexibility
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-20">
-      
+    <section className="relative h-[100vh] w-full overflow-hidden pt-24">
       {/* BACKGROUND */}
       <div className="absolute inset-0 z-0">
         {renderBackgroundMedia()}
-        <div className="absolute inset-0 bg-black/30" /> 
+        <div className="absolute inset-0 bg-black/45" />
       </div>
 
-      <div className="container relative z-10 mx-auto px-4 flex flex-col items-center">
-        
-        {/* HERO TEXT */}
-        <div className="max-w-4xl mx-auto text-center mb-16">
-          <div className="inline-flex items-center gap-2 py-1.5 px-5 rounded-full bg-slate-800/60 border border-white/20 text-white text-sm font-medium mb-8 backdrop-blur-md">
-            <span className="text-blue-400">★</span> 
-            <span>{ratingsText}</span>
+      {/* CONTENT */}
+      <div className="relative z-10 h-full flex items-center">
+        <div className="container mx-auto px-4 w-full">
+
+          {/* HERO TEXT */}
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/20 backdrop-blur text-white text-sm mb-4">
+              ⭐ {ratingsText}
+            </div>
+
+            <h1
+              className="text-4xl md:text-6xl font-bold text-white leading-tight max-w-3xl mx-auto mb-3"
+              dangerouslySetInnerHTML={{ __html: title }}
+            />
+
+            {/* DESCRIPTION – FIXED (no visible <p>) */}
+            <div
+              className="text-base md:text-lg text-slate-200 max-w-xl mx-auto"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
           </div>
-          <h1 
-            className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-2xl" 
-            dangerouslySetInnerHTML={{ __html: title }} 
-          />
-          <div 
-            className="text-lg md:text-xl text-slate-100 mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow-lg"
-            dangerouslySetInnerHTML={{ __html: description }}
-          />
-        </div>
 
-        {/* --- MAIN WIDGET CONTAINER --- */}
-        <div className="w-full max-w-6xl">
-          {/* UPDATED: Increased padding (p-6 md:p-10) for that clean, spacious look */}
-          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-6 md:p-10 shadow-2xl">
-            
-            <Tabs defaultValue="packages" className="w-full" onValueChange={setActiveTab}>
-              
-              {/* TABS (White Pills) - Added mb-8 for spacing between tabs and inputs */}
-              <TabsList className="bg-transparent w-full justify-start h-auto p-0 gap-4 mb-8 flex-wrap">
-                <TabsTrigger value="flights" className={`gap-2 rounded-full px-8 py-3 text-base font-bold transition-all duration-300 border border-transparent ${activeTab === 'flights' ? 'bg-white text-slate-900 shadow-xl scale-105' : 'bg-transparent text-white hover:bg-white/10'}`}>
-                  <Plane size={18} className={activeTab === 'flights' ? 'text-blue-600' : 'text-white'} /> Flights
-                </TabsTrigger>
-                <TabsTrigger value="packages" className={`gap-2 rounded-full px-8 py-3 text-base font-bold transition-all duration-300 border border-transparent ${activeTab === 'packages' ? 'bg-white text-slate-900 shadow-xl scale-105' : 'bg-transparent text-white hover:bg-white/10'}`}>
-                  <Globe size={18} className={activeTab === 'packages' ? 'text-blue-600' : 'text-white'} /> Holiday Packages
-                </TabsTrigger>
-                <TabsTrigger value="visas" className={`gap-2 rounded-full px-8 py-3 text-base font-bold transition-all duration-300 border border-transparent ${activeTab === 'visas' ? 'bg-white text-slate-900 shadow-xl scale-105' : 'bg-transparent text-white hover:bg-white/10'}`}>
-                  <FileText size={18} className={activeTab === 'visas' ? 'text-blue-600' : 'text-white'} /> Visa Services
-                </TabsTrigger>
-              </TabsList>
+          {/* ================= SEARCH WIDGET ================= */}
+          <div className="max-w-6xl mx-auto">
+            <div className="rounded-2xl bg-white/20 backdrop-blur-xl border border-white/30 shadow-2xl p-5">
 
-              {/* --- FLIGHTS CONTENT --- */}
-              <TabsContent value="flights" className="mt-0">
-                <div className="bg-white rounded-3xl p-6 md:px-8 md:py-6 flex flex-col md:flex-row items-end gap-6 shadow-2xl">
-                  
-                  {/* From */}
-                  <div className="flex-1 w-full">
-                    <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">FROM (CODE)</label>
-                    <div className="flex items-center gap-3 border-b border-slate-200 pb-2">
-                      <MapPin className="text-blue-500 w-5 h-5 mb-1" />
-                      <input type="text" placeholder="MAN" value={flightForm.from} onChange={(e) => setFlightForm({...flightForm, from: e.target.value})} className="w-full text-lg font-bold text-slate-900 placeholder:text-slate-400 outline-none bg-transparent uppercase" />
-                    </div>
-                  </div>
+              {/* TABS */}
+              <div className="flex gap-5 mb-5">
+                {[
+                  { key: "flights", icon: Plane, label: "Flights" },
+                  { key: "packages", icon: Globe, label: "Holiday Packages" },
+                  { key: "visas", icon: FileText, label: "Visa Services" },
+                ].map((tab) => {
+                  const Icon = tab.icon;
+                  const isActive = activeTab === tab.key;
+                  return (
+                    <button
+                      key={tab.key}
+                      onClick={() => setActiveTab(tab.key as any)}
+                      className={`flex items-center gap-2 px-6 py-2 rounded-full font-semibold transition
+                        ${
+                          isActive
+                            ? "bg-white text-blue-600 shadow"
+                            : "text-white/90"
+                        }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
 
-                  {/* To */}
-                  <div className="flex-1 w-full">
-                     <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">TO (CODE)</label>
-                     <div className="flex items-center gap-3 border-b border-slate-200 pb-2">
-                       <MapPin className="text-blue-500 w-5 h-5 mb-1" />
-                       <input type="text" placeholder="DXB" value={flightForm.to} onChange={(e) => setFlightForm({...flightForm, to: e.target.value})} className="w-full text-lg font-bold text-slate-900 placeholder:text-slate-400 outline-none bg-transparent uppercase" />
-                     </div>
-                  </div>
+              {/* WHITE BAR */}
+              <div className="bg-white rounded-xl px-6 py-4 shadow-lg">
 
-                  {/* Depart */}
-                  <div className="flex-1 w-full">
-                     <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">DEPART</label>
-                     <div className="flex items-center gap-3 border-b border-slate-200 pb-2">
-                       <Calendar className="text-blue-500 w-5 h-5 mb-1" />
-                       <input type="date" value={flightForm.date} onChange={(e) => setFlightForm({...flightForm, date: e.target.value})} className="w-full text-lg font-bold text-slate-900 outline-none bg-transparent cursor-pointer" />
-                     </div>
-                  </div>
+                {/* FLIGHTS */}
+                {activeTab === "flights" && (
+                  <div className="flex flex-col md:flex-row gap-5 items-end">
+                    {[
+                      {
+                        label: "FROM (CODE)",
+                        value: flightForm.from,
+                        onChange: (v: string) =>
+                          setFlightForm({ ...flightForm, from: v }),
+                        placeholder: "MAN",
+                      },
+                      {
+                        label: "TO (CODE)",
+                        value: flightForm.to,
+                        onChange: (v: string) =>
+                          setFlightForm({ ...flightForm, to: v }),
+                        placeholder: "DXB",
+                      },
+                    ].map((field, i) => (
+                      <div key={i} className="flex-1">
+                        <label className="text-xs font-semibold text-slate-500 mb-1 block">
+                          {field.label}
+                        </label>
+                        <div className="flex items-center gap-3 border-b border-slate-200 pb-2">
+                          <MapPin className="w-5 h-5 text-blue-600" />
+                          <input
+                            value={field.value}
+                            onChange={(e) =>
+                              field.onChange(e.target.value)
+                            }
+                            placeholder={field.placeholder}
+                            className="w-full font-semibold outline-none bg-transparent uppercase"
+                          />
+                        </div>
+                      </div>
+                    ))}
 
-                   {/* Search Button */}
-                  <div className="w-full md:w-auto">
-                    <Button onClick={handleFlightSearch} className="w-full md:w-auto h-14 px-8 text-lg font-bold bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-xl shadow-lg transition-all">Search Flights</Button>
-                  </div>
-                </div>
-              </TabsContent>
-
-              {/* --- PACKAGES CONTENT --- */}
-              <TabsContent value="packages" className="mt-0">
-                <div className="bg-white rounded-3xl p-6 md:px-8 md:py-6 flex flex-col md:flex-row items-end gap-6 shadow-2xl">
-                    
-                    {/* Destination Input */}
-                    <div className="flex-[1.5] w-full">
-                      <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">DESTINATION</label>
+                    <div className="flex-1">
+                      <label className="text-xs font-semibold text-slate-500 mb-1 block">
+                        DEPART
+                      </label>
                       <div className="flex items-center gap-3 border-b border-slate-200 pb-2">
-                        <Search className="text-blue-500 w-5 h-5 mb-1" />
-                        <input type="text" placeholder="Where do you want to go?" value={packageQuery} onChange={(e) => setPackageQuery(e.target.value)} className="w-full text-lg font-medium text-slate-900 placeholder:text-slate-400 outline-none bg-transparent" />
+                        <Calendar className="w-5 h-5 text-blue-600" />
+                        <input
+                          type="date"
+                          value={flightForm.date}
+                          onChange={(e) =>
+                            setFlightForm({
+                              ...flightForm,
+                              date: e.target.value,
+                            })
+                          }
+                          className="w-full font-semibold outline-none bg-transparent"
+                        />
                       </div>
                     </div>
 
-                    {/* Budget Input */}
-                    <div className="flex-1 w-full">
-                      <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">BUDGET</label>
+                    <button
+                      onClick={handleFlightSearch}
+                      className="h-11 px-7 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500"
+                    >
+                      Search Flights
+                    </button>
+                  </div>
+                )}
+
+                {/* PACKAGES */}
+                {activeTab === "packages" && (
+                  <div className="flex flex-col md:flex-row gap-5 items-end">
+                    <div className="flex-1">
+                      <label className="text-xs font-semibold text-slate-500 mb-1 block">
+                        DESTINATION
+                      </label>
                       <div className="flex items-center gap-3 border-b border-slate-200 pb-2">
-                        <CreditCard className="text-blue-500 w-5 h-5 mb-1" />
-                        <select className="w-full text-lg font-bold text-slate-900 outline-none bg-transparent cursor-pointer appearance-none">
+                        <Search className="w-5 h-5 text-blue-600" />
+                        <input
+                          value={packageQuery}
+                          onChange={(e) =>
+                            setPackageQuery(e.target.value)
+                          }
+                          placeholder="Where do you want to go?"
+                          className="w-full font-semibold outline-none bg-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex-1">
+                      <label className="text-xs font-semibold text-slate-500 mb-1 block">
+                        BUDGET
+                      </label>
+                      <div className="flex items-center gap-3 border-b border-slate-200 pb-2">
+                        <CreditCard className="w-5 h-5 text-blue-600" />
+                        <select className="w-full outline-none bg-transparent font-semibold appearance-none">
                           <option>Any Budget</option>
                           <option>£500 - £1000</option>
                           <option>£1000 - £2000</option>
                           <option>£2000+</option>
                         </select>
-                        <ChevronDown className="w-4 h-4 text-slate-400 ml-auto" />
+                        <ChevronDown className="w-4 h-4 text-slate-400" />
                       </div>
                     </div>
 
-                    {/* Button */}
-                    <div className="w-full md:w-auto">
-                      <Button onClick={handlePackageSearch} className="w-full md:w-auto h-14 px-8 text-lg font-bold bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-xl shadow-lg">Explore Packages</Button>
-                    </div>
-                 </div>
-              </TabsContent>
+                    <button
+                      onClick={handlePackageSearch}
+                      className="h-11 px-7 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500"
+                    >
+                      Explore Packages
+                    </button>
+                  </div>
+                )}
 
-               {/* --- VISAS CONTENT --- */}
-               <TabsContent value="visas" className="mt-0">
-                 <div className="bg-white rounded-3xl p-6 md:px-8 md:py-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
-                    <div className="text-center md:text-left">
-                      <h3 className="text-xl font-bold text-slate-900 mb-1">Need a Visa?</h3>
-                      <p className="text-slate-500">We handle Schengen, US, UK & Global visas.</p>
+                {/* VISAS */}
+                {activeTab === "visas" && (
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-semibold text-slate-900">
+                        Need a Visa?
+                      </h3>
+                      <div className="text-sm text-slate-500">
+                        Schengen, UK, US & Global visas handled.
+                      </div>
                     </div>
-                    <div className="w-full md:w-auto">
-                      <Button onClick={handleVisaClick} className="w-full md:w-auto h-14 px-10 text-lg font-bold bg-slate-900 hover:bg-slate-800 text-white rounded-xl shadow-lg">Check Requirements</Button>
-                    </div>
-                 </div>
-              </TabsContent>
-
-            </Tabs>
+                    <button
+                      onClick={handleVisaClick}
+                      className="h-11 px-7 rounded-xl font-semibold text-white bg-slate-900"
+                    >
+                      Check Requirements
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
+          {/* ================= END SEARCH WIDGET ================= */}
+
         </div>
       </div>
     </section>
