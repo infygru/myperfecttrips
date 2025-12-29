@@ -10,12 +10,12 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Minimalist Header */}
-      <section className="pt-32 pb-16 bg-slate-50 border-b border-slate-100">
+      <section className="pt-32 pb-16 bg-[#020617] border-b border-slate-100">
         <div className="container mx-auto px-4">
-          <span className="text-blue-600 text-[10px] font-bold uppercase tracking-[0.3em] block mb-4">Get In Touch</span>
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight">
+          <span className="text-blue-400 text-[10px] font-bold uppercase tracking-[0.3em] block mb-4">Get In Touch</span>
+          <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
             Let’s plan your <br/>
-            <span className="text-blue-600">next adventure.</span>
+            <span className="text-blue-400">next adventure.</span>
           </h1>
         </div>
       </section>
