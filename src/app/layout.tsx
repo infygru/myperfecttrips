@@ -9,8 +9,12 @@ import { Footer } from "@/components/layout/Footer/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MyPerfectTrips",
-  description: "Manchester's premier travel consultancy",
+  title: "MyPerfectTrips | Manchester's Premier Travel Consultancy",
+  description: "We are a dedicated travel team in Manchester. We handle the stress of visas, flights, and business travel so you don't have to.",
+  openGraph: {
+    title: "MyPerfectTrips | Manchester's Premier Travel Consultancy",
+    description: "We are a dedicated travel team in Manchester. We handle the stress of visas, flights, and business travel so you don't have to.",
+  },
 };
 
 export default function RootLayout({
