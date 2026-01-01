@@ -109,7 +109,7 @@ export default function NavbarClient({ logoUrl, contactNumber, contactEmail }: {
 
         {/* MOBILE MENU TOGGLE */}
         <div className="lg:hidden relative z-50">
-          <NavLinks contactNumber={contactNumber} contactEmail={contactEmail} scrolled={scrolled} />
+          <NavLinks logoUrl={logoUrl} contactNumber={contactNumber} contactEmail={contactEmail} scrolled={scrolled} />
         </div>
       </div>
     </nav>

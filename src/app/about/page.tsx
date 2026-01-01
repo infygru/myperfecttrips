@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/layout/Header/Navbar";
-import { Footer } from "@/components/layout/Footer/Footer";
 import { MapPin, Globe, Heart, Shield, Users, Trophy, Star, Plane, CheckCircle2, Wallet, Clock, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -245,7 +244,7 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            <Footer />
+
         </main>
     );
 }

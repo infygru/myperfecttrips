@@ -1,12 +1,19 @@
 import ContactForm from "@/components/contact/ContactForm";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
+import { getGlobalSettings } from "@/lib/directus/getGlobalSettings";
 
 export const metadata = {
   title: "Contact Us | MyPerfectTrips",
   description: "Get in touch with Manchester's premier travel consultancy to plan your next escape.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getGlobalSettings();
+
+  const contactNumber = settings?.phone || "+44 161 768 0990";
+  const contactEmail = settings?.email || "hello@myperfecttrips.co.uk";
+  const contactAddress = settings?.address || "Altrincham, Manchester, UK";
+
   return (
     <div className="min-h-screen bg-white">
       {/* Minimalist Header */}
@@ -14,7 +21,7 @@ export default function ContactPage() {
         <div className="container mx-auto px-4">
           <span className="text-blue-400 text-[10px] font-bold uppercase tracking-[0.3em] block mb-4">Get In Touch</span>
           <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
-            Let’s plan your <br/>
+            Let’s plan your <br />
             <span className="text-blue-400">next adventure.</span>
           </h1>
         </div>
@@ -23,7 +30,7 @@ export default function ContactPage() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-20">
-            
+
             {/* Left: Contact Info */}
             <div className="space-y-12">
               <div className="max-w-md">
@@ -39,7 +46,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold uppercase tracking-widest text-slate-900 mb-1">Email Us</h3>
-                    <p className="text-slate-500">hello@myperfecttrips.com</p>
+                    <a href={`mailto:${contactEmail}`} className="text-slate-500 hover:text-blue-600 transition-colors">{contactEmail}</a>
                   </div>
                 </div>
 
@@ -49,7 +56,17 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold uppercase tracking-widest text-slate-900 mb-1">Our Office</h3>
-                    <p className="text-slate-500">Manchester, United Kingdom</p>
+                    <p className="text-slate-500">{contactAddress}</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-6">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0">
+                    <Phone className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-slate-900 mb-1">Call Us</h3>
+                    <a href={`tel:${contactNumber}`} className="text-slate-500 hover:text-blue-600 transition-colors">{contactNumber}</a>
                   </div>
                 </div>
               </div>

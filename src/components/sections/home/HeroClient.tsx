@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { POPULAR_AIRPORTS, Airport } from "@/lib/airports";
 import {
   Plane,
   Globe,
@@ -23,9 +24,53 @@ export default function HeroClient({ data }: { data: any }) {
   /* ---------------- FLIGHT STATE ---------------- */
   const [flightForm, setFlightForm] = useState({
     from: "",
+    fromCode: "",
     to: "",
+    toCode: "",
     date: "",
   });
+  const [showFromSuggestions, setShowFromSuggestions] = useState(false);
+  const [showToSuggestions, setShowToSuggestions] = useState(false);
+  const fromRef = useRef<HTMLDivElement>(null);
+  const toRef = useRef<HTMLDivElement>(null);
+  const dateRef = useRef<HTMLInputElement>(null);
+
+  // Filtered Suggestions
+  const fromSuggestions = POPULAR_AIRPORTS.filter(a =>
+    a.city.toLowerCase().includes(flightForm.from.toLowerCase()) ||
+    a.code.toLowerCase().includes(flightForm.from.toLowerCase()) ||
+    a.name.toLowerCase().includes(flightForm.from.toLowerCase())
+  ).slice(0, 5);
+
+  const toSuggestions = POPULAR_AIRPORTS.filter(a =>
+    a.city.toLowerCase().includes(flightForm.to.toLowerCase()) ||
+    a.code.toLowerCase().includes(flightForm.to.toLowerCase()) ||
+    a.name.toLowerCase().includes(flightForm.to.toLowerCase())
+  ).slice(0, 5);
+
+  const handleSelectAirport = (type: 'from' | 'to', airport: Airport) => {
+    if (type === 'from') {
+      setFlightForm(prev => ({ ...prev, from: `${airport.city} (${airport.code})`, fromCode: airport.code }));
+      setShowFromSuggestions(false);
+    } else {
+      setFlightForm(prev => ({ ...prev, to: `${airport.city} (${airport.code})`, toCode: airport.code }));
+      setShowToSuggestions(false);
+    }
+  };
+
+  // Close suggestions on click outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (fromRef.current && !fromRef.current.contains(event.target as Node)) {
+        setShowFromSuggestions(false);
+      }
+      if (toRef.current && !toRef.current.contains(event.target as Node)) {
+        setShowToSuggestions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   /* ---------------- PACKAGE STATE ---------------- */
   const [packageQuery, setPackageQuery] = useState("");
@@ -92,9 +137,22 @@ export default function HeroClient({ data }: { data: any }) {
   };
 
   /* ---------------- ACTIONS ---------------- */
+  /* ---------------- ACTIONS ---------------- */
   const handleFlightSearch = () => {
-    const params = new URLSearchParams(flightForm);
-    router.push(`/contact?${params.toString()}`);
+    // Construct Skyscanner URL: https://www.skyscanner.net/transport/flights/{origin}/{destination}/{date}
+    // Date format needed: YYMMDD usually, but Skyscanner handles YYYY-MM-DD standard format well in paths too active
+    // Let's use the format: /transport/flights/lond/nyca/240502/ (YYMMDD)
+
+    // Fallback if no code selected (use the text input) - simpler for implementation to try generic search or just alert
+    const origin = flightForm.fromCode || flightForm.from;
+    const dest = flightForm.toCode || flightForm.to;
+    const date = flightForm.date ? new Date(flightForm.date).toISOString().slice(2, 10).replace(/-/g, '') : ""; // YYMMDD
+
+    if (!origin || !dest) return;
+
+    // Direct linking format
+    const url = `https://www.skyscanner.net/transport/flights/${origin.toLowerCase()}/${dest.toLowerCase()}/${date}`;
+    window.open(url, '_blank');
   };
 
   const handlePackageSearch = () => {
@@ -181,7 +239,7 @@ export default function HeroClient({ data }: { data: any }) {
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-y-4 md:gap-y-0 items-center">
 
                     {/* FROM */}
-                    <div className="md:col-span-3 md:pr-6 relative group">
+                    <div className="md:col-span-3 md:pr-6 relative group" ref={fromRef}>
                       <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-brand-blue">
                         From
                       </label>
@@ -189,17 +247,43 @@ export default function HeroClient({ data }: { data: any }) {
                         <MapPin className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-hover:text-slate-800 transition-colors" />
                         <input
                           value={flightForm.from}
-                          onChange={(e) => setFlightForm({ ...flightForm, from: e.target.value })}
+                          onChange={(e) => {
+                            setFlightForm({ ...flightForm, from: e.target.value, fromCode: "" });
+                            setShowFromSuggestions(true);
+                          }}
+                          onFocus={() => setShowFromSuggestions(true)}
                           placeholder="City or Airport"
-                          className="w-full pl-8 text-base md:text-lg font-bold text-slate-800 placeholder:text-slate-800 outline-none bg-transparent group-hover:placeholder:text-brand-blue transition-all"
+                          className="w-full pl-8 text-base md:text-lg font-bold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent group-hover:placeholder:text-brand-blue transition-all"
                         />
                       </div>
                       <div className="absolute right-0 top-2 bottom-2 w-px bg-slate-100 hidden md:block" />
-                      <div className="absolute left-0 right-0 bottom-0 h-px bg-slate-100 md:hidden" />
+
+                      {/* Suggestions Dropdown */}
+                      {showFromSuggestions && flightForm.from.length > 0 && (
+                        <div className="absolute top-full left-0 w-full md:w-[250px] bg-white rounded-xl shadow-xl border border-slate-100 mt-2 z-50 overflow-hidden max-h-60 overflow-y-auto">
+                          {fromSuggestions.length > 0 ? (
+                            fromSuggestions.map((airport) => (
+                              <button
+                                key={airport.code}
+                                onClick={() => handleSelectAirport('from', airport)}
+                                className="w-full text-left px-4 py-3 text-sm hover:bg-slate-50 border-b border-slate-50 last:border-0 transition-colors flex items-center justify-between group/item"
+                              >
+                                <div>
+                                  <span className="font-bold text-slate-700 block">{airport.city}</span>
+                                  <span className="text-xs text-slate-400">{airport.name}</span>
+                                </div>
+                                <span className="text-xs font-black bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded group-hover/item:bg-brand-blue group-hover/item:text-white transition-colors">{airport.code}</span>
+                              </button>
+                            ))
+                          ) : (
+                            <div className="px-4 py-3 text-xs text-slate-400 italic">No airports found</div>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* TO */}
-                    <div className="md:col-span-3 md:px-6 relative group pt-4 md:pt-0">
+                    <div className="md:col-span-3 md:px-6 relative group pt-4 md:pt-0" ref={toRef}>
                       <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-brand-blue">
                         To
                       </label>
@@ -207,27 +291,57 @@ export default function HeroClient({ data }: { data: any }) {
                         <MapPin className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-hover:text-slate-800 transition-colors" />
                         <input
                           value={flightForm.to}
-                          onChange={(e) => setFlightForm({ ...flightForm, to: e.target.value })}
+                          onChange={(e) => {
+                            setFlightForm({ ...flightForm, to: e.target.value, toCode: "" });
+                            setShowToSuggestions(true);
+                          }}
+                          onFocus={() => setShowToSuggestions(true)}
                           placeholder="Destination"
-                          className="w-full pl-8 text-base md:text-lg font-bold text-slate-800 placeholder:text-slate-800 outline-none bg-transparent group-hover:placeholder:text-brand-blue transition-all"
+                          className="w-full pl-8 text-base md:text-lg font-bold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent group-hover:placeholder:text-brand-blue transition-all"
                         />
                       </div>
                       <div className="absolute right-0 top-2 bottom-2 w-px bg-slate-100 hidden md:block" />
-                      <div className="absolute left-0 right-0 bottom-0 h-px bg-slate-100 md:hidden" />
+
+                      {/* Suggestions Dropdown */}
+                      {showToSuggestions && flightForm.to.length > 0 && (
+                        <div className="absolute top-full left-0 w-full md:w-[250px] bg-white rounded-xl shadow-xl border border-slate-100 mt-2 z-50 overflow-hidden max-h-60 overflow-y-auto">
+                          {toSuggestions.length > 0 ? (
+                            toSuggestions.map((airport) => (
+                              <button
+                                key={airport.code}
+                                onClick={() => handleSelectAirport('to', airport)}
+                                className="w-full text-left px-4 py-3 text-sm hover:bg-slate-50 border-b border-slate-50 last:border-0 transition-colors flex items-center justify-between group/item"
+                              >
+                                <div>
+                                  <span className="font-bold text-slate-700 block">{airport.city}</span>
+                                  <span className="text-xs text-slate-400">{airport.name}</span>
+                                </div>
+                                <span className="text-xs font-black bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded group-hover/item:bg-brand-blue group-hover/item:text-white transition-colors">{airport.code}</span>
+                              </button>
+                            ))
+                          ) : (
+                            <div className="px-4 py-3 text-xs text-slate-400 italic">No airports found</div>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* DATE */}
-                    <div className="md:col-span-3 md:px-6 relative group pt-4 md:pt-0">
-                      <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-blue-600">
+                    <div
+                      className="md:col-span-3 md:px-6 relative group pt-4 md:pt-0 cursor-pointer"
+                      onClick={() => dateRef.current?.showPicker()}
+                    >
+                      <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-blue-600 cursor-pointer">
                         Departure
                       </label>
                       <div className="relative">
-                        <Calendar className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-hover:text-slate-800 transition-colors" />
+                        <Calendar className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-hover:text-slate-800 transition-colors pointer-events-none" />
                         <input
+                          ref={dateRef}
                           type="date"
                           value={flightForm.date}
                           onChange={(e) => setFlightForm({ ...flightForm, date: e.target.value })}
-                          className="w-full pl-8 text-sm md:text-base font-bold text-slate-800 outline-none bg-transparent cursor-pointer"
+                          className="w-full pl-8 text-base md:text-lg font-bold text-slate-800 outline-none bg-transparent cursor-pointer [&::-webkit-calendar-picker-indicator]:hidden"
                         />
                       </div>
                     </div>
@@ -246,6 +360,7 @@ export default function HeroClient({ data }: { data: any }) {
                     </div>
                   </div>
                 )}
+
 
                 {/* PACKAGES FORM */}
                 {activeTab === "packages" && (

@@ -1,12 +1,36 @@
 "use client";
 
-import { useActionState, useState } from "react";
-import { Send, Loader2, Phone, ChevronDown } from "lucide-react";
+import { useActionState, useState, useRef, useEffect } from "react";
+import { Send, Loader2, Phone, ChevronDown, Check } from "lucide-react";
 import { submitGeneralEnquiry } from "@/app/actions/enquiry";
 
 export default function ContactForm() {
   const [state, formAction, isPending] = useActionState(submitGeneralEnquiry, null);
   const [phoneError, setPhoneError] = useState("");
+
+  // Custom Dropdown State
+  const [serviceOpen, setServiceOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const services = [
+    "Holiday Package",
+    "Flight Booking",
+    "Hotel Booking",
+    "Visa Assistance",
+    "Other"
+  ];
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setServiceOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, ""); // Remove non-digits
@@ -46,17 +70,17 @@ export default function ContactForm() {
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">First Name</label>
-          <input required name="first_name" type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600/50 transition-all" />
+          <input required name="first_name" type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600/50 transition-all font-semibold text-slate-700" placeholder="John" />
         </div>
         <div className="space-y-2">
           <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Last Name</label>
-          <input required name="last_name" type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600/50 transition-all" />
+          <input required name="last_name" type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600/50 transition-all font-semibold text-slate-700" placeholder="Doe" />
         </div>
       </div>
 
       <div className="space-y-2">
         <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Email Address</label>
-        <input required name="email" type="email" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600/50 transition-all" />
+        <input required name="email" type="email" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600/50 transition-all font-semibold text-slate-700" placeholder="john@example.com" />
       </div>
 
       <div className="space-y-2">
@@ -70,7 +94,7 @@ export default function ContactForm() {
             placeholder="Mobile Number"
             onChange={handlePhoneChange}
             onBlur={handlePhoneBlur}
-            className={`w-full bg-slate-50 border rounded-xl px-4 py-3 pl-11 text-sm focus:outline-none focus:ring-1 transition-all ${phoneError ? "border-red-500 focus:ring-red-200" : "border-slate-200 focus:ring-blue-600/50"}`}
+            className={`w-full bg-slate-50 border rounded-xl px-4 py-3 pl-11 text-sm focus:outline-none focus:ring-1 transition-all font-semibold text-slate-700 ${phoneError ? "border-red-500 focus:ring-red-200" : "border-slate-200 focus:ring-blue-600/50"}`}
           />
         </div>
         {phoneError && <p className="text-[10px] text-red-500 ml-1 font-bold">{phoneError}</p>}
@@ -78,24 +102,48 @@ export default function ContactForm() {
 
       <div className="space-y-2">
         <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Service Required</label>
-        <div className="relative">
-          <select required name="service_type" defaultValue="" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600/50 transition-all appearance-none cursor-pointer">
-            <option value="" disabled>Select a Service</option>
-            <option value="Holiday Package">Holiday Package</option>
-            <option value="Flight Booking">Flight Booking</option>
-            <option value="Hotel Booking">Hotel Booking</option>
-            <option value="Visa Assistance">Visa Assistance</option>
-            <option value="Other">Other</option>
-          </select>
-          <div className="absolute right-4 top-3.5 pointer-events-none">
-            <ChevronDown className="w-4 h-4 text-slate-400" />
-          </div>
+        {/* Custom Dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          <input type="hidden" name="service_type" value={selectedService} required />
+
+          <button
+            type="button"
+            onClick={() => setServiceOpen(!serviceOpen)}
+            className={`w-full bg-slate-50 border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600/50 transition-all flex items-center justify-between font-semibold ${selectedService ? "text-slate-900" : "text-slate-500"} ${serviceOpen ? "border-blue-500 ring-1 ring-blue-500/20" : "border-slate-200"}`}
+          >
+            <span>{selectedService || "Select a Service"}</span>
+            <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${serviceOpen ? "rotate-180" : ""}`} />
+          </button>
+
+          {serviceOpen && (
+            <div className="absolute z-10 w-full mt-2 bg-white border border-slate-100 rounded-xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+              <div className="p-1">
+                {/* Placeholder Option equivalent */}
+                <div
+                  onClick={() => { setSelectedService(""); setServiceOpen(false); }}
+                  className="px-4 py-2.5 text-sm font-semibold text-slate-400 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors"
+                >
+                  Select a Service
+                </div>
+                {services.map((service) => (
+                  <div
+                    key={service}
+                    onClick={() => { setSelectedService(service); setServiceOpen(false); }}
+                    className={`px-4 py-2.5 text-sm font-semibold rounded-lg cursor-pointer transition-colors flex items-center justify-between ${selectedService === service ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
+                  >
+                    {service}
+                    {selectedService === service && <Check className="w-4 h-4" />}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="space-y-2">
         <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Your Message</label>
-        <textarea required name="message" rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600/50 transition-all resize-none" />
+        <textarea required name="message" rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600/50 transition-all resize-none font-medium text-slate-700" />
       </div>
 
       {state?.message && !state.success && (
@@ -105,7 +153,7 @@ export default function ContactForm() {
       <button
         disabled={isPending}
         type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all disabled:opacity-70 group"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all disabled:opacity-70 group shadow-lg shadow-blue-600/20 active:translate-y-0.5"
       >
         {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : (
           <>
