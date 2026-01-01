@@ -164,7 +164,7 @@ export default function HeroClient({ data }: { data: any }) {
                           : "text-white/80 hover:text-white hover:bg-white/10"
                         }`}
                     >
-                      <Icon className={`w-4 h-4 md:w-5 md:h-5 ${isActive ? "text-blue-600" : "text-current"}`} />
+                      <Icon className={`w-4 h-4 md:w-5 md:h-5 ${isActive ? "text-brand-blue" : "text-current"}`} />
                       {tab.label}
                     </button>
                   );
@@ -182,7 +182,7 @@ export default function HeroClient({ data }: { data: any }) {
 
                     {/* FROM */}
                     <div className="md:col-span-3 md:pr-6 relative group">
-                      <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-blue-600">
+                      <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-brand-blue">
                         From
                       </label>
                       <div className="relative">
@@ -191,7 +191,7 @@ export default function HeroClient({ data }: { data: any }) {
                           value={flightForm.from}
                           onChange={(e) => setFlightForm({ ...flightForm, from: e.target.value })}
                           placeholder="City or Airport"
-                          className="w-full pl-8 text-base md:text-lg font-bold text-slate-800 placeholder:text-slate-800 outline-none bg-transparent group-hover:placeholder:text-blue-600 transition-all"
+                          className="w-full pl-8 text-base md:text-lg font-bold text-slate-800 placeholder:text-slate-800 outline-none bg-transparent group-hover:placeholder:text-brand-blue transition-all"
                         />
                       </div>
                       <div className="absolute right-0 top-2 bottom-2 w-px bg-slate-100 hidden md:block" />
@@ -200,7 +200,7 @@ export default function HeroClient({ data }: { data: any }) {
 
                     {/* TO */}
                     <div className="md:col-span-3 md:px-6 relative group pt-4 md:pt-0">
-                      <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-blue-600">
+                      <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-brand-blue">
                         To
                       </label>
                       <div className="relative">
@@ -209,7 +209,7 @@ export default function HeroClient({ data }: { data: any }) {
                           value={flightForm.to}
                           onChange={(e) => setFlightForm({ ...flightForm, to: e.target.value })}
                           placeholder="Destination"
-                          className="w-full pl-8 text-base md:text-lg font-bold text-slate-800 placeholder:text-slate-800 outline-none bg-transparent group-hover:placeholder:text-blue-600 transition-all"
+                          className="w-full pl-8 text-base md:text-lg font-bold text-slate-800 placeholder:text-slate-800 outline-none bg-transparent group-hover:placeholder:text-brand-blue transition-all"
                         />
                       </div>
                       <div className="absolute right-0 top-2 bottom-2 w-px bg-slate-100 hidden md:block" />
@@ -253,7 +253,7 @@ export default function HeroClient({ data }: { data: any }) {
 
                     {/* DESTINATION */}
                     <div className="md:col-span-5 md:pr-8 relative group">
-                      <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-blue-600">
+                      <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-brand-blue">
                         Where to?
                       </label>
                       <div className="relative">
@@ -262,7 +262,7 @@ export default function HeroClient({ data }: { data: any }) {
                           value={packageQuery}
                           onChange={(e) => setPackageQuery(e.target.value)}
                           placeholder="Explore Destinations"
-                          className="w-full pl-10 text-base md:text-lg font-bold text-slate-800 placeholder:text-slate-800 outline-none bg-transparent placeholder-shown:text-ellipsis group-hover:placeholder:text-blue-600 transition-all"
+                          className="w-full pl-10 text-base md:text-lg font-bold text-slate-800 placeholder:text-slate-800 outline-none bg-transparent placeholder-shown:text-ellipsis group-hover:placeholder:text-brand-blue transition-all"
                         />
                       </div>
                       <div className="absolute right-0 top-2 bottom-2 w-px bg-slate-100 hidden md:block" />
@@ -271,7 +271,7 @@ export default function HeroClient({ data }: { data: any }) {
 
                     {/* BUDGET (CUSTOM DROPDOWN) */}
                     <div className="md:col-span-4 md:px-8 relative group pt-4 md:pt-0" ref={budgetRef}>
-                      <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-blue-600">
+                      <label className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-bold text-slate-400 mb-2 block transition-colors group-hover:text-brand-blue">
                         Budget
                       </label>
                       <div className="relative">
@@ -284,7 +284,7 @@ export default function HeroClient({ data }: { data: any }) {
                           className="w-full pl-9 text-left text-base md:text-lg font-bold text-slate-800 outline-none bg-transparent py-1 flex items-center justify-between group/btn"
                         >
                           <span className="truncate">{packageBudget}</span>
-                          <ChevronDown className={`w-5 h-5 text-slate-300 transition-transform duration-300 ${isBudgetOpen ? "rotate-180 text-blue-600" : "group-hover/btn:text-slate-500"}`} />
+                          <ChevronDown className={`w-5 h-5 text-slate-300 transition-transform duration-300 ${isBudgetOpen ? "rotate-180 text-brand-blue" : "group-hover/btn:text-slate-500"}`} />
                         </button>
 
                         {/* Dropdown Menu */}
@@ -299,7 +299,7 @@ export default function HeroClient({ data }: { data: any }) {
                                 }}
                                 className={`w-full text-left px-6 py-3 text-xs md:text-sm font-bold transition-colors flex items-center justify-between
                                   ${packageBudget === option
-                                    ? "bg-blue-50 text-blue-600"
+                                    ? "bg-brand-light text-brand-blue"
                                     : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                                   }`}
                               >
@@ -316,7 +316,7 @@ export default function HeroClient({ data }: { data: any }) {
                     <div className="md:col-span-3 md:pl-2 pt-6 md:pt-0 flex justify-end">
                       <button
                         onClick={handlePackageSearch}
-                        className="w-full h-16 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-xl shadow-blue-600/20 hover:shadow-2xl hover:shadow-blue-600/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3 group"
+                        className="w-full h-16 rounded-xl bg-brand-blue hover:bg-brand-blue-hover text-white font-bold text-lg shadow-xl shadow-brand-blue/20 hover:shadow-2xl hover:shadow-brand-blue/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3 group"
                       >
                         Explore
                         <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">

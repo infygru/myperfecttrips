@@ -60,12 +60,12 @@ export async function Footer() {
               ) : (
                 // FALLBACK LOGO (If fetch fails)
                 <div className="flex items-center gap-2">
-                  <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-md">
-                    <Globe className="w-5 h-5 text-green-300" />
+                  <div className="w-9 h-9 rounded-full bg-brand-blue flex items-center justify-center text-white shadow-md">
+                    <Globe className="w-5 h-5 text-white" />
                   </div>
                   <div className="text-xl font-extrabold tracking-tighter leading-none">
-                    <span className="text-blue-900">MYPERFECT</span>
-                    <span className="text-red-600">TRIPS</span>
+                    <span className="text-brand-blue">MYPERFECT</span>
+                    <span className="text-brand-red">TRIPS</span>
                   </div>
                 </div>
               )}
@@ -81,10 +81,10 @@ export async function Footer() {
           <div>
             <h3 className="text-white font-bold text-lg mb-6">Explore</h3>
             <ul className="space-y-3 text-sm">
-              <li><Link href="/" className="hover:text-white hover:underline transition-all decoration-blue-400 underline-offset-4">Home</Link></li>
-              <li><Link href="/about" className="hover:text-white hover:underline transition-all decoration-blue-400 underline-offset-4">About Us</Link></li>
-              <li><Link href="/blog" className="hover:text-white hover:underline transition-all decoration-blue-400 underline-offset-4">Blog</Link></li>
-              <li><Link href="/contact" className="hover:text-white hover:underline transition-all decoration-blue-400 underline-offset-4">Contact</Link></li>
+              <li><Link href="/" className="hover:text-white hover:underline transition-all decoration-brand-blue underline-offset-4">Home</Link></li>
+              <li><Link href="/about" className="hover:text-white hover:underline transition-all decoration-brand-blue underline-offset-4">About Us</Link></li>
+              <li><Link href="/blog" className="hover:text-white hover:underline transition-all decoration-brand-blue underline-offset-4">Blog</Link></li>
+              <li><Link href="/contact" className="hover:text-white hover:underline transition-all decoration-brand-blue underline-offset-4">Contact</Link></li>
             </ul>
           </div>
 
@@ -92,11 +92,11 @@ export async function Footer() {
           <div>
             <h3 className="text-white font-bold text-lg mb-6">Our Services</h3>
             <ul className="space-y-3 text-sm">
-              <li><Link href="/packages" className="hover:text-white hover:underline transition-all decoration-blue-400 underline-offset-4">Holiday Packages</Link></li>
-              <li><Link href="/schengen-visa" className="hover:text-white hover:underline transition-all decoration-blue-400 underline-offset-4">Schengen Visa</Link></li>
-              <li><Link href="/corporate-travel" className="hover:text-white hover:underline transition-all decoration-blue-400 underline-offset-4">Corporate Travel</Link></li>
-              <li><Link href="/mice" className="hover:text-white hover:underline transition-all decoration-blue-400 underline-offset-4">MICE</Link></li>
-              <li><Link href="/event-management" className="hover:text-white hover:underline transition-all decoration-blue-400 underline-offset-4">Event Management</Link></li>
+              <li><Link href="/packages" className="hover:text-white hover:underline transition-all decoration-brand-blue underline-offset-4">Holiday Packages</Link></li>
+              <li><Link href="/schengen-visa" className="hover:text-white hover:underline transition-all decoration-brand-blue underline-offset-4">Schengen Visa</Link></li>
+              <li><Link href="/corporate-travel" className="hover:text-white hover:underline transition-all decoration-brand-blue underline-offset-4">Corporate Travel</Link></li>
+              <li><Link href="/mice" className="hover:text-white hover:underline transition-all decoration-brand-blue underline-offset-4">MICE</Link></li>
+              <li><Link href="/event-management" className="hover:text-white hover:underline transition-all decoration-brand-blue underline-offset-4">Event Management</Link></li>
             </ul>
           </div>
 
@@ -105,15 +105,15 @@ export async function Footer() {
             <h3 className="text-white font-bold text-lg mb-6">Contact</h3>
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3 group">
-                <MapPin className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5 group-hover:text-white transition-colors" />
+                <MapPin className="w-5 h-5 text-brand-red shrink-0 mt-0.5 group-hover:text-white transition-colors" />
                 <span className="text-slate-300">{contactAddress}</span>
               </li>
               <li className="flex items-center gap-3 group">
-                <Phone className="w-5 h-5 text-cyan-400 shrink-0 group-hover:text-white transition-colors" />
+                <Phone className="w-5 h-5 text-brand-red shrink-0 group-hover:text-white transition-colors" />
                 <a href={`tel:${contactNumber}`} className="text-slate-300 hover:text-white transition-colors">{contactNumber}</a>
               </li>
               <li className="flex items-center gap-3 group">
-                <Mail className="w-5 h-5 text-cyan-400 shrink-0 group-hover:text-white transition-colors" />
+                <Mail className="w-5 h-5 text-brand-red shrink-0 group-hover:text-white transition-colors" />
                 <a href={`mailto:${contactEmail}`} className="text-slate-300 hover:text-white transition-colors">{contactEmail}</a>
               </li>
             </ul>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Phone } from "lucide-react";
+import { ChevronDown, Phone, ArrowRight } from "lucide-react";
 import NavLinks from "./NavLinks";
 
 export default function NavbarClient({ logoUrl, contactNumber, contactEmail }: { logoUrl: string | null, contactNumber: string, contactEmail: string }) {
@@ -37,44 +37,44 @@ export default function NavbarClient({ logoUrl, contactNumber, contactEmail }: {
 
   return (
     <nav
-      className={`fixed w-full z-[100] transition-all duration-500 ease-in-out border-b ${scrolled
-        ? "bg-white/95 backdrop-blur-xl py-3 shadow-[0_4px_30px_rgba(0,0,0,0.03)] border-slate-200/50"
-        : "bg-white/80 backdrop-blur-md py-5 border-transparent"
+      className={`fixed w-full z-[100] transition-all duration-500 ease-in-out bg-white border-b ${scrolled
+        ? "py-3 shadow-md border-slate-100"
+        : "py-4 lg:py-5 border-transparent"
         }`}
     >
       <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
 
-        {/* LOGO AREA */}
+        {/* LOGO */}
         <div className="flex-shrink-0 relative z-50">
           <Link href="/">
             {logoUrl ? (
-              <div className={`relative transition-all duration-500 ${scrolled ? 'h-10 w-36' : 'h-11 w-44'}`}>
+              <div className={`relative transition-all duration-500 ${scrolled ? 'h-10 w-32' : 'h-11 w-40'}`}>
                 <img src={logoUrl} alt="MyPerfectTrips" className="h-full w-full object-contain object-left" />
               </div>
             ) : (
-              <span className="text-2xl font-black text-slate-900 uppercase tracking-tighter">
-                MYPERFECT<span className="text-blue-600">TRIPS</span>
+              <span className="text-2xl font-black uppercase tracking-tighter text-brand-blue">
+                MYPERFECT<span className="text-brand-red">TRIPS</span>
               </span>
             )}
           </Link>
         </div>
 
-        {/* DESKTOP NAV */}
+        {/* DESKTOP NAV & CONTACT */}
         <div className="hidden lg:flex items-center gap-10">
           <div className="flex items-center gap-8">
             {navItems.map((item) => (
               <div
                 key={item.name}
-                className="relative group"
+                className="relative group h-full flex items-center"
                 onMouseEnter={() => item.dropdown && setServicesOpen(true)}
                 onMouseLeave={() => item.dropdown && setServicesOpen(false)}
               >
                 <Link
                   href={item.href}
-                  className={`flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.15em] transition-colors hover:text-blue-600 py-4 ${pathname === item.href || (item.dropdown && item.dropdown.some(sub => sub.href === pathname))
-                    ? "text-blue-600"
-                    : "text-slate-800"
-                    }`}
+                  className={`flex items-center gap-1 text-[13px] font-bold uppercase tracking-widest transition-colors py-2 
+                    ${pathname === item.href
+                      ? "text-brand-blue"
+                      : "text-slate-600 hover:text-brand-blue"}`}
                 >
                   {item.name}
                   {item.dropdown && <ChevronDown className="w-3 h-3 mb-0.5 opacity-50 group-hover:opacity-100 transition-opacity" />}
@@ -82,13 +82,13 @@ export default function NavbarClient({ logoUrl, contactNumber, contactEmail }: {
 
                 {/* DROPDOWN MENU */}
                 {item.dropdown && (
-                  <div className={`absolute top-full -left-4 w-56 pt-2 transition-all duration-300 transform origin-top ${servicesOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 translate-y-2 invisible"}`}>
-                    <div className="bg-white rounded-xl shadow-2xl ring-1 ring-black/5 overflow-hidden p-2">
+                  <div className={`absolute top-full -right-4 w-60 pt-4 transition-all duration-300 transform origin-top ${servicesOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 translate-y-2 invisible"}`}>
+                    <div className="bg-white rounded-2xl shadow-xl ring-1 ring-black/5 overflow-hidden p-2 border border-slate-100">
                       {item.dropdown.map((subItem) => (
                         <Link
                           key={subItem.name}
                           href={subItem.href}
-                          className="block px-4 py-3 text-sm font-semibold text-slate-600 hover:text-blue-600 hover:bg-slate-50 rounded-lg transition-colors"
+                          className="block px-4 py-3 text-sm font-semibold text-slate-600 hover:text-brand-blue hover:bg-brand-light rounded-xl transition-colors"
                         >
                           {subItem.name}
                         </Link>
@@ -100,22 +100,16 @@ export default function NavbarClient({ logoUrl, contactNumber, contactEmail }: {
             ))}
           </div>
 
-          <div className="flex items-center gap-6 pl-6 border-l border-slate-200">
-            <a href={`tel:${contactNumber}`} className="flex items-center gap-2 group cursor-pointer">
-              <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 transition-colors">
-                <Phone className="w-4 h-4 text-slate-900 group-hover:text-white transition-colors" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Call Us</span>
-                <span className="text-sm font-bold text-slate-900 leading-none">{contactNumber}</span>
-              </div>
-            </a>
-          </div>
+          {/* CONTACT */}
+          <a href={`tel:${contactNumber}`} className="flex items-center gap-2 font-bold text-sm transition-colors text-slate-800 hover:text-brand-blue border-l border-slate-200 pl-8 h-8">
+            <Phone className="w-4 h-4 text-brand-blue" />
+            <span>{contactNumber}</span>
+          </a>
         </div>
 
         {/* MOBILE MENU TOGGLE */}
         <div className="lg:hidden relative z-50">
-          <NavLinks contactNumber={contactNumber} contactEmail={contactEmail} />
+          <NavLinks contactNumber={contactNumber} contactEmail={contactEmail} scrolled={scrolled} />
         </div>
       </div>
     </nav>

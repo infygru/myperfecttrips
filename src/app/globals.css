@@ -2,24 +2,43 @@
 
 :root {
   /* Brand Colors: Navy Blue & Gold/Amber */
-  --primary: #0f172a;       /* Slate 900 - Deep Navy */
+  --primary: #0f172a;
+  /* Slate 900 - Deep Navy */
   --primary-foreground: #ffffff;
-  
-  --secondary: #f59e0b;     /* Amber 500 - Luxury Gold Accent */
+
+  --secondary: #f59e0b;
+  /* Amber 500 - Luxury Gold Accent */
   --secondary-foreground: #ffffff;
 
-  --background: #f8fafc;    /* Slate 50 - Very light grey (easier on eyes than pure white) */
-  --foreground: #334155;    /* Slate 700 - Dark Grey text */
+  --background: #f8fafc;
+  /* Slate 50 - Very light grey (easier on eyes than pure white) */
+  --foreground: #334155;
+  /* Slate 700 - Dark Grey text */
 
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
 
   --border: #e2e8f0;
-  --radius: 0.75rem;        /* 12px rounded corners (Modern) */
+  --radius: 0.75rem;
+  /* 12px rounded corners (Modern) */
 }
 
 @theme {
   --font-sans: var(--font-inter);
+
+  /* Brand Colors extracted from Logo - UPDATED to Premium Electric Blue */
+  --color-brand-blue: #0056D2;
+  /* Electric Blue - Vibrant & Trustworthy */
+  --color-brand-red: #D32F2F;
+  /* Crimson/Red for "TRIPS" */
+  --color-brand-dark: #0f172a;
+  /* Slate 900 for Contrast */
+  --color-brand-light: #eff6ff;
+  /* Blue 50 for Backgrounds */
+
+  --color-brand-blue-hover: #004494;
+  /* Darker Electric Blue */
+  --color-brand-red-hover: #b71c1c;
 }
 
 body {
@@ -40,6 +59,7 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;

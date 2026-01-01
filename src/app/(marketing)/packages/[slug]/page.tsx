@@ -4,7 +4,6 @@ import directus, { getAssetUrl } from "@/lib/directus/client";
 import { readItems } from "@directus/sdk";
 import { MapPin, Clock, Calendar, Check, X, Share2, Info, AlertCircle } from "lucide-react";
 import DownloadPdfButton from "@/components/packages/DownloadPdfButton";
-import ShareButton from "@/components/packages/ShareButton";
 import EnquiryForm from "@/components/packages/EnquiryForm";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -153,9 +152,8 @@ export default async function PackageDetailsPage({ params }: Props) {
             <aside className="w-full lg:w-[380px] shrink-0" data-html2canvas-ignore="true">
               <div className="sticky top-24 space-y-6">
                 <EnquiryForm packageTitle={pkg.title} price={pkg.price} />
-                <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col gap-3">
                   <DownloadPdfButton pkg={pkg} fileName={`${pkg.slug}-itinerary.pdf`} label="Download PDF" />
-                  <ShareButton title={pkg.title} />
                 </div>
               </div>
             </aside>

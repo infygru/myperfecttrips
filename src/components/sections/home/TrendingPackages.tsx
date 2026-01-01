@@ -7,15 +7,30 @@ import { readItems } from "@directus/sdk";
 export default async function TrendingPackages() {
   let packages: any[] = [];
 
-  try {
-    packages = await directus.request(
-      readItems("Packages", {
-        fields: ["*", "image.*"],
-        limit: 4, // ✅ 4 cards
-      })
-    );
-  } catch (error: any) {
-    console.error("❌ Error fetching Packages:", error.message || error);
+  const MAX_RETRIES = 3;
+  let attempt = 0;
+
+  while (attempt < MAX_RETRIES) {
+    try {
+      packages = await directus.request(
+        readItems("Packages", {
+          fields: ["*", "image.*"],
+          limit: 4, // ✅ 4 cards
+        })
+      );
+      break; // Success!
+    } catch (error: any) {
+      attempt++;
+      console.error(`Attempt ${attempt} failed:`, error.message);
+
+      if (attempt >= MAX_RETRIES) {
+        console.error("❌ Final Error fetching Packages:", error);
+        console.error("DEBUG: Directus URL:", process.env.NEXT_PUBLIC_DIRECTUS_URL);
+      } else {
+        // Wait 1s before retrying
+        await new Promise((res) => setTimeout(res, 1000));
+      }
+    }
   }
 
   if (!packages || packages.length === 0) {
@@ -38,7 +53,7 @@ export default async function TrendingPackages() {
 
           <Link
             href="/packages"
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 transition"
+            className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-brand-blue transition"
           >
             View All
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -77,7 +92,7 @@ export default async function TrendingPackages() {
                   {/* CONTENT */}
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     {/* LOCATION */}
-                    <div className="flex items-center gap-1 text-cyan-300 font-semibold mb-2">
+                    <div className="flex items-center gap-1 text-brand-red font-bold mb-2">
                       <MapPin className="w-4 h-4" />
                       <span className="text-xs uppercase tracking-wide">
                         {pkg.location || "Destination"}
@@ -103,7 +118,7 @@ export default async function TrendingPackages() {
                         <span className="block text-[11px] text-slate-300 mb-0.5">
                           From
                         </span>
-                        <span className="text-2xl font-bold text-cyan-300">
+                        <span className="text-2xl font-bold text-white">
                           £{pkg.price}
                         </span>
                       </div>

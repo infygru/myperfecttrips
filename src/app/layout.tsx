@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Header/Navbar";
 import ChatBot from "@/components/chat/ChatBot";
 import { Footer } from "@/components/layout/Footer/Footer";
+import CookieConsent from "@/components/common/CookieConsent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
         <main>
           {children}
         </main>
+        <CookieConsent />
         <ChatBot />
         <Footer />
       </body>
