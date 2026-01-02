@@ -1,4 +1,5 @@
 import Navbar from "@/components/layout/Header/Navbar";
+import ScrollAnimation from "@/components/ui/ScrollAnimation";
 
 
 export default function PrivacyPolicy() {
@@ -8,7 +9,8 @@ export default function PrivacyPolicy() {
             <div className="pt-32 pb-20 container mx-auto px-4 max-w-4xl">
                 <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-10 tracking-tight">Privacy Policy</h1>
 
-                <div className="space-y-8 text-slate-600 leading-relaxed md:text-lg">
+
+                <ScrollAnimation className="space-y-8 text-slate-600 leading-relaxed md:text-lg">
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Introduction</h2>
                         <p>
@@ -62,7 +64,8 @@ export default function PrivacyPolicy() {
                             United Kingdom
                         </p>
                     </section>
-                </div>
+                </ScrollAnimation>
+
             </div>
 
         </main>

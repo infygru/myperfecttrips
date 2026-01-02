@@ -9,21 +9,21 @@ export default async function PackagesPage() {
   let packages: any[] = [];
 
   try {
-    // 1. Fetch from 'Packages' (Capital P)
-    // We fetch "*.*" to get all fields plus nested image data
+    // 1. Fetch from 'Packages' (Capital P) with 'destination' relationship
     const rawPackages = await directus.request(readItems("Packages", {
-      fields: ["*.*"],
-      // Removed 'sort' to prevent 403 Forbidden errors on system fields
+      fields: ["*", "image.*", "destination.*"], // Get top-level, image, and related destination
     }));
 
     // 2. Normalize Data
-    // This ensures that whether fields are 'Title' or 'title', the app won't break.
     packages = rawPackages.map((pkg: any) => ({
       id: pkg.id,
       title: pkg.title || pkg.Title || "Untitled Package",
       description: pkg.description || pkg.Description || "",
       price: Number(pkg.price || pkg.Price || 0),
-      location: pkg.location || pkg.Location || "International",
+      // Use related Destination name, fallback to text field
+      location: pkg.destination?.name || pkg.location || pkg.Location || "International",
+      // Add country for filtering
+      country: pkg.destination?.country || pkg.destination?.name || "",
       duration: pkg.duration || pkg.Duration || "5",
       image: pkg.image || pkg.Image || null,
       tags: pkg.tags || pkg.Tags || [],

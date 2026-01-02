@@ -6,16 +6,44 @@ import Link from "next/link";
 import {
   MapPin, Clock, Star, Filter,
   ChevronDown, ArrowRight, X, Check,
-  Plane, Coffee, Wifi, Car
+  Plane, Coffee, Wifi, Car, Search
 } from "lucide-react";
 import { getAssetUrl } from "@/lib/directus/client";
 
+import { useSearchParams } from "next/navigation";
+
 export default function PackageList({ packages }: { packages: any[] }) {
+  const searchParams = useSearchParams();
+
   // --- FILTERS STATE ---
+  const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([199, 15000]);
   const [selectedStars, setSelectedStars] = useState<number[]>([]);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  // --- INITIALIZE FROM URL ---
+  useEffect(() => {
+    // 1. Search Query
+    const query = searchParams.get("search");
+    if (query) setSearchQuery(query);
+
+    // 2. Budget
+    const budget = searchParams.get("budget");
+    if (budget) {
+      if (budget === "£500 - £1000") setPriceRange([500, 1000]);
+      else if (budget === "£1000 - £2000") setPriceRange([1000, 2000]);
+      else if (budget === "£2000+") setPriceRange([2000, 15000]);
+      // "Any Budget" or unknown values default to initial state [199, 15000]
+    }
+
+    // 3. Country (from Trending Destinations)
+    const countryParam = searchParams.get("country");
+    if (countryParam) {
+      setSelectedCountries([countryParam]);
+    }
+  }, [searchParams]);
 
   // Lock body scroll when mobile filters are open
   useEffect(() => {
@@ -32,21 +60,38 @@ export default function PackageList({ packages }: { packages: any[] }) {
     return Array.from(new Set(allTags));
   }, [packages]);
 
+  const uniqueCountries = useMemo(() => {
+    const allLocs = packages.map(p => p.location || "International");
+    return Array.from(new Set(allLocs)).filter(Boolean);
+  }, [packages]);
+
   const filteredPackages = packages.filter((pkg) => {
     const price = pkg.price || 0;
     const rating = pkg.rating || 0;
     const tags = pkg.tags || [];
 
+    // Text Search Logic
+    const matchesSearch = !searchQuery ||
+      pkg.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      pkg.location.toLowerCase().includes(searchQuery.toLowerCase());
+
     const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
     const matchesStars = selectedStars.length === 0 || selectedStars.includes(Math.floor(rating));
     const matchesAmenities = selectedAmenities.length === 0 || selectedAmenities.every(a => tags.includes(a));
+    const matchesCountry = selectedCountries.length === 0 || (pkg.location && selectedCountries.includes(pkg.location));
 
-    return matchesPrice && matchesStars && matchesAmenities;
+    return matchesSearch && matchesPrice && matchesStars && matchesAmenities && matchesCountry;
   });
 
   const toggleStar = (star: number) => {
     setSelectedStars(prev =>
       prev.includes(star) ? prev.filter(s => s !== star) : [...prev, star]
+    );
+  };
+
+  const toggleCountry = (country: string) => {
+    setSelectedCountries(prev =>
+      prev.includes(country) ? prev.filter(c => c !== country) : [...prev, country]
     );
   };
 
@@ -114,6 +159,22 @@ export default function PackageList({ packages }: { packages: any[] }) {
                   />
                 </div>
 
+                {/* COUNTRY FILTER */}
+                <div className="space-y-3 pt-5 border-t border-slate-100">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">Destinations</h3>
+                  <div className="space-y-1 max-h-48 overflow-y-auto no-scrollbar">
+                    {uniqueCountries.map((country: any) => (
+                      <label key={country} className="flex items-center gap-3 cursor-pointer group hover:bg-slate-50 p-2 -mx-2 rounded-lg transition-colors">
+                        <div className={`w-4 h-4 rounded-sm border flex items-center justify-center transition-all ${selectedCountries.includes(country) ? "bg-brand-blue border-brand-blue" : "border-slate-300 bg-white"}`}>
+                          {selectedCountries.includes(country) && <Check size={10} className="text-white" />}
+                        </div>
+                        <input type="checkbox" className="hidden" onChange={() => toggleCountry(country)} checked={selectedCountries.includes(country)} />
+                        <span className="text-sm text-slate-600 font-medium group-hover:text-slate-900 transition-colors">{country}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
                 {/* STAR RATING */}
                 <div className="space-y-3 pt-5 border-t border-slate-100">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">Star Rating</h3>
@@ -155,6 +216,7 @@ export default function PackageList({ packages }: { packages: any[] }) {
                     setPriceRange([199, 15000]);
                     setSelectedStars([]);
                     setSelectedAmenities([]);
+                    setSelectedCountries([]);
                   }}
                   className="w-full py-2.5 text-xs font-bold text-slate-400 hover:text-brand-blue hover:bg-blue-50 rounded-lg transition-all border border-transparent hover:border-blue-100"
                 >
@@ -170,6 +232,11 @@ export default function PackageList({ packages }: { packages: any[] }) {
             <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <h2 className="text-sm font-semibold text-slate-500">
                 Found <span className="text-slate-900 font-bold">{filteredPackages.length}</span> itineraries
+                {searchQuery && (
+                  <span className="ml-2 text-xs font-medium text-slate-400">
+                    matching "{searchQuery}"
+                  </span>
+                )}
               </h2>
               <div className="hidden md:flex items-center gap-3 text-sm text-slate-500">
                 <span className="font-medium">Sort by</span>
@@ -227,7 +294,7 @@ export default function PackageList({ packages }: { packages: any[] }) {
                           </div>
                           <div className="flex items-center gap-1">
                             <MapPin size={14} className="text-slate-400" />
-                            <span className="font-medium">{pkg.destination?.name || "Global"}</span>
+                            <span className="font-medium">{pkg.location || "Global"}</span>
                           </div>
                         </div>
                       </div>

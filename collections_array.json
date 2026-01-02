@@ -1,0 +1,473 @@
+[
+  {
+    "collection": "Blog_Posts",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "Blog_Posts",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": false,
+      "icon": null,
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": false,
+      "sort": null,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "Blog_Posts"
+    }
+  },
+  {
+    "collection": "Destinations",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "Destinations",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": false,
+      "icon": null,
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": false,
+      "sort": 2,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "Destinations"
+    }
+  },
+  {
+    "collection": "Enquiries",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "Enquiries",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": false,
+      "icon": null,
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": false,
+      "sort": null,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "Enquiries"
+    }
+  },
+  {
+    "collection": "Enquiries_Packages",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "Enquiries_Packages",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": true,
+      "icon": "import_export",
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": false,
+      "sort": null,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "Enquiries_Packages"
+    }
+  },
+  {
+    "collection": "Global_Settings",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "Global_Settings",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": false,
+      "icon": null,
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": true,
+      "sort": 1,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "Global_Settings"
+    }
+  },
+  {
+    "collection": "Legal_Pages",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "Legal_Pages",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": false,
+      "icon": null,
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": false,
+      "sort": null,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "Legal_Pages"
+    }
+  },
+  {
+    "collection": "Packages",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "Packages",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": false,
+      "icon": null,
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": false,
+      "sort": 3,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "Packages"
+    }
+  },
+  {
+    "collection": "Packages_directus_files",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "Packages_directus_files",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": true,
+      "icon": "import_export",
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": false,
+      "sort": null,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "Packages_directus_files"
+    }
+  },
+  {
+    "collection": "Services",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "Services",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": false,
+      "icon": null,
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": false,
+      "sort": null,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "Services"
+    }
+  },
+  {
+    "collection": "hero",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "hero",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": false,
+      "icon": null,
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": true,
+      "sort": null,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "hero"
+    }
+  },
+  {
+    "collection": "package_enquiries",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "package_enquiries",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": false,
+      "icon": null,
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": false,
+      "sort": null,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "package_enquiries"
+    }
+  },
+  {
+    "collection": "testimonials",
+    "meta": {
+      "accountability": "all",
+      "archive_app_filter": true,
+      "archive_field": null,
+      "archive_value": null,
+      "collapse": "open",
+      "collection": "testimonials",
+      "color": null,
+      "display_template": null,
+      "group": null,
+      "hidden": false,
+      "icon": null,
+      "item_duplication_fields": null,
+      "note": null,
+      "preview_url": null,
+      "singleton": false,
+      "sort": null,
+      "sort_field": null,
+      "translations": null,
+      "unarchive_value": null,
+      "versioning": false
+    },
+    "schema": {
+      "name": "testimonials"
+    }
+  },
+  {
+    "collection": "About_Page",
+    "meta": {
+      "collection": "About_Page",
+      "hidden": false,
+      "singleton": true,
+      "icon": "web",
+      "note": "Content for About_Page page",
+      "translations": null
+    },
+    "schema": {
+      "name": "About_Page",
+      "comment": null
+    }
+  },
+  {
+    "collection": "Corporate_Travel_Page",
+    "meta": {
+      "collection": "Corporate_Travel_Page",
+      "hidden": false,
+      "singleton": true,
+      "icon": "web",
+      "note": "Content for Corporate_Travel_Page page",
+      "translations": null
+    },
+    "schema": {
+      "name": "Corporate_Travel_Page",
+      "comment": null
+    }
+  },
+  {
+    "collection": "MICE_Page",
+    "meta": {
+      "collection": "MICE_Page",
+      "hidden": false,
+      "singleton": true,
+      "icon": "web",
+      "note": "Content for MICE_Page page",
+      "translations": null
+    },
+    "schema": {
+      "name": "MICE_Page",
+      "comment": null
+    }
+  },
+  {
+    "collection": "Visa_Page",
+    "meta": {
+      "collection": "Visa_Page",
+      "hidden": false,
+      "singleton": true,
+      "icon": "web",
+      "note": "Content for Visa_Page page",
+      "translations": null
+    },
+    "schema": {
+      "name": "Visa_Page",
+      "comment": null
+    }
+  },
+  {
+    "collection": "Why_Choose_Us",
+    "meta": {
+      "collection": "Why_Choose_Us",
+      "hidden": false,
+      "singleton": false,
+      "icon": "web",
+      "note": "Content for Why_Choose_Us page",
+      "translations": null
+    },
+    "schema": {
+      "name": "Why_Choose_Us",
+      "comment": null
+    }
+  },
+  {
+    "collection": "Team_Members",
+    "meta": {
+      "collection": "Team_Members",
+      "hidden": false,
+      "singleton": false,
+      "icon": "web",
+      "note": "Content for Team_Members page",
+      "translations": null
+    },
+    "schema": {
+      "name": "Team_Members",
+      "comment": null
+    }
+  },
+  {
+    "collection": "Partners",
+    "meta": {
+      "collection": "Partners",
+      "hidden": false,
+      "singleton": false,
+      "icon": "web",
+      "note": "Content for Partners page",
+      "translations": null
+    },
+    "schema": {
+      "name": "Partners",
+      "comment": null
+    }
+  },
+  {
+    "collection": "FAQ",
+    "meta": {
+      "collection": "FAQ",
+      "hidden": false,
+      "singleton": false,
+      "icon": "web",
+      "note": "Content for FAQ page",
+      "translations": null
+    },
+    "schema": {
+      "name": "FAQ",
+      "comment": null
+    }
+  },
+  {
+    "collection": "Visa_Enquiries",
+    "meta": {
+      "collection": "Visa_Enquiries",
+      "hidden": false,
+      "singleton": false,
+      "icon": "mail",
+      "note": "Enquiries from Visa_Enquiries page",
+      "translations": null
+    },
+    "schema": {
+      "name": "Visa_Enquiries",
+      "comment": null
+    }
+  }
+]

@@ -1,0 +1,327 @@
+[
+  {
+    "collection": "Blog_Posts",
+    "field": "image",
+    "related_collection": "directus_files",
+    "meta": {
+      "junction_field": null,
+      "many_collection": "Blog_Posts",
+      "many_field": "image",
+      "one_allowed_collections": null,
+      "one_collection": "directus_files",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Blog_Posts",
+      "column": "image",
+      "foreign_key_table": "directus_files",
+      "foreign_key_column": "id",
+      "constraint_name": "blog_posts_image_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "Destinations",
+    "field": "featured_image",
+    "related_collection": "directus_files",
+    "meta": {
+      "junction_field": null,
+      "many_collection": "Destinations",
+      "many_field": "featured_image",
+      "one_allowed_collections": null,
+      "one_collection": "directus_files",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Destinations",
+      "column": "featured_image",
+      "foreign_key_table": "directus_files",
+      "foreign_key_column": "id",
+      "constraint_name": "destinations_featured_image_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "Enquiries_Packages",
+    "field": "Packages_id",
+    "related_collection": "Packages",
+    "meta": {
+      "junction_field": "Enquiries_id",
+      "many_collection": "Enquiries_Packages",
+      "many_field": "Packages_id",
+      "one_allowed_collections": null,
+      "one_collection": "Packages",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Enquiries_Packages",
+      "column": "Packages_id",
+      "foreign_key_table": "Packages",
+      "foreign_key_column": "id",
+      "constraint_name": "enquiries_packages_packages_id_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "Enquiries_Packages",
+    "field": "Enquiries_id",
+    "related_collection": "Enquiries",
+    "meta": {
+      "junction_field": "Packages_id",
+      "many_collection": "Enquiries_Packages",
+      "many_field": "Enquiries_id",
+      "one_allowed_collections": null,
+      "one_collection": "Enquiries",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": "package_interest",
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Enquiries_Packages",
+      "column": "Enquiries_id",
+      "foreign_key_table": "Enquiries",
+      "foreign_key_column": "id",
+      "constraint_name": "enquiries_packages_enquiries_id_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "Global_Settings",
+    "field": "logo",
+    "related_collection": "directus_files",
+    "meta": {
+      "junction_field": null,
+      "many_collection": "Global_Settings",
+      "many_field": "logo",
+      "one_allowed_collections": null,
+      "one_collection": "directus_files",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Global_Settings",
+      "column": "logo",
+      "foreign_key_table": "directus_files",
+      "foreign_key_column": "id",
+      "constraint_name": "global_settings_logo_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "Packages",
+    "field": "image",
+    "related_collection": "directus_files",
+    "meta": {
+      "junction_field": null,
+      "many_collection": "Packages",
+      "many_field": "image",
+      "one_allowed_collections": null,
+      "one_collection": "directus_files",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Packages",
+      "column": "image",
+      "foreign_key_table": "directus_files",
+      "foreign_key_column": "id",
+      "constraint_name": "packages_image_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "Packages",
+    "field": "destination",
+    "related_collection": "Destinations",
+    "meta": {
+      "junction_field": null,
+      "many_collection": "Packages",
+      "many_field": "destination",
+      "one_allowed_collections": null,
+      "one_collection": "Destinations",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Packages",
+      "column": "destination",
+      "foreign_key_table": "Destinations",
+      "foreign_key_column": "id",
+      "constraint_name": "packages_destination_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "Packages",
+    "field": "banner_image",
+    "related_collection": "directus_files",
+    "meta": {
+      "junction_field": null,
+      "many_collection": "Packages",
+      "many_field": "banner_image",
+      "one_allowed_collections": null,
+      "one_collection": "directus_files",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Packages",
+      "column": "banner_image",
+      "foreign_key_table": "directus_files",
+      "foreign_key_column": "id",
+      "constraint_name": "packages_banner_image_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "Packages_directus_files",
+    "field": "directus_files_id",
+    "related_collection": "directus_files",
+    "meta": {
+      "junction_field": "Packages_id",
+      "many_collection": "Packages_directus_files",
+      "many_field": "directus_files_id",
+      "one_allowed_collections": null,
+      "one_collection": "directus_files",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Packages_directus_files",
+      "column": "directus_files_id",
+      "foreign_key_table": "directus_files",
+      "foreign_key_column": "id",
+      "constraint_name": "packages_directus_files_directus_files_id_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "NO ACTION"
+    }
+  },
+  {
+    "collection": "Packages_directus_files",
+    "field": "Packages_id",
+    "related_collection": "Packages",
+    "meta": {
+      "junction_field": "directus_files_id",
+      "many_collection": "Packages_directus_files",
+      "many_field": "Packages_id",
+      "one_allowed_collections": null,
+      "one_collection": "Packages",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": "gallery",
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Packages_directus_files",
+      "column": "Packages_id",
+      "foreign_key_table": "Packages",
+      "foreign_key_column": "id",
+      "constraint_name": "packages_directus_files_packages_id_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "Services",
+    "field": "icon",
+    "related_collection": "directus_files",
+    "meta": {
+      "junction_field": null,
+      "many_collection": "Services",
+      "many_field": "icon",
+      "one_allowed_collections": null,
+      "one_collection": "directus_files",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "Services",
+      "column": "icon",
+      "foreign_key_table": "directus_files",
+      "foreign_key_column": "id",
+      "constraint_name": "services_icon_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "hero",
+    "field": "background_image",
+    "related_collection": "directus_files",
+    "meta": {
+      "junction_field": null,
+      "many_collection": "hero",
+      "many_field": "background_image",
+      "one_allowed_collections": null,
+      "one_collection": "directus_files",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "hero",
+      "column": "background_image",
+      "foreign_key_table": "directus_files",
+      "foreign_key_column": "id",
+      "constraint_name": "hero_background_image_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  },
+  {
+    "collection": "hero",
+    "field": "background_video",
+    "related_collection": "directus_files",
+    "meta": {
+      "junction_field": null,
+      "many_collection": "hero",
+      "many_field": "background_video",
+      "one_allowed_collections": null,
+      "one_collection": "directus_files",
+      "one_collection_field": null,
+      "one_deselect_action": "nullify",
+      "one_field": null,
+      "sort_field": null
+    },
+    "schema": {
+      "table": "hero",
+      "column": "background_video",
+      "foreign_key_table": "directus_files",
+      "foreign_key_column": "id",
+      "constraint_name": "hero_background_video_foreign",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    }
+  }
+]

@@ -5,6 +5,7 @@ import { readItems } from "@directus/sdk";
 import { MapPin, Clock, Calendar, Check, X, Share2, Info, AlertCircle } from "lucide-react";
 import DownloadPdfButton from "@/components/packages/DownloadPdfButton";
 import EnquiryForm from "@/components/packages/EnquiryForm";
+import ScrollAnimation from "@/components/ui/ScrollAnimation";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -78,75 +79,83 @@ export default async function PackageDetailsPage({ params }: Props) {
           <div className="flex flex-col lg:flex-row gap-10">
             <div className="flex-1 space-y-10">
 
-              <section className="bg-[#f0f7ff] p-8 rounded-2xl border border-blue-100 shadow-sm">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#1e3a8a] shadow-sm border border-blue-100">
-                    <Info className="w-5 h-5" />
+              <ScrollAnimation>
+                <section className="bg-[#f0f7ff] p-8 rounded-2xl border border-blue-100 shadow-sm">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#1e3a8a] shadow-sm border border-blue-100">
+                      <Info className="w-5 h-5" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-[#1e3a8a]">Trip Overview</h2>
                   </div>
-                  <h2 className="text-2xl font-bold text-[#1e3a8a]">Trip Overview</h2>
-                </div>
-                <div className="prose prose-slate max-w-none text-[#334155] leading-relaxed text-lg">
-                  {pkg.description || "Curated itinerary designed for a perfect blend of sightseeing and relaxation."}
-                </div>
-              </section>
+                  <div className="prose prose-slate max-w-none text-[#334155] leading-relaxed text-lg">
+                    {pkg.description || "Curated itinerary designed for a perfect blend of sightseeing and relaxation."}
+                  </div>
+                </section>
+              </ScrollAnimation>
 
               {/* Itinerary */}
-              <section className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600"><Calendar className="w-5 h-5" /></div>
-                  <h2 className="text-xl font-bold text-slate-900">Daily Itinerary</h2>
-                </div>
-                <div className="relative border-l-2 border-slate-100 ml-5 space-y-12">
-                  {itinerary.length > 0 ? itinerary.map((day: any, index: number) => {
-                    // --- SAFETY FIX FOR ITINERARY IMAGES ---
-                    const dayImg = day.image ? getAssetUrl(day.image) : (day.image_url || null);
+              <ScrollAnimation>
+                <section className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600"><Calendar className="w-5 h-5" /></div>
+                    <h2 className="text-xl font-bold text-slate-900">Daily Itinerary</h2>
+                  </div>
+                  <div className="relative border-l-2 border-slate-100 ml-5 space-y-12">
+                    {itinerary.length > 0 ? itinerary.map((day: any, index: number) => {
+                      // --- SAFETY FIX FOR ITINERARY IMAGES ---
+                      const dayImg = day.image ? getAssetUrl(day.image) : (day.image_url || null);
 
-                    return (
-                      <div key={index} className="relative pl-10">
-                        <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white border-4 border-blue-600 shadow-sm z-10"></div>
-                        <div className="group">
-                          <span className="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded mb-3 uppercase">Day {index + 1}</span>
-                          <h3 className="text-lg font-bold text-slate-900 mb-3">{day.title || "Sightseeing"}</h3>
-                          <div className="flex flex-col md:flex-row gap-6">
-                            {/* Only render Image if dayImg is NOT null/empty */}
-                            {dayImg && (
-                              <div className="w-full md:w-48 h-32 shrink-0 relative rounded-xl overflow-hidden shadow-sm bg-slate-200">
-                                <Image src={dayImg} alt={`Day ${index + 1}`} fill className="object-cover" unoptimized />
-                              </div>
-                            )}
-                            <p className="text-sm text-slate-500 leading-relaxed">{day.description}</p>
+                      return (
+                        <div key={index} className="relative pl-10">
+                          <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white border-4 border-blue-600 shadow-sm z-10"></div>
+                          <div className="group">
+                            <span className="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded mb-3 uppercase">Day {index + 1}</span>
+                            <h3 className="text-lg font-bold text-slate-900 mb-3">{day.title || "Sightseeing"}</h3>
+                            <div className="flex flex-col md:flex-row gap-6">
+                              {/* Only render Image if dayImg is NOT null/empty */}
+                              {dayImg && (
+                                <div className="w-full md:w-48 h-32 shrink-0 relative rounded-xl overflow-hidden shadow-sm bg-slate-200">
+                                  <Image src={dayImg} alt={`Day ${index + 1}`} fill className="object-cover" unoptimized />
+                                </div>
+                              )}
+                              <p className="text-sm text-slate-500 leading-relaxed">{day.description}</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  }) : (
-                    <p className="text-slate-400 italic pl-10">Itinerary details coming soon...</p>
-                  )}
-                </div>
-              </section>
+                      );
+                    }) : (
+                      <p className="text-slate-400 italic pl-10">Itinerary details coming soon...</p>
+                    )}
+                  </div>
+                </section>
+              </ScrollAnimation>
 
               {/* Inclusions */}
-              <section className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                <h2 className="text-xl font-bold text-slate-900 mb-6">Package Details</h2>
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div>
-                    <h4 className="flex items-center gap-2 font-bold text-green-700 mb-4 border-b pb-2 text-sm uppercase"><Check className="w-4 h-4" /> Inclusions</h4>
-                    <ul className="space-y-3">{(pkg.inclusions || ["4-Star Hotel", "Breakfast", "Guide"]).map((item: string, i: number) => <li key={i} className="flex items-start gap-3 text-sm font-medium text-slate-700"><div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 shrink-0" /> {item}</li>)}</ul>
+              <ScrollAnimation>
+                <section className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                  <h2 className="text-xl font-bold text-slate-900 mb-6">Package Details</h2>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      <h4 className="flex items-center gap-2 font-bold text-green-700 mb-4 border-b pb-2 text-sm uppercase"><Check className="w-4 h-4" /> Inclusions</h4>
+                      <ul className="space-y-3">{(pkg.inclusions || ["4-Star Hotel", "Breakfast", "Guide"]).map((item: string, i: number) => <li key={i} className="flex items-start gap-3 text-sm font-medium text-slate-700"><div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 shrink-0" /> {item}</li>)}</ul>
+                    </div>
+                    <div>
+                      <h4 className="flex items-center gap-2 font-bold text-red-600 mb-4 border-b pb-2 text-sm uppercase"><X className="w-4 h-4" /> Exclusions</h4>
+                      <ul className="space-y-3">{(pkg.exclusions || ["Flights", "Visa"]).map((item: string, i: number) => <li key={i} className="flex items-start gap-3 text-sm text-slate-500 font-medium"><div className="w-1.5 h-1.5 rounded-full bg-slate-300 mt-2 shrink-0" /> {item}</li>)}</ul>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="flex items-center gap-2 font-bold text-red-600 mb-4 border-b pb-2 text-sm uppercase"><X className="w-4 h-4" /> Exclusions</h4>
-                    <ul className="space-y-3">{(pkg.exclusions || ["Flights", "Visa"]).map((item: string, i: number) => <li key={i} className="flex items-start gap-3 text-sm text-slate-500 font-medium"><div className="w-1.5 h-1.5 rounded-full bg-slate-300 mt-2 shrink-0" /> {item}</li>)}</ul>
-                  </div>
-                </div>
-              </section>
+                </section>
+              </ScrollAnimation>
 
-              <section className="bg-amber-50 p-6 rounded-2xl border border-amber-100 flex gap-4">
-                <AlertCircle className="w-6 h-6 text-amber-600 shrink-0" />
-                <div className="text-sm text-amber-900 leading-relaxed">
-                  <h4 className="font-bold mb-1">Important Notes</h4>
-                  <p>Prices are dynamic and subject to availability at the time of booking. Itinerary may change slightly based on local conditions.</p>
-                </div>
-              </section>
+              <ScrollAnimation>
+                <section className="bg-amber-50 p-6 rounded-2xl border border-amber-100 flex gap-4">
+                  <AlertCircle className="w-6 h-6 text-amber-600 shrink-0" />
+                  <div className="text-sm text-amber-900 leading-relaxed">
+                    <h4 className="font-bold mb-1">Important Notes</h4>
+                    <p>Prices are dynamic and subject to availability at the time of booking. Itinerary may change slightly based on local conditions.</p>
+                  </div>
+                </section>
+              </ScrollAnimation>
             </div>
 
             <aside className="w-full lg:w-[380px] shrink-0" data-html2canvas-ignore="true">
