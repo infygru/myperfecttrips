@@ -40,7 +40,7 @@ export default function NavbarClient({ logoUrl, contactNumber, whatsappNumber, c
 
   return (
     <nav
-      className={`fixed w-full z-[100] transition-all duration-500 ease-in-out bg-white border-b ${scrolled
+      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-in-out bg-white border-b ${scrolled
         ? "py-3 shadow-md border-slate-100"
         : "py-4 lg:py-5 border-transparent"
         }`}
