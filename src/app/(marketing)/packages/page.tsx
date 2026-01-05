@@ -1,6 +1,7 @@
 import directus from "@/lib/directus/client";
 import { readItems } from "@directus/sdk";
 import PackageList from "@/components/packages/PackageList";
+import PackagesHero from "@/components/packages/PackagesHero";
 
 // Force dynamic rendering to ensure fresh data on every load
 export const dynamic = 'force-dynamic';
@@ -48,34 +49,9 @@ export default async function PackagesPage() {
       {/* Added mt-[72px] to physically push content below fixed header, ensuring no overlap */}
       {/* HEADER SECTION - CLEAN & STABLE */}
       {/* HEADER SECTION - PROFESSIONAL DARK THEME */}
-      {/* HEADER SECTION - MAJESTIC HERO (REFINED HEIGHT & IMAGE) */}
-      <div className="relative isolate h-[400px] md:h-[500px] flex items-center justify-center mt-[90px] overflow-hidden">
-
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=2070&auto=format&fit=crop"
-            alt="Majestic Landscape"
-            className="w-full h-full object-cover object-center transform scale-105"
-          />
-          {/* Heavy Overlay for Maximum Readability */}
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/80" />
-        </div>
-
-        <div className="relative container mx-auto px-4 text-center z-10 pt-20">
-          <span className="inline-block py-1.5 px-4 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold uppercase tracking-[0.2em] mb-8 backdrop-blur-md shadow-lg">
-            Curated Experiences
-          </span>
-
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 tracking-tight drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
-            Find Your <span className="text-sky-400">Perfect Trip</span>
-          </h1>
-
-          <p className="text-slate-200 text-lg md:text-2xl max-w-3xl mx-auto font-medium leading-relaxed drop-shadow-lg text-shadow-sm">
-            Explore our handpicked itineraries designed to give you the most memorable experiences across the globe.
-          </p>
-        </div>
+      {/* HEADER SECTION - NEW STRUCTURED HERO */}
+      <div className="mt-[80px]">
+        <PackagesHero />
       </div>
 
       {/* ERROR MESSAGE (Only visible if fetch failed) */}
