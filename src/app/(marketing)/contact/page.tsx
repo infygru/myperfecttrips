@@ -39,6 +39,20 @@ export default async function ContactPage() {
                 </p>
               </div>
 
+              {/* Dynamic Google Map */}
+              <div className="w-full h-64 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  scrolling="no"
+                  marginHeight={0}
+                  marginWidth={0}
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(contactAddress)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                  title="Office Location"
+                ></iframe>
+              </div>
+
               <div className="grid gap-8">
                 <div className="flex gap-6">
                   <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0">

@@ -61,8 +61,8 @@ export default async function PackageDetailsPage({ params }: Props) {
   const displayLocation = pkg.destination?.name || pkg.destination?.country || pkg.location || "International";
 
   // Days/Nights Logic
-  const days = pkg.duration || 5;
-  const nights = pkg.nights || (days > 1 ? days - 1 : 0);
+  const days = pkg.duration_days || pkg.duration || 5;
+  const nights = pkg.duration_nights || (Number(days) > 1 ? Number(days) - 1 : 0);
   const durationString = `${days} Days / ${nights} Nights`;
 
   return (
@@ -193,7 +193,7 @@ export default async function PackageDetailsPage({ params }: Props) {
               <div className="sticky top-24 space-y-6">
                 <EnquiryForm packageTitle={pkg.title} price={pkg.price} />
                 <div className="flex flex-col gap-3">
-                  <DownloadPdfButton pkg={pkg} fileName={`${pkg.slug}-itinerary.pdf`} label="Download PDF" logoUrl={logoUrl} />
+                  <DownloadPdfButton pkg={pkg} fileName={`${pkg.slug}-itinerary.pdf`} label="Download Itinerary" logoUrl={logoUrl} />
                 </div>
               </div>
             </aside>

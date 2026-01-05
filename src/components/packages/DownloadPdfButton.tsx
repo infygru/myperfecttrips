@@ -7,7 +7,7 @@ import { getAssetUrl } from "@/lib/directus/client";
 
 export default function DownloadPdfButton({
   pkg,
-  label = "Download as PDF",
+  label = "Download Itinerary",
   logoUrl
 }: {
   pkg: any;
@@ -151,6 +151,13 @@ export default function DownloadPdfButton({
         cursorY += 48;
       }
 
+      // Helper: Decode HTML Entities
+      const decodeHtml = (html: string) => {
+        const txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+      };
+
       // 3. OVERVIEW
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
@@ -162,15 +169,15 @@ export default function DownloadPdfButton({
       doc.setFont("helvetica", "normal");
       doc.setTextColor(colorBody[0], colorBody[1], colorBody[2]);
 
-      const cleanOverview = (pkg.overview || pkg.description || "")
+      let cleanOverview = (pkg.overview || pkg.description || "")
         .replace(/<[^>]*>?/gm, ' ')
         .replace(/\s+/g, ' ')
-        .trim()
-        .substring(0, 800);
+        .trim();
+      cleanOverview = decodeHtml(cleanOverview).substring(0, 800);
 
       const overviewLines = doc.splitTextToSize(cleanOverview, contentWidth);
       doc.text(overviewLines, margin, cursorY);
-      cursorY += (overviewLines.length * 4.5) + 8;
+      cursorY += (overviewLines.length * 4.5) + 12;
 
       // 4. ITINERARY
       doc.setFontSize(12);
@@ -184,10 +191,11 @@ export default function DownloadPdfButton({
         const dImg = itineraryImages[i];
 
         const dayTitle = `Day ${i + 1}: ${day.title || 'Sightseeing'}`;
-        const dayDesc = (day.description || "")
+        let dayDesc = (day.description || "")
           .replace(/<[^>]*>?/gm, ' ')
           .replace(/\s+/g, ' ')
           .trim();
+        dayDesc = decodeHtml(dayDesc);
 
         let neededH = 15;
         const hasImg = !!dImg;
@@ -246,46 +254,76 @@ export default function DownloadPdfButton({
         cursorY += 4;
       }
 
-      // 5. DETAILS
-      checkPage(30);
+      // 5. DETAILS (Inclusions / Exclusions)
+      checkPage(50); // Ensure enough space for at least the start
 
-      const colW = (contentWidth / 2) - 5;
-      const startY = cursorY;
+      const colW = (contentWidth / 2) - 4;
+      const startY = cursorY + 5;
 
-      // Inclusions
+      // Calculate max height needed for backgrounds
+      // We'll pre-calculate lines to know box height
+      doc.setFontSize(9);
+      const incLines = (pkg.inclusions || []).flatMap((item: string) => doc.splitTextToSize(`• ${decodeHtml(item)}`, colW - 6));
+      const excLines = (pkg.exclusions || []).flatMap((item: string) => doc.splitTextToSize(`• ${decodeHtml(item)}`, colW - 6));
+
+      const incH = (incLines.length * 4.5) + 12; // + padding
+      const excH = (excLines.length * 4.5) + 12;
+      const maxBoxH = Math.max(incH, excH, 20);
+
+      if (startY + maxBoxH > pageHeight - 12) {
+        doc.addPage();
+        pageNum++;
+        cursorY = 20;
+        drawHeader();
+        cursorY = 32;
+      } else {
+        cursorY = startY;
+      }
+
+      // Inclusions Box (Left)
+      doc.setFillColor(240, 253, 244); // Light Green
+      doc.setDrawColor(22, 163, 74); // Green Border
+      doc.roundedRect(margin, cursorY, colW, maxBoxH, 3, 3, "FD");
+
       doc.setFontSize(10);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(22, 163, 74);
-      doc.text("Inclusions", margin, cursorY);
-      cursorY += 5;
-
-      doc.setFontSize(9); // slightly readable
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(50);
-      (pkg.inclusions || []).forEach((item: string) => {
-        const lines = doc.splitTextToSize(`• ${item}`, colW);
-        if (cursorY + (lines.length * 4) > pageHeight - 12) return;
-        doc.text(lines, margin, cursorY);
-        cursorY += (lines.length * 4);
-      });
-
-      // Exclusions
-      let rightY = startY;
-      doc.setFontSize(10);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(220, 38, 38);
-      doc.text("Exclusions", margin + colW + 10, rightY);
-      rightY += 5;
+      doc.text("Inclusions", margin + 4, cursorY + 6);
 
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(50);
-      (pkg.exclusions || []).forEach((item: string) => {
-        const lines = doc.splitTextToSize(`• ${item}`, colW);
-        if (rightY + (lines.length * 4) > pageHeight - 12) return;
-        doc.text(lines, margin + colW + 10, rightY);
-        rightY += (lines.length * 4);
+      let incY = cursorY + 12;
+      (pkg.inclusions || []).forEach((item: string) => {
+        const decoded = decodeHtml(item);
+        const lines = doc.splitTextToSize(`• ${decoded}`, colW - 6);
+        doc.text(lines, margin + 4, incY);
+        incY += (lines.length * 4.5);
       });
+
+      // Exclusions Box (Right)
+      const excX = margin + colW + 8;
+      doc.setFillColor(254, 242, 242); // Light Red
+      doc.setDrawColor(220, 38, 38); // Red Border
+      doc.roundedRect(excX, cursorY, colW, maxBoxH, 3, 3, "FD");
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(220, 38, 38);
+      doc.text("Exclusions", excX + 4, cursorY + 6);
+
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(50);
+      let excY = cursorY + 12;
+      (pkg.exclusions || []).forEach((item: string) => {
+        const decoded = decodeHtml(item);
+        const lines = doc.splitTextToSize(`• ${decoded}`, colW - 6);
+        doc.text(lines, excX + 4, excY);
+        excY += (lines.length * 4.5);
+      });
+
+      cursorY += maxBoxH + 10;
 
       // Footer
       const lastFooterY = pageHeight - 8;
@@ -311,7 +349,7 @@ export default function DownloadPdfButton({
     <button
       onClick={handleDownload}
       disabled={loading}
-      className="w-full bg-white border border-slate-200 hover:bg-slate-50 hover:border-blue-300 hover:text-blue-600 text-slate-700 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm text-sm"
+      className="w-full bg-brand-blue hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-md text-sm hover:shadow-lg transform active:scale-[0.98]"
     >
       {loading ? (
         <>

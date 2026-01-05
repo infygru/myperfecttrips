@@ -302,10 +302,8 @@ export default function PackageList({ packages }: { packages: any[] }) {
                       {/* INCLUSIONS */}
                       <div className="flex flex-wrap gap-2 mb-3 mt-auto">
                         <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 rounded-md text-[11px] font-semibold text-slate-600 border border-slate-100">
-                          <Clock size={12} className="text-slate-400" /> {pkg.duration_days} Days
-                        </span>
-                        <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 rounded-md text-[11px] font-semibold text-slate-600 border border-slate-100">
-                          <Plane size={12} className="text-slate-400" /> Flights
+                          <Clock size={12} className="text-slate-400" />
+                          {pkg.duration} Days / {pkg.nights} Nights
                         </span>
                         {pkg.tags?.slice(0, 2).map((tag: any) => (
                           <span key={tag} className="px-2.5 py-1 bg-blue-50/50 text-brand-blue rounded-md text-[11px] font-semibold border border-blue-50">
@@ -317,7 +315,7 @@ export default function PackageList({ packages }: { packages: any[] }) {
 
                     {/* PRICE/ACTION SECTION */}
                     <div className="w-full md:w-60 bg-slate-50/50 p-5 md:p-6 flex flex-col justify-center items-center md:items-end border-t md:border-t-0 md:border-l border-slate-100 text-center md:text-right">
-                      <div className="mb-0.5 text-xs text-slate-400 font-medium">Seven nights from</div>
+                      <div className="mb-0.5 text-xs text-slate-400 font-medium">Price starts from</div>
 
                       <div className="flex items-baseline gap-2 mb-4">
                         <span className="text-sm font-semibold text-slate-400 line-through">£{Math.round(pkg.price * 1.2)}</span>
@@ -331,7 +329,7 @@ export default function PackageList({ packages }: { packages: any[] }) {
                       </Link>
 
                       <p className="mt-4 text-[10px] text-slate-500 font-medium flex items-center gap-1.5">
-                        <Check size={12} className="text-emerald-500" /> Free Cancellation
+                        <Check size={12} className="text-emerald-500" /> No Addtional Fee
                       </p>
                     </div>
 

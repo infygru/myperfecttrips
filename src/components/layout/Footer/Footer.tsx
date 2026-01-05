@@ -108,7 +108,7 @@ export async function Footer() {
             <h3 className="text-white font-bold text-lg mb-6">Contact</h3>
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3 group">
-                <MapPin className="w-5 h-5 text-brand-red shrink-0 mt-0.5 group-hover:text-white transition-colors" />
+                <MapPin className="w-5 h-5 text-blue-400 shrink-0 mt-0.5 group-hover:text-white transition-colors" />
                 <span className="text-slate-300">{contactAddress}</span>
               </li>
               <li className="flex items-center gap-3 group">
@@ -123,7 +123,7 @@ export async function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-3 group">
-                <Mail className="w-5 h-5 text-brand-red shrink-0 group-hover:text-white transition-colors" />
+                <Mail className="w-5 h-5 text-blue-400 shrink-0 group-hover:text-white transition-colors" />
                 <a href={`mailto:${contactEmail}`} className="text-slate-300 hover:text-white transition-colors">{contactEmail}</a>
               </li>
             </ul>
