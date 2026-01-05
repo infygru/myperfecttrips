@@ -36,11 +36,17 @@ export default function NavbarClient({ logoUrl, contactNumber, whatsappNumber, c
     { name: "Contact", href: "/contact" }
   ];
 
+  const isTransparentPage = pathname === "/" || pathname === "/packages";
+  const textColorClass = !scrolled && isTransparentPage ? "text-white" : "text-slate-600";
+  const activeColorClass = !scrolled && isTransparentPage ? "text-white/80" : "text-brand-blue";
+
   return (
     <nav
-      className={`fixed w-full z-[100] transition-all duration-500 ease-in-out bg-white border-b ${scrolled
-        ? "py-3 shadow-md border-slate-100"
-        : "py-4 lg:py-5 border-transparent"
+      className={`fixed w-full z-[100] transition-all duration-500 ease-in-out border-b ${scrolled
+          ? "bg-white py-3 shadow-md border-slate-100"
+          : isTransparentPage
+            ? "bg-transparent py-4 lg:py-6 border-transparent"
+            : "bg-white py-4 lg:py-5 border-transparent"
         }`}
     >
       <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
@@ -53,8 +59,8 @@ export default function NavbarClient({ logoUrl, contactNumber, whatsappNumber, c
                 <img src={logoUrl} alt="MyPerfectTrips" className="h-full w-full object-contain object-left" />
               </div>
             ) : (
-              <span className="text-2xl font-black uppercase tracking-tighter text-brand-blue">
-                MYPERFECT<span className="text-brand-red">TRIPS</span>
+              <span className={`text-2xl font-black uppercase tracking-tighter ${!scrolled && isTransparentPage ? "text-white" : "text-brand-blue"}`}>
+                MYPERFECT<span className={!scrolled && isTransparentPage ? "text-blue-200" : "text-brand-red"}>TRIPS</span>
               </span>
             )}
           </Link>
@@ -74,11 +80,11 @@ export default function NavbarClient({ logoUrl, contactNumber, whatsappNumber, c
                   href={item.href}
                   className={`flex items-center gap-1 text-[13px] font-bold uppercase tracking-widest transition-colors py-2 
                     ${pathname === item.href
-                      ? "text-brand-blue"
-                      : "text-slate-600 hover:text-brand-blue"}`}
+                      ? activeColorClass
+                      : `${textColorClass} hover:text-brand-blue`}`}
                 >
                   {item.name}
-                  {item.dropdown && <ChevronDown className="w-3 h-3 mb-0.5 opacity-50 group-hover:opacity-100 transition-opacity" />}
+                  {item.dropdown && <ChevronDown className={`w-3 h-3 mb-0.5 opacity-50 group-hover:opacity-100 transition-opacity ${textColorClass}`} />}
                 </Link>
 
                 {/* DROPDOWN MENU */}

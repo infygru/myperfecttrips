@@ -49,7 +49,7 @@ export default async function PackagesPage() {
       {/* HEADER SECTION - CLEAN & STABLE */}
       {/* HEADER SECTION - PROFESSIONAL DARK THEME */}
       {/* HEADER SECTION - MAJESTIC HERO (REFINED HEIGHT & IMAGE) */}
-      <div className="relative isolate h-[400px] md:h-[500px] flex items-center justify-center mt-[72px] overflow-hidden">
+      <div className="relative isolate h-[400px] md:h-[500px] flex items-center justify-center overflow-hidden">
 
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
