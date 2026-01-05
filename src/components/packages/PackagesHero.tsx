@@ -22,74 +22,39 @@ export default function PackagesHero() {
     };
 
     return (
-        <section className="relative bg-slate-900 pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden">
-            {/* Abstract Background Pattern */}
-            <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-                <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <path d="M0 100 C 20 0 50 0 100 100 Z" fill="url(#grad1)" />
-                </svg>
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+        <section className="relative pt-32 pb-12 md:pt-48 md:pb-20 overflow-hidden flex items-center justify-center min-h-[400px]">
+
+            {/* Background Image - RESTORED */}
+            <div className="absolute inset-0 z-0">
+                <img
+                    src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=2070&auto=format&fit=crop"
+                    alt="Majestic Landscape"
+                    className="w-full h-full object-cover object-center"
+                />
+                {/* Cinematic Overlays */}
+                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/60" />
             </div>
 
-            {/* Glow Effects */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-blue/20 rounded-full blur-[100px] pointer-events-none" />
-
-            <div className="container mx-auto px-4 relative z-10 text-center">
+            <div className="container mx-auto px-4 relative z-10 text-center pt-12">
 
                 {/* Badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-brand-light text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold uppercase tracking-[0.2em] mb-8 backdrop-blur-md shadow-lg">
                     <Globe size={12} className="text-sky-400" />
-                    Curated Global Itineraries
+                    Curated Experiences
                 </div>
 
                 {/* Title */}
-                <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight leading-tight">
-                    Find Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-brand-blue-hover">Next Adventure</span>
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 tracking-tight drop-shadow-2xl">
+                    Find Your <span className="text-sky-400">Perfect Trip</span>
                 </h1>
 
                 {/* Description */}
-                <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
+                <p className="text-slate-200 text-lg md:text-2xl max-w-3xl mx-auto mb-10 font-medium leading-relaxed drop-shadow-lg">
                     From breathtaking landscapes to vibrant city escapes, discover packages crafted for the modern traveller.
                 </p>
 
-                {/* Hero Search Bar */}
-                <div className="max-w-2xl mx-auto">
-                    <form onSubmit={handleSearch} className="relative group">
-                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <Search className="h-5 w-5 text-slate-400 group-focus-within:text-brand-blue transition-colors" />
-                        </div>
-                        <input
-                            type="text"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Search by destination (e.g., Dubai, Europe)..."
-                            className="block w-full pl-12 pr-4 py-4 bg-white rounded-2xl text-slate-900 placeholder:text-slate-400 font-bold focus:outline-none focus:ring-4 focus:ring-brand-blue/20 shadow-xl transition-all"
-                        />
-                        <button
-                            type="submit"
-                            className="absolute right-2 top-2 bottom-2 px-6 bg-brand-blue hover:bg-brand-blue-hover text-white rounded-xl font-bold text-sm transition-all shadow-lg hover:shadow-brand-blue/25"
-                        >
-                            Search
-                        </button>
-                    </form>
-
-                    {/* Quick Tags */}
-                    <div className="flex flex-wrap justify-center gap-2 mt-6 text-sm text-slate-400 font-medium">
-                        <span>Popular:</span>
-                        {["Dubai", "Europe", "Thailand", "Maldives"].map(tag => (
-                            <button
-                                key={tag}
-                                onClick={() => {
-                                    setQuery(tag);
-                                    router.push(`/packages?search=${tag}`);
-                                }}
-                                className="text-slate-300 hover:text-white hover:underline decoration-brand-blue underline-offset-4 transition-all"
-                            >
-                                {tag}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+                {/* Search Bar Removed per request */}
             </div>
         </section>
     );
