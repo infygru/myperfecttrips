@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown, Phone, Mail, ArrowRight } from "lucide-react";
 
-export default function NavLinks({ logoUrl, contactNumber, contactEmail, scrolled }: { logoUrl: string | null, contactNumber: string, contactEmail: string, scrolled: boolean }) {
+export default function NavLinks({ logoUrl, contactNumber, whatsappNumber, contactEmail, scrolled }: { logoUrl: string | null, contactNumber: string, whatsappNumber: string, contactEmail: string, scrolled: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
   const pathname = usePathname();

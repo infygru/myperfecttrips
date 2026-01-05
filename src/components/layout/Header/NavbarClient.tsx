@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Phone, ArrowRight } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import NavLinks from "./NavLinks";
 
-export default function NavbarClient({ logoUrl, contactNumber, contactEmail }: { logoUrl: string | null, contactNumber: string, contactEmail: string }) {
+export default function NavbarClient({ logoUrl, contactNumber, whatsappNumber, contactEmail }: { logoUrl: string | null, contactNumber: string, whatsappNumber: string, contactEmail: string }) {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -101,15 +102,20 @@ export default function NavbarClient({ logoUrl, contactNumber, contactEmail }: {
           </div>
 
           {/* CONTACT */}
-          <a href={`tel:${contactNumber}`} className="flex items-center gap-2 font-bold text-sm transition-colors text-slate-800 hover:text-brand-blue border-l border-slate-200 pl-8 h-8">
-            <Phone className="w-4 h-4 text-brand-blue" />
-            <span>{contactNumber}</span>
+          <a
+            href={`https://wa.me/${whatsappNumber.replace(/\D/g, '')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 font-bold text-sm transition-colors text-slate-800 hover:text-green-600 border-l border-slate-200 pl-8 h-8"
+          >
+            <FaWhatsapp className="w-5 h-5 text-green-500" />
+            <span>{whatsappNumber}</span>
           </a>
         </div>
 
         {/* MOBILE MENU TOGGLE */}
         <div className="lg:hidden relative z-50">
-          <NavLinks logoUrl={logoUrl} contactNumber={contactNumber} contactEmail={contactEmail} scrolled={scrolled} />
+          <NavLinks logoUrl={logoUrl} contactNumber={contactNumber} whatsappNumber={whatsappNumber} contactEmail={contactEmail} scrolled={scrolled} />
         </div>
       </div>
     </nav>

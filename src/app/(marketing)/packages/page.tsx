@@ -43,16 +43,18 @@ export default async function PackagesPage() {
 
       {/* HEADER SECTION */}
       {/* HEADER SECTION - PREMIUM DARK */}
-      <div className="relative bg-[#0B1120] text-white py-24 border-b border-white/5 overflow-hidden">
-        {/* Abstract Background Pattern */}
-        <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat opacity-5" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+      {/* HEADER SECTION - PREMIUM REDESIGN */}
+      {/* HEADER SECTION - LIGHT THEME REDESIGN */}
+      {/* Added mt-[72px] to physically push content below fixed header, ensuring no overlap */}
+      {/* HEADER SECTION - CLEAN & STABLE */}
+      <div className="relative bg-slate-50 pt-32 pb-20 md:pt-40 md:pb-24 border-b border-slate-200">
 
-        <div className="relative container mt-16 mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">
             Find Your <span className="text-brand-blue">Perfect Trip</span>
           </h1>
-          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
+
+          <p className="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
             Explore our handpicked itineraries designed to give you the most memorable experiences across the globe.
           </p>
         </div>

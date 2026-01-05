@@ -16,7 +16,7 @@ const nextConfig = {
       }
     ],
     // This allows the PDF generator to read the image data
-    dangerouslyAllowSVG: true, 
+    dangerouslyAllowSVG: true,
   },
 };
 

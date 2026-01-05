@@ -5,6 +5,7 @@ import NavbarClient from './NavbarClient';
 export default async function Navbar() {
   let logoUrl = null;
   let contactNumber = "+44 161 768 0990"; // Default fallback
+  let whatsappNumber = "+44 161 768 0990"; // Default fallback (same as phone)
   let contactEmail = "hello@myperfecttrips.co.uk"; // Default fallback
 
   try {
@@ -25,11 +26,12 @@ export default async function Navbar() {
     // 3. Extract Contact Details
     if (settings?.phone) contactNumber = settings.phone;
     if (settings?.email) contactEmail = settings.email;
+    if (settings?.whatsapp) whatsappNumber = settings.whatsapp;
 
   } catch (error) {
     console.error("Navbar Fetch Error");
   }
 
   // Pass it to the Client Component
-  return <NavbarClient logoUrl={logoUrl} contactNumber={contactNumber} contactEmail={contactEmail} />;
+  return <NavbarClient logoUrl={logoUrl} contactNumber={contactNumber} whatsappNumber={whatsappNumber} contactEmail={contactEmail} />;
 }

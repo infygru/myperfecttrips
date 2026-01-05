@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Phone, Mail, Globe } from 'lucide-react';
+import { FaWhatsapp } from 'react-icons/fa';
 import directus, { getAssetUrl } from '@/lib/directus/client';
 import { readSingleton } from '@directus/sdk';
 
 export async function Footer() {
   let logoUrl = null;
   let contactNumber = "+44 161 768 0990"; // Default
+  let whatsappNumber = "+44 161 768 0990"; // Default
   let contactEmail = "hello@myperfecttrips.co.uk"; // Default
   let contactAddress = "Altrincham, Manchester, UK"; // Default
 
@@ -28,6 +30,7 @@ export async function Footer() {
     if (settings?.phone) contactNumber = settings.phone;
     if (settings?.email) contactEmail = settings.email;
     if (settings?.address) contactAddress = settings.address;
+    if (settings?.whatsapp) whatsappNumber = settings.whatsapp;
 
   } catch (error) {
     // Debugging: This helps you see if the name is still wrong
@@ -109,8 +112,15 @@ export async function Footer() {
                 <span className="text-slate-300">{contactAddress}</span>
               </li>
               <li className="flex items-center gap-3 group">
-                <Phone className="w-5 h-5 text-brand-red shrink-0 group-hover:text-white transition-colors" />
-                <a href={`tel:${contactNumber}`} className="text-slate-300 hover:text-white transition-colors">{contactNumber}</a>
+                <FaWhatsapp className="w-5 h-5 text-green-500 shrink-0 group-hover:text-white transition-colors" />
+                <a
+                  href={`https://wa.me/${whatsappNumber.replace(/\D/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-300 hover:text-white transition-colors"
+                >
+                  {whatsappNumber}
+                </a>
               </li>
               <li className="flex items-center gap-3 group">
                 <Mail className="w-5 h-5 text-brand-red shrink-0 group-hover:text-white transition-colors" />

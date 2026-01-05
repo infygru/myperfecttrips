@@ -6,6 +6,7 @@ export interface GlobalSettings {
     email: string;
     address: string;
     logo?: string | { id: string };
+    whatsapp?: string; // Add WhatsApp field
     // Add other fields as needed
 }
 
