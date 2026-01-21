@@ -118,3 +118,84 @@ export async function submitGeneralEnquiry(prevState: any, formData: FormData) {
         return { success: false, message: "Failed to send message. Please try again." };
     }
 }
+
+// 3. Flight Enquiry Schema
+const FlightEnquirySchema = z.object({
+    name: z.string().min(2, "Name is too short"),
+    phone: z.string().regex(/^\d{10,12}$/, "Please input valid mobile number"),
+    from: z.string().min(1, "Origin is required"),
+    to: z.string().min(1, "Destination is required"),
+    date: z.string().min(1, "Travel date is required"),
+    return_date: z.string().optional(),
+    adults: z.number().min(1),
+    children: z.number().min(0),
+    website_url: z.string().optional(), // Honeypot
+});
+
+export async function submitFlightEnquiry(prevState: any, formData: FormData) {
+    console.log("--- Server Action: submitFlightEnquiry initiated ---");
+    try {
+        const rawData = {
+            name: formData.get("name"),
+            phone: formData.get("phone"),
+            from: formData.get("from"),
+            to: formData.get("to"),
+            date: formData.get("date"),
+            return_date: formData.get("return_date") || undefined,
+            adults: Number(formData.get("adults")),
+            children: Number(formData.get("children")),
+            tripType: formData.get("tripType"),
+            website_url: formData.get("website_url") || undefined,
+        };
+        console.log("Raw Data Received:", JSON.stringify(rawData, null, 2));
+
+        // 1. Zod Validation
+        const validation = FlightEnquirySchema.safeParse(rawData);
+
+        if (!validation.success) {
+            console.error("Validation Failed:", validation.error.issues);
+            return { success: false, message: validation.error.issues[0].message };
+        }
+
+        // 2. Honeypot Check
+        if (validation.data.website_url) {
+            console.log("Honeypot hit");
+            return { success: true, message: "Enquiry submitted successfully!" };
+        }
+
+        // 3. Submit to Directus (Flight_Enquiries Collection)
+        const { website_url, ...data } = validation.data;
+
+        // Map to Directus Fields
+        const payload = {
+            trip_type: rawData.tripType || "OneWay",
+            origin: data.from,
+            destination: data.to,
+            departure_date: data.date,
+            return_date: data.return_date || null,
+            adults: data.adults,
+            children: data.children,
+            travellers_total: data.adults + data.children,
+            name: data.name,
+            phone: data.phone,
+            status: "new",
+        };
+        console.log("Directus Payload:", JSON.stringify(payload, null, 2));
+
+        try {
+            await directus.request(createItem("Flight_Enquiries", payload));
+            console.log("Directus Submission Success");
+        } catch (directusError: any) {
+            console.error("Directus API Error:", JSON.stringify(directusError, null, 2));
+            if (directusError?.errors) {
+                console.error("Directus Details:", directusError.errors);
+            }
+            throw directusError;
+        }
+
+        return { success: true, message: "We've received your flight details. Our team will contact you shortly!" };
+    } catch (error) {
+        console.error("Flight Enquiry Error (General):", error);
+        return { success: false, message: "Failed to submit enquiry. Please try again." };
+    }
+}

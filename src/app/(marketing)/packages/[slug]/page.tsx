@@ -191,12 +191,17 @@ export default async function PackageDetailsPage({ params }: Props) {
 
             <aside className="w-full lg:w-[380px] shrink-0" data-html2canvas-ignore="true">
               <div className="sticky top-24 space-y-6">
-                <EnquiryForm packageTitle={pkg.title} price={pkg.price} />
+                <EnquiryForm
+                  packageTitle={pkg.title}
+                  price={pkg.price}
+                  priceWithoutFlight={pkg.price_without_flight}
+                />
                 <div className="flex flex-col gap-3">
                   <DownloadPdfButton pkg={pkg} fileName={`${pkg.slug}-itinerary.pdf`} label="Download Itinerary" logoUrl={logoUrl} />
                 </div>
               </div>
             </aside>
+
           </div>
         </div>
       </div>

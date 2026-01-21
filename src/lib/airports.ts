@@ -25,6 +25,21 @@ allAirports.forEach(item => {
     }
 });
 
+
+
+// Manual additions for missing major airports
+const manualAirports: Airport[] = [
+    { code: "MAA", name: "Chennai International Airport", city: "Chennai", country: "India" },
+    { code: "GOI", name: "Dabolim Airport", city: "Goa", country: "India" },
+    { code: "BLR", name: "Kempegowda International Airport", city: "Bengaluru", country: "India" },
+    { code: "CCU", name: "Netaji Subhash Chandra Bose International Airport", city: "Kolkata", country: "India" },
+    { code: "HYD", name: "Rajiv Gandhi International Airport", city: "Hyderabad", country: "India" }
+];
+
+manualAirports.forEach(a => {
+    uniqueAirportsMap.set(a.code, a);
+});
+
 const uniqueAirports = Array.from(uniqueAirportsMap.values());
 
 // Sort by City Name for better UX
