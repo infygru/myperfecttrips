@@ -144,7 +144,7 @@ export default function FlightSearchForm() {
     }
 
     return (
-        <form action={formAction} className="p-5 lg:p-6 bg-white rounded-2xl shadow-xl border border-slate-100 relative transition-all duration-500">
+        <form action={formAction} className="p-5 lg:p-6 relative transition-all duration-500">
 
             {/* --- ERROR MESSAGE (Global) --- */}
             {formError && (
@@ -159,7 +159,7 @@ export default function FlightSearchForm() {
             {/* --- FLIGHT SEARCH FORM --- */}
             <div className={`transition-all duration-500 ${step === 1 ? 'opacity-100' : 'opacity-0 hidden'}`}>
 
-                <div className="grid grid-cols-2 md:flex md:flex-row items-center bg-white md:rounded-full rounded-2xl shadow-xl relative z-20 md:p-2 md:pl-4 bg-opacity-95 backdrop-blur-sm border border-white/20">
+                <div className="grid grid-cols-2 md:flex md:flex-row items-center bg-white md:rounded-full rounded-2xl shadow-lg border border-slate-200 relative z-20 md:p-2 md:pl-4">
 
                     {/* 1. FROM */}
                     <div className="md:w-auto md:flex-[1.5] relative group p-4 border-r border-b md:border-0 border-slate-100 md:hover:bg-slate-50 md:rounded-full transition-colors rounded-tl-2xl md:rounded-tl-none" ref={fromRef}>
@@ -178,7 +178,7 @@ export default function FlightSearchForm() {
                         />
                         {/* Suggestions */}
                         {showFromSuggestions && (
-                            <div className="absolute top-[100%] left-0 w-full min-w-[300px] bg-white shadow-2xl rounded-2xl border border-slate-100 mt-4 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
+                            <div className="absolute top-[100%] left-0 w-full min-w-[300px] bg-white shadow-2xl rounded-2xl border border-slate-100 mt-1 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
                                 <div className="max-h-[300px] overflow-y-auto">
                                     {fromSuggestions.length > 0 ? fromSuggestions.map(a => (
                                         <button type="button" key={a.code} onClick={() => handleSelectAirport('from', a)} className="w-full text-left px-5 py-3 hover:bg-slate-50 flex items-center justify-between border-b border-slate-50 last:border-0 group/item transition-colors">
@@ -213,7 +213,7 @@ export default function FlightSearchForm() {
                         />
                         {/* Suggestions */}
                         {showToSuggestions && (
-                            <div className="absolute top-[100%] left-0 w-full min-w-[300px] bg-white shadow-2xl rounded-2xl border border-slate-100 mt-4 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
+                            <div className="absolute top-[100%] left-0 w-full min-w-[300px] bg-white shadow-2xl rounded-2xl border border-slate-100 mt-1 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
                                 <div className="max-h-[300px] overflow-y-auto">
                                     {toSuggestions.length > 0 ? toSuggestions.map(a => (
                                         <button type="button" key={a.code} onClick={() => handleSelectAirport('to', a)} className="w-full text-left px-5 py-3 hover:bg-slate-50 flex items-center justify-between border-b border-slate-50 last:border-0 group/item transition-colors">
@@ -240,7 +240,7 @@ export default function FlightSearchForm() {
                             {flightForm.date ? new Date(flightForm.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }) : "Add Date"}
                         </div>
                         {showDepartCalendar && (
-                            <div className="absolute top-[100%] left-0 z-50 mt-4">
+                            <div className="absolute top-[100%] left-0 z-50 mt-1">
                                 <SimpleCalendar
                                     selected={flightForm.date ? new Date(flightForm.date) : undefined}
                                     onSelect={(d) => {
@@ -283,7 +283,7 @@ export default function FlightSearchForm() {
                         </div>
 
                         {showReturnCalendar && (
-                            <div className="absolute top-[100%] left-0 z-50 mt-4">
+                            <div className="absolute top-[100%] left-0 z-50 mt-1">
                                 <SimpleCalendar
                                     selected={flightForm.return_date ? new Date(flightForm.return_date) : undefined}
                                     onSelect={(d) => {
@@ -311,7 +311,7 @@ export default function FlightSearchForm() {
                             <ChevronDown className="w-4 h-4 text-slate-400" />
                         </div>
                         {showTravellers && (
-                            <div className="absolute top-[100%] right-0 w-[280px] bg-white shadow-2xl rounded-xl border border-slate-100 p-5 z-50 mt-4 cursor-default animate-in fade-in slide-in-from-top-2">
+                            <div className="absolute top-[100%] right-0 w-[280px] bg-white shadow-2xl rounded-xl border border-slate-100 p-5 z-50 mt-1 cursor-default animate-in fade-in slide-in-from-top-2">
                                 <div className="flex justify-between items-center mb-4">
                                     <div><span className="font-bold text-slate-800 text-sm block">Adults</span><span className="text-xs text-slate-400">(12+ yrs)</span></div>
                                     <div className="flex items-center gap-3">
