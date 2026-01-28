@@ -141,7 +141,9 @@ export default function DownloadPdfButton({
       doc.setFontSize(10);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(colorAccent[0], colorAccent[1], colorAccent[2]);
-      const meta = `${pkg.duration || 5} Days  |  ${pkg.destination?.name || "International"}  |  ${pkg.destination?.country || "Tour"}`;
+      const days = pkg.duration_days || pkg.duration || 5;
+      const nights = pkg.duration_nights || (Number(days) > 1 ? Number(days) - 1 : 0);
+      const meta = `${days} Days / ${nights} Nights  |  ${pkg.destination?.name || "International"}  |  ${pkg.destination?.country || "Tour"}`;
       doc.text(meta, margin, cursorY);
       cursorY += 10;
 
@@ -255,72 +257,121 @@ export default function DownloadPdfButton({
       }
 
       // 5. DETAILS (Inclusions / Exclusions)
-      checkPage(50); // Ensure enough space for at least the start
+      checkPage(50); // Ensure enough space for header
 
       const colW = (contentWidth / 2) - 4;
-      const startY = cursorY + 5;
 
-      // Calculate max height needed for backgrounds
-      // We'll pre-calculate lines to know box height
+      // Helper to clean garbage characters and ensuring valid ASCII for standard fonts
+      const cleanTextForPdf = (input: string) => {
+        if (!input) return "";
+        let txt = decodeHtml(input);
+
+        // Aggressively strip non-Latin-1 characters (emojis, complex symbols, etc.)
+        // This removes everything that isn't basic text, numbers, or common punctuation
+        // Keeps: Regex [^\u0000-\u00FF] matches any char that is NOT in the Latin-1 Supplement range
+        txt = txt.replace(/[^\u0000-\u00FF]/g, '');
+
+        // Also clean up any resulting double spaces or weird start punctuation
+        txt = txt.trim().replace(/\s+/g, ' ');
+        // Remove leading bullets or dashes if they were part of the text string
+        txt = txt.replace(/^[\s\-\•\.\,]+/, '').trim();
+
+        return txt;
+      };
+
+      // Prepare items content
+      const incItems = (pkg.inclusions || []).map((item: string) => cleanTextForPdf(item)).filter((x: string) => x);
+      const excItems = (pkg.exclusions || []).map((item: string) => cleanTextForPdf(item)).filter((x: string) => x);
+
+      // Pre-calculate heights to handle page breaks or uniform box height
+      // We will perform a "Dry Run" to count lines
       doc.setFontSize(9);
-      const incLines = (pkg.inclusions || []).flatMap((item: string) => doc.splitTextToSize(`• ${decodeHtml(item)}`, colW - 6));
-      const excLines = (pkg.exclusions || []).flatMap((item: string) => doc.splitTextToSize(`• ${decodeHtml(item)}`, colW - 6));
+      doc.setFont("helvetica", "normal");
 
-      const incH = (incLines.length * 4.5) + 12; // + padding
-      const excH = (excLines.length * 4.5) + 12;
-      const maxBoxH = Math.max(incH, excH, 20);
+      const getSectionHeight = (items: string[]) => {
+        let h = 12; // Title + Padding top
+        items.forEach(item => {
+          // Bullet indent
+          const lines = doc.splitTextToSize(item, colW - 10); // -10 for padding + bullet indent
+          h += (lines.length * 4.5) + 3; // Line height + item spacing
+        });
+        return h + 6; // Padding bottom
+      };
 
-      if (startY + maxBoxH > pageHeight - 12) {
+      const incH = getSectionHeight(incItems);
+      const excH = getSectionHeight(excItems);
+      const maxBoxH = Math.max(incH, excH, 40); // Min height 40
+
+      // Check for page break based on the calculated box height
+      if (cursorY + maxBoxH > pageHeight - 12) {
         doc.addPage();
         pageNum++;
         cursorY = 20;
         drawHeader();
         cursorY = 32;
       } else {
-        cursorY = startY;
+        cursorY += 5; // spacing before boxes
       }
 
-      // Inclusions Box (Left)
+      // Draw Inclusions Box (Left)
       doc.setFillColor(240, 253, 244); // Light Green
       doc.setDrawColor(22, 163, 74); // Green Border
       doc.roundedRect(margin, cursorY, colW, maxBoxH, 3, 3, "FD");
 
+      // Inclusions Title
       doc.setFontSize(10);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(22, 163, 74);
-      doc.text("Inclusions", margin + 4, cursorY + 6);
+      doc.text("Inclusions", margin + 4, cursorY + 7);
 
+      // Inclusions Items
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(50);
-      let incY = cursorY + 12;
-      (pkg.inclusions || []).forEach((item: string) => {
-        const decoded = decodeHtml(item);
-        const lines = doc.splitTextToSize(`• ${decoded}`, colW - 6);
-        doc.text(lines, margin + 4, incY);
-        incY += (lines.length * 4.5);
+
+      let itemY = cursorY + 14;
+      incItems.forEach((item: string) => {
+        const lines = doc.splitTextToSize(item, colW - 10);
+
+        // Draw bullet
+        doc.setFillColor(22, 163, 74);
+        doc.circle(margin + 4, itemY - 1, 1, "F");
+
+        // Draw text with indent
+        doc.text(lines, margin + 8, itemY);
+
+        itemY += (lines.length * 4.5) + 3;
       });
 
-      // Exclusions Box (Right)
+      // Draw Exclusions Box (Right)
       const excX = margin + colW + 8;
       doc.setFillColor(254, 242, 242); // Light Red
       doc.setDrawColor(220, 38, 38); // Red Border
       doc.roundedRect(excX, cursorY, colW, maxBoxH, 3, 3, "FD");
 
+      // Exclusions Title
       doc.setFontSize(10);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(220, 38, 38);
-      doc.text("Exclusions", excX + 4, cursorY + 6);
+      doc.text("Exclusions", excX + 4, cursorY + 7);
 
+      // Exclusions Items
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(50);
-      let excY = cursorY + 12;
-      (pkg.exclusions || []).forEach((item: string) => {
-        const decoded = decodeHtml(item);
-        const lines = doc.splitTextToSize(`• ${decoded}`, colW - 6);
-        doc.text(lines, excX + 4, excY);
-        excY += (lines.length * 4.5);
+
+      itemY = cursorY + 14;
+      excItems.forEach((item: string) => {
+        const lines = doc.splitTextToSize(item, colW - 10);
+
+        // Draw bullet
+        doc.setFillColor(220, 38, 38);
+        doc.circle(excX + 4, itemY - 1, 1, "F");
+
+        // Draw text with indent
+        doc.text(lines, excX + 8, itemY);
+
+        itemY += (lines.length * 4.5) + 3;
       });
 
       cursorY += maxBoxH + 10;
