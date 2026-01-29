@@ -11,10 +11,16 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "MyPerfectTrips | Manchester's Premier Travel Consultancy",
-  description: "We are a dedicated travel team in Manchester. We handle the stress of visas, flights, and business travel so you don't have to.",
+  description:
+    "Looking for MyPerfectTrip? We are MyPerfectTrips, the premier travel agency for Dubai and Turkey packages.",
+  keywords: ["MyPerfectTrip", "My Perfect Trip"],
+  alternates: {
+    canonical: "https://myperfecttrips.com",
+  },
   openGraph: {
     title: "MyPerfectTrips | Manchester's Premier Travel Consultancy",
-    description: "We are a dedicated travel team in Manchester. We handle the stress of visas, flights, and business travel so you don't have to.",
+    description:
+      "We are a dedicated travel team in Manchester. We handle the stress of visas, flights, and business travel so you don't have to.",
   },
 };
 
