@@ -18,6 +18,15 @@ const nextConfig = {
     // This allows the PDF generator to read the image data
     dangerouslyAllowSVG: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/chat',
+        destination: 'https://wa.me/447895910015',
+        permanent: true,
+      },
+    ]
+  },
 };
 
 export default nextConfig;
