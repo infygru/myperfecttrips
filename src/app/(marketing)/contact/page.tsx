@@ -12,7 +12,7 @@ export default async function ContactPage() {
 
   const contactNumber = settings?.phone || "+44 161 768 0990";
   const contactEmail = settings?.email || "hello@myperfecttrips.co.uk";
-  const contactAddress = settings?.address || "Altrincham, Manchester, UK";
+  const contactAddress = "4 Woodfield Rd, Altrincham WA14 4EU, United Kingdom";
 
   return (
     <div className="min-h-screen bg-white">
@@ -35,7 +35,7 @@ export default async function ContactPage() {
             <div className="space-y-12">
               <div className="max-w-md">
                 <p className="text-slate-500 leading-relaxed text-lg">
-                  Whether you have a specific destination in mind or need inspiration, our experts are here to craft your perfect itinerary.
+                  Travel Agency based in Altrincham, serving Manchester and the UK.
                 </p>
               </div>
 

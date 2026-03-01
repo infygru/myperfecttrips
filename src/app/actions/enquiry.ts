@@ -199,3 +199,4 @@ export async function submitFlightEnquiry(prevState: any, formData: FormData) {
         return { success: false, message: "Failed to submit enquiry. Please try again." };
     }
 }
+

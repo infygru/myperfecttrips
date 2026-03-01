@@ -10,7 +10,7 @@ export async function Footer() {
   let contactNumber = "+44 161 768 0990"; // Default
   let whatsappNumber = "+44 161 768 0990"; // Default
   let contactEmail = "hello@myperfecttrips.co.uk"; // Default
-  let contactAddress = "Altrincham, Manchester, UK"; // Default
+  let contactAddress = "4 Woodfield Rd, Altrincham WA14 4EU, United Kingdom"; // Default
 
   try {
     // 1. Fetch from 'Global_Settings' (Matching your specific name)
@@ -29,7 +29,7 @@ export async function Footer() {
     // 3. Extract Contact Details
     if (settings?.phone) contactNumber = settings.phone;
     if (settings?.email) contactEmail = settings.email;
-    if (settings?.address) contactAddress = settings.address;
+    contactAddress = "4 Woodfield Rd, Altrincham WA14 4EU, United Kingdom"; // Force override CMS
     if (settings?.whatsapp) whatsappNumber = settings.whatsapp;
 
   } catch (error) {
@@ -76,7 +76,7 @@ export async function Footer() {
             </div>
 
             <p className="text-slate-400 text-sm leading-relaxed pr-4">
-              Your trusted travel partner in Manchester. We specialize in bespoke holidays, visa assistance, and corporate travel solutions.
+              Travel Agency based in Altrincham, serving Manchester and the UK.
             </p>
           </div>
 

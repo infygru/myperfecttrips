@@ -22,6 +22,7 @@ export default function NavbarClient({ logoUrl, contactNumber, whatsappNumber, c
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Packages", href: "/packages" },
+
     {
       name: "Services",
       href: "/services",
