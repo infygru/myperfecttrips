@@ -8,6 +8,8 @@ services:
       POSTGRES_USER: "directus"
       POSTGRES_PASSWORD: "directus_password"
       POSTGRES_DB: "directus"
+    # Optimize PostgreSQL for lower memory footprint on VPS
+    command: [ "postgres", "-c", "shared_buffers=128MB", "-c", "max_connections=100", "-c", "work_mem=4MB" ]
 
   directus:
     image: directus/directus:latest
@@ -31,4 +33,10 @@ services:
       DB_PASSWORD: "directus_password"
       WEBSOCKETS_ENABLED: "true"
       CORS_ENABLED: "true"
-      CORS_ORIGIN: "http://localhost:3000"
+      CORS_ORIGIN: "http://localhost:3000,https://igholidays.com"
+      # Optimize Directus Node.js process memory
+      NODE_OPTIONS: "--max-old-space-size=1024"
+      TELEMETRY: "false"
+      # Optionally enable caching to improve performance
+      CACHE_ENABLED: "true"
+      CACHE_STORE: "memory"
