@@ -1,0 +1,1 @@
+const { execSync } = require('child_process'); console.log('Starting...'); execSync('npx --yes create-directus-project@latest backend -d sqlite3 -f data.db -u admin@igholidays.com -p Admin123! --client sqlite3 --port 8055 --host 127.0.0.1', {stdio: 'inherit'});

@@ -1,0 +1,45 @@
+{
+  "site_settings": [
+    "id",
+    "logo",
+    "favicon",
+    "site_name",
+    "tagline",
+    "contact_phone",
+    "contact_email",
+    "office_address",
+    "whatsapp_number",
+    "facebook_url",
+    "instagram_url",
+    "linkedin_url",
+    "youtube_url",
+    "hero_image",
+    "hero_video"
+  ],
+  "packages": [
+    "id",
+    "title",
+    "slug",
+    "category",
+    "image",
+    "price",
+    "itinerary",
+    "duration_days",
+    "duration_nights",
+    "destinations",
+    "inclusions",
+    "exclusions",
+    "gallery"
+  ],
+  "blog_posts": [
+    "id",
+    "title",
+    "slug",
+    "featured_image",
+    "excerpt",
+    "content",
+    "author",
+    "published_date",
+    "status"
+  ]
+}
