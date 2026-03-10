@@ -33,12 +33,16 @@ export default async function Home() {
 
   try {
     settings = await directus.request(readSingleton("site_settings" as any));
-  } catch { }
+  } catch (err) {
+    console.error("Failed to fetch site_settings:", err);
+  }
   try {
     featuredPackages = (await directus.request(
       readItems("packages" as any, { limit: 6 })
     )) as any[];
-  } catch { }
+  } catch (err) {
+    console.error("Failed to fetch packages:", err);
+  }
   try {
     latestBlogs = (await directus.request(
       readItems("blog_posts" as any, {
@@ -46,7 +50,9 @@ export default async function Home() {
         sort: ["-id"] as any,
       })
     )) as any[];
-  } catch { }
+  } catch (err) {
+    console.error("Failed to fetch blog_posts:", err);
+  }
 
   const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
 
