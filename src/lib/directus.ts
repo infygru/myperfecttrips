@@ -19,7 +19,12 @@ export const directus = createDirectus<CustomDirectusSchema>(directusUrl).with(r
 
 export async function getSiteSettings() {
     try {
-        return await directus.request(readSingleton("site_settings" as any));
+        const result = await directus.request(readSingleton("site_settings" as any));
+        // Directus SDK `readSingleton` will return an array directly if the collection is not a true singleton
+        if (Array.isArray(result)) {
+            return result[0] || null;
+        }
+        return result;
     } catch {
         try {
             const arr = await directus.request(readItems("site_settings" as any, { limit: 1 }));
