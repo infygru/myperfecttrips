@@ -48,13 +48,14 @@ export default async function BlogPage() {
           SECTION 2: FEATURED POST
           ────────────────────────────────────────────────────────── */}
             {featured && (
-                <section className="container-inner -mt-12 relative z-20 mb-20">
+                <section className="container-inner -mt-12 relative z-20 mb-24">
                     <Link
                         href={`/blog/${featured.slug || featured.id}`}
-                        className="group flex flex-col overflow-hidden rounded-[2.5rem] bg-white border border-stone-200 shadow-xl shadow-stone-200/50 transition-all hover:-translate-y-2 hover:shadow-2xl md:flex-row"
+                        className="group flex flex-col overflow-hidden rounded-[2.5rem] bg-white shadow-2xl shadow-stone-200/50 transition-all hover:-translate-y-2 md:flex-row"
                     >
                         {/* Image Side */}
                         <div className="relative aspect-video w-full overflow-hidden bg-stone-100 md:w-3/5 lg:w-2/3">
+                            <div className="absolute inset-0 bg-stone-900/10 z-10 transition-opacity duration-500 group-hover:opacity-0" />
                             {featured.featured_image ? (
                                 <Image
                                     src={`${dUrl}/assets/${featured.featured_image}`}
@@ -72,9 +73,12 @@ export default async function BlogPage() {
                         </div>
 
                         {/* Content Side */}
-                        <div className="flex w-full flex-col justify-center p-8 sm:p-12 md:w-2/5 lg:w-1/3 min-h-[400px]">
-                            <div className="mb-6 flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-brand-700">
-                                <span className="bg-brand-50 px-3 py-1.5 rounded-full">Spotlight</span>
+                        <div className="flex w-full flex-col justify-center p-10 sm:p-14 md:w-2/5 lg:w-1/3 min-h-[450px] relative">
+                            {/* Decorative quotes graphic */}
+                            <div className="absolute top-10 right-10 opacity-5 text-brand-900 font-serif text-9xl leading-none hidden sm:block">"</div>
+
+                            <div className="mb-8 flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-brand-700">
+                                <span className="bg-brand-50 px-4 py-2 rounded-full border border-brand-100">Spotlight</span>
                                 <span className="text-stone-400">
                                     {featured.published_date
                                         ? new Date(featured.published_date).toLocaleDateString("en-IN", {
@@ -85,18 +89,18 @@ export default async function BlogPage() {
                                         : "Latest"}
                                 </span>
                             </div>
-                            <h2 className="mb-6 font-serif text-3xl font-medium leading-[1.2] text-brand-950 sm:text-4xl transition-colors group-hover:text-brand-700">
+                            <h2 className="mb-6 font-serif text-3xl font-medium leading-[1.2] text-brand-950 sm:text-4xl transition-colors group-hover:text-brand-700 relative z-10">
                                 {featured.title}
                             </h2>
                             {featured.excerpt && (
-                                <p className="mb-10 text-base leading-relaxed text-stone-600 line-clamp-3">
+                                <p className="mb-10 text-[15px] leading-relaxed text-stone-500 line-clamp-4 relative z-10">
                                     {featured.excerpt}
                                 </p>
                             )}
 
-                            <div className="mt-auto flex items-center gap-3 font-semibold text-brand-700">
+                            <div className="mt-auto flex items-center gap-3 font-semibold text-brand-700 uppercase tracking-wide text-sm">
                                 Read Article
-                                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                             </div>
                         </div>
                     </Link>
@@ -137,8 +141,8 @@ export default async function BlogPage() {
                                         )}
                                     </div>
 
-                                    <div className="flex flex-1 flex-col p-6 sm:p-8">
-                                        <div className="mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-wider text-stone-500">
+                                    <div className="flex flex-1 flex-col p-8 lg:p-10">
+                                        <div className="mb-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400">
                                             <span className="text-brand-700">
                                                 {post.author || "Editorial Team"}
                                             </span>

@@ -128,6 +128,68 @@ export default async function ServicesPage() {
                     </div>
                 </div>
             </section>
+
+            {/* ──────────────────────────────────────────────────────────
+          SECTION 4: SEO EXPERTISE ROUNDUP
+          ────────────────────────────────────────────────────────── */}
+            <section className="container-inner mt-24">
+                <div className="rounded-[3rem] bg-white p-10 sm:p-16 border border-stone-200 shadow-xl shadow-stone-200/50">
+                    <div className="max-w-4xl mx-auto text-center">
+                        <h2 className="mb-6 font-serif text-3xl font-medium text-brand-950 sm:text-4xl">
+                            Comprehensive Leisure & Corporate Solutions
+                        </h2>
+                        <div className="prose prose-lg prose-stone mx-auto text-stone-600 leading-relaxed font-light">
+                            <p>
+                                IGHolidays is renowned as the <strong>Best Travel Agency in Chennai</strong> offering a truly global footprint. Our meticulous travel planners specialize in <em>affordable international tour packages</em>, opulent <em>domestic honeymoon packages in India</em>, and extensive <em>B2B travel facilitation</em>.
+                            </p>
+                            <p>
+                                For our enterprise clients, our status as a leading <strong>Corporate Tour Organizer in India</strong> ensures that your overseas industrial visits, offsite corporate retreats, and massive exhibition tours are executed with military precision. By amalgamating local expertise with global partnerships, we consistently deliver world-class travel services matched with highly competitive pricing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ──────────────────────────────────────────────────────────
+          SECTION 5: SERVICES FAQ
+          ────────────────────────────────────────────────────────── */}
+            <section className="py-24 bg-stone-50">
+                <div className="container-inner">
+                    <div className="mb-14 text-center">
+                        <span className="section-label mx-auto">Service Inquiries</span>
+                        <h2 className="text-4xl text-brand-950 md:text-5xl font-medium tracking-tight">Services FAQ</h2>
+                        <p className="mt-4 text-stone-500 max-w-2xl mx-auto">
+                            Common questions about our customized travel and corporate solutions.
+                        </p>
+                    </div>
+
+                    <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+                        {[
+                            {
+                                q: "What destinations do you specialize in?",
+                                a: "We specialize in a massive array of global destinations. Domestically, we excel in Andaman, Kashmir, Kerala, and Goa. Internationally, our strongest sectors include the UAE (Dubai, Abu Dhabi), Maldives, Thailand, Bali, Singapore, Europe, and the UK."
+                            },
+                            {
+                                q: "Do you offer group discounts for college or corporate tours?",
+                                a: "Yes! Because we directly hold volume contracts with airlines and premium hotel chains, we secure highly subsidized B2B group rates for educational excursions and corporate MICE events, passing the savings directly to our clients."
+                            },
+                            {
+                                q: "Can IGHolidays assist with travel insurance?",
+                                a: "Absolutely. comprehensive Travel Insurance is a core component of our service offering. We ensure you are fully covered for medical emergencies, trip cancellations, and baggage delays before you step onto the aircraft."
+                            },
+                            {
+                                q: "How early should we start planning our international holiday?",
+                                a: "For international travel requiring visas (like Europe, US, or UK), we recommend initiating the planning process 3 to 4 months in advance. For visa-on-arrival or domestic trips, booking 1 to 2 months prior ensures the best flight and hotel rates."
+                            }
+                        ].map((faq, idx) => (
+                            <div key={idx} className="rounded-3xl bg-white p-8 border border-stone-200 shadow-sm hover:shadow-md transition-shadow">
+                                <h3 className="font-serif text-xl font-medium text-brand-950 mb-3">{faq.q}</h3>
+                                <p className="text-stone-600 leading-relaxed font-light text-sm">{faq.a}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
         </main>
     );
 }

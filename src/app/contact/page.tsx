@@ -1,6 +1,7 @@
 import { directus, getSiteSettings } from "@/lib/directus";
 import { unstable_noStore as noStore } from "next/cache";
 import { MapPin, Smartphone, Mail, Clock, Send, MessageCircle } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 
 export const dynamic = "force-dynamic";
 
@@ -105,67 +106,8 @@ export default async function ContactPage() {
                     </div>
 
                     {/* Contact Form */}
-                    <div className="rounded-[2rem] bg-white p-8 sm:p-12 shadow-xl shadow-stone-200/50 border border-stone-100 lg:col-span-2">
-                        <h2 className="mb-2 font-serif text-3xl font-medium text-brand-950">Send a Message</h2>
-                        <p className="mb-10 text-stone-500">Fill out the form below and one of our travel experts will be in touch shortly.</p>
-
-                        <form className="space-y-6">
-                            <div className="grid gap-6 sm:grid-cols-2">
-                                <div className="space-y-2 relative">
-                                    <label htmlFor="name" className="text-sm font-bold uppercase tracking-wider text-brand-950">Full Name</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        required
-                                        className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3.5 text-stone-900 transition-colors focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500"
-                                        placeholder="John Doe"
-                                    />
-                                </div>
-                                <div className="space-y-2 relative">
-                                    <label htmlFor="email" className="text-sm font-bold uppercase tracking-wider text-brand-950">Email Address</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        required
-                                        className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3.5 text-stone-900 transition-colors focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500"
-                                        placeholder="john@example.com"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2 relative">
-                                <label htmlFor="phone" className="text-sm font-bold uppercase tracking-wider text-brand-950">Phone Number</label>
-                                <input
-                                    type="tel"
-                                    id="phone"
-                                    name="phone"
-                                    required
-                                    className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3.5 text-stone-900 transition-colors focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500"
-                                    placeholder="+91 98765 43210"
-                                />
-                            </div>
-
-                            <div className="space-y-2 relative">
-                                <label htmlFor="message" className="text-sm font-bold uppercase tracking-wider text-brand-950">Your Requirements</label>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    required
-                                    rows={5}
-                                    className="w-full resize-y rounded-xl border border-stone-200 bg-stone-50 px-4 py-3.5 text-stone-900 transition-colors focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500"
-                                    placeholder="I'm interested in a 7-day trip to Bali for 2 people in December..."
-                                />
-                            </div>
-
-                            <button
-                                type="button"
-                                className="btn-primary w-full sm:w-auto h-14"
-                            >
-                                Send Message <Send className="ml-2 h-4 w-4" />
-                            </button>
-                        </form>
+                    <div className="lg:col-span-2">
+                        <ContactForm />
                     </div>
 
                 </div>

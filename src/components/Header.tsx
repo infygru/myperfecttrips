@@ -21,6 +21,7 @@ export default async function Header() {
         { name: "Packages", path: "/packages" },
         { name: "About", path: "/about" },
         { name: "Blog", path: "/blog" },
+        { name: "Contact", path: "/contact" },
     ];
 
     return (

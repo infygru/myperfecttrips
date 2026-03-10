@@ -100,71 +100,107 @@ export default async function PackageDetailPage(props: Props) {
             </section>
 
             {/* ──────────────────────────────────────────────────────────
-          SECTION 2: CONTENT & SIDEBAR
+          SECTION 2: STICKY PAGE NAVIGATION
           ────────────────────────────────────────────────────────── */}
-            <section className="container-inner -mt-8 relative z-20">
-                <div className="flex flex-col gap-10 lg:flex-row">
+            <div className="sticky top-[72px] z-40 w-full border-b border-stone-200 bg-white shadow-sm">
+                <div className="container-inner flex items-center overflow-x-auto hide-scrollbar">
+                    <div className="flex space-x-8 text-sm font-bold uppercase tracking-wider text-stone-500">
+                        <a href="#overview" className="border-b-2 border-transparent py-4 text-brand-950 transition-colors hover:text-brand-700 hover:border-brand-700">Trip Overview</a>
+                        <a href="#itinerary" className="border-b-2 border-transparent py-4 transition-colors hover:text-brand-700 hover:border-brand-700">Daily Itinerary</a>
+                        <a href="#details" className="border-b-2 border-transparent py-4 transition-colors hover:text-brand-700 hover:border-brand-700">Package Details</a>
+                        <a href="#customise" className="border-b-2 border-transparent py-4 transition-colors hover:text-brand-700 hover:border-brand-700">Customise</a>
+                    </div>
+                </div>
+            </div>
+
+            {/* ──────────────────────────────────────────────────────────
+          SECTION 3: CONTENT & SIDEBAR
+          ────────────────────────────────────────────────────────── */}
+            <section className="container-inner mt-12 relative z-20">
+                <div className="flex flex-col gap-12 lg:flex-row">
 
                     {/* Main Content (Left) */}
-                    <div className="flex-1 space-y-12 rounded-[2.5rem] bg-white p-8 sm:p-12 shadow-sm border border-stone-200">
+                    <div className="flex-1 space-y-16">
+
+                        {/* Trip Overview */}
+                        <div id="overview" className="scroll-mt-32 rounded-3xl bg-white p-8 sm:p-12 shadow-sm border border-stone-100">
+                            <h2 className="mb-6 font-serif text-3xl font-medium text-brand-950">Trip Overview</h2>
+                            {pkg.description ? (
+                                <div className="prose prose-lg prose-stone max-w-none text-stone-600 font-light leading-relaxed" dangerouslySetInnerHTML={{ __html: pkg.description }} />
+                            ) : (
+                                <p className="text-lg text-stone-600 font-light leading-relaxed">
+                                    Embark on a spectacular {pkg.duration_days}-day journey through {pkg.destinations?.join(", ") || "some of the world's finest destinations"}. This premium {pkg.category} package has been curated to offer an unforgettable blend of culture, relaxation, and luxury. Let IGHolidays handle every detail of your {pkg.title}.
+                                </p>
+                            )}
+                        </div>
 
                         {/* Itinerary */}
-                        <div>
+                        <div id="itinerary" className="scroll-mt-32 rounded-3xl bg-white p-8 sm:p-12 shadow-sm border border-stone-100">
                             <div className="mb-8 flex items-center gap-4">
-                                <h2 className="font-serif text-3xl font-medium text-brand-950">Detailed Itinerary</h2>
-                                <div className="h-px flex-1 bg-stone-100" />
+                                <h2 className="font-serif text-3xl font-medium text-brand-950">Daily Itinerary</h2>
+                                <div className="h-px flex-1 bg-brand-100" />
                             </div>
 
                             <div
-                                className="prose prose-lg prose-stone max-w-none hover:prose-a:text-brand-700 prose-headings:font-serif prose-headings:font-medium prose-p:leading-relaxed prose-li:marker:text-gold-500"
+                                className="prose prose-lg prose-stone max-w-none hover:prose-a:text-brand-700 prose-headings:font-serif prose-headings:font-medium prose-headings:text-2xl prose-headings:text-brand-900 prose-p:leading-relaxed prose-li:marker:text-gold-500"
                                 dangerouslySetInnerHTML={{
                                     __html: pkg.itinerary || "<p class='italic text-stone-500'>Please contact us for the day-by-day breakdown of this premium package.</p>"
                                 }}
                             />
                         </div>
 
-                        {/* Inclusions & Exclusions */}
-                        {(pkg.inclusions || pkg.exclusions) && (
-                            <div>
-                                <div className="mb-8 flex items-center gap-4">
-                                    <h2 className="font-serif text-3xl font-medium text-brand-950">What&apos;s Included</h2>
-                                    <div className="h-px flex-1 bg-stone-100" />
+                        {/* Package Details (Inclusions/Exclusions) */}
+                        <div id="details" className="scroll-mt-32">
+                            <h2 className="mb-6 font-serif text-3xl font-medium text-brand-950">Package Details</h2>
+                            <div className="grid gap-6 md:grid-cols-2">
+                                <div className="rounded-3xl bg-brand-50 p-8 border border-brand-100 h-full">
+                                    <h3 className="mb-6 flex items-center gap-3 font-serif text-2xl font-medium text-brand-900 border-b border-brand-200/50 pb-4">
+                                        <CheckCircle2 className="h-6 w-6 text-brand-600" /> What's Included
+                                    </h3>
+                                    {pkg.inclusions ? (
+                                        <div
+                                            className="prose prose-sm prose-stone max-w-none prose-ul:pl-0 prose-li:flex prose-li:items-start prose-li:gap-3 prose-li:before:content-['✓'] prose-li:before:text-brand-600 prose-li:before:font-bold prose-li:before:-ml-4 prose-ul:list-image-none"
+                                            dangerouslySetInnerHTML={{ __html: pkg.inclusions }}
+                                        />
+                                    ) : (
+                                        <ul className="space-y-4 text-stone-700">
+                                            <li className="flex gap-3"><CheckCircle2 className="h-5 w-5 text-brand-600 shrink-0" /> Premium Acclamations</li>
+                                            <li className="flex gap-3"><CheckCircle2 className="h-5 w-5 text-brand-600 shrink-0" /> Daily Breakfast & Select Meals</li>
+                                            <li className="flex gap-3"><CheckCircle2 className="h-5 w-5 text-brand-600 shrink-0" /> Airport Transfers</li>
+                                            <li className="flex gap-3"><CheckCircle2 className="h-5 w-5 text-brand-600 shrink-0" /> Local Guided Tours</li>
+                                        </ul>
+                                    )}
                                 </div>
 
-                                <div className="grid gap-6 md:grid-cols-2">
-                                    {pkg.inclusions && (
-                                        <div className="rounded-3xl bg-brand-50 p-8 border border-brand-100">
-                                            <h3 className="mb-4 flex items-center gap-2 font-serif text-xl font-medium text-brand-900">
-                                                <CheckCircle2 className="h-5 w-5 text-brand-600" /> Inclusions
-                                            </h3>
-                                            <div
-                                                className="prose prose-sm prose-stone max-w-none prose-ul:pl-0 prose-li:flex prose-li:items-start prose-li:gap-2 prose-li:before:content-['✓'] prose-li:before:text-brand-600"
-                                                dangerouslySetInnerHTML={{ __html: pkg.inclusions }}
-                                            />
-                                        </div>
-                                    )}
-                                    {pkg.exclusions && (
-                                        <div className="rounded-3xl bg-stone-50 p-8 border border-stone-200">
-                                            <h3 className="mb-4 flex items-center gap-2 font-serif text-xl font-medium text-stone-900">
-                                                <ArrowRight className="h-5 w-5 text-stone-400" /> Exclusions
-                                            </h3>
-                                            <div
-                                                className="prose prose-sm prose-stone max-w-none prose-ul:pl-0 prose-li:flex prose-li:items-start prose-li:gap-2 prose-li:before:content-['-'] prose-li:before:text-stone-400"
-                                                dangerouslySetInnerHTML={{ __html: pkg.exclusions }}
-                                            />
-                                        </div>
+                                <div className="rounded-3xl bg-stone-50 p-8 border border-stone-200 h-full">
+                                    <h3 className="mb-6 flex items-center gap-3 font-serif text-2xl font-medium text-stone-900 border-b border-stone-200 pb-4">
+                                        <ArrowRight className="h-6 w-6 text-stone-400" /> What's Excluded
+                                    </h3>
+                                    {pkg.exclusions ? (
+                                        <div
+                                            className="prose prose-sm prose-stone max-w-none prose-ul:pl-0 prose-li:flex prose-li:items-start prose-li:gap-3 prose-li:before:content-['-'] prose-li:before:text-stone-400 prose-li:before:font-bold prose-li:before:-ml-4 prose-ul:list-image-none"
+                                            dangerouslySetInnerHTML={{ __html: pkg.exclusions }}
+                                        />
+                                    ) : (
+                                        <ul className="space-y-4 text-stone-600">
+                                            <li className="flex gap-3"><ArrowRight className="h-5 w-5 text-stone-400 shrink-0" /> International Flights</li>
+                                            <li className="flex gap-3"><ArrowRight className="h-5 w-5 text-stone-400 shrink-0" /> Visa Fees</li>
+                                            <li className="flex gap-3"><ArrowRight className="h-5 w-5 text-stone-400 shrink-0" /> Personal Expenses</li>
+                                            <li className="flex gap-3"><ArrowRight className="h-5 w-5 text-stone-400 shrink-0" /> Travel Insurance</li>
+                                        </ul>
                                     )}
                                 </div>
                             </div>
-                        )}
+                        </div>
 
                         {/* Customise Lead Form */}
-                        <div className="rounded-3xl bg-brand-950 p-8 sm:p-12 text-white border border-brand-900 relative overflow-hidden">
-                            <div className="absolute top-0 right-0 -m-16 h-48 w-48 rounded-full bg-gold-500/10 blur-2xl" />
+                        <div id="customise" className="scroll-mt-32 rounded-[2.5rem] bg-brand-950 p-10 sm:p-14 text-white border border-brand-900 relative overflow-hidden shadow-2xl">
+                            <div className="absolute top-0 right-0 -m-16 h-64 w-64 rounded-full bg-gold-500/10 blur-[80px]" />
+                            <div className="absolute bottom-0 left-0 -m-16 h-64 w-64 rounded-full bg-emerald-500/20 blur-[80px]" />
                             <div className="relative z-10">
-                                <h3 className="mb-2 font-serif text-3xl font-medium">Tailor this Journey</h3>
-                                <p className="mb-10 text-stone-400 font-light max-w-lg">
-                                    Want to upgrade your stay, add private transfers, or extend your trip? Request a custom quote below.
+                                <h3 className="mb-4 font-serif text-4xl font-medium">Bespoke Adjustments</h3>
+                                <p className="mb-10 text-stone-300 font-light text-lg max-w-xl">
+                                    Every journey is unique. Connect with our experts to add premium transfers, extend your stay, or secure exclusive upgrades for the {pkg.title}.
                                 </p>
                                 <LeadForm prefilledPackage={pkg.title} />
                             </div>
@@ -173,46 +209,59 @@ export default async function PackageDetailPage(props: Props) {
                     </div>
 
                     {/* Sticky Sidebar (Right) */}
-                    <aside className="hidden w-full lg:block lg:w-[340px] shrink-0">
-                        <div className="sticky top-28 overflow-hidden rounded-[2.5rem] bg-white border border-stone-200 shadow-xl shadow-stone-200/50">
+                    <aside className="w-full lg:w-[380px] shrink-0">
+                        <div className="sticky top-[140px] overflow-hidden rounded-[2.5rem] bg-white border border-stone-200 shadow-2xl shadow-stone-200/50">
 
                             {/* Header */}
-                            <div className="bg-brand-950 p-8 text-center text-white relative">
+                            <div className="bg-brand-950 p-10 text-center text-white relative">
                                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-brand-800 to-transparent opacity-40" />
                                 <div className="relative z-10">
-                                    <p className="text-xs font-bold uppercase tracking-widest text-gold-400 mb-2">Pricing</p>
-                                    <div className="flex items-center justify-center gap-2 mb-1">
+                                    <p className="text-xs font-bold uppercase tracking-widest text-gold-400 mb-3">Starting Price</p>
+                                    <div className="flex flex-col items-center justify-center gap-1 mb-2">
                                         <span className="font-serif text-5xl font-medium tracking-tight">
                                             {pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}
                                         </span>
                                     </div>
-                                    {pkg.price && <p className="text-sm text-brand-100/70">per person</p>}
+                                    <p className="text-sm text-brand-100/70">{pkg.price ? "per person (taxes extra)" : "Contact for custom quote"}</p>
                                 </div>
                             </div>
 
                             {/* Body */}
                             <div className="p-8">
-                                <ul className="mb-8 space-y-4 text-sm font-medium text-stone-600">
-                                    {["Premium vetted accommodations", "Dedicated trip manager", "24/7 on-trip assistance", "Seamless transfers"].map((text) => (
-                                        <li key={text} className="flex items-start gap-3">
-                                            <CheckCircle2 className="h-5 w-5 shrink-0 text-brand-600" />
-                                            <span className="leading-snug">{text}</span>
-                                        </li>
-                                    ))}
+                                <ul className="mb-10 space-y-5 text-stone-600">
+                                    <li className="flex items-start gap-4">
+                                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-700 shrink-0">
+                                            <Clock className="h-4 w-4" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-bold uppercase tracking-wider text-brand-900 mb-0.5">Duration</p>
+                                            <p className="text-sm leading-snug">{pkg.duration_nights} Nights / {pkg.duration_days} Days</p>
+                                        </div>
+                                    </li>
+                                    <li className="flex items-start gap-4">
+                                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-700 shrink-0">
+                                            <MapPin className="h-4 w-4" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-bold uppercase tracking-wider text-brand-900 mb-0.5">Destinations</p>
+                                            <p className="text-sm leading-snug">{pkg.destinations?.join(", ") || "Multiple Cities"}</p>
+                                        </div>
+                                    </li>
                                 </ul>
 
-                                <a href="tel:+919876543210" className="btn-gold w-full py-4 text-base mb-4">
-                                    <Smartphone className="h-5 w-5 mr-1" /> Speak to an Expert
+                                <a href="tel:+919876543210" className="btn-gold w-full py-4 text-base mb-4 shadow-lg shadow-gold-500/20">
+                                    <Smartphone className="h-5 w-5 mr-1" /> Call to Book
                                 </a>
-                                <Link href="#contact-form" className="btn-outline w-full py-4 text-base">
-                                    Request Callback
-                                </Link>
+                                <a href="#customise" className="btn-outline w-full py-4 text-base">
+                                    Request a Callback
+                                </a>
                             </div>
 
                             {/* Trust Footer */}
-                            <div className="bg-stone-50 border-t border-stone-100 p-6 flex items-center justify-center gap-3">
-                                <Shield className="h-5 w-5 text-brand-700" />
+                            <div className="bg-stone-50 border-t border-stone-100 p-6 flex flex-col items-center justify-center gap-2 text-center">
+                                <Shield className="h-6 w-6 text-brand-700" />
                                 <span className="text-xs font-bold uppercase tracking-widest text-brand-900">Secure & Protected</span>
+                                <span className="text-xs text-stone-500 max-w-[250px]">Book with confidence. We are a verified premium travel agency.</span>
                             </div>
 
                         </div>

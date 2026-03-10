@@ -49,3 +49,26 @@ export async function submitHolidayEnquiry(formData: FormData) {
         return { success: false, error: error.message || "Failed to submit holiday search." };
     }
 }
+
+export async function submitContactEnquiry(formData: FormData) {
+    try {
+        const rawData = {
+            name: formData.get("name") as string,
+            email: formData.get("email") as string,
+            phone: formData.get("phone") as string,
+            message: formData.get("message") as string,
+            status: "Pending"
+        };
+
+        if (!rawData.name || !rawData.email || !rawData.message) {
+            return { success: false, error: "Missing required contact details." };
+        }
+
+        await directus.request(createItem("enquiries" as any, rawData));
+
+        return { success: true };
+    } catch (error: any) {
+        console.error("Contact Sub Error:", error);
+        return { success: false, error: error.message || "Failed to submit contact message." };
+    }
+}

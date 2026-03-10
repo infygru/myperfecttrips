@@ -36,13 +36,33 @@ export default async function Home() {
   } catch (err) {
     console.error("Failed to fetch site_settings:", err);
   }
+  let allPackages: any[] = [];
   try {
-    featuredPackages = (await directus.request(
-      readItems("packages" as any, { limit: 6 })
+    allPackages = (await directus.request(
+      readItems("packages" as any, { limit: 100 })
     )) as any[];
   } catch (err) {
     console.error("Failed to fetch packages:", err);
   }
+
+  featuredPackages = allPackages.slice(0, 6);
+
+  // Compute Themes dynamically based on unique categories
+  const themePackages: any[] = [];
+  const seenCategories = new Set<string>();
+  for (const pkg of allPackages) {
+    if (pkg.category && !seenCategories.has(pkg.category) && pkg.image) {
+      seenCategories.add(pkg.category);
+      themePackages.push(pkg);
+      if (themePackages.length === 4) break;
+    }
+  }
+
+  // Compute Budget Friendly by sorting cheapest
+  const budgetPackages = [...allPackages]
+    .filter(p => p.price > 0 && p.image)
+    .sort((a, b) => Number(a.price) - Number(b.price))
+    .slice(0, 3);
   try {
     latestBlogs = (await directus.request(
       readItems("blog_posts" as any, {
@@ -311,58 +331,53 @@ export default async function Home() {
       {/* ──────────────────────────────────────────────────────────
           SECTION 3.5: THEME BASED PACKAGES
           ────────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-stone-50">
-        <div className="container-inner">
-          <div className="mb-14 text-center">
-            <span className="section-label mx-auto">Travel Styles</span>
-            <h2 className="text-4xl text-brand-950 md:text-5xl font-medium tracking-tight">Theme Based Holidays</h2>
+      {themePackages.length > 0 && (
+        <section className="py-16 lg:py-24 bg-stone-50">
+          <div className="container-inner">
+            <div className="mb-14 text-center">
+              <span className="section-label mx-auto">Travel Styles</span>
+              <h2 className="text-4xl text-brand-950 md:text-5xl font-medium tracking-tight">Theme Based Holidays</h2>
+            </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+              {themePackages.map((pkg, idx) => (
+                <Link href={`/packages?category=${pkg.category}`} key={pkg.id || idx} className="group relative aspect-square sm:aspect-[4/5] lg:aspect-square overflow-hidden rounded-3xl bg-stone-900 shadow-sm transition-transform hover:-translate-y-1">
+                  <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.category} fill className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-100" unoptimized />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent p-6 text-center">
+                    <h3 className="font-serif text-2xl font-medium text-white">{pkg.category}</h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-            {[
-              { title: "Honeymoon", img: "https://images.unsplash.com/photo-1543731068-7e0f5beff43a?q=80&w=2000&auto=format&fit=crop" },
-              { title: "Wildlife Safari", img: "https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=2000&auto=format&fit=crop" },
-              { title: "Family Escapes", img: "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=2000&auto=format&fit=crop" },
-              { title: "Adventure", img: "https://images.unsplash.com/photo-1522199670076-2852f80289c3?q=80&w=2000&auto=format&fit=crop" },
-            ].map((theme, idx) => (
-              <Link href={`/packages?theme=${theme.title.toLowerCase()}`} key={idx} className="group relative aspect-square sm:aspect-[4/5] lg:aspect-square overflow-hidden rounded-3xl bg-stone-900 shadow-sm transition-transform hover:-translate-y-1">
-                <Image src={theme.img} alt={theme.title} fill className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-100" unoptimized />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent p-6 text-center">
-                  <h3 className="font-serif text-2xl font-medium text-white">{theme.title}</h3>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ──────────────────────────────────────────────────────────
           SECTION 3.6: BUDGET FRIENDLY DESTINATIONS
           ────────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-20 bg-white">
-        <div className="container-inner">
-          <div className="mb-14 text-center">
-            <span className="section-label mx-auto">Affordable Getaways</span>
-            <h2 className="text-4xl text-stone-900 md:text-5xl tracking-tight">Budget Friendly Destinations</h2>
+      {budgetPackages.length > 0 && (
+        <section className="py-16 lg:py-20 bg-white">
+          <div className="container-inner">
+            <div className="mb-14 text-center">
+              <span className="section-label mx-auto">Affordable Getaways</span>
+              <h2 className="text-4xl text-stone-900 md:text-5xl tracking-tight">Budget Friendly Packages</h2>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {budgetPackages.map((pkg, idx) => (
+                <Link href={`/packages/${pkg.slug || pkg.id}`} key={pkg.id || idx} className="group relative h-64 overflow-hidden rounded-[2rem]">
+                  <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized />
+                  <div className="absolute inset-0 bg-stone-900/50 transition-colors duration-500 group-hover:bg-brand-950/80" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                    <h3 className="mb-2 font-serif text-2xl font-medium text-white shadow-sm transition-transform duration-500 group-hover:-translate-y-1">{pkg.title}</h3>
+                    <div className="w-12 h-px bg-gold-400 mb-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                    <p className="text-sm font-bold uppercase tracking-widest text-gold-300 opacity-90">From ₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { price: "Under ₹15,000", dest: "Kerala, Goa, Ooty", img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=2000&auto=format&fit=crop" },
-              { price: "Under ₹30,000", dest: "Andaman, Thailand, Dubai", img: "https://images.unsplash.com/photo-1512453979436-5a50ce8c6b12?q=80&w=2000&auto=format&fit=crop" },
-              { price: "Under ₹50,000", dest: "Bali, Singapore, Europe", img: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=2000&auto=format&fit=crop" },
-            ].map((budget, idx) => (
-              <Link href="/packages" key={idx} className="group relative h-64 overflow-hidden rounded-[2rem]">
-                <Image src={budget.img} alt={budget.price} fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized />
-                <div className="absolute inset-0 bg-stone-900/40 transition-colors duration-500 group-hover:bg-brand-950/70" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                  <h3 className="mb-2 font-serif text-3xl font-medium text-white shadow-sm transition-transform duration-500 group-hover:-translate-y-1">{budget.price}</h3>
-                  <div className="w-12 h-px bg-gold-400 mb-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                  <p className="text-sm font-bold uppercase tracking-widest text-gold-300 opacity-90">{budget.dest}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ──────────────────────────────────────────────────────────
           SECTION 3.7: TESTIMONIALS
