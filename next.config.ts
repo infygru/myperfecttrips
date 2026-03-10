@@ -11,15 +11,6 @@ const nextConfig: any = {
       { protocol: "https", hostname: "**" },
     ],
   },
-  // Optimize for VPS/Docker deployment (Coolify)
-  output: "standalone",
-  // Disable build-time checks to save significant memory during Coolify builds
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
 };
 
 export default nextConfig;
