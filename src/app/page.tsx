@@ -1,6 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache";
-import { directus } from "@/lib/directus";
-import { readSingleton, readItems } from "@directus/sdk";
+import { directus, getSiteSettings } from "@/lib/directus";
+import { readItems } from "@directus/sdk";
 import HeroSearchTabs from "@/components/HeroSearchTabs";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,7 +32,7 @@ export default async function Home() {
   let latestBlogs: any[] = [];
 
   try {
-    settings = await directus.request(readSingleton("site_settings" as any));
+    settings = await getSiteSettings();
   } catch (err) {
     console.error("Failed to fetch site_settings:", err);
   }

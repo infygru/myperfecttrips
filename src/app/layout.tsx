@@ -3,8 +3,7 @@ import { Plus_Jakarta_Sans, Syne } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { directus } from "@/lib/directus";
-import { readSingleton } from "@directus/sdk";
+import { directus, getSiteSettings } from "@/lib/directus";
 import type { DirectusSettings } from "@/types/settings";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -21,9 +20,7 @@ const syne = Syne({
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const settings = (await directus.request(
-      readSingleton("site_settings" as any)
-    )) as DirectusSettings;
+    const settings = (await getSiteSettings()) as DirectusSettings;
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const faviconUrl = settings?.public_favicon

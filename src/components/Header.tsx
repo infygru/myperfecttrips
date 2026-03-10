@@ -1,15 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { unstable_noStore as noStore } from "next/cache";
-import { directus } from "@/lib/directus";
-import { readSingleton } from "@directus/sdk";
+import { directus, getSiteSettings } from "@/lib/directus";
 import { Smartphone, Compass, Menu } from "lucide-react";
 
 export default async function Header() {
     noStore();
     let s: any = null;
     try {
-        s = await directus.request(readSingleton("site_settings" as any));
+        s = await getSiteSettings();
     } catch { }
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";

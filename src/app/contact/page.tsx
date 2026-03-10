@@ -1,5 +1,4 @@
-import { directus } from "@/lib/directus";
-import { readSingleton } from "@directus/sdk";
+import { directus, getSiteSettings } from "@/lib/directus";
 import { unstable_noStore as noStore } from "next/cache";
 import { MapPin, Smartphone, Mail, Clock, Send, MessageCircle } from "lucide-react";
 
@@ -9,7 +8,7 @@ export default async function ContactPage() {
     noStore();
     let s: any = null;
     try {
-        s = await directus.request(readSingleton("site_settings" as any));
+        s = await getSiteSettings();
     } catch { }
 
     const email = s?.contact_email || "hello@igholidays.com";
