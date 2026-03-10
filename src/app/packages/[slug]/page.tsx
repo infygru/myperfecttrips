@@ -103,12 +103,12 @@ export default async function PackageDetailPage(props: Props) {
           SECTION 2: STICKY PAGE NAVIGATION
           ────────────────────────────────────────────────────────── */}
             <div className="sticky top-[72px] z-40 w-full border-b border-stone-200 bg-white shadow-sm">
-                <div className="container-inner flex items-center overflow-x-auto hide-scrollbar">
-                    <div className="flex space-x-8 text-sm font-bold uppercase tracking-wider text-stone-500">
-                        <a href="#overview" className="border-b-2 border-transparent py-4 text-brand-950 transition-colors hover:text-brand-700 hover:border-brand-700">Trip Overview</a>
-                        <a href="#itinerary" className="border-b-2 border-transparent py-4 transition-colors hover:text-brand-700 hover:border-brand-700">Daily Itinerary</a>
-                        <a href="#details" className="border-b-2 border-transparent py-4 transition-colors hover:text-brand-700 hover:border-brand-700">Package Details</a>
-                        <a href="#customise" className="border-b-2 border-transparent py-4 transition-colors hover:text-brand-700 hover:border-brand-700">Customise</a>
+                <div className="container-inner flex items-center overflow-x-auto scrollbar-hide py-3 md:py-0">
+                    <div className="flex gap-8 text-sm font-bold uppercase tracking-wider text-stone-500 whitespace-nowrap px-2">
+                        <a href="#overview" className="border-b-2 border-transparent md:py-4 text-brand-950 transition-colors hover:text-brand-700 hover:border-brand-700">Trip Overview</a>
+                        <a href="#itinerary" className="border-b-2 border-transparent md:py-4 transition-colors hover:text-brand-700 hover:border-brand-700">Daily Itinerary</a>
+                        <a href="#details" className="border-b-2 border-transparent md:py-4 transition-colors hover:text-brand-700 hover:border-brand-700">Package Details</a>
+                        <a href="#customise" className="border-b-2 border-transparent md:py-4 transition-colors hover:text-brand-700 hover:border-brand-700">Customise</a>
                     </div>
                 </div>
             </div>
@@ -116,11 +116,11 @@ export default async function PackageDetailPage(props: Props) {
             {/* ──────────────────────────────────────────────────────────
           SECTION 3: CONTENT & SIDEBAR
           ────────────────────────────────────────────────────────── */}
-            <section className="container-inner mt-12 relative z-20">
-                <div className="flex flex-col gap-12 lg:flex-row">
+            <section className="container-inner mt-12 mb-24 relative z-20">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
 
                     {/* Main Content (Left) */}
-                    <div className="flex-1 space-y-16">
+                    <div className="lg:col-span-8 w-full min-w-0 space-y-16">
 
                         {/* Trip Overview */}
                         <div id="overview" className="scroll-mt-32 rounded-3xl bg-white p-8 sm:p-12 shadow-sm border border-stone-100">
@@ -209,8 +209,8 @@ export default async function PackageDetailPage(props: Props) {
                     </div>
 
                     {/* Sticky Sidebar (Right) */}
-                    <aside className="w-full lg:w-[380px] shrink-0">
-                        <div className="sticky top-[140px] overflow-hidden rounded-[2.5rem] bg-white border border-stone-200 shadow-2xl shadow-stone-200/50">
+                    <div className="lg:col-span-4 w-full relative lg:sticky lg:top-[120px] self-start">
+                        <aside className="overflow-hidden rounded-[2.5rem] bg-white border border-stone-200 shadow-xl shadow-stone-200/50">
 
                             {/* Header */}
                             <div className="bg-brand-950 p-10 text-center text-white relative">
@@ -257,16 +257,14 @@ export default async function PackageDetailPage(props: Props) {
                                 </a>
                             </div>
 
-                            {/* Trust Footer */}
-                            <div className="bg-stone-50 border-t border-stone-100 p-6 flex flex-col items-center justify-center gap-2 text-center">
-                                <Shield className="h-6 w-6 text-brand-700" />
-                                <span className="text-xs font-bold uppercase tracking-widest text-brand-900">Secure & Protected</span>
-                                <span className="text-xs text-stone-500 max-w-[250px]">Book with confidence. We are a verified premium travel agency.</span>
+                            {/* Booking Support */}
+                            <div className="bg-stone-50 p-8 text-center text-sm text-stone-600">
+                                <Shield className="mx-auto mb-3 h-6 w-6 text-brand-400" />
+                                <strong className="block text-brand-950">Secure & Protected</strong>
+                                Book with confidence. We are a verified premium travel agency.
                             </div>
-
-                        </div>
-                    </aside>
-
+                        </aside>
+                    </div>
                 </div>
             </section>
         </main>

@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Instagram, Linkedin, MapPin, Mail, Smartphone, Compass } from "lucide-react";
+import { Facebook, Instagram, Linkedin, MapPin, Mail, Compass } from "lucide-react";
 import { unstable_noStore as noStore } from "next/cache";
 import { directus, getSiteSettings } from "@/lib/directus";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 export default async function Footer() {
     noStore();
@@ -88,8 +89,8 @@ export default async function Footer() {
                         {/* Contact details */}
                         <ul className="space-y-4 text-sm font-medium text-stone-300">
                             <li>
-                                <a href={`tel:${phone}`} className="flex items-center gap-3 transition-colors hover:text-gold-300">
-                                    <Smartphone className="h-4 w-4 text-brand-500" />
+                                <a href={`https://wa.me/${phone.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 transition-colors hover:text-[#25D366]">
+                                    <WhatsAppIcon className="h-4 w-4 text-[#25D366]" />
                                     {phone}
                                 </a>
                             </li>

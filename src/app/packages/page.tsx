@@ -30,7 +30,7 @@ export default async function PackagesPage(props: { searchParams: Promise<{ cate
         <main className="min-h-screen bg-stone-50 pb-24">
             {/* Hero */}
             <section className="relative px-4 pt-8 sm:px-6 lg:px-8">
-                <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center overflow-hidden rounded-[2.5rem] bg-brand-950 px-6 py-24 text-center sm:py-32 shadow-xl relative">
+                <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center overflow-hidden rounded-[2.5rem] bg-brand-950 px-6 py-16 text-center sm:py-20 shadow-xl relative">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-brand-800 via-brand-950 to-brand-950 opacity-80" />
                     <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-brand-950 to-transparent" />
                     <div className="relative z-10 max-w-3xl">
@@ -65,8 +65,8 @@ export default async function PackagesPage(props: { searchParams: Promise<{ cate
                                             key={cat}
                                             href={cat === "All" ? "/packages" : `/packages?category=${cat}`}
                                             className={`rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${isActive
-                                                    ? "bg-brand-50 text-brand-800 font-semibold"
-                                                    : "text-stone-600 hover:bg-stone-50 hover:text-brand-700"
+                                                ? "bg-brand-50 text-brand-800 font-semibold"
+                                                : "text-stone-600 hover:bg-stone-50 hover:text-brand-700"
                                                 }`}
                                         >
                                             {cat}

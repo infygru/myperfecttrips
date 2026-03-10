@@ -1,7 +1,8 @@
 import { directus, getSiteSettings } from "@/lib/directus";
 import { unstable_noStore as noStore } from "next/cache";
-import { MapPin, Smartphone, Mail, Clock, Send, MessageCircle } from "lucide-react";
+import { MapPin, Mail } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 export const dynamic = "force-dynamic";
 
@@ -51,11 +52,11 @@ export default async function ContactPage() {
 
                             <ul className="space-y-8 text-stone-600">
                                 <li className="flex gap-4">
-                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700">
-                                        <Smartphone className="h-5 w-5" />
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#25D366]/10 text-[#25D366]">
+                                        <WhatsAppIcon className="h-5 w-5" />
                                     </div>
                                     <div>
-                                        <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-brand-950">Call Us</h3>
+                                        <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-brand-950">WhatsApp Us</h3>
                                         <a href={`tel:${phone}`} className="text-lg font-medium hover:text-brand-700 transition-colors">{phone}</a>
                                         <p className="mt-1 text-sm text-stone-500">Available 9am to 6pm, Mon-Sat</p>
                                     </div>
@@ -99,7 +100,8 @@ export default async function ContactPage() {
                                     rel="noopener noreferrer"
                                     className="btn-gold w-full text-brand-950 flex items-center justify-center gap-2"
                                 >
-                                    <MessageCircle className="h-5 w-5" /> Chat on WhatsApp
+                                    <WhatsAppIcon className="h-5 w-5" />
+                                    Chat on WhatsApp
                                 </a>
                             </div>
                         </div>

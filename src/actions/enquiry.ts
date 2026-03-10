@@ -10,7 +10,11 @@ export async function submitFlightEnquiry(formData: FormData) {
             to_airport: formData.get("to_airport") as string,
             depart_date: formData.get("depart_date") as string,
             return_date: formData.get("return_date") as string,
-            pax: parseInt(formData.get("pax") as string) || 1,
+            adults: parseInt(formData.get("adults") as string) || 1,
+            children: parseInt(formData.get("children") as string) || 0,
+            pax: (parseInt(formData.get("adults") as string) || 1) + (parseInt(formData.get("children") as string) || 0),
+            name: formData.get("name") as string,
+            phone: formData.get("phone") as string,
             status: "new"
         };
 
@@ -33,7 +37,11 @@ export async function submitHolidayEnquiry(formData: FormData) {
         const rawData = {
             destination: formData.get("destination") as string,
             budget: formData.get("budget") as string,
-            pax: parseInt(formData.get("pax") as string) || 2,
+            adults: parseInt(formData.get("adults") as string) || 2,
+            children: parseInt(formData.get("children") as string) || 0,
+            pax: (parseInt(formData.get("adults") as string) || 2) + (parseInt(formData.get("children") as string) || 0),
+            name: formData.get("name") as string,
+            phone: formData.get("phone") as string,
             status: "new"
         };
 
