@@ -6,6 +6,7 @@ import Link from "next/link";
 import { MapPin, Clock, ChevronRight, Compass, SlidersHorizontal } from "lucide-react";
 import type { Metadata } from "next";
 import PackagesFilter from "@/components/PackagesFilter";
+import SortSelect from "@/components/SortSelect";
 
 export const metadata: Metadata = {
     title: "Holiday Packages | IG Holidays – Premium Travel Agency",
@@ -17,17 +18,21 @@ export const dynamic = "force-dynamic";
 export default async function PackagesPage(props: {
     searchParams: Promise<{
         category?: string;
+        theme?: string;
         destination?: string;
         duration?: string;
         sort?: string;
+        maxPrice?: string;
     }>;
 }) {
     noStore();
     const sp = await props.searchParams;
     const currentCategory = sp.category || "";
+    const currentTheme = sp.theme || "";
     const currentDest = sp.destination || "";
     const currentDuration = sp.duration || "";
     const currentSort = sp.sort || "default";
+    const currentMaxPrice = sp.maxPrice || "";
 
     let packages: any[] = [];
     try {
@@ -38,6 +43,21 @@ export default async function PackagesPage(props: {
 
     // Build filter options from data
     const categories = Array.from(new Set(packages.map((p) => p.category).filter(Boolean))).sort() as string[];
+    // We treat 'category' as 'Theme' conceptually, or extract themes separately if there's a dedicated 'theme'/'themes' field
+    // Directus has `themes` an array or `theme` as a comma separated string. Let's gracefully try both.
+    const themes = Array.from(
+        new Set(packages.flatMap((p) => {
+            if (Array.isArray(p.themes)) return p.themes;
+            if (typeof p.themes === 'string') return p.themes.split(',').map((t: string) => t.trim());
+            if (p.theme) return [p.theme];
+            return [];
+        }).filter(Boolean))
+    ).sort() as string[];
+    
+    // Calculate global max price for slider range
+    const prices = packages.map(p => Number(p.price)).filter(p => !isNaN(p) && p > 0);
+    const maxPriceRange = prices.length > 0 ? Math.ceil(Math.max(...prices) / 10000) * 10000 : 0;
+    
     const allDestinations = Array.from(
         new Set(packages.flatMap((p) => (Array.isArray(p.destinations) ? p.destinations : [])))
     ).sort() as string[];
@@ -45,7 +65,30 @@ export default async function PackagesPage(props: {
     // Filter
     let filtered = packages.filter((p) => {
         if (currentCategory && p.category !== currentCategory) return false;
+        
+        // Theme filter
+        if (currentTheme) {
+            const activeThemes = currentTheme.split(',');
+            const packageThemes = [];
+            if (Array.isArray(p.themes)) packageThemes.push(...p.themes);
+            else if (typeof p.themes === 'string') packageThemes.push(...p.themes.split(',').map((t: string) => t.trim()));
+            else if (p.theme) packageThemes.push(p.theme);
+            
+            // If the package has no themes but we are filtering by theme, exclude it.
+            // If it has themes, it must include AT LEAST ONE of the active filtered themes.
+            if (!packageThemes.length && activeThemes.length > 0) return false;
+            
+            const hasMatch = packageThemes.some((pt: string) => activeThemes.includes(pt));
+            if (!hasMatch) return false;
+        }
+
         if (currentDest && !(Array.isArray(p.destinations) && p.destinations.includes(currentDest))) return false;
+        
+        if (currentMaxPrice) {
+            const price = Number(p.price) || 0;
+            if (price > Number(currentMaxPrice)) return false;
+        }
+        
         if (currentDuration) {
             const nights = Number(p.duration_nights) || 0;
             if (currentDuration === "1-4" && (nights < 1 || nights > 4)) return false;
@@ -61,7 +104,7 @@ export default async function PackagesPage(props: {
     if (currentSort === "price-desc") filtered = [...filtered].sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
     if (currentSort === "duration-asc") filtered = [...filtered].sort((a, b) => (Number(a.duration_nights) || 0) - (Number(b.duration_nights) || 0));
 
-    const activeFilters = [currentCategory, currentDest, currentDuration].filter(Boolean).length;
+    const activeFilters = [currentCategory, currentTheme, currentDest, currentDuration, currentMaxPrice].filter(Boolean).length;
 
     return (
         <main className="min-h-screen bg-[#F8F7F4] pb-24">
@@ -83,7 +126,7 @@ export default async function PackagesPage(props: {
                                 <span className="inline-block h-px w-8 bg-gold-400" />
                                 Curated Collection
                             </p>
-                            <h1 className="font-serif text-6xl sm:text-7xl font-medium text-white tracking-tight leading-[0.95]">
+                            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-medium text-white tracking-tight leading-[0.95]">
                                 Extraordinary<br />
                                 <em className="text-gold-400 not-italic">Journeys</em>
                             </h1>
@@ -105,37 +148,56 @@ export default async function PackagesPage(props: {
 
             {/* ── MAIN CONTENT: SIDEBAR + GRID ── */}
             <section className="container-inner mt-2">
-                <div className="flex flex-col lg:flex-row gap-8 items-start">
+                <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 items-start">
 
                     {/* ── SIDEBAR FILTER (client component) ── */}
                     <PackagesFilter
                         categories={categories}
+                        themes={themes}
                         destinations={allDestinations}
                         currentCategory={currentCategory}
+                        currentTheme={currentTheme}
                         currentDest={currentDest}
                         currentDuration={currentDuration}
-                        currentSort={currentSort}
+                        currentMaxPrice={currentMaxPrice}
+                        maxPriceRange={maxPriceRange}
                         activeFilters={activeFilters}
                     />
 
                     {/* ── RIGHT: RESULTS ── */}
                     <div className="flex-1 min-w-0">
                         {/* Results bar */}
-                        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-                            <p className="text-sm text-stone-500">
-                                Showing <strong className="text-brand-950">{filtered.length}</strong>{" "}
-                                of <strong className="text-brand-950">{packages.length}</strong> packages
+                        <div className="flex items-center justify-between mb-6 flex-wrap gap-4 border-b border-stone-200/50 pb-4">
+                            <div className="flex items-center gap-3">
+                                <p className="text-sm font-medium text-stone-600">
+                                    Showing <strong className="text-brand-950 font-bold">{filtered.length}</strong>{" "}
+                                    of <strong className="text-brand-950 font-bold">{packages.length}</strong> packages
+                                </p>
                                 {activeFilters > 0 && (
-                                    <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-brand-100 text-brand-700 text-xs font-bold px-2.5 py-0.5">
-                                        {activeFilters} filter{activeFilters > 1 ? "s" : ""} active
-                                    </span>
+                                    <>
+                                        <div className="h-4 w-px bg-stone-300"></div>
+                                        <span className="inline-flex items-center gap-1 rounded-full bg-brand-50 border border-brand-100/50 text-brand-700 text-xs font-bold px-2.5 py-0.5 shadow-sm">
+                                            {activeFilters} filter{activeFilters > 1 ? "s" : ""} active
+                                        </span>
+                                        <Link href="/packages" className="text-xs font-semibold text-red-500 hover:text-red-700 hover:underline transition-colors ml-1">
+                                            Clear all
+                                        </Link>
+                                    </>
                                 )}
-                            </p>
-                            {activeFilters > 0 && (
-                                <Link href="/packages" className="text-xs font-semibold text-brand-600 hover:text-brand-800 hover:underline transition-colors">
-                                    Clear all filters ×
-                                </Link>
-                            )}
+                            </div>
+                            
+                            {/* NEW SORT DROPDOWN */}
+                            <div className="flex items-center gap-2 relative z-20">
+                                <label htmlFor="sort-select" className="text-xs font-bold uppercase tracking-widest text-stone-400">Sort by:</label>
+                                <div className="relative group">
+                                    <SortSelect currentSort={currentSort} />
+                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none group-focus-within:text-brand-500 text-stone-400 transition-colors">
+                                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {filtered.length > 0 ? (

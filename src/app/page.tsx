@@ -150,7 +150,7 @@ export default async function Home() {
             <span className="h-px w-8 bg-[#fbbf24]/50" />
           </div>
 
-          <h1 className="mb-6 max-w-5xl font-serif text-4xl font-medium leading-[1.1] text-white sm:text-5xl md:text-6xl lg:text-7xl tracking-tight">
+          <h1 className="mb-6 max-w-5xl font-serif text-3xl font-medium leading-[1.1] text-white sm:text-5xl md:text-6xl lg:text-7xl tracking-tight px-2">
             Premium Holiday Packages & <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent italic font-semibold">Bespoke Travel.</span>
           </h1>
@@ -189,7 +189,7 @@ export default async function Home() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 sm:gap-6">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 sm:gap-6">
               {destinationsArray.map((dest) => {
                 const IconComponent = getDestIcon(dest.name);
                 return (
@@ -433,7 +433,7 @@ export default async function Home() {
                 As one of the leading luxury tour operators in India, our extensive network connects you to deep global expertise. With over 15 years of curating bespoke domestic & international trips, we guarantee unparalleled service to make your dream holidays spectacular.
               </p>
               <div className="flex gap-4">
-                <Link href="/contact" className="btn-gold">
+                <Link href="/contact" className="btn-gold px-8 py-3 text-sm">
                   Speak to an Expert
                 </Link>
               </div>
@@ -571,10 +571,10 @@ export default async function Home() {
               Contact our tourism experts today. We'll craft a customized local or international itinerary perfectly tailored to your budget and travel style.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/packages" className="btn-gold">
+              <Link href="/packages" className="btn-gold w-full sm:w-auto">
                 Browse Packages
               </Link>
-              <Link href="/contact" className="btn-outline !bg-transparent !text-white !border-white/30 hover:!bg-white/10 hover:!border-white/50">
+              <Link href="/contact" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 hover:!border-white/50">
                 Contact Us
               </Link>
             </div>

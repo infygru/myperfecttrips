@@ -196,7 +196,7 @@ export default function HeroSearchTabs() {
             </div>
 
             {showDrop && (
-                <div className="absolute top-[100%] left-0 lg:left-auto lg:right-0 mt-2 w-[280px] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 z-50 p-6 flex flex-col gap-6 cursor-default animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+                <div className="absolute top-[100%] left-0 lg:left-auto lg:right-0 mt-2 w-[calc(100vw-32px)] sm:w-[280px] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 z-50 p-5 sm:p-6 flex flex-col gap-6 cursor-default animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="font-bold text-brand-950 text-left text-sm">Adults</p>
@@ -240,18 +240,18 @@ export default function HeroSearchTabs() {
 
             {/* Tabs (Only show in Step 1) */}
             {step === 1 && (
-                <div className="flex bg-white/10 backdrop-blur-md rounded-full p-1 mb-6 border border-white/20 shadow-lg">
+                <div className="flex w-[90%] max-w-[280px] sm:max-w-none sm:w-auto bg-white/10 backdrop-blur-md rounded-full p-1 mb-6 border border-white/20 shadow-lg justify-center">
                     <button
                         onClick={() => setActiveTab("holidays")}
-                        className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold transition-all ${activeTab === "holidays" ? "bg-white text-brand-950 shadow-md scale-105" : "text-white hover:bg-white/10"}`}
+                        className={`flex-1 sm:flex-none flex justify-center items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm font-semibold transition-all ${activeTab === "holidays" ? "bg-white text-brand-950 shadow-md sm:scale-105" : "text-white hover:bg-white/10"}`}
                     >
-                        <Palmtree className="h-4 w-4" /> Holidays
+                        <Palmtree className="h-4 w-4 shrink-0" /> <span className="truncate">Holidays</span>
                     </button>
                     <button
                         onClick={() => setActiveTab("flights")}
-                        className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold transition-all ${activeTab === "flights" ? "bg-white text-brand-950 shadow-md scale-105" : "text-white hover:bg-white/10"}`}
+                        className={`flex-1 sm:flex-none flex justify-center items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm font-semibold transition-all ${activeTab === "flights" ? "bg-white text-brand-950 shadow-md sm:scale-105" : "text-white hover:bg-white/10"}`}
                     >
-                        <Plane className="h-4 w-4" /> Flights
+                        <Plane className="h-4 w-4 shrink-0" /> <span className="truncate">Flights</span>
                     </button>
                 </div>
             )}
@@ -354,7 +354,7 @@ export default function HeroSearchTabs() {
                                         />
                                     </div>
                                     {showFromDrop && fromQuery && (
-                                        <div className="absolute top-full left-0 mt-4 w-[320px] bg-white rounded-3xl shadow-2xl border border-stone-100 overflow-hidden z-50 py-2">
+                                        <div className="absolute top-[100%] left-0 w-[calc(100vw-32px)] sm:w-[320px] mt-2 bg-white rounded-3xl shadow-2xl border border-stone-100 overflow-hidden z-50 py-2">
                                             {filteredFromAirports.length > 0 ? (
                                                 filteredFromAirports.map(a => (
                                                     <button key={a.iata_code} type="button" className="w-full text-left px-4 py-3 hover:bg-stone-50 transition-colors flex items-center justify-between mx-auto" onClick={() => { setFromQuery(`${a.city} (${a.iata_code})`); setFromAirport(a.iata_code); setShowFromDrop(false); }}>
@@ -393,7 +393,7 @@ export default function HeroSearchTabs() {
                                         />
                                     </div>
                                     {showToDrop && toQuery && (
-                                        <div className="absolute top-full left-0 mt-4 w-[320px] bg-white rounded-3xl shadow-2xl border border-stone-100 overflow-hidden z-50 py-2">
+                                        <div className="absolute top-[100%] left-0 w-[calc(100vw-32px)] sm:w-[320px] mt-2 bg-white rounded-3xl shadow-2xl border border-stone-100 overflow-hidden z-50 py-2">
                                             {filteredToAirports.length > 0 ? (
                                                 filteredToAirports.map(a => (
                                                     <button key={a.iata_code} type="button" className="w-full text-left px-4 py-3 hover:bg-stone-50 transition-colors flex items-center justify-between mx-auto" onClick={() => { setToQuery(`${a.city} (${a.iata_code})`); setToAirport(a.iata_code); setShowToDrop(false); }}>

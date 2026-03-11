@@ -2,8 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { unstable_noStore as noStore } from "next/cache";
 import { directus, getSiteSettings } from "@/lib/directus";
-import { Compass, Menu } from "lucide-react";
+import { Compass } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import MobileMenu from "@/components/MobileMenu";
 
 export default async function Header() {
     noStore();
@@ -36,7 +37,7 @@ export default async function Header() {
                             alt={siteName}
                             width={160}
                             height={44}
-                            className="h-10 w-auto object-contain"
+                            className="h-8 max-w-[140px] sm:max-w-none sm:h-10 w-auto object-contain"
                             priority
                             unoptimized
                         />
@@ -80,9 +81,7 @@ export default async function Header() {
                 </div>
 
                 {/* Mobile toggle */}
-                <button className="rounded-lg p-2 text-stone-600 hover:bg-stone-100 lg:hidden focus:outline-none focus:ring-2 focus:ring-brand-500">
-                    <Menu className="h-6 w-6" />
-                </button>
+                <MobileMenu nav={nav} phone={phone} />
             </div>
         </header>
     );

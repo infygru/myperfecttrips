@@ -9,7 +9,7 @@ function stripHtml(html: string): string {
     .replace(/<\/p>/gi, "\n")
     .replace(/<\/li>/gi, "\n")
     .replace(/<\/h[1-6]>/gi, "\n")
-    .replace(/<li[^>]*>/gi, "  • ")
+    .replace(/<li[^>]*>/gi, "• ")
     .replace(/<[^>]+>/g, "")
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
@@ -38,9 +38,9 @@ function splitText(doc: jsPDF, text: string, maxWidth: number): string[] {
 }
 
 // ── brand constants ───────────────────────────────────────────────────────────
-const BRAND_GREEN = [22, 101, 52] as const;   // emerald-800 approx
-const BRAND_DARK  = [15, 53, 31]  as const;   // brand-950
-const GOLD        = [180, 130, 40] as const;  // amber-600 approx
+const BRAND_DARK  = [24, 24, 27]  as const;   // Zinc-900 (Deep sophisticated charcoal/black)
+const BRAND_ACCENT = [212, 175, 55] as const; // Classic rich Gold
+const GOLD        = [212, 175, 55] as const;  // Classic rich Gold
 const PAGE_W      = 210;
 const PAGE_H      = 297;
 const MARGIN      = 18;
@@ -48,15 +48,28 @@ const CONTENT_W   = PAGE_W - MARGIN * 2;
 
 // ── footer ────────────────────────────────────────────────────────────────────
 function addFooter(doc: jsPDF, pageNum: number, totalPages: number) {
-  const y = PAGE_H - 12;
+  const y = PAGE_H - 16;
+  
+  // Disclaimer
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(7);
+  doc.setTextColor(100, 100, 100);
+  const disclaimerText = "This is a proposed itinerary, not a confirmed booking. Exact prices and availability are subject to final confirmation.";
+  doc.text(disclaimerText, PAGE_W / 2, y - 5, { align: "center" });
+
   doc.setFillColor(...BRAND_DARK);
   doc.rect(0, PAGE_H - 18, PAGE_W, 18, "F");
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(180, 180, 180);
-  doc.text("igholidays.com  ·  Infygru Private Limited  ·  Crafted for premium travel", MARGIN, y);
-  doc.text(`Page ${pageNum} of ${totalPages}`, PAGE_W - MARGIN, y, { align: "right" });
+  
+  // Center aligned footer text
+  const footerText = "IG Holidays - A Brand of Infygru Private Limited";
+  doc.text(footerText, PAGE_W / 2, PAGE_H - 7, { align: "center" });
+  
+  // Right aligned page numbers
+  doc.text(`Page ${pageNum} of ${totalPages}`, PAGE_W - MARGIN, PAGE_H - 7, { align: "right" });
 }
 
 // ── section heading ───────────────────────────────────────────────────────────
@@ -68,11 +81,11 @@ function addSectionHeading(
 ) {
   checkNewPage(18);
   yRef.y += 4;
-  doc.setFillColor(...BRAND_GREEN);
+  doc.setFillColor(...BRAND_DARK);
   doc.roundedRect(MARGIN, yRef.y, CONTENT_W, 10, 2, 2, "F");
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
-  doc.setTextColor(255, 255, 255);
+  doc.setTextColor(...GOLD);
   doc.text(title.toUpperCase(), MARGIN + 5, yRef.y + 6.8);
   yRef.y += 16;
 }
@@ -108,41 +121,87 @@ export async function generateItineraryPdf(
   doc.setFillColor(...GOLD);
   doc.rect(0, 38, PAGE_W, 1.2, "F");
 
-  // Logo or text brand
+  // We enforce the logo fetch using the guaranteed production asset API if the URL points to localhost,
+  // since server-side fetch to localhost:8055 might fail inside Docker/NextJS environments if Directus isn't running on that port inside the container.
+  let finalLogoUrl = logoUrl;
+  if (finalLogoUrl && finalLogoUrl.includes("localhost")) {
+      const assetId = finalLogoUrl.split("/assets/")[1]?.split("?")[0];
+      if (assetId) {
+          finalLogoUrl = `https://api.igholidays.com/assets/${assetId}`;
+      }
+  }
+
+  let logoWidth = 40;
+  let logoHeight = 22;
+
   let logoLoaded = false;
-  if (logoUrl) {
+  
+  if (finalLogoUrl) {
     try {
-      const resp = await fetch(logoUrl);
-      const blob = await resp.blob();
-      const dataUrl = await new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.readAsDataURL(blob);
-      });
-      const ext = logoUrl.split(".").pop()?.toUpperCase() as "PNG" | "JPEG" | "JPG";
-      doc.addImage(dataUrl, ext?.startsWith("J") ? "JPEG" : "PNG", MARGIN, 7, 40, 24);
-      logoLoaded = true;
-    } catch {
-      logoLoaded = false;
+      // In Client Components, fetching remote URLs cross-origin can fail. 
+      // We route through next/image proxy to safely fetch the image binary.
+      const urlObj = new URL(finalLogoUrl);
+      const crossOriginSafeUrl = `/_next/image?url=${encodeURIComponent(urlObj.href)}&w=256&q=75`;
+      
+      console.log("[PDF] Attempting to load logo from proxy:", crossOriginSafeUrl);
+      
+      const resp = await fetch(crossOriginSafeUrl);
+      if (resp.ok) {
+        const blob = await resp.blob();
+        const dataUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(blob);
+        });
+        
+        // Calculate exact proportional dimensions within max bounds of 40x22
+        await new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            const aspect = img.naturalWidth / img.naturalHeight;
+            if (aspect > 40 / 22) {
+              logoWidth = 40;
+              logoHeight = 40 / aspect;
+            } else {
+              logoHeight = 22;
+              logoWidth = 22 * aspect;
+            }
+            resolve(true);
+          };
+          img.src = dataUrl;
+        });
+
+        // Draw white background box snugly fitting the actual aspect-ratio evaluated logo
+        const padding = 2;
+        doc.setFillColor(255, 255, 255);
+        // Center the background box vertically within the 22px height area
+        const yOffset = 8 + (22 - logoHeight) / 2;
+        doc.roundedRect(MARGIN - padding, yOffset - padding, logoWidth + (padding * 2), logoHeight + (padding * 2), 1, 1, "F");
+        
+        doc.addImage(dataUrl, "PNG", MARGIN, yOffset, logoWidth, logoHeight);
+        logoLoaded = true;
+      } else {
+        console.error("[PDF] Logo fetch failed, status:", resp.status);
+      }
+    } catch (e) {
+      console.error("[PDF] Logo Fetch Error:", e);
     }
   }
 
+  // Ultimate fallback if fetch completely fails 
   if (!logoLoaded) {
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(20);
+    doc.setFontSize(22);
     doc.setTextColor(255, 255, 255);
-    doc.text("IG Holidays", MARGIN, 24);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
-    doc.setTextColor(...GOLD);
-    doc.text("Premium Luxury Travel", MARGIN, 30);
+    doc.text("IG HOLIDAYS", MARGIN, 24);
   }
 
   // "Itinerary" label top-right
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.setTextColor(...GOLD);
-  doc.text("ITINERARY DOCUMENT", PAGE_W - MARGIN, 14, { align: "right" });
+  const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  doc.text(`DATE: ${dateStr.toUpperCase()}`, PAGE_W - MARGIN, 14, { align: "right" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7);
   doc.setTextColor(200, 200, 200);
@@ -174,10 +233,10 @@ export async function generateItineraryPdf(
     let chipX = MARGIN;
     for (const chip of chips) {
       const tw = doc.getTextWidth(chip) + 6;
-      doc.setFillColor(240, 245, 240);
-      doc.setDrawColor(...BRAND_GREEN);
+      doc.setFillColor(245, 245, 245);
+      doc.setDrawColor(...BRAND_DARK);
       doc.roundedRect(chipX, y, tw, 6.5, 1.5, 1.5, "FD");
-      doc.setTextColor(...BRAND_GREEN);
+      doc.setTextColor(...BRAND_DARK);
       doc.text(chip, chipX + 3, y + 4.3);
       chipX += tw + 3;
       if (chipX > PAGE_W - MARGIN - 40) {
@@ -242,7 +301,7 @@ export async function generateItineraryPdf(
         yRef.y += 2;
         doc.setFont("helvetica", "bold");
         doc.setFontSize(9.5);
-        doc.setTextColor(...BRAND_GREEN);
+        doc.setTextColor(...BRAND_DARK);
         const dayLines = doc.splitTextToSize(trimmed, CONTENT_W);
         doc.text(dayLines, MARGIN, yRef.y);
         yRef.y += dayLines.length * 5.5 + 2;
@@ -292,11 +351,11 @@ export async function generateItineraryPdf(
     const text = stripHtml(pkg.inclusions);
     const lines = text.split("\n").filter(l => l.trim());
     for (const line of lines) {
-      const trimmed = line.replace(/^•\s*/, "").trim();
+      const trimmed = line.replace(/^\s*•\s*/, "").trim();
       if (!trimmed) continue;
       checkNewPage(6);
-      doc.setTextColor(22, 101, 52);
-      doc.text("✓", MARGIN + 1, yRef.y);
+      doc.setTextColor(...BRAND_DARK);
+      doc.text("•", MARGIN + 2, yRef.y);
       doc.setTextColor(50, 50, 50);
       const ls = doc.splitTextToSize(trimmed, CONTENT_W - 8);
       doc.text(ls, MARGIN + 7, yRef.y);
@@ -305,8 +364,8 @@ export async function generateItineraryPdf(
   } else {
     for (const item of defaultInclusions) {
       checkNewPage(6);
-      doc.setTextColor(22, 101, 52);
-      doc.text("✓", MARGIN + 1, yRef.y);
+      doc.setTextColor(...BRAND_DARK);
+      doc.text("•", MARGIN + 2, yRef.y);
       doc.setTextColor(50, 50, 50);
       doc.text(item, MARGIN + 7, yRef.y);
       yRef.y += 6;
@@ -335,11 +394,11 @@ export async function generateItineraryPdf(
     const text = stripHtml(pkg.exclusions);
     const lines = text.split("\n").filter(l => l.trim());
     for (const line of lines) {
-      const trimmed = line.replace(/^•\s*/, "").trim();
+      const trimmed = line.replace(/^\s*•\s*/, "").trim();
       if (!trimmed) continue;
       checkNewPage(6);
-      doc.setTextColor(160, 60, 60);
-      doc.text("✗", MARGIN + 1, yRef.y);
+      doc.setTextColor(...BRAND_DARK);
+      doc.text("•", MARGIN + 2, yRef.y);
       doc.setTextColor(90, 90, 90);
       const ls = doc.splitTextToSize(trimmed, CONTENT_W - 8);
       doc.text(ls, MARGIN + 7, yRef.y);
@@ -348,8 +407,8 @@ export async function generateItineraryPdf(
   } else {
     for (const item of defaultExclusions) {
       checkNewPage(6);
-      doc.setTextColor(160, 60, 60);
-      doc.text("✗", MARGIN + 1, yRef.y);
+      doc.setTextColor(...BRAND_DARK);
+      doc.text("•", MARGIN + 2, yRef.y);
       doc.setTextColor(90, 90, 90);
       doc.text(item, MARGIN + 7, yRef.y);
       yRef.y += 6;
@@ -360,8 +419,8 @@ export async function generateItineraryPdf(
   yRef.y += 8;
   checkNewPage(28);
 
-  doc.setFillColor(240, 248, 244);
-  doc.setDrawColor(...BRAND_GREEN);
+  doc.setFillColor(248, 248, 248);
+  doc.setDrawColor(...GOLD);
   doc.roundedRect(MARGIN, yRef.y, CONTENT_W, 24, 3, 3, "FD");
 
   doc.setFont("helvetica", "bold");
@@ -372,8 +431,9 @@ export async function generateItineraryPdf(
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(50, 50, 50);
-  doc.text("📧  info@igholidays.com", MARGIN + 6, yRef.y + 15);
-  doc.text("🌐  www.igholidays.com", PAGE_W / 2 + 2, yRef.y + 15);
+  doc.text("Phone: +91 8807709919", MARGIN + 6, yRef.y + 13.5);
+  doc.text("Email: info@igholidays.com", MARGIN + 6, yRef.y + 18.5);
+  doc.text("Web: www.igholidays.com", PAGE_W / 2 + 2, yRef.y + 13.5);
 
   // ── PATCH FOOTERS ─────────────────────────────────────────────────────────
   const totalPages = doc.getNumberOfPages();

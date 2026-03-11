@@ -69,10 +69,10 @@ export default async function Footer() {
 
     return (
         <footer className="bg-brand-950 text-stone-400">
-            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-                <div className="grid grid-cols-1 gap-12 lg:grid-cols-5 xl:gap-16">
+            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-20">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-y-10 sm:gap-12 xl:gap-16">
                     {/* Brand Info */}
-                    <div className="lg:col-span-2 space-y-8">
+                    <div className="sm:col-span-2 space-y-8">
                         <Link href="/" className="inline-flex items-center gap-3">
                             {logoUrl ? (
                                 <div className="bg-white rounded-xl p-2 inline-flex">

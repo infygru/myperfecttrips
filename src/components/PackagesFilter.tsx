@@ -6,11 +6,14 @@ import { SlidersHorizontal, ChevronDown, X, ListFilter } from "lucide-react";
 
 interface Props {
     categories: string[];
+    themes: string[];
     destinations: string[];
     currentCategory: string;
+    currentTheme: string;
     currentDest: string;
     currentDuration: string;
-    currentSort: string;
+    currentMaxPrice: string;
+    maxPriceRange: number;
     activeFilters: number;
 }
 
@@ -30,11 +33,14 @@ const sortOptions = [
 
 export default function PackagesFilter({
     categories,
+    themes,
     destinations,
     currentCategory,
+    currentTheme,
     currentDest,
     currentDuration,
-    currentSort,
+    currentMaxPrice,
+    maxPriceRange,
     activeFilters,
 }: Props) {
     const router = useRouter();
@@ -42,6 +48,8 @@ export default function PackagesFilter({
     const searchParams = useSearchParams();
     const [mobileOpen, setMobileOpen] = useState(false);
     const [destOpen, setDestOpen] = useState(true);
+    const [themeOpen, setThemeOpen] = useState(true);
+    const [localPrice, setLocalPrice] = useState(currentMaxPrice || maxPriceRange.toString());
 
     function buildUrl(updates: Record<string, string>) {
         const params = new URLSearchParams(searchParams.toString());
@@ -58,28 +66,34 @@ export default function PackagesFilter({
 
     const FilterContent = () => (
         <div className="space-y-6">
-            {/* Sort */}
-            <div>
-                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 mb-3 flex items-center gap-2">
-                    <ListFilter className="h-3 w-3" /> Sort By
-                </h3>
-                <div className="space-y-1">
-                    {sortOptions.map((opt) => (
-                        <button
-                            key={opt.value}
-                            onClick={() => navigate({ sort: opt.value })}
-                            className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all font-medium ${currentSort === opt.value
-                                ? "bg-brand-950 text-white"
-                                : "text-stone-600 hover:bg-stone-100"
-                                }`}
-                        >
-                            {opt.label}
-                        </button>
-                    ))}
+            {/* Price Range */}
+            {maxPriceRange > 0 && (
+                <div>
+                    <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">Max Price</h3>
+                        <span className="text-xs font-semibold text-brand-950">₹{Number(localPrice).toLocaleString("en-IN")}</span>
+                    </div>
+                    <div className="px-2">
+                        <input
+                            type="range"
+                            min="0"
+                            max={maxPriceRange}
+                            step="5000"
+                            value={localPrice}
+                            onChange={(e) => setLocalPrice(e.target.value)}
+                            onMouseUp={() => navigate({ maxPrice: localPrice === maxPriceRange.toString() ? "" : localPrice })}
+                            onTouchEnd={() => navigate({ maxPrice: localPrice === maxPriceRange.toString() ? "" : localPrice })}
+                            className="w-full accent-brand-600 h-1.5 bg-stone-200 rounded-lg appearance-none cursor-pointer"
+                        />
+                        <div className="flex justify-between text-[10px] font-medium text-stone-400 mt-2">
+                            <span>₹0</span>
+                            <span>₹{maxPriceRange.toLocaleString("en-IN")}</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div className="h-px bg-stone-100" />
+            )}
+            
+            {maxPriceRange > 0 && <div className="h-px bg-stone-100" />}
 
             {/* Category */}
             {categories.length > 0 && (
@@ -110,6 +124,50 @@ export default function PackagesFilter({
             )}
 
             {categories.length > 0 && <div className="h-px bg-stone-100" />}
+
+            {/* Themes */}
+            {themes.length > 0 && (
+                <div>
+                    <button
+                        className="w-full flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 mb-3"
+                        onClick={() => setThemeOpen((v) => !v)}
+                    >
+                        Theme
+                        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${themeOpen ? "rotate-180" : ""}`} />
+                    </button>
+                    {themeOpen && (
+                        <div className="space-y-1 max-h-48 overflow-y-auto pr-1 custom-scroll">
+                            {themes.map((theme) => {
+                                const isActive = currentTheme.includes(theme);
+                                return (
+                                    <button
+                                        key={theme}
+                                        onClick={() => {
+                                            const themesArr = currentTheme ? currentTheme.split(',') : [];
+                                            const newThemes = isActive 
+                                                ? themesArr.filter(t => t !== theme)
+                                                : [...themesArr, theme];
+                                            navigate({ theme: newThemes.join(',') });
+                                        }}
+                                        className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all font-medium flex items-center gap-3 ${
+                                            isActive ? "bg-brand-50 text-brand-900 font-semibold" : "text-stone-600 hover:bg-stone-100"
+                                        }`}
+                                    >
+                                        <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
+                                            isActive ? "bg-brand-600 border-brand-600" : "border-stone-300 bg-white"
+                                        }`}>
+                                            {isActive && <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4.5L4 7L9 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                                        </div>
+                                        <span className="truncate">{theme}</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {themes.length > 0 && <div className="h-px bg-stone-100" />}
 
             {/* Duration */}
             <div>

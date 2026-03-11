@@ -59,12 +59,12 @@ export default async function PackageDetailPage(props: Props) {
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
-    const phone = "+91 98765 43210";
+    const phone = "+91 8807709919";
 
     // Fetch site settings for logo
     const siteSettings = await getSiteSettings();
-    const logoUrl = siteSettings?.project_logo
-        ? `${dUrl}/assets/${siteSettings.project_logo}`
+    const logoUrl = (siteSettings?.logo || siteSettings?.project_logo)
+        ? `${dUrl}/assets/${siteSettings.logo || siteSettings.project_logo}`
         : null;
 
     const defaultInclusions = ["Handpicked Premium Accommodation", "Daily Breakfast & Select Meals", "All Airport & Hotel Transfers", "Expert Local Guides", "All Entry Permits & Tickets", "24/7 On-Trip Concierge Support"];
@@ -74,7 +74,7 @@ export default async function PackageDetailPage(props: Props) {
         <main className="min-h-screen bg-[#F8F7F4]">
 
             {/* ── CINEMATIC HERO ── */}
-            <section className="relative h-[80vh] min-h-[560px] w-full overflow-hidden bg-brand-950">
+            <section className="relative h-[50vh] md:h-[60vh] min-h-[380px] md:min-h-[480px] w-full overflow-hidden bg-brand-950">
                 {imgUrl ? (
                     <Image
                         src={imgUrl}
@@ -92,12 +92,12 @@ export default async function PackageDetailPage(props: Props) {
                 <div className="absolute inset-0 bg-gradient-to-r from-brand-950/80 via-brand-950/20 to-transparent" />
 
                 {/* Back */}
-                <div className="absolute top-0 left-0 right-0 pt-24 container-inner">
+                <div className="absolute top-0 left-0 right-0 pt-20 container-inner">
                     <Link
                         href="/packages"
-                        className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/60 hover:text-gold-400 transition-colors group"
+                        className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/80 hover:text-gold-400 transition-colors group"
                     >
-                        <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
+                        <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                         All Packages
                     </Link>
                 </div>
@@ -122,7 +122,7 @@ export default async function PackageDetailPage(props: Props) {
                             </span>
                         </div>
 
-                        <h1 className="mb-6 font-serif text-5xl sm:text-6xl xl:text-7xl font-medium text-white tracking-tight leading-[1.02]">
+                        <h1 className="mb-4 font-serif text-4xl sm:text-5xl md:text-6xl font-medium text-white tracking-tight leading-[1.02]">
                             {pkg.title}
                         </h1>
 
