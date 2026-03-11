@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import directus from '@/lib/directus/client';
 import { readItems } from '@directus/sdk';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.myperfecttrips.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Static Routes

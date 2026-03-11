@@ -58,6 +58,7 @@ const nextConfig = {
       { source: '/attractions', destination: '/', permanent: true },
     ]
   },
+  output: 'standalone',
 };
 
 export default nextConfig;

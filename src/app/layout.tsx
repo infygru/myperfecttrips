@@ -10,7 +10,9 @@ import CookieConsent from "@/components/common/CookieConsent";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://myperfecttrips.com"),
   title: "MyPerfectTrips | Manchester's Premier Travel Consultancy",
+  applicationName: "MyPerfectTrips",
   description:
     "Looking for MyPerfectTrip? We are MyPerfectTrips, the premier travel agency for Dubai and Turkey packages.",
   keywords: ["MyPerfectTrip", "My Perfect Trip"],
