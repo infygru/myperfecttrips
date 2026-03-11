@@ -20,6 +20,10 @@ const syne = Syne({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
+  const defaultTitle = "IGHolidays | Premium Travel Agency in India & Luxury Tour Operator";
+  const defaultDesc = "The leading travel agency in India specializing in bespoke international & domestic holiday packages, corporate MICE, and luxury travel planning.";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
   try {
     const settings = (await getSiteSettings()) as DirectusSettings;
 
@@ -29,16 +33,48 @@ export async function generateMetadata(): Promise<Metadata> {
       : undefined;
 
     return {
-      title: "IGHolidays | Premium Travel Agency in India & Luxury Tour Operator",
-      description:
-        "The leading travel agency in India specializing in bespoke international & domestic holiday packages, corporate MICE, and luxury travel planning.",
+      metadataBase: new URL(baseUrl),
+      title: defaultTitle,
+      description: defaultDesc,
       icons: faviconUrl ? { icon: faviconUrl, apple: faviconUrl } : undefined,
+      openGraph: {
+        title: defaultTitle,
+        description: defaultDesc,
+        url: baseUrl,
+        siteName: "IGHolidays",
+        type: "website",
+        locale: "en_IN",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: defaultTitle,
+        description: defaultDesc,
+      },
+      alternates: {
+        canonical: baseUrl,
+      },
     };
   } catch (err) {
     return {
-      title: "IGHolidays | Premium Travel Agency in India & Luxury Tour Operator",
-      description:
-        "The leading travel agency in India specializing in bespoke international & domestic holiday packages, corporate MICE, and luxury travel planning.",
+      metadataBase: new URL(baseUrl),
+      title: defaultTitle,
+      description: defaultDesc,
+      openGraph: {
+        title: defaultTitle,
+        description: defaultDesc,
+        url: baseUrl,
+        siteName: "IGHolidays",
+        type: "website",
+        locale: "en_IN",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: defaultTitle,
+        description: defaultDesc,
+      },
+      alternates: {
+        canonical: baseUrl,
+      },
     };
   }
 }

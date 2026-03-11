@@ -12,6 +12,10 @@ export async function submitLeadAction(formData: FormData) {
             package_interest: formData.get("package_interest") as string,
             budget: formData.get("budget") as string,
             notes: formData.get("notes") as string,
+            travel_date: formData.get("travel_date") ? new Date(formData.get("travel_date") as string).toISOString() : undefined,
+            num_adults: Number(formData.get("num_adults")) || undefined,
+            num_children: Number(formData.get("num_children")) || undefined,
+            trip_type: formData.get("trip_type") as string,
             status: "New" as const,
         };
 

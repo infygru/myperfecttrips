@@ -18,19 +18,49 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
     const { slug } = await props.params;
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
     try {
         const result = (await directus.request(
             readItems("packages" as any, { filter: { slug: { _eq: slug } } as any, limit: 1 })
         )) as any[];
         const pkg = result?.[0];
+        
         if (pkg) {
+            const title = `${pkg.title} | IG Holidays`;
+            const description = `${pkg.title} – ${pkg.duration_nights ? `${pkg.duration_nights} nights` : "premium"} ${pkg.category || "holiday"} package${pkg.destinations?.length ? ` covering ${pkg.destinations.join(", ")}` : ""}. Starting from ${pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "custom pricing"}.`;
+            const canonicalUrl = `${baseUrl}/packages/${slug}`;
+            const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
+            const imageUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : undefined;
+
             return {
-                title: `${pkg.title} | IG Holidays`,
-                description: `${pkg.title} – ${pkg.duration_nights ? `${pkg.duration_nights} nights` : "premium"} ${pkg.category || "holiday"} package${pkg.destinations?.length ? ` covering ${pkg.destinations.join(", ")}` : ""}. Starting from ${pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "custom pricing"}.`,
+                title,
+                description,
+                alternates: {
+                    canonical: canonicalUrl,
+                },
+                openGraph: {
+                    title,
+                    description,
+                    url: canonicalUrl,
+                    type: "website",
+                    images: imageUrl ? [{ url: imageUrl, alt: pkg.title }] : [],
+                },
+                twitter: {
+                    card: "summary_large_image",
+                    title,
+                    description,
+                    images: imageUrl ? [imageUrl] : [],
+                }
             };
         }
     } catch { }
-    return { title: "Package Details | IG Holidays" };
+
+    return { 
+        title: "Package Details | IG Holidays",
+        alternates: {
+            canonical: `${baseUrl}/packages/${slug}`,
+        }
+    };
 }
 
 export default async function PackageDetailPage(props: Props) {

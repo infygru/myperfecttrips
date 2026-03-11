@@ -8,8 +8,8 @@ export interface Lead {
     notes?: string;
     status: "New" | "Contacted" | "Qualified" | "Lost" | "Converted";
     travel_date?: string;
-    num_adults?: number;
-    num_children?: number;
+    num_adults?: number | string;
+    num_children?: number | string;
     trip_type?: string;
     date_created?: string;
 }

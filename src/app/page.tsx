@@ -23,7 +23,46 @@ import {
   Compass,
 } from "lucide-react";
 
+import type { Metadata } from "next";
+
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  let title = "IGHolidays | Premium Travel Agency in India";
+  let description = "Specializing in bespoke international & domestic holiday packages, corporate MICE, and luxury travel planning.";
+  let ogImage = undefined;
+
+  try {
+    const settings = await getSiteSettings();
+    if (settings?.tagline) description = settings.tagline;
+    if (settings?.hero_image) {
+      const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
+      ogImage = `${dUrl}/assets/${settings.hero_image}`;
+    }
+  } catch (err) {}
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: baseUrl,
+      images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: "IGHolidays Premium Travel" }] : [],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ogImage ? [ogImage] : [],
+    },
+    alternates: {
+      canonical: baseUrl, // Home page
+    },
+  };
+}
 
 export default async function Home() {
   noStore();

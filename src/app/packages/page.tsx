@@ -8,10 +8,30 @@ import type { Metadata } from "next";
 import PackagesFilter from "@/components/PackagesFilter";
 import SortSelect from "@/components/SortSelect";
 
-export const metadata: Metadata = {
-    title: "Holiday Packages | IG Holidays – Premium Travel Agency",
-    description: "Explore our handpicked collection of luxury holiday packages across India and the world. Customised itineraries for every traveller.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const title = "Holiday Packages | IG Holidays – Premium Travel Agency";
+    const description = "Explore our handpicked collection of luxury holiday packages across India and the world. Customised itineraries for every traveller.";
+
+    return {
+        title,
+        description,
+        alternates: {
+            canonical: `${baseUrl}/packages`,
+        },
+        openGraph: {
+            title,
+            description,
+            url: `${baseUrl}/packages`,
+            type: "website",
+        },
+        twitter: {
+            card: "summary_large_image",
+            title,
+            description,
+        }
+    };
+}
 
 export const dynamic = "force-dynamic";
 
