@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { directus } from "@/lib/directus";
+import { directus, getSiteSettings } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import {
     Star, Shield, ChevronRight
 } from "lucide-react";
 import LeadForm from "@/components/LeadForm";
+import DownloadItineraryButton from "@/components/DownloadItineraryButton";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -59,6 +60,12 @@ export default async function PackageDetailPage(props: Props) {
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
     const phone = "+91 98765 43210";
+
+    // Fetch site settings for logo
+    const siteSettings = await getSiteSettings();
+    const logoUrl = siteSettings?.project_logo
+        ? `${dUrl}/assets/${siteSettings.project_logo}`
+        : null;
 
     const defaultInclusions = ["Handpicked Premium Accommodation", "Daily Breakfast & Select Meals", "All Airport & Hotel Transfers", "Expert Local Guides", "All Entry Permits & Tickets", "24/7 On-Trip Concierge Support"];
     const defaultExclusions = ["International / Domestic Flights", "Visa Fees & Documentation", "Personal & Shopping Expenses", "Travel Insurance", "Optional Activities & Tips", "Anything not mentioned in inclusions"];
@@ -158,6 +165,7 @@ export default async function PackageDetailPage(props: Props) {
                         <span className="text-brand-950 font-semibold truncate max-w-[200px]">{pkg.title}</span>
                     </nav>
                     <div className="flex items-center gap-3 shrink-0">
+                        <DownloadItineraryButton pkg={pkg} logoUrl={logoUrl} variant="breadcrumb" />
                         <a
                             href={`tel:${phone}`}
                             className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-brand-700 hover:text-brand-900 transition-colors"
@@ -407,6 +415,7 @@ export default async function PackageDetailPage(props: Props) {
                                 >
                                     <Mail className="h-4 w-4" /> info@igholidays.com
                                 </a>
+                                <DownloadItineraryButton pkg={pkg} logoUrl={logoUrl} variant="sidebar" />
                             </div>
                         </div>
 
