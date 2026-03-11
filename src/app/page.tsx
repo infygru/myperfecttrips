@@ -117,30 +117,31 @@ export default async function Home() {
       {/* ──────────────────────────────────────────────────────────
           SECTION 1: HERO
           ────────────────────────────────────────────────────────── */}
-      <section className="relative flex min-h-[90svh] items-center justify-center overflow-hidden bg-stone-950">
-        {heroVideoUrl ? (
-          <video
-            src={heroVideoUrl}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 h-full w-full object-cover opacity-60"
-          />
-        ) : heroImgUrl ? (
-          <Image
-            src={heroImgUrl}
-            alt="Premium Travel Agency Hero Background"
-            fill
-            className="object-cover opacity-60"
-            priority
-            unoptimized
-          />
-        ) : (
-          <div className="absolute inset-0 bg-stone-950 opacity-80" />
-        )}
-
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/50 to-stone-950/20" />
+      <section className="relative flex min-h-[90svh] items-center justify-center bg-stone-950 z-30">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {heroVideoUrl ? (
+            <video
+              src={heroVideoUrl}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 h-full w-full object-cover opacity-60"
+            />
+          ) : heroImgUrl ? (
+            <Image
+              src={heroImgUrl}
+              alt="Premium Travel Agency Hero Background"
+              fill
+              className="object-cover opacity-60"
+              priority
+              unoptimized
+            />
+          ) : (
+            <div className="absolute inset-0 bg-stone-950 opacity-80" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/50 to-stone-950/20" />
+        </div>
 
         <div className="container-inner relative z-10 flex flex-col items-center text-center">
           <div className="mb-6 inline-flex items-center gap-4 text-xs font-bold tracking-widest text-[#fbbf24] uppercase">
@@ -160,7 +161,7 @@ export default async function Home() {
           </h2>
 
           {/* Dual Search Tabs */}
-          <div className="w-full mt-4">
+          <div className="w-full mt-4 relative z-20">
             <HeroSearchTabs />
           </div>
         </div>

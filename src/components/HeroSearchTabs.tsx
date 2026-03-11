@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Plane, Palmtree, Users, Calendar, Wallet, MapPin, Loader2, CheckCircle2, ArrowRight, User, Phone, ChevronDown } from "lucide-react";
+import { Plane, Palmtree, Users, Calendar, Wallet, MapPin, Loader2, CheckCircle2, ArrowRight, User, Phone, ChevronDown, ChevronLeft, ChevronRight as ChevronRightIcon } from "lucide-react";
 import { submitFlightEnquiry, submitHolidayEnquiry } from "@/actions/enquiry";
+import { format } from "date-fns";
+import MiniCalendar from "./MiniCalendar";
 
 export default function HeroSearchTabs() {
     const [activeTab, setActiveTab] = useState<"flights" | "holidays">("holidays");
@@ -15,8 +17,8 @@ export default function HeroSearchTabs() {
     // Flight State
     const [fromAirport, setFromAirport] = useState("");
     const [toAirport, setToAirport] = useState("");
-    const [departDate, setDepartDate] = useState("");
-    const [returnDate, setReturnDate] = useState("");
+    const [departDate, setDepartDate] = useState<Date>();
+    const [returnDate, setReturnDate] = useState<Date>();
     const [flightAdults, setFlightAdults] = useState("1");
     const [flightChildren, setFlightChildren] = useState("0");
 
@@ -38,14 +40,20 @@ export default function HeroSearchTabs() {
     const [showFromDrop, setShowFromDrop] = useState(false);
     const [showToDrop, setShowToDrop] = useState(false);
 
-    // Dropdown state for Pax
+    // Dropdown state for Inputs
     const [showFlightPaxDrop, setShowFlightPaxDrop] = useState(false);
     const [showHolidayPaxDrop, setShowHolidayPaxDrop] = useState(false);
+    const [showBudgetDrop, setShowBudgetDrop] = useState(false);
+    const [showDepartDrop, setShowDepartDrop] = useState(false);
+    const [showReturnDrop, setShowReturnDrop] = useState(false);
 
     const fromRef = useRef<HTMLDivElement>(null);
     const toRef = useRef<HTMLDivElement>(null);
     const flightPaxRef = useRef<HTMLDivElement>(null);
     const holidayPaxRef = useRef<HTMLDivElement>(null);
+    const budgetRef = useRef<HTMLDivElement>(null);
+    const departRef = useRef<HTMLDivElement>(null);
+    const returnRef = useRef<HTMLDivElement>(null);
 
     // Fetch Global Airports DB & Setup Click Outside
     useEffect(() => {
@@ -67,6 +75,9 @@ export default function HeroSearchTabs() {
             if (toRef.current && !toRef.current.contains(node)) setShowToDrop(false);
             if (flightPaxRef.current && !flightPaxRef.current.contains(node)) setShowFlightPaxDrop(false);
             if (holidayPaxRef.current && !holidayPaxRef.current.contains(node)) setShowHolidayPaxDrop(false);
+            if (budgetRef.current && !budgetRef.current.contains(node)) setShowBudgetDrop(false);
+            if (departRef.current && !departRef.current.contains(node)) setShowDepartDrop(false);
+            if (returnRef.current && !returnRef.current.contains(node)) setShowReturnDrop(false);
         }
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -119,8 +130,8 @@ export default function HeroSearchTabs() {
             const formData = new FormData();
             formData.append("from_airport", fromAirport || fromQuery);
             formData.append("to_airport", toAirport || toQuery);
-            formData.append("depart_date", departDate);
-            formData.append("return_date", returnDate);
+            formData.append("depart_date", departDate ? format(departDate, "yyyy-MM-dd") : "");
+            formData.append("return_date", returnDate ? format(returnDate, "yyyy-MM-dd") : "");
             formData.append("adults", flightAdults);
             formData.append("children", flightChildren);
             formData.append("name", name);
@@ -159,7 +170,7 @@ export default function HeroSearchTabs() {
         setPhone("");
         setFromQuery(""); setFromAirport("");
         setToQuery(""); setToAirport("");
-        setDepartDate(""); setReturnDate("");
+        setDepartDate(undefined); setReturnDate(undefined);
         setHolidayDest(""); setHolidayBudget("");
     };
 
@@ -172,11 +183,11 @@ export default function HeroSearchTabs() {
         adults: string, setAdults: (v: string) => void,
         children: string, setChildren: (v: string) => void,
         showDrop: boolean, setShowDrop: (v: boolean) => void,
-        dropRef: React.RefObject<HTMLDivElement>
+        dropRef: React.RefObject<HTMLDivElement | null>
     ) => (
         <div className={`relative ${inputContainerClass} hover:bg-stone-50/50 cursor-pointer`} ref={dropRef} onClick={() => setShowDrop(true)}>
             <Users className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
-            <div className="flex flex-col w-full text-left overflow-hidden">
+            <div className="flex flex-col w-full text-left">
                 <label className={`${labelClass} cursor-pointer`}>Travelers</label>
                 <div className="w-full bg-transparent text-base font-semibold text-brand-950 truncate flex items-center justify-between">
                     <span>{parseInt(adults || '0') + parseInt(children || '0')} Pax</span>
@@ -185,7 +196,7 @@ export default function HeroSearchTabs() {
             </div>
 
             {showDrop && (
-                <div className="absolute top-[100%] left-0 lg:left-1/2 lg:-translate-x-1/2 mt-2 w-[280px] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 z-50 p-6 flex flex-col gap-6 cursor-default animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+                <div className="absolute top-[100%] left-0 lg:left-auto lg:right-0 mt-2 w-[280px] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 z-50 p-6 flex flex-col gap-6 cursor-default animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="font-bold text-brand-950 text-left text-sm">Adults</p>
@@ -214,7 +225,7 @@ export default function HeroSearchTabs() {
     );
 
     return (
-        <div className={`w-full mx-auto flex flex-col items-center transition-all duration-500 ${activeTab === 'flights' ? 'lg:max-w-6xl' : 'lg:max-w-4xl'}`}>
+        <div className={`w-full mx-auto flex flex-col items-center transition-all duration-500 ${activeTab === 'flights' ? 'lg:max-w-6xl' : 'lg:max-w-5xl'}`}>
             {successMsg && (
                 <div className="mb-4 flex items-center gap-2 rounded-lg bg-emerald-500/90 px-4 py-3 text-sm font-medium text-white shadow-lg w-full max-w-lg justify-center animate-in fade-in slide-in-from-bottom-2">
                     <CheckCircle2 className="h-5 w-5" />
@@ -274,23 +285,40 @@ export default function HeroSearchTabs() {
                                 {/* Pax */}
                                 {renderPaxDropdown(holidayAdults, setHolidayAdults, holidayChildren, setHolidayChildren, showHolidayPaxDrop, setShowHolidayPaxDrop, holidayPaxRef)}
 
-                                {/* Budget */}
-                                <div className={inputContainerClass}>
+                                {/* Budget Dropdown */}
+                                <div className={`relative ${inputContainerClass}`} ref={budgetRef} onClick={() => setShowBudgetDrop(!showBudgetDrop)}>
                                     <Wallet className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
-                                    <div className="flex flex-col w-full min-w-0 text-left">
-                                        <label className={labelClass}>Budget Rate</label>
-                                        <select
-                                            className="w-full bg-transparent text-base font-semibold text-brand-950 focus:outline-none cursor-pointer placeholder:text-stone-300 appearance-none truncate"
-                                            value={holidayBudget}
-                                            onChange={(e) => setHolidayBudget(e.target.value)}
-                                            required
-                                        >
-                                            <option value="" disabled>Select Tier</option>
-                                            <option value="economy">Economy</option>
-                                            <option value="premium">Premium</option>
-                                            <option value="luxury">Luxury (5-Star)</option>
-                                        </select>
+                                    <div className="flex flex-col w-full text-left cursor-pointer">
+                                        <label className={`${labelClass} cursor-pointer`}>Budget Rate</label>
+                                        <div className="w-full bg-transparent text-base font-semibold text-brand-950 truncate flex items-center justify-between">
+                                            <span className={holidayBudget ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{holidayBudget || "Select Tier"}</span>
+                                            <ChevronDown className={`h-4 w-4 text-stone-400 transition-transform ${showBudgetDrop ? "rotate-180" : ""}`} />
+                                        </div>
                                     </div>
+
+                                    {showBudgetDrop && (
+                                        <div className="absolute top-[100%] left-0 mt-2 w-full min-w-[200px] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 p-2 z-50 animate-in fade-in zoom-in-95 duration-200">
+                                            {[
+                                                { value: "economy", label: "Economy" },
+                                                { value: "premium", label: "Premium" },
+                                                { value: "luxury", label: "Luxury (5-Star)" }
+                                            ].map((tier) => (
+                                                <button
+                                                    key={tier.value}
+                                                    type="button"
+                                                    className="w-full text-left px-4 py-3 hover:bg-stone-50 rounded-2xl text-sm font-semibold text-brand-950 transition-colors flex items-center justify-between"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setHolidayBudget(tier.value);
+                                                        setShowBudgetDrop(false);
+                                                    }}
+                                                >
+                                                    {tier.label}
+                                                    {holidayBudget === tier.value && <div className="h-2 w-2 rounded-full bg-brand-600" />}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Next Button */}
@@ -385,35 +413,49 @@ export default function HeroSearchTabs() {
 
                                 {/* Dates */}
                                 <div className={`flex flex-col lg:flex-row items-stretch w-full lg:w-auto flex-shrink-0 relative`}>
-                                    <div className="flex-1 min-w-0 flex items-start px-5 py-4 lg:py-3 gap-4 w-full lg:w-[150px] cursor-text transition-colors border-b lg:border-b-0 lg:border-r border-stone-200" onClick={() => document.getElementById('fl-dep')?.showPicker()}>
+                                    
+                                    {/* DEPART */}
+                                    <div className={`relative flex-1 min-w-0 flex items-start px-5 py-4 lg:py-3 gap-4 lg:w-[180px] cursor-pointer transition-colors border-b lg:border-b-0 lg:border-r border-stone-200 hover:bg-stone-50/50`} ref={departRef} onClick={() => setShowDepartDrop(!showDepartDrop)}>
                                         <Calendar className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
-                                        <div className="flex flex-col w-full min-w-0">
-                                            <label className={labelClass}>Depart</label>
-                                            <input
-                                                id="fl-dep"
-                                                type="date"
-                                                className={`w-full bg-transparent text-base font-semibold focus:outline-none cursor-pointer ${departDate ? "text-brand-950" : "text-stone-300"} [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer`}
-                                                value={departDate}
-                                                onChange={(e) => setDepartDate(e.target.value)}
-                                                required
-                                            />
+                                        <div className="flex flex-col w-full min-w-0 text-left">
+                                            <label className={`${labelClass} cursor-pointer`}>Depart</label>
+                                            <div className="w-full bg-transparent text-base font-semibold text-brand-950 truncate flex items-center justify-between">
+                                                <span className={departDate ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{departDate ? format(departDate, "dd MMM yyyy") : "Select Date"}</span>
+                                            </div>
                                         </div>
+                                        {showDepartDrop && (
+                                            <div className="absolute top-[100%] left-0 lg:left-1/2 lg:-translate-x-1/2 mt-2 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 z-50 p-2 animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+                                                <MiniCalendar
+                                                    selected={departDate}
+                                                    onSelect={(d) => { setDepartDate(d); setShowDepartDrop(false); }}
+                                                    minDate={new Date()}
+                                                />
+                                            </div>
+                                        )}
+
                                         {/* Visual separator dot visible on desktop */}
-                                        <div className="hidden lg:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border border-stone-200 z-10 shadow-sm flex items-center justify-center">
+                                        <div className="hidden lg:block absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border border-stone-200 z-10 shadow-sm flex items-center justify-center">
                                             <div className="w-1.5 h-1.5 rounded-full bg-brand-400" />
                                         </div>
                                     </div>
-                                    <div className="flex-1 min-w-0 flex items-start px-5 py-4 lg:py-3 gap-4 w-full lg:w-[150px] cursor-text transition-colors" onClick={() => document.getElementById('fl-ret')?.showPicker()}>
-                                        <div className="flex flex-col w-full min-w-0">
-                                            <label className={labelClass}>Return</label>
-                                            <input
-                                                id="fl-ret"
-                                                type="date"
-                                                className={`w-full bg-transparent text-base font-semibold focus:outline-none cursor-pointer ${returnDate ? "text-brand-950" : "text-stone-300"} [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer`}
-                                                value={returnDate}
-                                                onChange={(e) => setReturnDate(e.target.value)}
-                                            />
+
+                                    {/* RETURN */}
+                                    <div className={`relative flex-1 min-w-0 flex items-start px-5 py-4 lg:py-3 gap-4 lg:w-[180px] cursor-pointer transition-colors hover:bg-stone-50/50`} ref={returnRef} onClick={() => setShowReturnDrop(!showReturnDrop)}>
+                                        <div className="flex flex-col w-full min-w-0 text-left">
+                                            <label className={`${labelClass} cursor-pointer`}>Return</label>
+                                            <div className="w-full bg-transparent text-base font-semibold text-brand-950 truncate flex items-center justify-between">
+                                                <span className={returnDate ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{returnDate ? format(returnDate, "dd MMM yyyy") : "One Way"}</span>
+                                            </div>
                                         </div>
+                                        {showReturnDrop && (
+                                            <div className="absolute top-[100%] left-0 lg:left-1/2 lg:-translate-x-1/2 mt-2 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 z-50 p-2 animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+                                                <MiniCalendar
+                                                    selected={returnDate}
+                                                    onSelect={(d) => { setReturnDate(d); setShowReturnDrop(false); }}
+                                                    minDate={departDate || new Date()}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -444,7 +486,7 @@ export default function HeroSearchTabs() {
                         </div>
 
                         {/* Name */}
-                        <div className="flex-1 min-w-[200px] flex items-start px-5 py-4 lg:py-3 gap-3 w-full cursor-text transition-colors hover:bg-stone-50/50" onClick={() => document.getElementById('usr-name')?.focus()}>
+                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-start px-5 py-4 lg:py-3 gap-3 w-full cursor-text transition-colors hover:bg-stone-50/50" onClick={() => document.getElementById('usr-name')?.focus()}>
                             <User className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
                             <div className="flex flex-col w-full min-w-0 text-left">
                                 <label htmlFor="usr-name" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left">Full Name</label>
@@ -461,7 +503,7 @@ export default function HeroSearchTabs() {
                         </div>
 
                         {/* Phone */}
-                        <div className="flex-1 min-w-[200px] flex items-start px-5 py-4 lg:py-3 gap-3 w-full cursor-text transition-colors hover:bg-stone-50/50" onClick={() => document.getElementById('usr-phone')?.focus()}>
+                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-start px-5 py-4 lg:py-3 gap-3 w-full cursor-text transition-colors hover:bg-stone-50/50" onClick={() => document.getElementById('usr-phone')?.focus()}>
                             <Phone className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
                             <div className="flex flex-col w-full min-w-0 text-left">
                                 <label htmlFor="usr-phone" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left">Mobile Number</label>
