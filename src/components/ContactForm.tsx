@@ -84,13 +84,13 @@ export default function ContactForm() {
                         <label htmlFor="name" className="text-xs font-bold uppercase tracking-widest block mb-1.5" style={{ color: "#6B4F3A" }}>
                             Full Name <span style={{ color: "#C8602E" }}>*</span>
                         </label>
-                        <input type="text" id="name" name="name" required disabled={isSubmitting} className={inputCls} placeholder="John Doe" />
+                        <input type="text" id="name" name="name" required disabled={isSubmitting} className={inputCls} />
                     </div>
                     <div>
                         <label htmlFor="phone" className="text-xs font-bold uppercase tracking-widest block mb-1.5" style={{ color: "#6B4F3A" }}>
                             Phone Number
                         </label>
-                        <input type="tel" id="phone" name="phone" disabled={isSubmitting} className={inputCls} placeholder="+91 98765 43210" />
+                        <input type="tel" id="phone" name="phone" disabled={isSubmitting} className={inputCls} />
                     </div>
                 </div>
 
@@ -98,7 +98,7 @@ export default function ContactForm() {
                     <label htmlFor="email" className="text-xs font-bold uppercase tracking-widest block mb-1.5" style={{ color: "#6B4F3A" }}>
                         Email Address <span style={{ color: "#C8602E" }}>*</span>
                     </label>
-                    <input type="email" id="email" name="email" required disabled={isSubmitting} className={inputCls} placeholder="john@example.com" />
+                    <input type="email" id="email" name="email" required disabled={isSubmitting} className={inputCls} />
                 </div>
 
                 <div>
@@ -112,7 +112,6 @@ export default function ContactForm() {
                         rows={4}
                         disabled={isSubmitting}
                         className={inputCls + " resize-none"}
-                        placeholder="Tell us your dream destination, dates, and any special wishes..."
                     />
                 </div>
 

@@ -3,18 +3,37 @@ import Image from "next/image";
 import { Facebook, Instagram, Linkedin, MapPin, Mail, Compass } from "lucide-react";
 import { unstable_noStore as noStore } from "next/cache";
 import { directus, getSiteSettings } from "@/lib/directus";
+import { readItems } from "@directus/sdk";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 export default async function Footer() {
     noStore();
     let s: any = null;
+    let dynamicDestinations: { name: string; href: string }[] = [];
     try {
         s = await getSiteSettings();
     } catch { }
 
+    try {
+        const pkgs = (await directus.request(readItems("packages" as any, { limit: 100, fields: ["destinations"] as any }))) as any[];
+        const allDests: string[] = pkgs.flatMap((p: any) => Array.isArray(p.destinations) ? p.destinations : []);
+        const unique = Array.from(new Set(allDests)).slice(0, 5);
+        dynamicDestinations = unique.map((d) => ({ name: d, href: `/packages?destination=${encodeURIComponent(d)}` }));
+    } catch { }
+
+    if (dynamicDestinations.length === 0) {
+        dynamicDestinations = [
+            { name: "Kerala", href: "/packages" },
+            { name: "Rajasthan", href: "/packages" },
+            { name: "Maldives", href: "/packages" },
+            { name: "Europe", href: "/packages" },
+            { name: "Japan", href: "/packages" },
+        ];
+    }
+
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const logoUrl = s?.logo ? `${dUrl}/assets/${s.logo}` : null;
-    const email = s?.contact_email || "hello@igholidays.com";
+    const email = s?.contact_email || "info@igholidays.com";
     const phone = s?.contact_phone || "+91 98765 43210";
     const address = s?.office_address || "Tamil Nadu, India";
     const fbUrl = s?.facebook_url || "#";
@@ -25,13 +44,7 @@ export default async function Footer() {
     const columns = [
         {
             title: "Destinations",
-            links: [
-                { name: "Kerala", href: "#" },
-                { name: "Rajasthan", href: "#" },
-                { name: "Maldives", href: "#" },
-                { name: "Europe", href: "#" },
-                { name: "Japan", href: "#" },
-            ],
+            links: dynamicDestinations,
         },
         {
             title: "Services",
@@ -48,8 +61,8 @@ export default async function Footer() {
                 { name: "About Us", href: "/about" },
                 { name: "Blog", href: "/blog" },
                 { name: "Contact", href: "/contact" },
-                { name: "Careers", href: "#" },
-                { name: "Privacy Policy", href: "#" },
+                { name: "Terms & Conditions", href: "/terms" },
+                { name: "Privacy Policy", href: "/privacy-policy" },
             ],
         },
     ];
@@ -62,6 +75,7 @@ export default async function Footer() {
                     <div className="lg:col-span-2 space-y-8">
                         <Link href="/" className="inline-flex items-center gap-3">
                             {logoUrl ? (
+                                <div className="bg-white rounded-xl p-2 inline-flex">
                                 <Image
                                     src={logoUrl}
                                     alt={siteName}
@@ -70,7 +84,9 @@ export default async function Footer() {
                                     className="h-10 w-auto object-contain"
                                     unoptimized
                                 />
+                                </div>
                             ) : (
+
                                 <div className="flex items-center gap-3">
                                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-400">
                                         <Compass className="h-6 w-6 text-brand-950" />
@@ -85,6 +101,7 @@ export default async function Footer() {
                         <p className="text-sm leading-7 text-stone-400 max-w-md">
                             The leading premium travel agency in India. We craft bespoke international holiday packages, corporate MICE, and luxury domestic tours designed to exceed your expectations.
                         </p>
+                        <p className="text-xs text-stone-500 italic">{siteName} is an official brand of Infygru Private Limited.</p>
 
                         {/* Contact details */}
                         <ul className="space-y-4 text-sm font-medium text-stone-300">
@@ -153,11 +170,12 @@ export default async function Footer() {
             {/* Bottom Bar */}
             <div className="border-t border-brand-900 bg-brand-950">
                 <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 sm:px-6 md:flex-row lg:px-8 text-xs text-stone-500">
-                    <p>&copy; {new Date().getFullYear()} {siteName}. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} {siteName} &mdash; an official brand of Infygru Private Limited. All rights reserved.</p>
                     <div className="flex items-center gap-6">
-                        <Link href="#" className="transition-colors hover:text-stone-300">Privacy Policy</Link>
-                        <Link href="#" className="transition-colors hover:text-stone-300">Terms of Service</Link>
-                        <Link href="#" className="transition-colors hover:text-stone-300">Cookie Policy</Link>
+                        <Link href="/privacy-policy" className="transition-colors hover:text-stone-300">Privacy</Link>
+                        <Link href="/terms" className="transition-colors hover:text-stone-300">Terms</Link>
+                        <Link href="/cookie-policy" className="transition-colors hover:text-stone-300">Cookies</Link>
+                        <Link href="/refund-policy" className="transition-colors hover:text-stone-300">Refund Policy</Link>
                     </div>
                 </div>
             </div>

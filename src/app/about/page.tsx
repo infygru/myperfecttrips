@@ -160,13 +160,21 @@ export default async function AboutPage() {
           ────────────────────────────────────────────────────────── */}
             <section className="container-inner mt-24">
                 <div className="rounded-[2.5rem] bg-brand-950 p-12 text-center shadow-xl">
-                    <h2 className="mb-6 font-serif text-4xl font-medium text-white">Let's craft your next adventure.</h2>
+                    <h2 className="mb-6 font-serif text-4xl font-medium text-white">Let&apos;s craft your next adventure.</h2>
                     <p className="mb-8 text-stone-300 max-w-xl mx-auto">
-                        Whether it's a corporate retreat for hundreds or an intimate honeymoon, our experts are ready to begin planning.
+                        Whether it&apos;s a corporate retreat for hundreds or an intimate honeymoon, our experts are ready to begin planning.
                     </p>
-                    <Link href="/contact" className="btn-gold inline-flex">
-                        Contact Our Experts
-                    </Link>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+                        <Link href="/contact" className="btn-gold inline-flex">
+                            Contact Our Experts
+                        </Link>
+                        <a href="mailto:info@igholidays.com" className="btn-outline !text-white !border-white/30 hover:!border-gold-400 hover:!text-gold-400 inline-flex">
+                            info@igholidays.com
+                        </a>
+                    </div>
+                    <p className="text-xs text-stone-500 border-t border-brand-900 pt-6 mt-4">
+                        IG Holidays is an official brand of <strong className="text-stone-400">Infygru Private Limited</strong> &mdash; Registered in India.
+                    </p>
                 </div>
             </section>
         </main>

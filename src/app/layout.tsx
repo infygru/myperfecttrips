@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Syne } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CookieBanner from "@/components/CookieBanner";
 import { directus, getSiteSettings } from "@/lib/directus";
 import type { DirectusSettings } from "@/types/settings";
 
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <div className="flex-1 w-full">{children}</div>
         <Footer />
+        <CookieBanner />
       </body>
     </html>
   );

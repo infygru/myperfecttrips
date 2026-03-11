@@ -1,4 +1,4 @@
-import { directus, getSiteSettings } from "@/lib/directus";
+import { getSiteSettings } from "@/lib/directus";
 import { unstable_noStore as noStore } from "next/cache";
 import { MapPin, Mail } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
@@ -13,16 +13,14 @@ export default async function ContactPage() {
         s = await getSiteSettings();
     } catch { }
 
-    const email = s?.contact_email || "hello@igholidays.com";
+    const email = s?.contact_email || "info@igholidays.com";
     const phone = s?.contact_phone || "+91 98765 43210";
     const address = s?.office_address || "Tamil Nadu, India";
     const whatsapp = s?.whatsapp_number || "+91 98765 43210";
 
     return (
         <main className="min-h-screen bg-stone-50 pb-24">
-            {/* ──────────────────────────────────────────────────────────
-          SECTION 1: HEADER
-          ────────────────────────────────────────────────────────── */}
+            {/* SECTION 1: HEADER */}
             <section className="relative bg-brand-950 px-4 pt-20 pb-24 sm:px-6 lg:px-8 shadow-sm">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-800 via-brand-950 to-brand-950 opacity-80" />
                 <div className="container-inner relative z-10 flex flex-col items-center text-center">
@@ -38,14 +36,13 @@ export default async function ContactPage() {
                 </div>
             </section>
 
-            {/* ──────────────────────────────────────────────────────────
-          SECTION 2: CONTACT GRID
-          ────────────────────────────────────────────────────────── */}
+            {/* SECTION 2: CONTACT GRID */}
             <section className="container-inner -mt-12 relative z-20">
                 <div className="grid gap-8 lg:grid-cols-3">
 
                     {/* Contact Info Sidebar */}
                     <div className="flex flex-col gap-6 lg:col-span-1">
+
                         {/* Direct Contact */}
                         <div className="rounded-[2rem] bg-white p-8 sm:p-10 shadow-xl shadow-stone-200/50 border border-stone-100 flex-1">
                             <h2 className="mb-8 font-serif text-3xl font-medium text-brand-950">Contact Details</h2>
@@ -68,7 +65,7 @@ export default async function ContactPage() {
                                     </div>
                                     <div>
                                         <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-brand-950">Email Us</h3>
-                                        <a href={`mailto:${email}`} className="text-lg font-medium hover:text-brand-700 transition-colors">{email}</a>
+                                        <a href="mailto:info@igholidays.com" className="text-lg font-medium hover:text-brand-700 transition-colors">info@igholidays.com</a>
                                         <p className="mt-1 text-sm text-stone-500">We aim to reply within 24 hours</p>
                                     </div>
                                 </li>
@@ -105,6 +102,24 @@ export default async function ContactPage() {
                                 </a>
                             </div>
                         </div>
+
+                        {/* IG Holidays Brand Statement */}
+                        <div className="rounded-[2rem] bg-stone-100 border border-stone-200 p-6 text-center">
+                            <p className="text-xs text-stone-500 leading-relaxed">
+                                <strong className="text-stone-700">IG Holidays</strong> is an official brand of{" "}
+                                <strong className="text-stone-700">Infygru Private Limited</strong>.
+                            </p>
+                            <div className="flex flex-wrap items-center justify-center gap-3 mt-3 text-xs text-brand-600">
+                                <a href="/terms" className="hover:underline">Terms</a>
+                                <span className="text-stone-300">·</span>
+                                <a href="/privacy-policy" className="hover:underline">Privacy</a>
+                                <span className="text-stone-300">·</span>
+                                <a href="/cookie-policy" className="hover:underline">Cookies</a>
+                                <span className="text-stone-300">·</span>
+                                <a href="/refund-policy" className="hover:underline">Refund Policy</a>
+                            </div>
+                        </div>
+
                     </div>
 
                     {/* Contact Form */}
