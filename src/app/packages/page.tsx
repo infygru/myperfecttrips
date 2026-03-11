@@ -3,8 +3,9 @@ import { directus } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Clock, ArrowRight, Compass, ChevronRight } from "lucide-react";
+import { MapPin, Clock, ChevronRight, Compass, SlidersHorizontal } from "lucide-react";
 import type { Metadata } from "next";
+import PackagesFilter from "@/components/PackagesFilter";
 
 export const metadata: Metadata = {
     title: "Holiday Packages | IG Holidays – Premium Travel Agency",
@@ -13,170 +14,223 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function PackagesPage(props: { searchParams: Promise<{ category?: string }> }) {
+export default async function PackagesPage(props: {
+    searchParams: Promise<{
+        category?: string;
+        destination?: string;
+        duration?: string;
+        sort?: string;
+    }>;
+}) {
     noStore();
-    const searchParams = await props.searchParams;
-    const currentCategory = searchParams.category || "All";
+    const sp = await props.searchParams;
+    const currentCategory = sp.category || "";
+    const currentDest = sp.destination || "";
+    const currentDuration = sp.duration || "";
+    const currentSort = sp.sort || "default";
 
     let packages: any[] = [];
     try {
-        packages = (await directus.request(readItems("packages" as any, { limit: 100 }))) as any[];
+        packages = (await directus.request(readItems("packages" as any, { limit: 200 }))) as any[];
     } catch { }
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
 
-    const categories = ["All", ...Array.from(new Set(packages.map((p) => p.category).filter(Boolean)))];
-    const filteredPackages =
-        currentCategory === "All" ? packages : packages.filter((p) => p.category === currentCategory);
+    // Build filter options from data
+    const categories = Array.from(new Set(packages.map((p) => p.category).filter(Boolean))).sort() as string[];
+    const allDestinations = Array.from(
+        new Set(packages.flatMap((p) => (Array.isArray(p.destinations) ? p.destinations : [])))
+    ).sort() as string[];
+
+    // Filter
+    let filtered = packages.filter((p) => {
+        if (currentCategory && p.category !== currentCategory) return false;
+        if (currentDest && !(Array.isArray(p.destinations) && p.destinations.includes(currentDest))) return false;
+        if (currentDuration) {
+            const nights = Number(p.duration_nights) || 0;
+            if (currentDuration === "1-4" && (nights < 1 || nights > 4)) return false;
+            if (currentDuration === "5-7" && (nights < 5 || nights > 7)) return false;
+            if (currentDuration === "8-14" && (nights < 8 || nights > 14)) return false;
+            if (currentDuration === "15+" && nights < 15) return false;
+        }
+        return true;
+    });
+
+    // Sort
+    if (currentSort === "price-asc") filtered = [...filtered].sort((a, b) => (Number(a.price) || 0) - (Number(b.price) || 0));
+    if (currentSort === "price-desc") filtered = [...filtered].sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
+    if (currentSort === "duration-asc") filtered = [...filtered].sort((a, b) => (Number(a.duration_nights) || 0) - (Number(b.duration_nights) || 0));
+
+    const activeFilters = [currentCategory, currentDest, currentDuration].filter(Boolean).length;
 
     return (
-        <main className="min-h-screen bg-stone-50 pb-24">
+        <main className="min-h-screen bg-[#F8F7F4] pb-24">
 
             {/* ── HERO ── */}
-            <section className="relative h-[45vh] min-h-[360px] w-full overflow-hidden bg-brand-950">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_50%,_var(--tw-gradient-stops))] from-brand-700 via-brand-950 to-brand-950" />
-                {/* Decorative grid */}
-                <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }} />
-                <div className="absolute inset-0 flex flex-col items-start justify-end">
-                    <div className="container-inner w-full pb-14">
-                        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-                            <div>
-                                <span className="section-label !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30 mb-4">
-                                    Curated Collection
-                                </span>
-                                <h1 className="font-serif text-5xl sm:text-6xl font-medium text-white tracking-tight leading-none">
-                                    Extraordinary<br /><em className="text-gold-400 not-italic">Journeys</em>
-                                </h1>
-                            </div>
-                            <p className="text-stone-400 font-light max-w-xs text-sm leading-relaxed hidden sm:block">
-                                Handpicked premium holiday packages designed for those who seek the extraordinary.
+            <section className="relative bg-brand-950 overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_60%,_var(--tw-gradient-stops))] from-brand-700/60 via-brand-950 to-brand-950" />
+                {/* subtle grid texture */}
+                <div
+                    className="absolute inset-0 opacity-[0.035]"
+                    style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M0 0h80v80H0z' fill='none'/%3E%3Cpath d='M0 0h1v80H0zM79 0h1v80H79zM0 0v1h80V0M0 79v1h80V79' stroke='%23fff' stroke-width='0.5'/%3E%3C/svg%3E")`
+                    }}
+                />
+                <div className="container-inner relative z-10 py-24 pt-32">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                        <div>
+                            <p className="text-gold-400 text-xs font-bold uppercase tracking-[0.25em] mb-4 flex items-center gap-2">
+                                <span className="inline-block h-px w-8 bg-gold-400" />
+                                Curated Collection
+                            </p>
+                            <h1 className="font-serif text-6xl sm:text-7xl font-medium text-white tracking-tight leading-[0.95]">
+                                Extraordinary<br />
+                                <em className="text-gold-400 not-italic">Journeys</em>
+                            </h1>
+                        </div>
+                        <div className="max-w-sm">
+                            <p className="text-stone-400 font-light text-base leading-relaxed">
+                                {packages.length} handpicked premium packages — from serene Kerala backwaters to the peaks of the Swiss Alps.
                             </p>
                         </div>
                     </div>
                 </div>
+                {/* wave divider */}
+                <div className="relative h-16">
+                    <svg viewBox="0 0 1440 64" className="absolute bottom-0 w-full h-16" preserveAspectRatio="none">
+                        <path d="M0,64 L0,32 Q360,0 720,32 Q1080,64 1440,32 L1440,64 Z" fill="#F8F7F4" />
+                    </svg>
+                </div>
             </section>
 
-            {/* ── FILTER STRIP ── */}
-            <div className="sticky top-[72px] z-30 w-full border-b border-stone-200 bg-white/95 backdrop-blur-sm shadow-sm">
-                <div className="container-inner py-0">
-                    <nav className="flex gap-1 overflow-x-auto scrollbar-hide py-3">
-                        {categories.map((cat) => {
-                            const isActive = currentCategory === cat;
-                            return (
-                                <Link
-                                    key={cat}
-                                    href={cat === "All" ? "/packages" : `/packages?category=${encodeURIComponent(cat)}`}
-                                    className={`flex-shrink-0 rounded-full px-5 py-2 text-sm font-semibold transition-all ${isActive
-                                        ? "bg-brand-950 text-white shadow-md"
-                                        : "text-stone-600 bg-stone-100 hover:bg-stone-200"
-                                        }`}
-                                >
-                                    {cat}
+            {/* ── MAIN CONTENT: SIDEBAR + GRID ── */}
+            <section className="container-inner mt-2">
+                <div className="flex flex-col lg:flex-row gap-8 items-start">
+
+                    {/* ── SIDEBAR FILTER (client component) ── */}
+                    <PackagesFilter
+                        categories={categories}
+                        destinations={allDestinations}
+                        currentCategory={currentCategory}
+                        currentDest={currentDest}
+                        currentDuration={currentDuration}
+                        currentSort={currentSort}
+                        activeFilters={activeFilters}
+                    />
+
+                    {/* ── RIGHT: RESULTS ── */}
+                    <div className="flex-1 min-w-0">
+                        {/* Results bar */}
+                        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+                            <p className="text-sm text-stone-500">
+                                Showing <strong className="text-brand-950">{filtered.length}</strong>{" "}
+                                of <strong className="text-brand-950">{packages.length}</strong> packages
+                                {activeFilters > 0 && (
+                                    <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-brand-100 text-brand-700 text-xs font-bold px-2.5 py-0.5">
+                                        {activeFilters} filter{activeFilters > 1 ? "s" : ""} active
+                                    </span>
+                                )}
+                            </p>
+                            {activeFilters > 0 && (
+                                <Link href="/packages" className="text-xs font-semibold text-brand-600 hover:text-brand-800 hover:underline transition-colors">
+                                    Clear all filters ×
                                 </Link>
-                            );
-                        })}
-                    </nav>
-                </div>
-            </div>
+                            )}
+                        </div>
 
-            {/* ── PACKAGES GRID ── */}
-            <section className="container-inner mt-10">
-                <div className="flex items-center justify-between mb-8">
-                    <h2 className="font-serif text-2xl font-medium text-brand-950">
-                        {currentCategory === "All" ? "All Packages" : `${currentCategory} Packages`}
-                        <span className="ml-3 text-base font-sans font-normal text-stone-400">({filteredPackages.length})</span>
-                    </h2>
-                </div>
-
-                {filteredPackages.length > 0 ? (
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {filteredPackages.map((pkg) => {
-                            const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
-                            return (
-                                <Link
-                                    key={pkg.id}
-                                    href={`/packages/${pkg.slug || pkg.id}`}
-                                    className="group flex flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-stone-300/40"
-                                >
-                                    {/* Image */}
-                                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-stone-100">
-                                        {imgUrl ? (
-                                            <Image
-                                                src={imgUrl}
-                                                alt={pkg.title}
-                                                fill
-                                                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                                unoptimized
-                                            />
-                                        ) : (
-                                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-800 to-brand-950">
-                                                <Compass className="h-12 w-12 text-brand-700" />
-                                            </div>
-                                        )}
-                                        {/* Gradient overlay */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-
-                                        {/* Category badge */}
-                                        {pkg.category && (
-                                            <div className="absolute top-3 left-3 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-brand-950 shadow-sm">
-                                                {pkg.category}
-                                            </div>
-                                        )}
-
-                                        {/* Duration badge */}
-                                        {pkg.duration_nights && (
-                                            <div className="absolute bottom-3 right-3 rounded-full bg-brand-950/80 backdrop-blur-sm px-3 py-1 text-[11px] font-semibold text-white flex items-center gap-1">
-                                                <Clock className="h-3 w-3" />
-                                                {pkg.duration_nights}N / {pkg.duration_days}D
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Content */}
-                                    <div className="flex flex-1 flex-col p-5">
-                                        {pkg.destinations?.length > 0 && (
-                                            <div className="flex items-center gap-1 text-xs text-stone-500 mb-2">
-                                                <MapPin className="h-3 w-3 text-brand-500" />
-                                                <span className="truncate">{pkg.destinations.slice(0, 3).join(" · ")}</span>
-                                            </div>
-                                        )}
-
-                                        <h3 className="mb-3 font-serif text-xl font-medium leading-snug text-brand-950 group-hover:text-brand-700 transition-colors line-clamp-2">
-                                            {pkg.title}
-                                        </h3>
-
-                                        <div className="mt-auto flex items-center justify-between border-t border-stone-100 pt-4">
-                                            <div>
-                                                <p className="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-0.5">Starting from</p>
-                                                {pkg.price ? (
-                                                    <p className="font-serif text-xl font-bold text-brand-900">
-                                                        ₹{Number(pkg.price).toLocaleString("en-IN")}
-                                                    </p>
+                        {filtered.length > 0 ? (
+                            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                                {filtered.map((pkg) => {
+                                    const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
+                                    return (
+                                        <Link
+                                            key={pkg.id}
+                                            href={`/packages/${pkg.slug || pkg.id}`}
+                                            className="group flex flex-col overflow-hidden rounded-2xl bg-white border border-stone-200/80 shadow-sm hover:shadow-xl hover:shadow-stone-200/60 transition-all duration-300 hover:-translate-y-0.5"
+                                        >
+                                            {/* Image */}
+                                            <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
+                                                {imgUrl ? (
+                                                    <Image
+                                                        src={imgUrl}
+                                                        alt={pkg.title}
+                                                        fill
+                                                        className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                                                        unoptimized
+                                                    />
                                                 ) : (
-                                                    <p className="font-serif text-lg font-bold text-stone-800">On Request</p>
+                                                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-800 to-brand-950">
+                                                        <Compass className="h-10 w-10 text-brand-700/40" />
+                                                    </div>
+                                                )}
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+
+                                                {/* Badges top-left */}
+                                                <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
+                                                    {pkg.category && (
+                                                        <span className="rounded-md bg-white/90 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-brand-950 shadow-sm">
+                                                            {pkg.category}
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                {/* Duration badge bottom-right */}
+                                                {pkg.duration_nights && (
+                                                    <div className="absolute bottom-3 right-3 flex items-center gap-1 rounded-md bg-brand-950/80 backdrop-blur-sm px-2.5 py-1 text-[11px] font-medium text-white">
+                                                        <Clock className="h-3 w-3 text-gold-400 shrink-0" />
+                                                        {pkg.duration_nights}N&nbsp;/&nbsp;{pkg.duration_days}D
+                                                    </div>
+                                                )}
+
+                                                {/* Destinations bottom-left */}
+                                                {pkg.destinations?.length > 0 && (
+                                                    <div className="absolute bottom-3 left-3 flex items-center gap-1 text-[10px] font-medium text-white/90 max-w-[60%]">
+                                                        <MapPin className="h-3 w-3 text-gold-400 shrink-0" />
+                                                        <span className="truncate">{pkg.destinations.slice(0, 2).join(" · ")}</span>
+                                                    </div>
                                                 )}
                                             </div>
-                                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-brand-700 transition-all group-hover:bg-brand-950 group-hover:text-white">
-                                                <ChevronRight className="h-4 w-4" />
+
+                                            {/* Content */}
+                                            <div className="flex flex-1 flex-col p-5">
+                                                <h3 className="font-serif text-xl font-medium leading-snug text-brand-950 group-hover:text-brand-700 transition-colors line-clamp-2 mb-4">
+                                                    {pkg.title}
+                                                </h3>
+
+                                                <div className="mt-auto flex items-center justify-between pt-4 border-t border-stone-100">
+                                                    <div>
+                                                        <p className="text-[9px] font-bold uppercase tracking-widest text-stone-400">Starting from</p>
+                                                        {pkg.price ? (
+                                                            <p className="font-serif text-xl font-semibold text-brand-900 leading-tight">
+                                                                ₹{Number(pkg.price).toLocaleString("en-IN")}
+                                                            </p>
+                                                        ) : (
+                                                            <p className="font-serif text-lg font-semibold text-stone-700">On Request</p>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-stone-100 text-brand-700 transition-all group-hover:bg-brand-950 group-hover:text-white">
+                                                        <ChevronRight className="h-4 w-4" />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="flex w-full flex-col items-center justify-center rounded-3xl border border-dashed border-stone-300 bg-white py-32 text-center gap-4">
+                                <Compass className="h-14 w-14 text-stone-200" />
+                                <div>
+                                    <p className="text-xl font-serif font-medium text-stone-700 mb-1">No packages found</p>
+                                    <p className="text-stone-500 max-w-sm text-sm">Try adjusting your filters to explore more options.</p>
+                                </div>
+                                <Link href="/packages" className="btn-outline mt-2 text-sm">
+                                    Clear Filters
                                 </Link>
-                            );
-                        })}
+                            </div>
+                        )}
                     </div>
-                ) : (
-                    <div className="flex w-full flex-col items-center justify-center rounded-3xl border border-dashed border-stone-300 bg-white py-32 text-center">
-                        <Compass className="mb-4 h-12 w-12 text-stone-300" />
-                        <p className="text-xl font-medium text-stone-600 mb-2">No packages found</p>
-                        <p className="text-stone-500 max-w-sm text-sm">
-                            We couldn&apos;t find any packages in this category. Try selecting &quot;All&quot; to see everything we offer.
-                        </p>
-                        <Link href="/packages" className="btn-outline mt-6">
-                            Clear Filters
-                        </Link>
-                    </div>
-                )}
+                </div>
             </section>
         </main>
     );
