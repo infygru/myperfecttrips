@@ -175,9 +175,9 @@ export default function HeroSearchTabs() {
     };
 
     // Shared CSS classes for inputs
-    const inputContainerClass = "flex-1 min-w-0 flex items-start px-5 py-4 lg:py-3 gap-4 w-full cursor-text transition-colors";
+    const inputContainerClass = "flex-1 min-w-0 flex items-center px-5 py-4 lg:px-6 lg:py-4 gap-4 sm:gap-5 w-full cursor-text transition-colors";
     const labelClass = "text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left truncate w-full";
-    const inputClass = "w-full bg-transparent text-base font-semibold text-brand-950 placeholder:text-stone-300 placeholder:font-normal focus:outline-none truncate";
+    const inputClass = "w-full bg-transparent text-base font-semibold text-brand-950 placeholder:text-stone-400 placeholder:font-medium focus:outline-none truncate";
 
     const renderPaxDropdown = (
         adults: string, setAdults: (v: string) => void,
@@ -186,7 +186,7 @@ export default function HeroSearchTabs() {
         dropRef: React.RefObject<HTMLDivElement | null>
     ) => (
         <div className={`relative ${inputContainerClass} hover:bg-stone-50/50 cursor-pointer`} ref={dropRef} onClick={() => setShowDrop(true)}>
-            <Users className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
+            <Users className="h-5 w-5 text-brand-600 flex-shrink-0" />
             <div className="flex flex-col w-full text-left">
                 <label className={`${labelClass} cursor-pointer`}>Travelers</label>
                 <div className="w-full bg-transparent text-base font-semibold text-brand-950 truncate flex items-center justify-between">
@@ -257,7 +257,7 @@ export default function HeroSearchTabs() {
             )}
 
             {/* Content Container (Mobile Stacked / Desktop Pill) */}
-            <div className="w-full bg-white rounded-[2rem] lg:rounded-full p-2 shadow-2xl border border-stone-200 relative overflow-visible">
+            <div className="w-full bg-white rounded-[1.5rem] lg:rounded-full p-1 sm:p-2 shadow-2xl border border-stone-200 relative overflow-visible">
 
                 {/* ---------------- STEP 1: Search Criteria ---------------- */}
                 {step === 1 ? (
@@ -267,7 +267,7 @@ export default function HeroSearchTabs() {
                             <form onSubmit={handleNextStep} className="flex flex-col lg:flex-row w-full items-center divide-y lg:divide-y-0 lg:divide-x divide-stone-200">
                                 {/* Destination */}
                                 <div className={inputContainerClass} onClick={() => document.getElementById('hol-dest')?.focus()}>
-                                    <MapPin className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
+                                    <MapPin className="h-5 w-5 text-brand-600 flex-shrink-0" />
                                     <div className="flex flex-col w-full min-w-0">
                                         <label htmlFor="hol-dest" className={labelClass}>Where to?</label>
                                         <input
@@ -287,7 +287,7 @@ export default function HeroSearchTabs() {
 
                                 {/* Budget Dropdown */}
                                 <div className={`relative ${inputContainerClass}`} ref={budgetRef} onClick={() => setShowBudgetDrop(!showBudgetDrop)}>
-                                    <Wallet className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
+                                    <Wallet className="h-5 w-5 text-brand-600 flex-shrink-0" />
                                     <div className="flex flex-col w-full text-left cursor-pointer">
                                         <label className={`${labelClass} cursor-pointer`}>Budget Rate</label>
                                         <div className="w-full bg-transparent text-base font-semibold text-brand-950 truncate flex items-center justify-between">
@@ -322,7 +322,7 @@ export default function HeroSearchTabs() {
                                 </div>
 
                                 {/* Next Button */}
-                                <div className="flex w-full lg:w-auto p-3 lg:p-2 bg-transparent justify-center items-center flex-shrink-0">
+                                <div className="flex w-full lg:w-auto p-4 lg:p-2 bg-transparent justify-center items-center flex-shrink-0">
                                     <button type="submit" className="w-full lg:w-auto bg-brand-900 hover:bg-brand-800 text-white font-semibold rounded-full px-8 py-4 lg:py-4 transition-colors text-sm flex justify-center items-center gap-2 group shadow-lg shadow-brand-900/20 hover:shadow-xl">
                                         Continue <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                                     </button>
@@ -335,7 +335,7 @@ export default function HeroSearchTabs() {
                             <form onSubmit={handleNextStep} className="flex flex-col lg:flex-row w-full items-center divide-y lg:divide-y-0 lg:divide-x divide-stone-200">
                                 {/* FROM */}
                                 <div className={`relative ${inputContainerClass}`} ref={fromRef} onClick={() => document.getElementById('fl-from')?.focus()}>
-                                    <Plane className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" style={{ transform: "rotate(45deg)" }} />
+                                    <Plane className="h-5 w-5 text-brand-600 flex-shrink-0" style={{ transform: "rotate(45deg)" }} />
                                     <div className="flex flex-col w-full min-w-0">
                                         <label htmlFor="fl-from" className={labelClass}>From</label>
                                         <input
@@ -374,7 +374,7 @@ export default function HeroSearchTabs() {
 
                                 {/* TO */}
                                 <div className={`relative ${inputContainerClass}`} ref={toRef} onClick={() => document.getElementById('fl-to')?.focus()}>
-                                    <MapPin className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
+                                    <MapPin className="h-5 w-5 text-brand-600 flex-shrink-0" />
                                     <div className="flex flex-col w-full min-w-0">
                                         <label htmlFor="fl-to" className={labelClass}>To</label>
                                         <input
@@ -412,15 +412,15 @@ export default function HeroSearchTabs() {
                                 </div>
 
                                 {/* Dates */}
-                                <div className={`flex flex-col lg:flex-row items-stretch w-full lg:w-auto flex-shrink-0 relative`}>
+                                <div className={`flex flex-row items-stretch w-full lg:w-auto flex-shrink-0 relative`}>
                                     
                                     {/* DEPART */}
-                                    <div className={`relative flex-1 min-w-0 flex items-start px-5 py-4 lg:py-3 gap-4 lg:w-[180px] cursor-pointer transition-colors border-b lg:border-b-0 lg:border-r border-stone-200 hover:bg-stone-50/50`} ref={departRef} onClick={() => setShowDepartDrop(!showDepartDrop)}>
-                                        <Calendar className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
+                                    <div className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors border-r border-stone-200 hover:bg-stone-50/50`} ref={departRef} onClick={() => setShowDepartDrop(!showDepartDrop)}>
+                                        <Calendar className="h-5 w-5 text-brand-600 flex-shrink-0" />
                                         <div className="flex flex-col w-full min-w-0 text-left">
                                             <label className={`${labelClass} cursor-pointer`}>Depart</label>
-                                            <div className="w-full bg-transparent text-base font-semibold text-brand-950 truncate flex items-center justify-between">
-                                                <span className={departDate ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{departDate ? format(departDate, "dd MMM yyyy") : "Select Date"}</span>
+                                            <div className="w-full bg-transparent text-sm sm:text-base font-semibold text-brand-950 truncate flex items-center justify-between">
+                                                <span className={departDate ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{departDate ? format(departDate, "dd MMM") : "Select"}</span>
                                             </div>
                                         </div>
                                         {showDepartDrop && (
@@ -440,15 +440,15 @@ export default function HeroSearchTabs() {
                                     </div>
 
                                     {/* RETURN */}
-                                    <div className={`relative flex-1 min-w-0 flex items-start px-5 py-4 lg:py-3 gap-4 lg:w-[180px] cursor-pointer transition-colors hover:bg-stone-50/50`} ref={returnRef} onClick={() => setShowReturnDrop(!showReturnDrop)}>
+                                    <div className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors hover:bg-stone-50/50`} ref={returnRef} onClick={() => setShowReturnDrop(!showReturnDrop)}>
                                         <div className="flex flex-col w-full min-w-0 text-left">
                                             <label className={`${labelClass} cursor-pointer`}>Return</label>
-                                            <div className="w-full bg-transparent text-base font-semibold text-brand-950 truncate flex items-center justify-between">
-                                                <span className={returnDate ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{returnDate ? format(returnDate, "dd MMM yyyy") : "One Way"}</span>
+                                            <div className="w-full bg-transparent text-sm sm:text-base font-semibold text-brand-950 truncate flex items-center justify-between">
+                                                <span className={returnDate ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{returnDate ? format(returnDate, "dd MMM") : "One Way"}</span>
                                             </div>
                                         </div>
                                         {showReturnDrop && (
-                                            <div className="absolute top-[100%] left-0 lg:left-1/2 lg:-translate-x-1/2 mt-2 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 z-50 p-2 animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+                                            <div className="absolute top-[100%] right-0 lg:left-1/2 lg:-translate-x-1/2 mt-2 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 z-50 p-2 animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
                                                 <MiniCalendar
                                                     selected={returnDate}
                                                     onSelect={(d) => { setReturnDate(d); setShowReturnDrop(false); }}
@@ -463,7 +463,7 @@ export default function HeroSearchTabs() {
                                 {renderPaxDropdown(flightAdults, setFlightAdults, flightChildren, setFlightChildren, showFlightPaxDrop, setShowFlightPaxDrop, flightPaxRef)}
 
                                 {/* Next Button */}
-                                <div className="flex w-full lg:w-auto p-3 lg:p-2 bg-transparent justify-center items-center flex-shrink-0">
+                                <div className="flex w-full lg:w-auto p-4 lg:p-2 bg-transparent justify-center items-center flex-shrink-0">
                                     <button type="submit" className="w-full lg:w-[140px] bg-brand-900 hover:bg-brand-800 text-white font-semibold rounded-full px-4 py-4 lg:py-4 transition-colors text-sm flex justify-center items-center gap-2 group shadow-lg shadow-brand-900/20 hover:shadow-xl">
                                         Continue <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                                     </button>
@@ -486,8 +486,8 @@ export default function HeroSearchTabs() {
                         </div>
 
                         {/* Name */}
-                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-start px-5 py-4 lg:py-3 gap-3 w-full cursor-text transition-colors hover:bg-stone-50/50" onClick={() => document.getElementById('usr-name')?.focus()}>
-                            <User className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
+                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors hover:bg-stone-50/50" onClick={() => document.getElementById('usr-name')?.focus()}>
+                            <User className="h-5 w-5 text-brand-600 flex-shrink-0" />
                             <div className="flex flex-col w-full min-w-0 text-left">
                                 <label htmlFor="usr-name" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left">Full Name</label>
                                 <input
@@ -503,8 +503,8 @@ export default function HeroSearchTabs() {
                         </div>
 
                         {/* Phone */}
-                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-start px-5 py-4 lg:py-3 gap-3 w-full cursor-text transition-colors hover:bg-stone-50/50" onClick={() => document.getElementById('usr-phone')?.focus()}>
-                            <Phone className="h-5 w-5 text-brand-600 flex-shrink-0 mt-1" />
+                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors hover:bg-stone-50/50" onClick={() => document.getElementById('usr-phone')?.focus()}>
+                            <Phone className="h-5 w-5 text-brand-600 flex-shrink-0" />
                             <div className="flex flex-col w-full min-w-0 text-left">
                                 <label htmlFor="usr-phone" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left">Mobile Number</label>
                                 <input

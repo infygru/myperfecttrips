@@ -189,7 +189,7 @@ export default async function Home() {
             <span className="h-px w-8 bg-[#fbbf24]/50" />
           </div>
 
-          <h1 className="mb-6 max-w-5xl font-serif text-3xl font-medium leading-[1.1] text-white sm:text-5xl md:text-6xl lg:text-7xl tracking-tight px-2">
+          <h1 className="mx-auto mt-4 max-w-3xl text-balance font-serif text-5xl font-medium tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl px-4 sm:px-0 drop-shadow-md">
             Premium Holiday Packages & <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent italic font-semibold">Bespoke Travel.</span>
           </h1>
@@ -228,14 +228,14 @@ export default async function Home() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 sm:gap-6">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 sm:gap-6 pb-4">
               {destinationsArray.map((dest) => {
                 const IconComponent = getDestIcon(dest.name);
                 return (
                   <Link
                     key={dest.name}
-                    href={`/packages?category=${dest.name}`}
-                    className="group relative flex aspect-[4/3] sm:aspect-square w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-stone-50 transition-all hover:-translate-y-1.5 hover:shadow-xl border border-stone-100"
+                    href={`/packages?query=${encodeURIComponent(dest.name)}`}
+                    className="group flex flex-col w-full px-2 py-4 sm:p-6 items-center gap-3 rounded-[1.5rem] bg-stone-50 text-center shadow-sm transition-all hover:-translate-y-1 hover:bg-white hover:shadow-md"
                   >
                     <div className="absolute inset-0 bg-white opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
@@ -282,7 +282,7 @@ export default async function Home() {
           </div>
 
           {featuredPackages.length > 0 ? (
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 pb-6 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
               {featuredPackages.map((pkg) => {
                 const imgUrl = pkg.image
                   ? `${dUrl}/assets/${pkg.image}`
@@ -292,7 +292,7 @@ export default async function Home() {
                   <Link
                     key={pkg.id}
                     href={`/packages/${pkg.slug || pkg.id}`}
-                    className="group flex flex-col overflow-hidden rounded-[2rem] border border-stone-200 bg-white transition-all hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300"
+                    className="group flex flex-col w-[85vw] sm:w-auto snap-center shrink-0 overflow-hidden rounded-[2rem] border border-stone-200 bg-white transition-all hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300"
                   >
                     <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden bg-stone-100">
                       {imgUrl ? (
@@ -378,9 +378,9 @@ export default async function Home() {
               <span className="section-label mx-auto">Travel Styles</span>
               <h2 className="text-4xl text-brand-950 md:text-5xl font-medium tracking-tight">Theme Based Holidays</h2>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-8 pb-4">
               {themePackages.map((pkg, idx) => (
-                <Link href={`/packages?category=${pkg.category}`} key={pkg.id || idx} className="group relative aspect-square sm:aspect-[4/5] lg:aspect-square overflow-hidden rounded-3xl bg-stone-900 shadow-sm transition-transform hover:-translate-y-1">
+                <Link href={`/packages?category=${pkg.category}`} key={pkg.id || idx} className="group relative w-full aspect-square sm:aspect-[4/5] lg:aspect-square overflow-hidden rounded-3xl bg-stone-900 shadow-sm transition-transform hover:-translate-y-1">
                   <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.category} fill className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-100" unoptimized />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent p-6 text-center">
                     <h3 className="font-serif text-2xl font-medium text-white">{pkg.category}</h3>
@@ -402,9 +402,9 @@ export default async function Home() {
               <span className="section-label mx-auto">Affordable Getaways</span>
               <h2 className="text-4xl text-stone-900 md:text-5xl tracking-tight">Budget Friendly Packages</h2>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 pb-6">
               {budgetPackages.map((pkg, idx) => (
-                <Link href={`/packages/${pkg.slug || pkg.id}`} key={pkg.id || idx} className="group relative h-64 overflow-hidden rounded-[2rem]">
+                <Link href={`/packages/${pkg.slug || pkg.id}`} key={pkg.id || idx} className="group relative w-full h-[280px] sm:h-64 overflow-hidden rounded-[2rem]">
                   <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized />
                   <div className="absolute inset-0 bg-stone-900/50 transition-colors duration-500 group-hover:bg-brand-950/80" />
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
@@ -429,7 +429,7 @@ export default async function Home() {
             <span className="section-label mx-auto">Client Stories</span>
             <h2 className="text-4xl text-brand-950 md:text-5xl tracking-tight">What Our Travelers Say</h2>
           </div>
-          <div className="grid gap-8 lg:grid-cols-3">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 lg:grid lg:grid-cols-3 pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
             {[
               { name: "Rahul & Priya", tour: "Maldives Honeymoon", text: "IGHolidays planned the most magical honeymoon for us. The water villa upgrade they secured was breathtaking. Truly the best luxury travel agency!" },
               { name: "Suresh Menon", tour: "Dubai Corporate MICE", text: "Handling our 150-person corporate summit in Dubai was no small feat. IGHolidays executed everything flawlessly from visas to gala dinners." },
