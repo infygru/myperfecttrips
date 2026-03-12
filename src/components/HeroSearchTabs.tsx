@@ -83,17 +83,27 @@ export default function HeroSearchTabs() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const filteredFromAirports = airportsList.filter(a =>
-        a.name?.toLowerCase().includes(fromQuery.toLowerCase()) ||
-        a.city?.toLowerCase().includes(fromQuery.toLowerCase()) ||
-        a.iata_code?.toLowerCase().includes(fromQuery.toLowerCase())
-    ).slice(0, 8);
+    const filteredFromAirports = airportsList.filter(a => {
+        const q = fromQuery.toLowerCase();
+        return (
+            a.name?.toLowerCase().includes(q) ||
+            a.city?.toLowerCase().includes(q) ||
+            a.country?.toLowerCase().includes(q) ||
+            a.iata_code?.toLowerCase().includes(q) ||
+            `${a.city?.toLowerCase()} (${a.iata_code?.toLowerCase()})`.includes(q)
+        );
+    }).slice(0, 8);
 
-    const filteredToAirports = airportsList.filter(a =>
-        a.name?.toLowerCase().includes(toQuery.toLowerCase()) ||
-        a.city?.toLowerCase().includes(toQuery.toLowerCase()) ||
-        a.iata_code?.toLowerCase().includes(toQuery.toLowerCase())
-    ).slice(0, 8);
+    const filteredToAirports = airportsList.filter(a => {
+        const q = toQuery.toLowerCase();
+        return (
+            a.name?.toLowerCase().includes(q) ||
+            a.city?.toLowerCase().includes(q) ||
+            a.country?.toLowerCase().includes(q) ||
+            a.iata_code?.toLowerCase().includes(q) ||
+            `${a.city?.toLowerCase()} (${a.iata_code?.toLowerCase()})`.includes(q)
+        );
+    }).slice(0, 8);
 
     const handleNextStep = (e: React.FormEvent) => {
         e.preventDefault();
