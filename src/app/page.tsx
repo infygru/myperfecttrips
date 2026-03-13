@@ -56,7 +56,7 @@ export default async function Home() {
 
   // Split by package_type field
   const domesticPackages     = allPackages.filter(p => p.package_type === "domestic");
-  const internationalPackages = allPackages.filter(p => p.package_type !== "domestic");
+  const internationalPackages = allPackages.filter(p => p.package_type === "international");
 
   const featuredPackages = allPackages.slice(0, 6);
 
