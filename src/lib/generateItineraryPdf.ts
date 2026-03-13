@@ -1,5 +1,7 @@
 import jsPDF from "jspdf";
 
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+
 function stripHtml(html: string): string {
   return html
     .replace(/<br\s*\/?>/gi, "\n")
@@ -19,7 +21,6 @@ function stripHtml(html: string): string {
     .trim();
 }
 
-/** Split text into wrapped lines, preserving paragraph breaks */
 function wrapText(doc: jsPDF, text: string, maxWidth: number): string[] {
   const result: string[] = [];
   for (const para of text.split("\n")) {
@@ -29,57 +30,99 @@ function wrapText(doc: jsPDF, text: string, maxWidth: number): string[] {
   return result;
 }
 
-// ── CONSTANTS ────────────────────────────────────────────────────────────────
+// ── CONSTANTS ─────────────────────────────────────────────────────────────────
 const BRAND_DARK = [24, 24, 27]   as const;
 const GOLD       = [212, 175, 55] as const;
 const PAGE_W     = 210;
 const PAGE_H     = 297;
-const MARGIN     = 18;
-const CONTENT_W  = PAGE_W - MARGIN * 2;   // 174 mm
+const M          = 18;            // margin
+const CW         = PAGE_W - M * 2; // content width = 174 mm
+const LH9        = 5.4;           // line height for 9 pt
+const LH8        = 5.0;           // line height for 8 pt
+const FOOTER_H   = 16;            // reserved at page bottom
 
-// Line heights (mm) per font size
-const LH9  = 5.2;   // 9 pt body
-const LH85 = 5.0;   // 8.5 pt small
-const LH8  = 4.8;   // 8 pt tiny
-
-function addFooter(doc: jsPDF, pageNum: number, totalPages: number) {
-  const disclaimerY = PAGE_H - 18;
+// ── FOOTER ────────────────────────────────────────────────────────────────────
+function drawFooter(doc: jsPDF, pageNum: number, totalPages: number) {
+  // Disclaimer line
   doc.setFont("helvetica", "italic");
-  doc.setFontSize(7);
-  doc.setTextColor(150, 150, 150);
+  doc.setFontSize(6.5);
+  doc.setTextColor(160, 160, 160);
   doc.text(
-    "This is a proposed itinerary, not a confirmed booking. Prices & availability are subject to final confirmation.",
-    PAGE_W / 2, disclaimerY, { align: "center" }
+    "Proposed itinerary — not a confirmed booking. Prices & availability subject to final confirmation.",
+    PAGE_W / 2, PAGE_H - FOOTER_H - 1, { align: "center" }
   );
-
-  // Footer bar
+  // Bar
   doc.setFillColor(...BRAND_DARK);
-  doc.rect(0, PAGE_H - 13, PAGE_W, 13, "F");
+  doc.rect(0, PAGE_H - FOOTER_H, PAGE_W, FOOTER_H, "F");
+  doc.setFillColor(...GOLD);
+  doc.rect(0, PAGE_H - FOOTER_H, PAGE_W, 1, "F");
+  // Brand
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
-  doc.setTextColor(180, 180, 180);
-  doc.text("IG Holidays — A Brand of Infygru Private Limited", PAGE_W / 2, PAGE_H - 4.5, { align: "center" });
+  doc.setTextColor(190, 190, 190);
+  doc.text("IG Holidays — A Brand of Infygru Private Limited", PAGE_W / 2, PAGE_H - 5, { align: "center" });
+  // Page number
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
   doc.setTextColor(...GOLD);
-  doc.text(`${pageNum} / ${totalPages}`, PAGE_W - MARGIN, PAGE_H - 4.5, { align: "right" });
+  doc.text(`${pageNum} / ${totalPages}`, PAGE_W - M, PAGE_H - 5, { align: "right" });
 }
 
-function addSectionHeading(
-  doc: jsPDF,
-  title: string,
-  yRef: { y: number },
-  checkNewPage: (h: number) => void
-) {
-  checkNewPage(20);
-  yRef.y += 7;
+// ── SECTION HEADING ───────────────────────────────────────────────────────────
+function drawSection(doc: jsPDF, title: string, yRef: { y: number }, guard: (h: number) => void) {
+  guard(20);
+  yRef.y += 6;
   doc.setFillColor(...BRAND_DARK);
-  doc.roundedRect(MARGIN, yRef.y, CONTENT_W, 10, 2, 2, "F");
+  doc.roundedRect(M, yRef.y, CW, 10, 2, 2, "F");
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(9.5);
+  doc.setFontSize(9);
   doc.setTextColor(...GOLD);
-  doc.text(title.toUpperCase(), MARGIN + 5, yRef.y + 6.8);
+  doc.text(title.toUpperCase(), M + 5, yRef.y + 6.6);
   yRef.y += 16;
 }
 
+// ── BULLET ROW ────────────────────────────────────────────────────────────────
+function drawBullet(doc: jsPDF, text: string, yRef: { y: number }, guard: (h: number) => void, color: number[]) {
+  doc.setFontSize(9);
+  const lines = doc.splitTextToSize(text, CW - 8);
+  guard(lines.length * LH9 + 2);
+  doc.setFillColor(color[0], color[1], color[2]);
+  doc.circle(M + 2, yRef.y - 1.5, 1.3, "F");
+  doc.setFont("helvetica", "normal");
+  for (let i = 0; i < lines.length; i++) {
+    doc.text(lines[i], M + 6, yRef.y + i * LH9);
+  }
+  yRef.y += lines.length * LH9 + 2;
+}
+
+// ── BADGE (pill-shaped label row) ─────────────────────────────────────────────
+function drawBadge(
+  doc: jsPDF,
+  text: string,
+  yRef: { y: number },
+  guard: (h: number) => void,
+  fillRgb: number[],
+  strokeRgb: number[],
+  textRgb: number[],
+) {
+  guard(9);
+  doc.setFontSize(7.5);
+  // Truncate if needed so badge never exceeds content width
+  let label = text;
+  while (doc.getTextWidth(label) + 10 > CW && label.length > 10) {
+    label = label.slice(0, -4) + "…";
+  }
+  const bw = Math.min(doc.getTextWidth(label) + 10, CW);
+  doc.setFillColor(fillRgb[0], fillRgb[1], fillRgb[2]);
+  doc.setDrawColor(strokeRgb[0], strokeRgb[1], strokeRgb[2]);
+  doc.roundedRect(M, yRef.y, bw, 6.5, 1.5, 1.5, "FD");
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(textRgb[0], textRgb[1], textRgb[2]);
+  doc.text(label, M + 5, yRef.y + 4.4);
+  yRef.y += 9;
+}
+
+// ── EXPORTS ───────────────────────────────────────────────────────────────────
 export interface ItineraryDay {
   id?: number;
   day_number?: number;
@@ -107,245 +150,244 @@ export async function generateItineraryPdf(
 ) {
   const doc = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
 
-  // ── HEADER BAR ───────────────────────────────────────────────────────────
+  // ── PAGE GUARD ───────────────────────────────────────────────────────────
+  const yRef = { y: 0 };
+  function guard(needed: number) {
+    if (yRef.y + needed > PAGE_H - FOOTER_H - 4) {
+      doc.addPage();
+      yRef.y = 20;
+    }
+  }
+
+  // ── HEADER ───────────────────────────────────────────────────────────────
+  const HDR_H = 42;
   doc.setFillColor(...BRAND_DARK);
-  doc.rect(0, 0, PAGE_W, 40, "F");
+  doc.rect(0, 0, PAGE_W, HDR_H, "F");
   doc.setFillColor(...GOLD);
-  doc.rect(0, 40, PAGE_W, 1.5, "F");
+  doc.rect(0, HDR_H, PAGE_W, 1.5, "F");
 
   // Logo
   let finalLogoUrl = logoUrl;
   if (finalLogoUrl?.includes("localhost")) {
-    const assetId = finalLogoUrl.split("/assets/")[1]?.split("?")[0];
-    if (assetId) finalLogoUrl = `https://api.igholidays.com/assets/${assetId}`;
+    const id = finalLogoUrl.split("/assets/")[1]?.split("?")[0];
+    if (id) finalLogoUrl = `https://api.igholidays.com/assets/${id}`;
   }
 
   let logoLoaded = false;
   if (finalLogoUrl) {
     try {
-      const proxyUrl = `/_next/image?url=${encodeURIComponent(finalLogoUrl)}&w=256&q=75`;
-      const resp = await fetch(proxyUrl);
+      const resp = await fetch(`/_next/image?url=${encodeURIComponent(finalLogoUrl)}&w=256&q=80`);
       if (resp.ok) {
         const blob = await resp.blob();
-        const dataUrl = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.readAsDataURL(blob);
+        const dataUrl = await new Promise<string>((res) => {
+          const r = new FileReader();
+          r.onload = () => res(r.result as string);
+          r.readAsDataURL(blob);
         });
-        let lw = 42, lh = 22;
-        await new Promise((resolve) => {
+        let lw = 44, lh = 22;
+        await new Promise<void>((res) => {
           const img = new Image();
           img.onload = () => {
-            const aspect = img.naturalWidth / img.naturalHeight;
-            if (aspect > lw / lh) { lh = lw / aspect; }
-            else { lw = lh * aspect; }
-            resolve(true);
+            const asp = img.naturalWidth / img.naturalHeight;
+            if (asp > lw / lh) lh = lw / asp; else lw = lh * asp;
+            res();
           };
           img.src = dataUrl;
         });
-        const logoY = (40 - lh) / 2;
+        const ly = (HDR_H - lh) / 2;
         doc.setFillColor(255, 255, 255);
-        doc.roundedRect(MARGIN - 2, logoY - 2, lw + 4, lh + 4, 1.5, 1.5, "F");
-        doc.addImage(dataUrl, "PNG", MARGIN, logoY, lw, lh);
+        doc.roundedRect(M - 2, ly - 2, lw + 4, lh + 4, 1.5, 1.5, "F");
+        doc.addImage(dataUrl, "PNG", M, ly, lw, lh);
         logoLoaded = true;
       }
     } catch { /* fallback */ }
   }
   if (!logoLoaded) {
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(20);
+    doc.setFontSize(19);
     doc.setTextColor(255, 255, 255);
-    doc.text("IG HOLIDAYS", MARGIN, 25);
+    doc.text("IG HOLIDAYS", M, 22);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7);
     doc.setTextColor(...GOLD);
-    doc.text("Your Trusted Travel Partner", MARGIN, 32);
+    doc.text("Your Trusted Travel Partner", M, 30);
   }
 
-  // Date + website (top-right of header)
+  // Top-right: date + contact
   const dateStr = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
   doc.setFont("helvetica", "bold");
   doc.setFontSize(7.5);
   doc.setTextColor(...GOLD);
-  doc.text(`DATE: ${dateStr.toUpperCase()}`, PAGE_W - MARGIN, 16, { align: "right" });
+  doc.text(`DATE: ${dateStr.toUpperCase()}`, PAGE_W - M, 14, { align: "right" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7);
-  doc.setTextColor(180, 180, 180);
-  doc.text("igholidays.com", PAGE_W - MARGIN, 22, { align: "right" });
-  doc.text("+91 8807709919", PAGE_W - MARGIN, 28, { align: "right" });
+  doc.setTextColor(200, 200, 200);
+  doc.text("igholidays.com", PAGE_W - M, 21, { align: "right" });
+  doc.text("+91 8807709919", PAGE_W - M, 28, { align: "right" });
+  doc.text("info@igholidays.com", PAGE_W - M, 35, { align: "right" });
 
   // ── TITLE BLOCK ──────────────────────────────────────────────────────────
-  let y = 52;
+  yRef.y = HDR_H + 12;
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(20);
+  doc.setFontSize(19);
   doc.setTextColor(...BRAND_DARK);
-  const titleLines = doc.splitTextToSize(pkg.title || "Travel Package", CONTENT_W);
-  doc.text(titleLines, MARGIN, y);
-  y += titleLines.length * 9 + 4;
+  const titleLines = doc.splitTextToSize(pkg.title || "Travel Package", CW);
+  doc.text(titleLines, M, yRef.y);
+  yRef.y += titleLines.length * 8.5 + 5;
 
   // Meta chips
   const chips: string[] = [];
   if (pkg.category) chips.push(pkg.category);
   if (pkg.duration_nights && pkg.duration_days) chips.push(`${pkg.duration_nights}N / ${pkg.duration_days}D`);
-  const destLabel = pkg.destination || pkg.destinations?.join(" · ");
-  if (destLabel) chips.push(destLabel);
+  const dest = pkg.destination || pkg.destinations?.join(" · ");
+  if (dest) chips.push(dest);
 
   if (chips.length) {
-    let chipX = MARGIN;
     doc.setFontSize(8);
     doc.setFont("helvetica", "normal");
+    let cx = M;
     for (const chip of chips) {
-      const tw = doc.getTextWidth(chip) + 8;
-      if (chipX + tw > PAGE_W - MARGIN) { y += 9; chipX = MARGIN; }
+      const cw = doc.getTextWidth(chip) + 8;
+      if (cx + cw > PAGE_W - M) { yRef.y += 9; cx = M; }
       doc.setFillColor(244, 244, 245);
       doc.setDrawColor(210, 210, 215);
-      doc.roundedRect(chipX, y - 0.5, tw, 7, 1.5, 1.5, "FD");
+      doc.roundedRect(cx, yRef.y - 1, cw, 7, 1.5, 1.5, "FD");
       doc.setTextColor(50, 50, 60);
-      doc.text(chip, chipX + 4, y + 4.3);
-      chipX += tw + 3;
+      doc.text(chip, cx + 4, yRef.y + 4.2);
+      cx += cw + 3;
     }
-    y += 13;
+    yRef.y += 12;
   }
 
-  // ── BODY ─────────────────────────────────────────────────────────────────
-  const yRef = { y };
+  // ── ITINERARY ────────────────────────────────────────────────────────────
+  drawSection(doc, "Day-by-Day Itinerary", yRef, guard);
 
-  function checkNewPage(neededHeight: number) {
-    if (yRef.y + neededHeight > PAGE_H - 24) {
-      doc.addPage();
-      yRef.y = 18;
-    }
-  }
+  const hasDays = Array.isArray(itineraryDays) && itineraryDays.length > 0;
 
-  // ── DAY-BY-DAY ITINERARY ─────────────────────────────────────────────────
-  addSectionHeading(doc, "Day-by-Day Itinerary", yRef, checkNewPage);
+  if (hasDays) {
+    const sorted = [...itineraryDays!].sort((a, b) => (a.day_number ?? 0) - (b.day_number ?? 0));
 
-  const hasDayByDay = Array.isArray(itineraryDays) && itineraryDays.length > 0;
-
-  if (hasDayByDay) {
-    for (const day of itineraryDays!) {
+    for (const day of sorted) {
       const dayNum = day.day_number ?? 1;
       const dayTitle = (day.title || `Day ${dayNum}`).trim();
 
-      checkNewPage(16);
+      const PILL_W = 20, PILL_H = 8;
 
-      // Gold day-number pill (20 × 8 mm)
-      const PILL_W = 20;
-      const PILL_H = 8;
+      // Estimate total block height for page break check
+      doc.setFontSize(10);
+      const dtLines = doc.splitTextToSize(dayTitle, CW - PILL_W - 5);
+      const extraTitleH = Math.max(0, (dtLines.length - 1) * 5.5);
+      const hasMeals = Array.isArray(day.meals) && day.meals.length > 0;
+      const hasDesc = !!day.description;
+      const hasAccom = !!day.accommodation;
+      const minH = PILL_H + 4 + (hasMeals ? 9 : 0) + (hasDesc ? 15 : 0) + (hasAccom ? 9 : 0);
+      guard(Math.max(minH, 20));
+
+      const rowY = yRef.y; // anchor y for this day row
+
+      // Gold pill
       doc.setFillColor(...GOLD);
-      doc.roundedRect(MARGIN, yRef.y, PILL_W, PILL_H, 2, 2, "F");
+      doc.roundedRect(M, rowY, PILL_W, PILL_H, 2, 2, "F");
       doc.setFont("helvetica", "bold");
       doc.setFontSize(7.5);
       doc.setTextColor(...BRAND_DARK);
-      doc.text(`DAY ${dayNum}`, MARGIN + PILL_W / 2, yRef.y + 5.2, { align: "center" });
+      doc.text(`DAY ${dayNum}`, M + PILL_W / 2, rowY + 5.3, { align: "center" });
 
-      // Day title — sits to the right of the pill, vertically centered with pill
-      const titleTextX = MARGIN + PILL_W + 4;
-      const titleMaxW = CONTENT_W - PILL_W - 4;
+      // Day title (right of pill, centered vertically to pill)
+      const titleX = M + PILL_W + 4;
+      const titleMaxW = CW - PILL_W - 4;
       doc.setFont("helvetica", "bold");
       doc.setFontSize(10);
       doc.setTextColor(...BRAND_DARK);
-      const dtLines = doc.splitTextToSize(dayTitle, titleMaxW);
-      // Center title text to pill: pill center = yRef.y + PILL_H/2, text baseline = center + capHeight/2 ≈ center + 1.7
-      const titleBaselineY = yRef.y + PILL_H / 2 + 1.7;
-      doc.text(dtLines[0], titleTextX, titleBaselineY);
-      // If title wraps, render extra lines below
+      // Baseline centered to pill: pill_center + half_cap_height
+      const titleY = rowY + PILL_H / 2 + 1.8;
+      doc.text(dtLines[0], titleX, titleY);
+      // Wrapped lines below the pill
       for (let i = 1; i < dtLines.length; i++) {
-        yRef.y += 5.5;
-        doc.text(dtLines[i], titleTextX, titleBaselineY + i * 5.5);
+        doc.text(dtLines[i], titleX, titleY + i * 5.5);
       }
-      yRef.y += PILL_H + 3;
+      // Advance past the pill (and any extra title lines below it)
+      yRef.y = rowY + PILL_H + extraTitleH + 4;
 
-      // Meals row
-      if (Array.isArray(day.meals) && day.meals.length > 0) {
-        checkNewPage(7);
-        const mealsText = "Meals included: " + day.meals.join("  ·  ");
-        doc.setFillColor(251, 248, 232);
-        doc.setDrawColor(220, 200, 120);
-        const mlW = Math.min(doc.getTextWidth(mealsText) + 8, CONTENT_W);
-        doc.roundedRect(MARGIN, yRef.y, mlW, 6.5, 1.5, 1.5, "FD");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(7.5);
-        doc.setTextColor(120, 90, 10);
-        doc.text(mealsText, MARGIN + 4, yRef.y + 4.4);
-        yRef.y += 9;
+      // Meals badge
+      if (hasMeals) {
+        drawBadge(
+          doc,
+          "Meals: " + day.meals!.join(" · "),
+          yRef, guard,
+          [252, 248, 228], [215, 185, 80], [110, 80, 10],
+        );
       }
 
       // Description
       if (day.description) {
-        const desc = stripHtml(day.description);
-        const lines = wrapText(doc, desc, CONTENT_W - 2);
+        const lines = wrapText(doc, stripHtml(day.description), CW);
         doc.setFont("helvetica", "normal");
         doc.setFontSize(9);
-        doc.setTextColor(55, 55, 55);
+        doc.setTextColor(60, 60, 60);
         for (const line of lines) {
-          checkNewPage(LH9 + 1);
+          guard(LH9 + 1);
           if (line === "") { yRef.y += 2.5; continue; }
-          doc.text(line, MARGIN, yRef.y);
+          doc.text(line, M, yRef.y);
           yRef.y += LH9;
         }
         yRef.y += 2;
       }
 
-      // Accommodation
+      // Accommodation badge
       if (day.accommodation) {
-        checkNewPage(8);
-        doc.setFillColor(240, 245, 255);
-        doc.setDrawColor(180, 200, 240);
-        const accText = `Accommodation: ${day.accommodation}`;
-        const accW = Math.min(doc.getTextWidth(accText) + 8, CONTENT_W);
-        doc.roundedRect(MARGIN, yRef.y, accW, 6.5, 1.5, 1.5, "FD");
-        doc.setFont("helvetica", "italic");
-        doc.setFontSize(8);
-        doc.setTextColor(40, 60, 120);
-        doc.text(accText, MARGIN + 4, yRef.y + 4.4);
-        yRef.y += 9;
+        drawBadge(
+          doc,
+          "Stay: " + day.accommodation,
+          yRef, guard,
+          [236, 242, 255], [170, 195, 240], [30, 55, 120],
+        );
       }
 
-      yRef.y += 4; // gap between days
+      yRef.y += 4; // inter-day gap
     }
   } else if (pkg.itinerary) {
-    // Legacy WYSIWYG fallback
+    // Legacy WYSIWYG
     const text = stripHtml(pkg.itinerary);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
-    doc.setTextColor(55, 55, 55);
-    for (const rawLine of text.split("\n")) {
-      const t = rawLine.trim();
+    doc.setTextColor(60, 60, 60);
+    for (const raw of text.split("\n")) {
+      const t = raw.trim();
       if (!t) { yRef.y += 2.5; continue; }
       if (/^Day\s+\d+/i.test(t)) {
-        checkNewPage(14);
+        guard(14);
         yRef.y += 3;
         doc.setFont("helvetica", "bold");
         doc.setFontSize(9.5);
         doc.setTextColor(...BRAND_DARK);
-        const dl = doc.splitTextToSize(t, CONTENT_W);
-        doc.text(dl, MARGIN, yRef.y);
+        const dl = doc.splitTextToSize(t, CW);
+        doc.text(dl, M, yRef.y);
         yRef.y += dl.length * 5.5 + 2;
         doc.setFont("helvetica", "normal");
         doc.setFontSize(9);
-        doc.setTextColor(55, 55, 55);
+        doc.setTextColor(60, 60, 60);
       } else {
-        checkNewPage(LH9 + 1);
-        const tl = doc.splitTextToSize(t, CONTENT_W);
-        doc.text(tl, MARGIN, yRef.y);
+        guard(LH9 + 1);
+        const tl = doc.splitTextToSize(t, CW);
+        doc.text(tl, M, yRef.y);
         yRef.y += tl.length * LH9 + 1;
       }
     }
   } else {
     doc.setFont("helvetica", "italic");
     doc.setFontSize(9);
-    doc.setTextColor(150, 150, 150);
-    doc.text("Detailed itinerary available on request.", MARGIN, yRef.y);
+    doc.setTextColor(160, 160, 160);
+    doc.text("Detailed itinerary available on request.", M, yRef.y);
     yRef.y += 8;
   }
 
   yRef.y += 5;
 
   // ── INCLUSIONS ───────────────────────────────────────────────────────────
-  addSectionHeading(doc, "What's Included", yRef, checkNewPage);
+  drawSection(doc, "What's Included", yRef, guard);
 
-  const defaultInclusions = [
+  const defInclusions = [
     "Handpicked Premium Accommodation",
     "Daily Breakfast & Select Meals",
     "All Airport & Hotel Transfers",
@@ -353,34 +395,20 @@ export async function generateItineraryPdf(
     "All Entry Permits & Tickets",
     "24/7 On-Trip Concierge Support",
   ];
-  const inclusionItems = pkg.inclusions
+  const inclusions = pkg.inclusions
     ? stripHtml(pkg.inclusions).split("\n").map(l => l.replace(/^[•\-]\s*/, "").trim()).filter(Boolean)
-    : defaultInclusions;
+    : defInclusions;
 
-  doc.setFontSize(9);
-  for (const item of inclusionItems) {
-    const lines = doc.splitTextToSize(item, CONTENT_W - 8);
-    checkNewPage(lines.length * LH9 + 2);
-
-    // Filled circle — vertically centered to first line's cap-height midpoint
-    const circleY = yRef.y - 1.6;
-    doc.setFillColor(34, 197, 94);
-    doc.circle(MARGIN + 2, circleY, 1.3, "F");
-
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(50, 50, 50);
-    for (let i = 0; i < lines.length; i++) {
-      doc.text(lines[i], MARGIN + 6, yRef.y + i * LH9);
-    }
-    yRef.y += lines.length * LH9 + 2;
+  for (const item of inclusions) {
+    drawBullet(doc, item, yRef, guard, [34, 197, 94]);
   }
 
   yRef.y += 5;
 
   // ── EXCLUSIONS ───────────────────────────────────────────────────────────
-  addSectionHeading(doc, "Not Included", yRef, checkNewPage);
+  drawSection(doc, "Not Included", yRef, guard);
 
-  const defaultExclusions = [
+  const defExclusions = [
     "International / Domestic Flights",
     "Visa Fees & Documentation",
     "Personal & Shopping Expenses",
@@ -388,78 +416,69 @@ export async function generateItineraryPdf(
     "Optional Activities & Tips",
     "Anything not listed in inclusions",
   ];
-  const exclusionItems = pkg.exclusions
+  const exclusions = pkg.exclusions
     ? stripHtml(pkg.exclusions).split("\n").map(l => l.replace(/^[•\-]\s*/, "").trim()).filter(Boolean)
-    : defaultExclusions;
+    : defExclusions;
 
-  doc.setFontSize(9);
-  for (const item of exclusionItems) {
-    const lines = doc.splitTextToSize(item, CONTENT_W - 8);
-    checkNewPage(lines.length * LH9 + 2);
-
-    const circleY = yRef.y - 1.6;
-    doc.setFillColor(239, 68, 68);
-    doc.circle(MARGIN + 2, circleY, 1.3, "F");
-
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(70, 70, 70);
-    for (let i = 0; i < lines.length; i++) {
-      doc.text(lines[i], MARGIN + 6, yRef.y + i * LH9);
-    }
-    yRef.y += lines.length * LH9 + 2;
+  for (const item of exclusions) {
+    drawBullet(doc, item, yRef, guard, [239, 68, 68]);
   }
 
   // ── CONTACT BLOCK ────────────────────────────────────────────────────────
   yRef.y += 8;
-  checkNewPage(32);
+  guard(34);
+
   doc.setFillColor(250, 249, 246);
   doc.setDrawColor(...GOLD);
-  doc.roundedRect(MARGIN, yRef.y, CONTENT_W, 28, 3, 3, "FD");
+  doc.roundedRect(M, yRef.y, CW, 30, 3, 3, "FD");
 
   // Heading
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9.5);
   doc.setTextColor(...BRAND_DARK);
-  doc.text("Ready to book? Contact our travel experts", MARGIN + 6, yRef.y + 9);
+  doc.text("Ready to book? Contact our travel experts", M + 6, yRef.y + 9);
 
   // Divider
-  doc.setDrawColor(220, 200, 120);
-  doc.line(MARGIN + 6, yRef.y + 12, MARGIN + CONTENT_W - 6, yRef.y + 12);
+  doc.setDrawColor(215, 185, 80);
+  doc.line(M + 6, yRef.y + 12.5, M + CW - 6, yRef.y + 12.5);
 
-  // Two-column contact details
-  doc.setFont("helvetica", "normal");
+  // Contact rows — measure each label to align values perfectly
+  const contacts = [
+    ["Phone",    "+91 8807709919"],
+    ["Email",    "info@igholidays.com"],
+    ["Website",  "www.igholidays.com"],
+    ["WhatsApp", "+91 8807709919"],
+  ];
   doc.setFontSize(8.5);
-  doc.setTextColor(55, 55, 55);
+  const col1X = M + 6;
+  const col2X = PAGE_W / 2 + 4;
+  const rowYs = [yRef.y + 19, yRef.y + 25.5];
+  const pairs = [[contacts[0], contacts[1]], [contacts[2], contacts[3]]];
 
-  const col1X = MARGIN + 6;
-  const col2X = PAGE_W / 2 + 6;
-  const row1Y = yRef.y + 18;
-  const row2Y = yRef.y + 23.5;
-
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(...BRAND_DARK);
-  doc.text("Phone:", col1X, row1Y);
-  doc.text("Email:", col1X, row2Y);
-  doc.text("Website:", col2X, row1Y);
-  doc.text("WhatsApp:", col2X, row2Y);
-
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(55, 55, 55);
-  doc.text("+91 8807709919", col1X + 14, row1Y);
-  doc.text("info@igholidays.com", col1X + 12, row2Y);
-  doc.text("www.igholidays.com", col2X + 16, row1Y);
-  doc.text("+91 8807709919", col2X + 18, row2Y);
+  for (let row = 0; row < 2; row++) {
+    for (let col = 0; col < 2; col++) {
+      const [label, value] = pairs[row][col];
+      const baseX = col === 0 ? col1X : col2X;
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...BRAND_DARK);
+      doc.text(`${label}:`, baseX, rowYs[row]);
+      const labelW = doc.getTextWidth(`${label}:`) + 2;
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(60, 60, 60);
+      doc.text(value, baseX + labelW, rowYs[row]);
+    }
+  }
 
   // ── PATCH FOOTERS ────────────────────────────────────────────────────────
   const total = doc.getNumberOfPages();
   for (let i = 1; i <= total; i++) {
     doc.setPage(i);
-    addFooter(doc, i, total);
+    drawFooter(doc, i, total);
   }
 
-  const filename = (pkg.slug || pkg.title || "itinerary")
+  const fname = (pkg.slug || pkg.title || "itinerary")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-  doc.save(`${filename}-igholidays.pdf`);
+  doc.save(`${fname}-igholidays.pdf`);
 }

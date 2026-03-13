@@ -80,8 +80,12 @@ export default async function PackagesPage(props: {
     const prices = packages.map(p => Number(p.price)).filter(p => !isNaN(p) && p > 0);
     const maxPriceRange = prices.length > 0 ? Math.ceil(Math.max(...prices) / 10000) * 10000 : 0;
     
+    // Build destination list from both the new `destination` string field and legacy `destinations` array
     const allDestinations = Array.from(
-        new Set(packages.flatMap((p) => (Array.isArray(p.destinations) ? p.destinations : [])))
+        new Set([
+            ...packages.flatMap((p) => (Array.isArray(p.destinations) ? p.destinations : [])),
+            ...packages.map((p) => p.destination?.split(/[·,]/)[0]?.trim()).filter(Boolean),
+        ])
     ).sort() as string[];
 
     // Filter
@@ -105,7 +109,11 @@ export default async function PackagesPage(props: {
             if (!hasMatch) return false;
         }
 
-        if (currentDest && !(Array.isArray(p.destinations) && p.destinations.includes(currentDest))) return false;
+        if (currentDest) {
+            const inArray = Array.isArray(p.destinations) && p.destinations.includes(currentDest);
+            const inString = p.destination?.toLowerCase().includes(currentDest.toLowerCase());
+            if (!inArray && !inString) return false;
+        }
         
         if (currentMaxPrice) {
             const price = Number(p.price) || 0;
