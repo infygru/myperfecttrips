@@ -9,17 +9,15 @@ import {
   Shield, Star, Award, Headphones, Globe,
   Compass, Users, CheckCircle2,
 } from "lucide-react";
-
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  let title = "IGHolidays | Premium Travel Agency in India";
-  let description = "Specializing in bespoke international & domestic holiday packages, corporate MICE, and luxury travel planning.";
+  let title = "IGHolidays | Best Holiday Packages & Flight Bookings in India";
+  let description = "Book premium domestic and international holiday packages with IG Holidays — India's trusted travel agency. Honeymoon tours, family packages, corporate MICE, and more.";
   let ogImage = undefined;
-
   try {
     const settings = await getSiteSettings();
     if (settings?.tagline) description = settings.tagline;
@@ -27,16 +25,12 @@ export async function generateMetadata(): Promise<Metadata> {
       const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
       ogImage = `${dUrl}/assets/${settings.hero_image}`;
     }
-  } catch (err) {}
-
+  } catch { }
   return {
     title,
     description,
-    openGraph: {
-      title, description, url: baseUrl,
-      images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: "IGHolidays Premium Travel" }] : [],
-      type: "website",
-    },
+    keywords: "holiday packages India, international tour packages, domestic tour packages, honeymoon packages, IG Holidays, travel agency India",
+    openGraph: { title, description, url: baseUrl, images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: "IGHolidays" }] : [], type: "website" },
     twitter: { card: "summary_large_image", title, description, images: ogImage ? [ogImage] : [] },
     alternates: { canonical: baseUrl },
   };
@@ -49,9 +43,7 @@ export default async function Home() {
   let latestBlogs: any[] = [];
 
   try { settings = await getSiteSettings(); } catch { }
-  try {
-    allPackages = (await directus.request(readItems("packages" as any, { limit: 100 }))) as any[];
-  } catch { }
+  try { allPackages = (await directus.request(readItems("packages" as any, { limit: 100 }))) as any[]; } catch { }
   try {
     latestBlogs = (await directus.request(
       readItems("blog_posts" as any, { limit: 3, sort: ["-id"] as any })
@@ -59,25 +51,17 @@ export default async function Home() {
   } catch { }
 
   const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
-
   const heroVideoUrl = settings?.hero_video ? `${dUrl}/assets/${settings.hero_video}` : null;
-  const heroImgUrl = settings?.hero_image ? `${dUrl}/assets/${settings.hero_image}` : null;
+  const heroImgUrl   = settings?.hero_image  ? `${dUrl}/assets/${settings.hero_image}`  : null;
+
+  // Split by package_type field
+  const domesticPackages     = allPackages.filter(p => p.package_type === "domestic");
+  const internationalPackages = allPackages.filter(p => p.package_type !== "domestic");
 
   const featuredPackages = allPackages.slice(0, 6);
 
-  // Domestic / International split
-  const domesticPackages = allPackages.filter(p =>
-    p.category?.toLowerCase().includes("domestic") ||
-    ["kerala", "kashmir", "rajasthan", "goa", "andaman", "himachal", "uttarakhand"].some(d =>
-      JSON.stringify(p.destinations || []).toLowerCase().includes(d)
-    )
-  ).slice(0, 6);
-  const internationalPackages = allPackages.filter(p =>
-    !domesticPackages.find(d => d.id === p.id)
-  ).slice(0, 6);
-
-  // Trending destinations from packages using destination + destination_image fields
-  const destMap = new Map<string, { name: string; image: string | null; slug: string; count: number }>();
+  // Trending destinations — derived from packages.destination + destination_image
+  const destMap = new Map<string, { name: string; image: string | null; count: number }>();
   for (const pkg of allPackages) {
     const name: string = pkg.destination || (Array.isArray(pkg.destinations) && pkg.destinations[0]) || "";
     if (!name) continue;
@@ -86,36 +70,25 @@ export default async function Home() {
       destMap.get(key)!.count++;
       if (!destMap.get(key)!.image && pkg.destination_image) destMap.get(key)!.image = pkg.destination_image;
     } else {
-      destMap.set(key, {
-        name,
-        image: pkg.destination_image || null,
-        slug: name.toLowerCase().replace(/\s+/g, "-"),
-        count: 1,
-      });
+      destMap.set(key, { name, image: pkg.destination_image || null, count: 1 });
     }
   }
-  const trendingDestinations = Array.from(destMap.values())
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 6);
+  const trendingDestinations = Array.from(destMap.values()).sort((a, b) => b.count - a.count).slice(0, 6);
 
-  // Theme packages
-  const seenCategories = new Set<string>();
+  // Theme packages (unique categories with images)
+  const seenCats = new Set<string>();
   const themePackages: any[] = [];
   for (const pkg of allPackages) {
-    if (pkg.category && !seenCategories.has(pkg.category) && pkg.image) {
-      seenCategories.add(pkg.category);
-      themePackages.push(pkg);
+    if (pkg.category && !seenCats.has(pkg.category) && pkg.image) {
+      seenCats.add(pkg.category); themePackages.push(pkg);
       if (themePackages.length === 4) break;
     }
   }
 
-  // Budget packages
-  const budgetPackages = [...allPackages]
-    .filter(p => p.price > 0 && p.image)
-    .sort((a, b) => Number(a.price) - Number(b.price))
-    .slice(0, 4);
-
-  const categories = Array.from(new Set(allPackages.map(p => p.category).filter(Boolean))).slice(0, 8) as string[];
+  // Budget packages: domestic < ₹10k, international < ₹50k
+  const budgetDomestic      = domesticPackages.filter(p => p.price > 0 && p.price <= 10000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
+  const budgetInternational = internationalPackages.filter(p => p.price > 0 && p.price <= 50000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
+  const showBudgetSection   = budgetDomestic.length > 0 || budgetInternational.length > 0;
 
   return (
     <main className="flex min-h-screen flex-col bg-stone-50">
@@ -124,43 +97,37 @@ export default async function Home() {
       <section className="relative flex min-h-[75svh] items-center justify-center bg-stone-950 z-30 pb-10">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {heroVideoUrl ? (
-            <video src={heroVideoUrl} autoPlay loop muted playsInline
-              className="absolute inset-0 h-full w-full object-cover opacity-60" />
+            <video src={heroVideoUrl} autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover opacity-60" />
           ) : heroImgUrl ? (
-            <Image src={heroImgUrl} alt="IGHolidays Hero" fill
-              className="object-cover opacity-60" priority unoptimized />
+            <Image src={heroImgUrl} alt="IGHolidays" fill className="object-cover opacity-60" priority unoptimized />
           ) : (
-            <div className="absolute inset-0 bg-stone-950 opacity-80" />
+            <div className="absolute inset-0 bg-stone-950" />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/50 to-stone-950/20" />
         </div>
-
         <div className="container-inner relative z-10 flex flex-col items-center text-center px-4">
           <div className="mb-5 mt-16 inline-flex items-center gap-3 text-[10px] sm:text-xs font-bold tracking-widest text-gold-400 uppercase">
             <span className="h-px w-6 sm:w-8 bg-gold-400/50" />
             Trusted by 10,000+ Happy Travellers
             <span className="h-px w-6 sm:w-8 bg-gold-400/50" />
           </div>
-
-          <h1 className="mx-auto mt-3 max-w-3xl font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-white drop-shadow-md leading-tight">
+          <h1 className="mx-auto mt-3 max-w-3xl font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-white leading-tight">
             Best Holiday Packages &{" "}
             <span className="bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent italic font-semibold">
               Flight Bookings.
             </span>
           </h1>
-
           <p className="mb-6 mt-5 max-w-xl text-sm sm:text-lg text-stone-300 font-light leading-relaxed">
             {settings?.tagline || "Expertly crafting domestic and international tours. Your trusted travel partner in India."}
           </p>
-
           <div className="w-full mt-6 relative z-20">
             <HeroSearchTabs />
           </div>
         </div>
       </section>
 
-      {/* ── QUICK STATS STRIP ── */}
-      <section className="bg-brand-950 py-4">
+      {/* ── STATS STRIP ── */}
+      <section className="bg-brand-950">
         <div className="container-inner">
           <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-brand-800">
             {[
@@ -169,7 +136,7 @@ export default async function Home() {
               { value: "50+", label: "Destinations" },
               { value: "24/7", label: "Expert Support" },
             ].map((s) => (
-              <div key={s.label} className="flex flex-col items-center py-3 px-2 text-center">
+              <div key={s.label} className="flex flex-col items-center py-4 px-2 text-center">
                 <span className="font-serif text-xl sm:text-2xl font-bold text-gold-400">{s.value}</span>
                 <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-stone-400 mt-0.5">{s.label}</span>
               </div>
@@ -178,26 +145,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── CATEGORY PILLS ── */}
-      {categories.length > 0 && (
-        <section className="bg-white border-b border-stone-100 py-4 overflow-x-auto">
-          <div className="container-inner">
-            <div className="flex gap-2 min-w-max sm:flex-wrap sm:min-w-0">
-              <Link href="/packages"
-                className="shrink-0 rounded-full border border-brand-200 bg-brand-950 px-4 py-2 text-xs font-bold text-white uppercase tracking-wide whitespace-nowrap">
-                All Packages
-              </Link>
-              {categories.map(cat => (
-                <Link key={cat} href={`/packages?category=${encodeURIComponent(cat)}`}
-                  className="shrink-0 rounded-full border border-stone-200 bg-white px-4 py-2 text-xs font-semibold text-stone-600 uppercase tracking-wide whitespace-nowrap hover:bg-brand-50 hover:border-brand-200 hover:text-brand-800 transition-colors">
-                  {cat}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* ── TRENDING DESTINATIONS ── */}
       {trendingDestinations.length > 0 && (
         <section className="py-12 lg:py-16 bg-white" id="destinations">
@@ -205,26 +152,21 @@ export default async function Home() {
             <div className="mb-8 flex items-end justify-between gap-4">
               <div>
                 <span className="section-label">Trending Now</span>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">
-                  Popular Destinations
-                </h2>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">Popular Destinations</h2>
               </div>
               <Link href="/packages" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-stone-500 hover:text-brand-950 transition-colors shrink-0">
                 View All <ChevronRight className="h-4 w-4" />
               </Link>
             </div>
-
-            <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4">
               {trendingDestinations.map((dest) => {
-                const destImgUrl = dest.image ? `${dUrl}/assets/${dest.image}` : null;
-                const href = `/packages?destination=${encodeURIComponent(dest.name)}`;
+                const imgUrl = dest.image ? `${dUrl}/assets/${dest.image}` : null;
                 return (
-                  <Link key={dest.name} href={href}
+                  <Link key={dest.name} href={`/packages?destination=${encodeURIComponent(dest.name)}`}
                     className="group flex flex-col items-center gap-2">
-                    <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-stone-200">
-                      {destImgUrl ? (
-                        <Image src={destImgUrl} alt={dest.name} fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-110" unoptimized />
+                    <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-stone-200 ring-2 ring-transparent group-hover:ring-brand-400 transition-all">
+                      {imgUrl ? (
+                        <Image src={imgUrl} alt={dest.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" unoptimized />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-brand-700 to-brand-950 flex items-center justify-center">
                           <MapPin className="h-6 w-6 text-white/40" />
@@ -232,37 +174,28 @@ export default async function Home() {
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     </div>
-                    <span className="text-xs sm:text-sm font-semibold text-stone-800 text-center group-hover:text-brand-700 transition-colors">{dest.name}</span>
+                    <span className="text-xs sm:text-sm font-semibold text-stone-800 text-center group-hover:text-brand-700 transition-colors leading-tight">{dest.name}</span>
                   </Link>
                 );
               })}
-            </div>
-
-            <div className="mt-6 text-center sm:hidden">
-              <Link href="/packages" className="text-sm font-semibold text-brand-700 underline underline-offset-4">
-                View All Destinations
-              </Link>
             </div>
           </div>
         </section>
       )}
 
-      {/* ── HANDPICKED PACKAGES (Domestic / International tabs) ── */}
+      {/* ── FEATURED PACKAGES ── */}
       <section className="py-12 lg:py-16 bg-stone-50">
         <div className="container-inner">
-          <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div className="mb-8 flex items-end justify-between gap-4">
             <div>
               <span className="section-label">Curated For You</span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">
-                Handpicked Packages
-              </h2>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Handpicked Packages</h2>
             </div>
-            <Link href="/packages" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800 transition-colors shrink-0">
-              See All Packages <ChevronRight className="h-4 w-4" />
+            <Link href="/packages" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800 shrink-0">
+              See All <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
 
-          {/* Horizontal scroll on mobile, grid on desktop */}
           {featuredPackages.length > 0 ? (
             <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 pb-3 scrollbar-hide">
               {featuredPackages.map((pkg) => {
@@ -272,8 +205,7 @@ export default async function Home() {
                     className="group flex flex-col shrink-0 w-[75vw] sm:w-auto snap-center overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                     <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
                       {imgUrl ? (
-                        <Image src={imgUrl} alt={pkg.title} fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
+                        <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center">
                           <Compass className="h-10 w-10 text-brand-700/40" />
@@ -281,26 +213,25 @@ export default async function Home() {
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                       {pkg.category && (
-                        <span className="absolute top-3 left-3 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-brand-900">
+                        <span className="absolute top-3 left-3 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-brand-900 shadow-sm">
                           {pkg.category}
                         </span>
                       )}
                       {pkg.duration_nights && (
-                        <span className="absolute bottom-3 right-3 flex items-center gap-1 rounded-md bg-black/70 px-2.5 py-1 text-[11px] font-medium text-white">
-                          <Clock className="h-3 w-3 text-gold-400" />
-                          {pkg.duration_nights}N / {pkg.duration_days}D
+                        <span className="absolute bottom-3 right-3 flex items-center gap-1 rounded-lg bg-black/70 px-2.5 py-1 text-[11px] font-medium text-white">
+                          <Clock className="h-3 w-3 text-gold-400" />{pkg.duration_nights}N / {pkg.duration_days}D
                         </span>
                       )}
                     </div>
                     <div className="flex flex-1 flex-col p-4 sm:p-5">
-                      <h3 className="font-serif text-base sm:text-lg font-medium leading-snug text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-2 mb-3">
+                      <h3 className="font-serif text-base sm:text-lg font-medium leading-snug text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-2 mb-2">
                         {pkg.title}
                       </h3>
                       {(pkg.destination || pkg.destinations?.length > 0) && (
-                        <div className="flex items-center gap-1 text-xs text-stone-400 mb-3">
+                        <p className="flex items-center gap-1 text-xs text-stone-400 mb-3">
                           <MapPin className="h-3 w-3 shrink-0" />
                           <span className="truncate">{pkg.destination || pkg.destinations?.slice(0, 2).join(", ")}</span>
-                        </div>
+                        </p>
                       )}
                       <div className="mt-auto flex items-center justify-between pt-3 border-t border-stone-100">
                         <div>
@@ -325,8 +256,7 @@ export default async function Home() {
               <p className="text-stone-400 font-medium">Packages coming soon</p>
             </div>
           )}
-
-          <div className="mt-6 text-center sm:hidden">
+          <div className="mt-5 text-center sm:hidden">
             <Link href="/packages" className="btn-outline text-sm">See All Packages</Link>
           </div>
         </div>
@@ -337,98 +267,98 @@ export default async function Home() {
         <section className="py-12 lg:py-16 bg-white">
           <div className="container-inner">
             <div className="mb-8">
-              <span className="section-label">Explore More</span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">
-                Domestic & International
-              </h2>
+              <span className="section-label">Browse by Type</span>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Domestic & International</h2>
             </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Domestic */}
               {domesticPackages.length > 0 && (
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-serif text-lg font-medium text-brand-950 flex items-center gap-2">
-                      <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
-                      Domestic Tours
-                    </h3>
-                    <Link href="/packages?category=Domestic" className="text-xs font-semibold text-brand-600 hover:underline">View All</Link>
+                <div className="rounded-2xl border border-stone-200 overflow-hidden bg-stone-50">
+                  <div className="flex items-center justify-between px-5 py-4 bg-white border-b border-stone-100">
+                    <div className="flex items-center gap-2.5">
+                      <span className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(34,197,94,0.5)]"></span>
+                      <h3 className="font-serif text-lg font-medium text-brand-950">Domestic Tours</h3>
+                      <span className="rounded-full bg-emerald-50 border border-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700">{domesticPackages.length}</span>
+                    </div>
+                    <Link href="/packages?package_type=domestic" className="text-xs font-semibold text-brand-600 hover:text-brand-800 transition-colors">View All →</Link>
                   </div>
-                  <div className="space-y-3">
-                    {domesticPackages.slice(0, 4).map((pkg) => {
+                  <div className="divide-y divide-stone-100">
+                    {domesticPackages.slice(0, 5).map((pkg) => {
                       const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
                       return (
                         <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
-                          className="group flex items-center gap-3 rounded-xl border border-stone-100 bg-stone-50 p-3 hover:bg-brand-50 hover:border-brand-100 transition-colors">
-                          <div className="relative h-16 w-20 shrink-0 rounded-lg overflow-hidden bg-stone-200">
-                            {imgUrl ? (
-                              <Image src={imgUrl} alt={pkg.title} fill className="object-cover" unoptimized />
-                            ) : (
-                              <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />
-                            )}
+                          className="group flex items-center gap-4 px-5 py-4 bg-white hover:bg-stone-50 transition-colors">
+                          <div className="relative h-14 w-20 shrink-0 rounded-xl overflow-hidden bg-stone-200">
+                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover" unoptimized /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1">{pkg.title}</h4>
-                            <div className="flex items-center gap-3 mt-1">
-                              {pkg.duration_nights && (
-                                <span className="text-[11px] text-stone-400 flex items-center gap-1">
-                                  <Clock className="h-3 w-3" />{pkg.duration_nights}N/{pkg.duration_days}D
-                                </span>
-                              )}
-                              {pkg.price && (
-                                <span className="text-[11px] font-bold text-brand-700">₹{Number(pkg.price).toLocaleString("en-IN")}</span>
-                              )}
+                            <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors truncate">{pkg.title}</p>
+                            <div className="flex items-center gap-3 mt-1 flex-wrap">
+                              {pkg.destination && <span className="text-[11px] text-stone-400 flex items-center gap-0.5"><MapPin className="h-3 w-3" />{pkg.destination}</span>}
+                              {pkg.duration_nights && <span className="text-[11px] text-stone-400 flex items-center gap-0.5"><Clock className="h-3 w-3" />{pkg.duration_nights}N/{pkg.duration_days}D</span>}
                             </div>
                           </div>
-                          <ChevronRight className="h-4 w-4 text-stone-300 shrink-0 group-hover:text-brand-600 transition-colors" />
+                          <div className="shrink-0 text-right">
+                            {pkg.price ? <p className="text-sm font-bold text-brand-700">₹{Number(pkg.price).toLocaleString("en-IN")}</p> : <p className="text-xs text-stone-400 font-medium">On Request</p>}
+                            <ChevronRight className="h-4 w-4 text-stone-300 group-hover:text-brand-600 ml-auto mt-1 transition-colors" />
+                          </div>
                         </Link>
                       );
                     })}
                   </div>
+                  {domesticPackages.length > 5 && (
+                    <div className="px-5 py-3 bg-stone-50 border-t border-stone-100 text-center">
+                      <Link href="/packages?package_type=domestic" className="text-xs font-semibold text-brand-700 hover:underline">
+                        +{domesticPackages.length - 5} more domestic packages
+                      </Link>
+                    </div>
+                  )}
                 </div>
               )}
 
               {/* International */}
               {internationalPackages.length > 0 && (
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-serif text-lg font-medium text-brand-950 flex items-center gap-2">
-                      <span className="inline-block h-2.5 w-2.5 rounded-full bg-blue-500"></span>
-                      International Tours
-                    </h3>
-                    <Link href="/packages" className="text-xs font-semibold text-brand-600 hover:underline">View All</Link>
+                <div className="rounded-2xl border border-stone-200 overflow-hidden bg-stone-50">
+                  <div className="flex items-center justify-between px-5 py-4 bg-white border-b border-stone-100">
+                    <div className="flex items-center gap-2.5">
+                      <span className="h-3 w-3 rounded-full bg-blue-500 shadow-[0_0_6px_rgba(59,130,246,0.5)]"></span>
+                      <h3 className="font-serif text-lg font-medium text-brand-950">International Tours</h3>
+                      <span className="rounded-full bg-blue-50 border border-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700">{internationalPackages.length}</span>
+                    </div>
+                    <Link href="/packages" className="text-xs font-semibold text-brand-600 hover:text-brand-800 transition-colors">View All →</Link>
                   </div>
-                  <div className="space-y-3">
-                    {internationalPackages.slice(0, 4).map((pkg) => {
+                  <div className="divide-y divide-stone-100">
+                    {internationalPackages.slice(0, 5).map((pkg) => {
                       const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
                       return (
                         <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
-                          className="group flex items-center gap-3 rounded-xl border border-stone-100 bg-stone-50 p-3 hover:bg-brand-50 hover:border-brand-100 transition-colors">
-                          <div className="relative h-16 w-20 shrink-0 rounded-lg overflow-hidden bg-stone-200">
-                            {imgUrl ? (
-                              <Image src={imgUrl} alt={pkg.title} fill className="object-cover" unoptimized />
-                            ) : (
-                              <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />
-                            )}
+                          className="group flex items-center gap-4 px-5 py-4 bg-white hover:bg-stone-50 transition-colors">
+                          <div className="relative h-14 w-20 shrink-0 rounded-xl overflow-hidden bg-stone-200">
+                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover" unoptimized /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1">{pkg.title}</h4>
-                            <div className="flex items-center gap-3 mt-1">
-                              {pkg.duration_nights && (
-                                <span className="text-[11px] text-stone-400 flex items-center gap-1">
-                                  <Clock className="h-3 w-3" />{pkg.duration_nights}N/{pkg.duration_days}D
-                                </span>
-                              )}
-                              {pkg.price && (
-                                <span className="text-[11px] font-bold text-brand-700">₹{Number(pkg.price).toLocaleString("en-IN")}</span>
-                              )}
+                            <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors truncate">{pkg.title}</p>
+                            <div className="flex items-center gap-3 mt-1 flex-wrap">
+                              {pkg.destination && <span className="text-[11px] text-stone-400 flex items-center gap-0.5"><MapPin className="h-3 w-3" />{pkg.destination}</span>}
+                              {pkg.duration_nights && <span className="text-[11px] text-stone-400 flex items-center gap-0.5"><Clock className="h-3 w-3" />{pkg.duration_nights}N/{pkg.duration_days}D</span>}
                             </div>
                           </div>
-                          <ChevronRight className="h-4 w-4 text-stone-300 shrink-0 group-hover:text-brand-600 transition-colors" />
+                          <div className="shrink-0 text-right">
+                            {pkg.price ? <p className="text-sm font-bold text-brand-700">₹{Number(pkg.price).toLocaleString("en-IN")}</p> : <p className="text-xs text-stone-400 font-medium">On Request</p>}
+                            <ChevronRight className="h-4 w-4 text-stone-300 group-hover:text-brand-600 ml-auto mt-1 transition-colors" />
+                          </div>
                         </Link>
                       );
                     })}
                   </div>
+                  {internationalPackages.length > 5 && (
+                    <div className="px-5 py-3 bg-stone-50 border-t border-stone-100 text-center">
+                      <Link href="/packages" className="text-xs font-semibold text-brand-700 hover:underline">
+                        +{internationalPackages.length - 5} more international packages
+                      </Link>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -452,8 +382,8 @@ export default async function Home() {
                     className="object-cover opacity-75 transition-transform duration-500 group-hover:scale-110 group-hover:opacity-90" unoptimized />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute inset-x-0 bottom-0 p-4 text-center">
-                    <h3 className="font-serif text-base sm:text-xl font-medium text-white">{pkg.category}</h3>
-                    <p className="mt-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gold-400">Explore →</p>
+                    <h3 className="font-serif text-sm sm:text-xl font-medium text-white">{pkg.category}</h3>
+                    <p className="mt-0.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gold-400">Explore →</p>
                   </div>
                 </Link>
               ))}
@@ -463,31 +393,79 @@ export default async function Home() {
       )}
 
       {/* ── BUDGET PACKAGES ── */}
-      {budgetPackages.length > 0 && (
+      {showBudgetSection && (
         <section className="py-12 lg:py-16 bg-white">
           <div className="container-inner">
-            <div className="mb-8 flex items-end justify-between gap-4">
-              <div>
-                <span className="section-label">Affordable Getaways</span>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Budget-Friendly Picks</h2>
-              </div>
-              <Link href="/packages?sort=price-asc" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800 shrink-0">
-                More Deals <ChevronRight className="h-4 w-4" />
-              </Link>
+            <div className="mb-8">
+              <span className="section-label">Affordable Getaways</span>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Budget-Friendly Deals</h2>
+              <p className="mt-2 text-sm text-stone-400">Domestic under ₹10,000 · International under ₹50,000</p>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              {budgetPackages.map((pkg, idx) => (
-                <Link href={`/packages/${pkg.slug || pkg.id}`} key={pkg.id || idx}
-                  className="group relative overflow-hidden rounded-2xl aspect-[3/4] sm:aspect-[4/5] bg-stone-900">
-                  <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill
-                    className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" unoptimized />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
-                    <h3 className="font-serif text-sm sm:text-base font-medium text-white line-clamp-2 mb-1">{pkg.title}</h3>
-                    <p className="text-xs font-bold text-gold-400">From ₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+              {/* Domestic Budget */}
+              {budgetDomestic.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">Domestic · Under ₹10,000</h3>
                   </div>
-                </Link>
-              ))}
+                  <div className="grid gap-3">
+                    {budgetDomestic.map((pkg) => (
+                      <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
+                        className="group relative overflow-hidden rounded-2xl h-36 bg-stone-900 flex items-end">
+                        <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" unoptimized />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                        <div className="relative z-10 p-4 flex items-end justify-between w-full">
+                          <div>
+                            <p className="font-serif text-base font-medium text-white line-clamp-1">{pkg.title}</p>
+                            {pkg.destination && <p className="text-[11px] text-white/60 mt-0.5 flex items-center gap-1"><MapPin className="h-3 w-3" />{pkg.destination}</p>}
+                          </div>
+                          <div className="text-right shrink-0 ml-3">
+                            <p className="text-xs text-white/60 font-medium">From</p>
+                            <p className="font-serif text-lg font-bold text-gold-400">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                  <Link href="/packages?package_type=domestic&sort=price-asc" className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800">
+                    More domestic deals <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              )}
+
+              {/* International Budget */}
+              {budgetInternational.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="h-2 w-2 rounded-full bg-blue-500"></span>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">International · Under ₹50,000</h3>
+                  </div>
+                  <div className="grid gap-3">
+                    {budgetInternational.map((pkg) => (
+                      <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
+                        className="group relative overflow-hidden rounded-2xl h-36 bg-stone-900 flex items-end">
+                        <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" unoptimized />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                        <div className="relative z-10 p-4 flex items-end justify-between w-full">
+                          <div>
+                            <p className="font-serif text-base font-medium text-white line-clamp-1">{pkg.title}</p>
+                            {pkg.destination && <p className="text-[11px] text-white/60 mt-0.5 flex items-center gap-1"><MapPin className="h-3 w-3" />{pkg.destination}</p>}
+                          </div>
+                          <div className="text-right shrink-0 ml-3">
+                            <p className="text-xs text-white/60 font-medium">From</p>
+                            <p className="font-serif text-lg font-bold text-gold-400">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                  <Link href="/packages?sort=price-asc" className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-blue-700 hover:text-blue-800">
+                    More international deals <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -496,17 +474,17 @@ export default async function Home() {
       {/* ── TESTIMONIALS ── */}
       <section className="py-12 lg:py-16 bg-stone-50">
         <div className="container-inner">
-          <div className="mb-10 text-center">
+          <div className="mb-8 text-center">
             <span className="section-label mx-auto">Client Stories</span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">What Travellers Say</h2>
           </div>
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 -mx-4 px-4 sm:mx-0 sm:px-0 lg:grid lg:grid-cols-3 pb-4 scrollbar-hide">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 -mx-4 px-4 sm:mx-0 sm:px-0 lg:grid lg:grid-cols-3 pb-3 scrollbar-hide">
             {[
               { name: "Rahul & Priya", tour: "Maldives Honeymoon", rating: 5, text: "IGHolidays planned the most magical honeymoon. The water villa upgrade was breathtaking. Truly the best luxury travel agency!" },
               { name: "Suresh Menon", tour: "Dubai Corporate MICE", rating: 5, text: "Handling our 150-person corporate summit in Dubai was flawlessly executed — from visas to the grand gala dinner." },
               { name: "Anjali Sharma", tour: "Discover Europe", rating: 5, text: "The customized 14-day Europe itinerary was perfectly paced. Every hotel exceeded our expectations. 100% recommended!" },
             ].map((r, i) => (
-              <div key={i} className="shrink-0 w-[80vw] sm:w-auto snap-center rounded-2xl bg-white border border-stone-100 shadow-sm p-6 sm:p-8 flex flex-col">
+              <div key={i} className="shrink-0 w-[82vw] sm:w-auto snap-center rounded-2xl bg-white border border-stone-100 shadow-sm p-6 sm:p-8 flex flex-col">
                 <div className="flex gap-0.5 mb-4">
                   {[...Array(r.rating)].map((_, j) => <Star key={j} className="h-4 w-4 fill-gold-400 text-gold-400" />)}
                 </div>
@@ -522,16 +500,12 @@ export default async function Home() {
       </section>
 
       {/* ── WHY CHOOSE US ── */}
-      <section className="py-12 lg:py-20 bg-brand-950 text-stone-400">
+      <section className="py-12 lg:py-20 bg-brand-950">
         <div className="container-inner">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div>
-              <span className="section-label !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30">
-                Why Choose Us?
-              </span>
-              <h2 className="mb-4 font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-medium">
-                Top Rated Travel Planners in India.
-              </h2>
+              <span className="section-label !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30">Why Choose Us?</span>
+              <h2 className="mb-4 font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-medium">Top Rated Travel Planners in India.</h2>
               <p className="mb-8 text-sm sm:text-base leading-relaxed text-stone-300">
                 With over 15 years of curating bespoke domestic & international trips, our extensive global network guarantees unparalleled service to make your dream holidays spectacular.
               </p>
@@ -562,7 +536,7 @@ export default async function Home() {
             <span className="section-label mx-auto">Simple Process</span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">How It Works</h2>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
             {[
               { step: "01", icon: Compass, title: "Choose Destination", desc: "Browse our curated packages or tell us your dream destination." },
               { step: "02", icon: Users, title: "Share Your Details", desc: "Fill in travel dates, group size, and preferences." },
@@ -605,8 +579,7 @@ export default async function Home() {
                     className="group shrink-0 w-[78vw] sm:w-auto snap-center flex flex-col overflow-hidden rounded-2xl bg-white border border-stone-200 hover:shadow-lg hover:-translate-y-1 transition-all">
                     <div className="relative aspect-[16/9] w-full overflow-hidden bg-stone-100">
                       {imgUrl ? (
-                        <Image src={imgUrl} alt={post.title} fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
+                        <Image src={imgUrl} alt={post.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center">
                           <Globe className="h-8 w-8 text-brand-700/40" />
@@ -633,22 +606,18 @@ export default async function Home() {
       )}
 
       {/* ── CTA BANNER ── */}
-      <section className="bg-stone-50 px-4 py-12 lg:py-20">
+      <section className="bg-white px-4 py-12 lg:py-20">
         <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl bg-brand-950 border border-brand-800 p-8 sm:p-14 text-center shadow-2xl relative">
           <div className="absolute top-0 left-1/4 -m-24 h-48 w-48 rounded-full bg-emerald-500/20 blur-[80px]" />
           <div className="absolute bottom-0 right-1/4 -m-24 h-48 w-48 rounded-full bg-amber-500/20 blur-[80px]" />
           <div className="relative z-10">
-            <h2 className="mb-4 font-serif text-2xl sm:text-3xl lg:text-4xl font-medium text-white">
-              Start Planning Your Next Holiday
-            </h2>
+            <h2 className="mb-4 font-serif text-2xl sm:text-3xl lg:text-4xl font-medium text-white">Start Planning Your Next Holiday</h2>
             <p className="mb-8 text-sm sm:text-base text-stone-300 mx-auto max-w-xl">
               Contact our tourism experts today. We'll craft a customized itinerary perfectly tailored to your budget and travel style.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link href="/packages" className="btn-gold w-full sm:w-auto text-sm">Browse Packages</Link>
-              <Link href="/contact" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 text-sm">
-                Contact Us
-              </Link>
+              <Link href="/contact" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 text-sm">Contact Us</Link>
             </div>
           </div>
         </div>

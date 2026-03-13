@@ -26,8 +26,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         const pkg = result?.[0];
         
         if (pkg) {
-            const title = `${pkg.title} | IG Holidays`;
-            const description = `${pkg.title} – ${pkg.duration_nights ? `${pkg.duration_nights} nights` : "premium"} ${pkg.category || "holiday"} package${pkg.destinations?.length ? ` covering ${pkg.destinations.join(", ")}` : ""}. Starting from ${pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "custom pricing"}.`;
+            const destStr = pkg.destination || pkg.destinations?.join(", ") || "";
+            const title = `${pkg.title} | ${destStr ? destStr + " " : ""}Holiday Package — IG Holidays`;
+            const description = `Book ${pkg.title}${destStr ? " in " + destStr : ""} — ${pkg.duration_nights ? pkg.duration_nights + " nights / " + pkg.duration_days + " days" : "premium"} ${pkg.category ? pkg.category.toLowerCase() : "holiday"} package. Starting from ${pkg.price ? "₹" + Number(pkg.price).toLocaleString("en-IN") : "custom pricing"}. Customised itinerary, best price guarantee, 24/7 support. Book with IG Holidays.`;
             const canonicalUrl = `${baseUrl}/packages/${slug}`;
             const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
             const imageUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : undefined;
@@ -35,22 +36,21 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
             return {
                 title,
                 description,
-                alternates: {
-                    canonical: canonicalUrl,
-                },
+                keywords: [pkg.title, destStr, pkg.category, "holiday package", "tour package India", "IG Holidays"].filter(Boolean).join(", "),
+                alternates: { canonical: canonicalUrl },
                 openGraph: {
                     title,
                     description,
                     url: canonicalUrl,
                     type: "website",
-                    images: imageUrl ? [{ url: imageUrl, alt: pkg.title }] : [],
+                    images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: pkg.title }] : [],
                 },
                 twitter: {
                     card: "summary_large_image",
                     title,
                     description,
                     images: imageUrl ? [imageUrl] : [],
-                }
+                },
             };
         }
     } catch { }
@@ -209,7 +209,7 @@ export default async function PackageDetailPage(props: Props) {
                         <span className="text-brand-950 font-semibold truncate max-w-[200px]">{pkg.title}</span>
                     </nav>
                     <div className="flex items-center gap-3 shrink-0">
-                        <DownloadItineraryButton pkg={pkg} logoUrl={logoUrl} variant="breadcrumb" />
+                        <DownloadItineraryButton pkg={pkg} logoUrl={logoUrl} itineraryDays={itineraryDays} variant="breadcrumb" />
                         <a
                             href={`tel:${phone}`}
                             className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-brand-700 hover:text-brand-900 transition-colors"
@@ -501,7 +501,7 @@ export default async function PackageDetailPage(props: Props) {
                                 >
                                     <Mail className="h-4 w-4" /> info@igholidays.com
                                 </a>
-                                <DownloadItineraryButton pkg={pkg} logoUrl={logoUrl} variant="sidebar" />
+                                <DownloadItineraryButton pkg={pkg} logoUrl={logoUrl} itineraryDays={itineraryDays} variant="sidebar" />
                             </div>
                         </div>
 
