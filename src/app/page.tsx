@@ -123,25 +123,50 @@ export default async function Home() {
     ? `${dUrl}/assets/${settings.hero_image}`
     : null;
 
-  // Extract unique destinations from existing packages instead of hardcoding
-  const uniqueDestinations = new Map();
-  featuredPackages.forEach((pkg) => {
-    if (pkg.destinations && Array.isArray(pkg.destinations)) {
-      pkg.destinations.forEach((dest: string) => {
-        if (!uniqueDestinations.has(dest)) {
-          uniqueDestinations.set(dest, { name: dest, count: 1 });
-        } else {
-          uniqueDestinations.get(dest).count++;
+  // Fetch actual destinations from new collection, fallback to existing logic if it doesn't exist yet!
+  let destinationsArray: any[] = [];
+  try {
+    const fetchedDestinations = (await directus.request(
+        readItems("destinations" as any, {
+            limit: 6,
+            filter: { status: { _eq: "published" } } as any,
+            sort: ["-featured", "name"] as any
+        })
+    )) as any[];
+    if (fetchedDestinations && fetchedDestinations.length > 0) {
+        destinationsArray = fetchedDestinations.map(d => ({
+            name: d.name,
+            slug: d.slug,
+            image: d.image,
+            description: d.description,
+            count: 0
+        }));
+    }
+  } catch (err) {
+      // Collection likely doesn't exist yet, ignore
+  }
+
+  // Fallback to old extraction logic if destinations API call fails or returns empty
+  if (destinationsArray.length === 0) {
+      const uniqueDestinations = new Map();
+      featuredPackages.forEach((pkg) => {
+        if (pkg.destinations && Array.isArray(pkg.destinations)) {
+          pkg.destinations.forEach((dest: string) => {
+            if (!uniqueDestinations.has(dest)) {
+              uniqueDestinations.set(dest, { name: dest, count: 1 });
+            } else {
+              uniqueDestinations.get(dest).count++;
+            }
+          });
         }
       });
-    }
-  });
-  const destinationsArray = Array.from(uniqueDestinations.values())
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 6);
+      destinationsArray = Array.from(uniqueDestinations.values())
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 6);
+  }
 
   const getDestIcon = (name: string) => {
-    const l = name.toLowerCase();
+    const l = name?.toLowerCase() || "";
     if (l.includes("mountain") || l.includes("himalaya") || l.includes("kashmir") || l.includes("swiss")) return Mountain;
     if (l.includes("kerala") || l.includes("bali") || l.includes("forest") || l.includes("jungle")) return TreePine;
     if (l.includes("maldives") || l.includes("beach") || l.includes("goa") || l.includes("island")) return Sun;
@@ -156,7 +181,7 @@ export default async function Home() {
       {/* ──────────────────────────────────────────────────────────
           SECTION 1: HERO
           ────────────────────────────────────────────────────────── */}
-      <section className="relative flex min-h-[90svh] items-center justify-center bg-stone-950 z-30">
+      <section className="relative flex min-h-[70svh] items-center justify-center bg-stone-950 z-30 pb-16">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {heroVideoUrl ? (
             <video
@@ -183,24 +208,24 @@ export default async function Home() {
         </div>
 
         <div className="container-inner relative z-10 flex flex-col items-center text-center">
-          <div className="mb-6 inline-flex items-center gap-4 text-xs font-bold tracking-widest text-[#fbbf24] uppercase">
+          <div className="mb-6 mt-16 inline-flex items-center gap-4 text-xs font-bold tracking-widest text-[#fbbf24] uppercase">
             <span className="h-px w-8 bg-[#fbbf24]/50" />
-            Voted Best Travel Agency in India
+            Trusted by 10,000+ Happy Travellers
             <span className="h-px w-8 bg-[#fbbf24]/50" />
           </div>
 
-          <h1 className="mx-auto mt-4 max-w-3xl text-balance font-serif text-5xl font-medium tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl px-4 sm:px-0 drop-shadow-md">
-            Premium Holiday Packages & <br className="hidden sm:block" />
-            <span className="bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent italic font-semibold">Bespoke Travel.</span>
+          <h1 className="mx-auto mt-4 max-w-3xl text-balance font-serif text-4xl font-medium tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl px-4 sm:px-0 drop-shadow-md">
+            Best Holiday Packages & <br className="hidden sm:block" />
+            <span className="bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent italic font-semibold">Flight Bookings.</span>
           </h1>
 
-          <h2 className="mb-12 max-w-2xl text-lg text-stone-300 font-light leading-relaxed sm:text-xl">
+          <h2 className="mb-8 mt-6 max-w-2xl text-lg text-stone-300 font-light leading-relaxed sm:text-xl">
             {settings?.tagline ||
-              "Expertly crafting domestic and international tours. From Maldives honeymoons to European group vacations, IGHolidays is your trusted luxury travel partner in India."}
+              "Expertly crafting domestic and international tours. From Maldives honeymoons to European group vacations, IGHolidays is your trusted travel partner in India."}
           </h2>
 
           {/* Dual Search Tabs */}
-          <div className="w-full mt-4 relative z-20">
+          <div className="w-full mt-8 relative z-20">
             <HeroSearchTabs />
           </div>
         </div>
@@ -214,9 +239,9 @@ export default async function Home() {
           <div className="container-inner">
             <div className="mb-10 flex flex-col items-center justify-between gap-4 text-center md:flex-row md:items-end md:text-left">
               <div>
-                <span className="section-label">Where to next</span>
+                <span className="section-label">Trending Destinations</span>
                 <h2 className="text-4xl text-brand-950 md:text-5xl font-medium tracking-tight">
-                  Trending Destinations
+                  Popular Destinations
                 </h2>
               </div>
               <Link
@@ -228,30 +253,39 @@ export default async function Home() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 sm:gap-6 pb-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3 pb-4">
               {destinationsArray.map((dest) => {
                 const IconComponent = getDestIcon(dest.name);
+                const destImgUrl = dest.image ? `${dUrl}/assets/${dest.image}` : null;
+                const destHref = dest.slug ? `/packages?destination=${dest.slug}` : `/packages?query=${encodeURIComponent(dest.name)}`;
+
                 return (
                   <Link
                     key={dest.name}
-                    href={`/packages?query=${encodeURIComponent(dest.name)}`}
-                    className="group flex flex-col w-full px-2 py-4 sm:p-6 items-center gap-3 rounded-[1.5rem] bg-stone-50 text-center shadow-sm transition-all hover:-translate-y-1 hover:bg-white hover:shadow-md"
+                    href={destHref}
+                    className="group relative flex flex-col w-full aspect-[4/5] sm:aspect-square overflow-hidden rounded-[1.5rem] bg-stone-900 shadow-sm transition-transform hover:-translate-y-1"
                   >
-                    <div className="absolute inset-0 bg-white opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div className="relative z-10 flex flex-col items-center justify-center gap-4">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-stone-100 text-stone-400 group-hover:bg-brand-950 group-hover:text-gold-400 transition-colors duration-500 shadow-sm">
-                        <IconComponent className="h-7 w-7 transition-transform duration-500 group-hover:scale-110" />
-                      </div>
-                      <div className="text-center">
-                        <h3 className="text-lg font-semibold text-brand-950 transition-colors">
-                          {dest.name}
-                        </h3>
-                        <p className="mt-1 text-xs font-bold uppercase tracking-widest text-stone-400 group-hover:text-stone-500 transition-colors">
-                          {dest.count} Package{dest.count > 1 ? "s" : ""}
-                        </p>
-                      </div>
-                    </div>
+                     {destImgUrl ? (
+                        <Image
+                            src={destImgUrl}
+                            alt={dest.name}
+                            fill
+                            className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-100"
+                            unoptimized
+                        />
+                     ) : (
+                         <div className="absolute inset-0 bg-stone-800 opacity-80 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center">
+                            <IconComponent className="h-10 w-10 text-stone-600 transition-transform duration-500 group-hover:scale-110" />
+                         </div>
+                     )}
+                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent p-4 sm:p-6 text-center">
+                         <h3 className="font-serif text-xl sm:text-2xl font-medium text-white shadow-sm transition-transform duration-500 group-hover:-translate-y-0.5">{dest.name}</h3>
+                         {dest.count > 0 && (
+                            <p className="mt-1 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gold-400 opacity-90 transition-colors">
+                                {dest.count} Package{dest.count > 1 ? "s" : ""}
+                            </p>
+                         )}
+                     </div>
                   </Link>
                 );
               })}

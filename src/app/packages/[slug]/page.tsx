@@ -87,6 +87,20 @@ export default async function PackageDetailPage(props: Props) {
             .slice(0, 3);
     } catch { }
 
+    // Fetch day-by-day itinerary
+    let itineraryDays: any[] = [];
+    try {
+        itineraryDays = (await directus.request(
+            readItems("itinerary_days" as any, {
+                filter: { package_id: { _eq: pkg.id } } as any,
+                sort: ["day_number"] as any,
+                limit: 100,
+            })
+        )) as any[];
+    } catch {
+        // collection may not exist yet - graceful fallback
+    }
+
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
     const phone = "+91 8807709919";
@@ -266,8 +280,50 @@ export default async function PackageDetailPage(props: Props) {
                             <div className="border-b border-stone-100 px-8 py-5">
                                 <h2 className="font-serif text-2xl font-medium text-brand-950">Day-by-Day Itinerary</h2>
                             </div>
-                            <div className="p-8">
-                                {pkg.itinerary ? (
+                            <div className="p-6 sm:p-8">
+                                {itineraryDays.length > 0 ? (
+                                    <ol className="relative border-l border-stone-200 space-y-0">
+                                        {itineraryDays.map((day: any, idx: number) => (
+                                            <li key={day.id || idx} className="mb-0 ml-6">
+                                                {/* Timeline dot */}
+                                                <span className="absolute -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-brand-950 text-white text-[11px] font-bold ring-4 ring-white">
+                                                    {day.day_number || idx + 1}
+                                                </span>
+                                                <details className="group pb-8" open={idx === 0}>
+                                                    <summary className="flex cursor-pointer items-center gap-3 rounded-xl px-4 py-3 hover:bg-stone-50 transition-colors list-none">
+                                                        <div className="flex-1">
+                                                            <p className="text-[10px] font-black uppercase tracking-widest text-gold-600 mb-0.5">Day {day.day_number || idx + 1}</p>
+                                                            <h3 className="font-serif text-lg font-medium text-brand-950">{day.title || `Day ${day.day_number || idx + 1}`}</h3>
+                                                        </div>
+                                                        <div className="flex shrink-0 items-center gap-3">
+                                                            {Array.isArray(day.meals) && day.meals.length > 0 && (
+                                                                <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700">
+                                                                    {day.meals.join(" · ")}
+                                                                </span>
+                                                            )}
+                                                            <Calendar className="h-4 w-4 text-stone-400 transition-transform duration-300 group-open:rotate-90" />
+                                                        </div>
+                                                    </summary>
+                                                    <div className="px-4 pt-2 pb-2">
+                                                        {day.description ? (
+                                                            <div
+                                                                className="prose prose-stone prose-sm max-w-none text-stone-600 leading-relaxed prose-p:text-stone-600"
+                                                                dangerouslySetInnerHTML={{ __html: day.description }}
+                                                            />
+                                                        ) : null}
+                                                        {day.accommodation && (
+                                                            <div className="mt-3 flex items-center gap-2 text-xs font-medium text-stone-500">
+                                                                <span className="inline-flex items-center gap-1.5 rounded-lg bg-stone-50 border border-stone-200 px-3 py-1.5">
+                                                                    🏨 <span className="font-semibold text-stone-700">{day.accommodation}</span>
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </details>
+                                            </li>
+                                        ))}
+                                    </ol>
+                                ) : pkg.itinerary ? (
                                     <div
                                         className="prose prose-stone max-w-none prose-headings:font-serif prose-headings:text-brand-950 prose-headings:font-medium prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:text-stone-600 prose-p:leading-relaxed prose-li:text-stone-600 prose-li:leading-relaxed"
                                         dangerouslySetInnerHTML={{ __html: pkg.itinerary }}
