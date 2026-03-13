@@ -5,22 +5,9 @@ import HeroSearchTabs from "@/components/HeroSearchTabs";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Mountain,
-  TreePine,
-  Ship,
-  Sun,
-  Castle,
-  Building2,
-  MapPin,
-  Clock,
-  ArrowRight,
-  ChevronRight,
-  Shield,
-  Star,
-  Award,
-  Headphones,
-  Globe,
-  Compass,
+  MapPin, Clock, ArrowRight, ChevronRight,
+  Shield, Star, Award, Headphones, Globe,
+  Compass, Users, CheckCircle2,
 } from "lucide-react";
 
 import type { Metadata } from "next";
@@ -46,49 +33,74 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     openGraph: {
-      title,
-      description,
-      url: baseUrl,
+      title, description, url: baseUrl,
       images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: "IGHolidays Premium Travel" }] : [],
       type: "website",
     },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ogImage ? [ogImage] : [],
-    },
-    alternates: {
-      canonical: baseUrl, // Home page
-    },
+    twitter: { card: "summary_large_image", title, description, images: ogImage ? [ogImage] : [] },
+    alternates: { canonical: baseUrl },
   };
 }
 
 export default async function Home() {
   noStore();
   let settings: any = null;
-  let featuredPackages: any[] = [];
+  let allPackages: any[] = [];
   let latestBlogs: any[] = [];
 
+  try { settings = await getSiteSettings(); } catch { }
   try {
-    settings = await getSiteSettings();
-  } catch (err) {
-    console.error("Failed to fetch site_settings:", err);
-  }
-  let allPackages: any[] = [];
+    allPackages = (await directus.request(readItems("packages" as any, { limit: 100 }))) as any[];
+  } catch { }
   try {
-    allPackages = (await directus.request(
-      readItems("packages" as any, { limit: 100 })
+    latestBlogs = (await directus.request(
+      readItems("blog_posts" as any, { limit: 3, sort: ["-id"] as any })
     )) as any[];
-  } catch (err) {
-    console.error("Failed to fetch packages:", err);
+  } catch { }
+
+  const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
+
+  const heroVideoUrl = settings?.hero_video ? `${dUrl}/assets/${settings.hero_video}` : null;
+  const heroImgUrl = settings?.hero_image ? `${dUrl}/assets/${settings.hero_image}` : null;
+
+  const featuredPackages = allPackages.slice(0, 6);
+
+  // Domestic / International split
+  const domesticPackages = allPackages.filter(p =>
+    p.category?.toLowerCase().includes("domestic") ||
+    ["kerala", "kashmir", "rajasthan", "goa", "andaman", "himachal", "uttarakhand"].some(d =>
+      JSON.stringify(p.destinations || []).toLowerCase().includes(d)
+    )
+  ).slice(0, 6);
+  const internationalPackages = allPackages.filter(p =>
+    !domesticPackages.find(d => d.id === p.id)
+  ).slice(0, 6);
+
+  // Trending destinations from packages using destination + destination_image fields
+  const destMap = new Map<string, { name: string; image: string | null; slug: string; count: number }>();
+  for (const pkg of allPackages) {
+    const name: string = pkg.destination || (Array.isArray(pkg.destinations) && pkg.destinations[0]) || "";
+    if (!name) continue;
+    const key = name.toLowerCase();
+    if (destMap.has(key)) {
+      destMap.get(key)!.count++;
+      if (!destMap.get(key)!.image && pkg.destination_image) destMap.get(key)!.image = pkg.destination_image;
+    } else {
+      destMap.set(key, {
+        name,
+        image: pkg.destination_image || null,
+        slug: name.toLowerCase().replace(/\s+/g, "-"),
+        count: 1,
+      });
+    }
   }
+  const trendingDestinations = Array.from(destMap.values())
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 6);
 
-  featuredPackages = allPackages.slice(0, 6);
-
-  // Compute Themes dynamically based on unique categories
-  const themePackages: any[] = [];
+  // Theme packages
   const seenCategories = new Set<string>();
+  const themePackages: any[] = [];
   for (const pkg of allPackages) {
     if (pkg.category && !seenCategories.has(pkg.category) && pkg.image) {
       seenCategories.add(pkg.category);
@@ -97,293 +109,210 @@ export default async function Home() {
     }
   }
 
-  // Compute Budget Friendly by sorting cheapest
+  // Budget packages
   const budgetPackages = [...allPackages]
     .filter(p => p.price > 0 && p.image)
     .sort((a, b) => Number(a.price) - Number(b.price))
-    .slice(0, 3);
-  try {
-    latestBlogs = (await directus.request(
-      readItems("blog_posts" as any, {
-        limit: 4,
-        sort: ["-id"] as any,
-      })
-    )) as any[];
-  } catch (err) {
-    console.error("Failed to fetch blog_posts:", err);
-  }
+    .slice(0, 4);
 
-  const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
-
-  // Check for hero media from Directus
-  const heroVideoUrl = settings?.hero_video
-    ? `${dUrl}/assets/${settings.hero_video}`
-    : null;
-  const heroImgUrl = settings?.hero_image
-    ? `${dUrl}/assets/${settings.hero_image}`
-    : null;
-
-  // Fetch actual destinations from new collection, fallback to existing logic if it doesn't exist yet!
-  let destinationsArray: any[] = [];
-  try {
-    const fetchedDestinations = (await directus.request(
-        readItems("destinations" as any, {
-            limit: 6,
-            filter: { status: { _eq: "published" } } as any,
-            sort: ["-featured", "name"] as any
-        })
-    )) as any[];
-    if (fetchedDestinations && fetchedDestinations.length > 0) {
-        destinationsArray = fetchedDestinations.map(d => ({
-            name: d.name,
-            slug: d.slug,
-            image: d.image,
-            description: d.description,
-            count: 0
-        }));
-    }
-  } catch (err) {
-      // Collection likely doesn't exist yet, ignore
-  }
-
-  // Fallback to old extraction logic if destinations API call fails or returns empty
-  if (destinationsArray.length === 0) {
-      const uniqueDestinations = new Map();
-      featuredPackages.forEach((pkg) => {
-        if (pkg.destinations && Array.isArray(pkg.destinations)) {
-          pkg.destinations.forEach((dest: string) => {
-            if (!uniqueDestinations.has(dest)) {
-              uniqueDestinations.set(dest, { name: dest, count: 1 });
-            } else {
-              uniqueDestinations.get(dest).count++;
-            }
-          });
-        }
-      });
-      destinationsArray = Array.from(uniqueDestinations.values())
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 6);
-  }
-
-  const getDestIcon = (name: string) => {
-    const l = name?.toLowerCase() || "";
-    if (l.includes("mountain") || l.includes("himalaya") || l.includes("kashmir") || l.includes("swiss")) return Mountain;
-    if (l.includes("kerala") || l.includes("bali") || l.includes("forest") || l.includes("jungle")) return TreePine;
-    if (l.includes("maldives") || l.includes("beach") || l.includes("goa") || l.includes("island")) return Sun;
-    if (l.includes("cruise") || l.includes("boat") || l.includes("river")) return Ship;
-    if (l.includes("europe") || l.includes("fort") || l.includes("rajasthan") || l.includes("palace") || l.includes("london")) return Castle;
-    if (l.includes("dubai") || l.includes("singapore") || l.includes("city") || l.includes("york")) return Building2;
-    return MapPin;
-  };
+  const categories = Array.from(new Set(allPackages.map(p => p.category).filter(Boolean))).slice(0, 8) as string[];
 
   return (
     <main className="flex min-h-screen flex-col bg-stone-50">
-      {/* ──────────────────────────────────────────────────────────
-          SECTION 1: HERO
-          ────────────────────────────────────────────────────────── */}
-      <section className="relative flex min-h-[70svh] items-center justify-center bg-stone-950 z-30 pb-16">
+
+      {/* ── HERO ── */}
+      <section className="relative flex min-h-[75svh] items-center justify-center bg-stone-950 z-30 pb-10">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {heroVideoUrl ? (
-            <video
-              src={heroVideoUrl}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 h-full w-full object-cover opacity-60"
-            />
+            <video src={heroVideoUrl} autoPlay loop muted playsInline
+              className="absolute inset-0 h-full w-full object-cover opacity-60" />
           ) : heroImgUrl ? (
-            <Image
-              src={heroImgUrl}
-              alt="Premium Travel Agency Hero Background"
-              fill
-              className="object-cover opacity-60"
-              priority
-              unoptimized
-            />
+            <Image src={heroImgUrl} alt="IGHolidays Hero" fill
+              className="object-cover opacity-60" priority unoptimized />
           ) : (
             <div className="absolute inset-0 bg-stone-950 opacity-80" />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/50 to-stone-950/20" />
         </div>
 
-        <div className="container-inner relative z-10 flex flex-col items-center text-center">
-          <div className="mb-6 mt-16 inline-flex items-center gap-4 text-xs font-bold tracking-widest text-[#fbbf24] uppercase">
-            <span className="h-px w-8 bg-[#fbbf24]/50" />
+        <div className="container-inner relative z-10 flex flex-col items-center text-center px-4">
+          <div className="mb-5 mt-16 inline-flex items-center gap-3 text-[10px] sm:text-xs font-bold tracking-widest text-gold-400 uppercase">
+            <span className="h-px w-6 sm:w-8 bg-gold-400/50" />
             Trusted by 10,000+ Happy Travellers
-            <span className="h-px w-8 bg-[#fbbf24]/50" />
+            <span className="h-px w-6 sm:w-8 bg-gold-400/50" />
           </div>
 
-          <h1 className="mx-auto mt-4 max-w-3xl text-balance font-serif text-4xl font-medium tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl px-4 sm:px-0 drop-shadow-md">
-            Best Holiday Packages & <br className="hidden sm:block" />
-            <span className="bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent italic font-semibold">Flight Bookings.</span>
+          <h1 className="mx-auto mt-3 max-w-3xl font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-white drop-shadow-md leading-tight">
+            Best Holiday Packages &{" "}
+            <span className="bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent italic font-semibold">
+              Flight Bookings.
+            </span>
           </h1>
 
-          <h2 className="mb-8 mt-6 max-w-2xl text-lg text-stone-300 font-light leading-relaxed sm:text-xl">
-            {settings?.tagline ||
-              "Expertly crafting domestic and international tours. From Maldives honeymoons to European group vacations, IGHolidays is your trusted travel partner in India."}
-          </h2>
+          <p className="mb-6 mt-5 max-w-xl text-sm sm:text-lg text-stone-300 font-light leading-relaxed">
+            {settings?.tagline || "Expertly crafting domestic and international tours. Your trusted travel partner in India."}
+          </p>
 
-          {/* Dual Search Tabs */}
-          <div className="w-full mt-8 relative z-20">
+          <div className="w-full mt-6 relative z-20">
             <HeroSearchTabs />
           </div>
         </div>
       </section>
 
-      {/* ──────────────────────────────────────────────────────────
-          SECTION 2: POPULAR DESTINATIONS (Dynamic from Packages)
-          ────────────────────────────────────────────────────────── */}
-      {destinationsArray.length > 0 && (
-        <section className="py-16 lg:py-20 bg-white" id="destinations">
-          <div className="container-inner">
-            <div className="mb-10 flex flex-col items-center justify-between gap-4 text-center md:flex-row md:items-end md:text-left">
-              <div>
-                <span className="section-label">Trending Destinations</span>
-                <h2 className="text-4xl text-brand-950 md:text-5xl font-medium tracking-tight">
-                  Popular Destinations
-                </h2>
+      {/* ── QUICK STATS STRIP ── */}
+      <section className="bg-brand-950 py-4">
+        <div className="container-inner">
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-brand-800">
+            {[
+              { value: "15+", label: "Years Experience" },
+              { value: "10K+", label: "Happy Travellers" },
+              { value: "50+", label: "Destinations" },
+              { value: "24/7", label: "Expert Support" },
+            ].map((s) => (
+              <div key={s.label} className="flex flex-col items-center py-3 px-2 text-center">
+                <span className="font-serif text-xl sm:text-2xl font-bold text-gold-400">{s.value}</span>
+                <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-stone-400 mt-0.5">{s.label}</span>
               </div>
-              <Link
-                href="/packages"
-                className="group flex items-center gap-2 font-semibold text-stone-500 transition-colors hover:text-brand-950"
-              >
-                Browse All{" "}
-                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CATEGORY PILLS ── */}
+      {categories.length > 0 && (
+        <section className="bg-white border-b border-stone-100 py-4 overflow-x-auto">
+          <div className="container-inner">
+            <div className="flex gap-2 min-w-max sm:flex-wrap sm:min-w-0">
+              <Link href="/packages"
+                className="shrink-0 rounded-full border border-brand-200 bg-brand-950 px-4 py-2 text-xs font-bold text-white uppercase tracking-wide whitespace-nowrap">
+                All Packages
               </Link>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3 pb-4">
-              {destinationsArray.map((dest) => {
-                const IconComponent = getDestIcon(dest.name);
-                const destImgUrl = dest.image ? `${dUrl}/assets/${dest.image}` : null;
-                const destHref = dest.slug ? `/packages?destination=${dest.slug}` : `/packages?query=${encodeURIComponent(dest.name)}`;
-
-                return (
-                  <Link
-                    key={dest.name}
-                    href={destHref}
-                    className="group relative flex flex-col w-full aspect-[4/5] sm:aspect-square overflow-hidden rounded-[1.5rem] bg-stone-900 shadow-sm transition-transform hover:-translate-y-1"
-                  >
-                     {destImgUrl ? (
-                        <Image
-                            src={destImgUrl}
-                            alt={dest.name}
-                            fill
-                            className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-100"
-                            unoptimized
-                        />
-                     ) : (
-                         <div className="absolute inset-0 bg-stone-800 opacity-80 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center">
-                            <IconComponent className="h-10 w-10 text-stone-600 transition-transform duration-500 group-hover:scale-110" />
-                         </div>
-                     )}
-                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent p-4 sm:p-6 text-center">
-                         <h3 className="font-serif text-xl sm:text-2xl font-medium text-white shadow-sm transition-transform duration-500 group-hover:-translate-y-0.5">{dest.name}</h3>
-                         {dest.count > 0 && (
-                            <p className="mt-1 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gold-400 opacity-90 transition-colors">
-                                {dest.count} Package{dest.count > 1 ? "s" : ""}
-                            </p>
-                         )}
-                     </div>
-                  </Link>
-                );
-              })}
+              {categories.map(cat => (
+                <Link key={cat} href={`/packages?category=${encodeURIComponent(cat)}`}
+                  className="shrink-0 rounded-full border border-stone-200 bg-white px-4 py-2 text-xs font-semibold text-stone-600 uppercase tracking-wide whitespace-nowrap hover:bg-brand-50 hover:border-brand-200 hover:text-brand-800 transition-colors">
+                  {cat}
+                </Link>
+              ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* ──────────────────────────────────────────────────────────
-          SECTION 3: FEATURED PACKAGES
-          ────────────────────────────────────────────────────────── */}
-      <section className="pb-20 lg:pb-32 bg-white">
+      {/* ── TRENDING DESTINATIONS ── */}
+      {trendingDestinations.length > 0 && (
+        <section className="py-12 lg:py-16 bg-white" id="destinations">
+          <div className="container-inner">
+            <div className="mb-8 flex items-end justify-between gap-4">
+              <div>
+                <span className="section-label">Trending Now</span>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">
+                  Popular Destinations
+                </h2>
+              </div>
+              <Link href="/packages" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-stone-500 hover:text-brand-950 transition-colors shrink-0">
+                View All <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              {trendingDestinations.map((dest) => {
+                const destImgUrl = dest.image ? `${dUrl}/assets/${dest.image}` : null;
+                const href = `/packages?destination=${encodeURIComponent(dest.name)}`;
+                return (
+                  <Link key={dest.name} href={href}
+                    className="group flex flex-col items-center gap-2">
+                    <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-stone-200">
+                      {destImgUrl ? (
+                        <Image src={destImgUrl} alt={dest.name} fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-110" unoptimized />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-700 to-brand-950 flex items-center justify-center">
+                          <MapPin className="h-6 w-6 text-white/40" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    </div>
+                    <span className="text-xs sm:text-sm font-semibold text-stone-800 text-center group-hover:text-brand-700 transition-colors">{dest.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div className="mt-6 text-center sm:hidden">
+              <Link href="/packages" className="text-sm font-semibold text-brand-700 underline underline-offset-4">
+                View All Destinations
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── HANDPICKED PACKAGES (Domestic / International tabs) ── */}
+      <section className="py-12 lg:py-16 bg-stone-50">
         <div className="container-inner">
-          <div className="mb-14 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+          <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <span className="section-label">Top Rated Packages</span>
-              <h2 className="text-4xl text-stone-900 md:text-5xl">
-                Bestselling Tours & Itineraries
+              <span className="section-label">Curated For You</span>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">
+                Handpicked Packages
               </h2>
             </div>
-            <Link
-              href="/packages"
-              className="group flex items-center gap-2 font-semibold text-brand-700 transition-colors hover:text-brand-800"
-            >
-              See All Packages{" "}
-              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            <Link href="/packages" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800 transition-colors shrink-0">
+              See All Packages <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
 
+          {/* Horizontal scroll on mobile, grid on desktop */}
           {featuredPackages.length > 0 ? (
-            <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 pb-6 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 pb-3 scrollbar-hide">
               {featuredPackages.map((pkg) => {
-                const imgUrl = pkg.image
-                  ? `${dUrl}/assets/${pkg.image}`
-                  : null;
-
+                const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
                 return (
-                  <Link
-                    key={pkg.id}
-                    href={`/packages/${pkg.slug || pkg.id}`}
-                    className="group flex flex-col w-[85vw] sm:w-auto snap-center shrink-0 overflow-hidden rounded-[2rem] border border-stone-200 bg-white transition-all hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300"
-                  >
-                    <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden bg-stone-100">
+                  <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
+                    className="group flex flex-col shrink-0 w-[75vw] sm:w-auto snap-center overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
                       {imgUrl ? (
-                        <Image
-                          src={imgUrl}
-                          alt={pkg.title}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          unoptimized
-                        />
+                        <Image src={imgUrl} alt={pkg.title} fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
                       ) : (
-                        <Compass className="h-16 w-16 text-stone-300" />
-                      )}
-                      {pkg.category && (
-                        <div className="absolute left-4 top-4 rounded-full bg-white/90 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-800 backdrop-blur-md shadow-sm">
-                          {pkg.category}
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center">
+                          <Compass className="h-10 w-10 text-brand-700/40" />
                         </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      {pkg.category && (
+                        <span className="absolute top-3 left-3 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-brand-900">
+                          {pkg.category}
+                        </span>
+                      )}
+                      {pkg.duration_nights && (
+                        <span className="absolute bottom-3 right-3 flex items-center gap-1 rounded-md bg-black/70 px-2.5 py-1 text-[11px] font-medium text-white">
+                          <Clock className="h-3 w-3 text-gold-400" />
+                          {pkg.duration_nights}N / {pkg.duration_days}D
+                        </span>
                       )}
                     </div>
-
-                    <div className="flex flex-1 flex-col p-6 sm:p-8">
-                      <div className="mb-4 flex flex-wrap items-center gap-4 text-xs font-medium text-stone-500">
-                        {pkg.duration_nights && (
-                          <span className="flex items-center gap-1.5">
-                            <Clock className="h-4 w-4 text-brand-600" />
-                            {pkg.duration_nights}N / {pkg.duration_days}D
-                          </span>
-                        )}
-                        {pkg.destinations?.length > 0 && (
-                          <span className="flex items-center gap-1.5">
-                            <MapPin className="h-4 w-4 text-brand-600" />
-                            {pkg.destinations.slice(0, 2).join(", ")}
-                          </span>
-                        )}
-                      </div>
-
-                      <h3 className="mb-6 font-serif text-2xl font-medium leading-tight text-stone-900 transition-colors group-hover:text-brand-700">
+                    <div className="flex flex-1 flex-col p-4 sm:p-5">
+                      <h3 className="font-serif text-base sm:text-lg font-medium leading-snug text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-2 mb-3">
                         {pkg.title}
                       </h3>
-
-                      <div className="mt-auto flex items-end justify-between border-t border-stone-100 pt-6">
+                      {(pkg.destination || pkg.destinations?.length > 0) && (
+                        <div className="flex items-center gap-1 text-xs text-stone-400 mb-3">
+                          <MapPin className="h-3 w-3 shrink-0" />
+                          <span className="truncate">{pkg.destination || pkg.destinations?.slice(0, 2).join(", ")}</span>
+                        </div>
+                      )}
+                      <div className="mt-auto flex items-center justify-between pt-3 border-t border-stone-100">
                         <div>
-                          <p className="text-xs font-medium text-stone-500">
-                            Starting from
-                          </p>
+                          <p className="text-[10px] text-stone-400 font-medium uppercase tracking-wide">Starting from</p>
                           {pkg.price ? (
-                            <p className="font-serif text-2xl font-bold text-brand-900">
-                              ₹{Number(pkg.price).toLocaleString("en-IN")}
-                            </p>
+                            <p className="font-serif text-lg font-bold text-brand-900">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
                           ) : (
-                            <p className="font-serif text-xl font-bold text-stone-800">
-                              On Request
-                            </p>
+                            <p className="font-serif text-base font-bold text-stone-700">On Request</p>
                           )}
                         </div>
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-50 text-brand-700 transition-colors group-hover:bg-brand-900 group-hover:text-white">
-                          <ArrowRight className="h-5 w-5 -rotate-45 transition-transform group-hover:rotate-0" />
+                        <div className="h-8 w-8 flex items-center justify-center rounded-full bg-brand-50 text-brand-700 group-hover:bg-brand-950 group-hover:text-white transition-colors">
+                          <ArrowRight className="h-4 w-4 -rotate-45 group-hover:rotate-0 transition-transform" />
                         </div>
                       </div>
                     </div>
@@ -392,96 +321,199 @@ export default async function Home() {
               })}
             </div>
           ) : (
-            <div className="flex w-full flex-col items-center justify-center rounded-3xl border border-dashed border-stone-300 bg-stone-50 py-20 text-center">
-              <Compass className="mb-4 h-12 w-12 text-stone-300" />
-              <p className="text-lg font-medium text-stone-600">
-                Packages coming soon
-              </p>
+            <div className="flex items-center justify-center rounded-2xl border border-dashed border-stone-300 bg-white py-20 text-center">
+              <p className="text-stone-400 font-medium">Packages coming soon</p>
             </div>
           )}
+
+          <div className="mt-6 text-center sm:hidden">
+            <Link href="/packages" className="btn-outline text-sm">See All Packages</Link>
+          </div>
         </div>
       </section>
 
-      {/* ──────────────────────────────────────────────────────────
-          SECTION 3.5: THEME BASED PACKAGES
-          ────────────────────────────────────────────────────────── */}
-      {themePackages.length > 0 && (
-        <section className="py-16 lg:py-24 bg-stone-50">
+      {/* ── DOMESTIC vs INTERNATIONAL ── */}
+      {(domesticPackages.length > 0 || internationalPackages.length > 0) && (
+        <section className="py-12 lg:py-16 bg-white">
           <div className="container-inner">
-            <div className="mb-14 text-center">
-              <span className="section-label mx-auto">Travel Styles</span>
-              <h2 className="text-4xl text-brand-950 md:text-5xl font-medium tracking-tight">Theme Based Holidays</h2>
+            <div className="mb-8">
+              <span className="section-label">Explore More</span>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">
+                Domestic & International
+              </h2>
             </div>
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-8 pb-4">
-              {themePackages.map((pkg, idx) => (
-                <Link href={`/packages?category=${pkg.category}`} key={pkg.id || idx} className="group relative w-full aspect-square sm:aspect-[4/5] lg:aspect-square overflow-hidden rounded-3xl bg-stone-900 shadow-sm transition-transform hover:-translate-y-1">
-                  <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.category} fill className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-100" unoptimized />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent p-6 text-center">
-                    <h3 className="font-serif text-2xl font-medium text-white">{pkg.category}</h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
-      {/* ──────────────────────────────────────────────────────────
-          SECTION 3.6: BUDGET FRIENDLY DESTINATIONS
-          ────────────────────────────────────────────────────────── */}
-      {budgetPackages.length > 0 && (
-        <section className="py-16 lg:py-20 bg-white">
-          <div className="container-inner">
-            <div className="mb-14 text-center">
-              <span className="section-label mx-auto">Affordable Getaways</span>
-              <h2 className="text-4xl text-stone-900 md:text-5xl tracking-tight">Budget Friendly Packages</h2>
-            </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 pb-6">
-              {budgetPackages.map((pkg, idx) => (
-                <Link href={`/packages/${pkg.slug || pkg.id}`} key={pkg.id || idx} className="group relative w-full h-[280px] sm:h-64 overflow-hidden rounded-[2rem]">
-                  <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized />
-                  <div className="absolute inset-0 bg-stone-900/50 transition-colors duration-500 group-hover:bg-brand-950/80" />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                    <h3 className="mb-2 font-serif text-2xl font-medium text-white shadow-sm transition-transform duration-500 group-hover:-translate-y-1">{pkg.title}</h3>
-                    <div className="w-12 h-px bg-gold-400 mb-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                    <p className="text-sm font-bold uppercase tracking-widest text-gold-300 opacity-90">From ₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Domestic */}
+              {domesticPackages.length > 0 && (
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-serif text-lg font-medium text-brand-950 flex items-center gap-2">
+                      <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                      Domestic Tours
+                    </h3>
+                    <Link href="/packages?category=Domestic" className="text-xs font-semibold text-brand-600 hover:underline">View All</Link>
                   </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ──────────────────────────────────────────────────────────
-          SECTION 3.7: TESTIMONIALS
-          ────────────────────────────────────────────────────────── */}
-      <section className="py-20 lg:py-24 bg-stone-50 overflow-hidden relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-stone-200/50 via-stone-50 to-stone-50 opacity-80" />
-        <div className="container-inner relative z-10">
-          <div className="mb-16 text-center">
-            <span className="section-label mx-auto">Client Stories</span>
-            <h2 className="text-4xl text-brand-950 md:text-5xl tracking-tight">What Our Travelers Say</h2>
-          </div>
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 lg:grid lg:grid-cols-3 pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-            {[
-              { name: "Rahul & Priya", tour: "Maldives Honeymoon", text: "IGHolidays planned the most magical honeymoon for us. The water villa upgrade they secured was breathtaking. Truly the best luxury travel agency!" },
-              { name: "Suresh Menon", tour: "Dubai Corporate MICE", text: "Handling our 150-person corporate summit in Dubai was no small feat. IGHolidays executed everything flawlessly from visas to gala dinners." },
-              { name: "Anjali Sharma", tour: "Discover Europe", text: "The customized 14-day Europe itinerary was perfectly paced. The local guides were fantastic and every hotel exceeded our expectations." }
-            ].map((review, i) => (
-              <div key={i} className="rounded-3xl bg-white p-8 sm:p-10 shadow-lg shadow-stone-200/30 border border-stone-100 flex flex-col relative transition-all hover:-translate-y-1">
-                <div className="flex items-center justify-between mb-8 text-gold-400">
-                  <div className="flex gap-1">
-                    {[...Array(5)].map((_, j) => <Star key={j} className="h-5 w-5 fill-current" />)}
-                  </div>
-                  <div className="h-10 w-10 opacity-30">
-                    <svg className="h-full w-full fill-current" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" /></svg>
+                  <div className="space-y-3">
+                    {domesticPackages.slice(0, 4).map((pkg) => {
+                      const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
+                      return (
+                        <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
+                          className="group flex items-center gap-3 rounded-xl border border-stone-100 bg-stone-50 p-3 hover:bg-brand-50 hover:border-brand-100 transition-colors">
+                          <div className="relative h-16 w-20 shrink-0 rounded-lg overflow-hidden bg-stone-200">
+                            {imgUrl ? (
+                              <Image src={imgUrl} alt={pkg.title} fill className="object-cover" unoptimized />
+                            ) : (
+                              <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1">{pkg.title}</h4>
+                            <div className="flex items-center gap-3 mt-1">
+                              {pkg.duration_nights && (
+                                <span className="text-[11px] text-stone-400 flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />{pkg.duration_nights}N/{pkg.duration_days}D
+                                </span>
+                              )}
+                              {pkg.price && (
+                                <span className="text-[11px] font-bold text-brand-700">₹{Number(pkg.price).toLocaleString("en-IN")}</span>
+                              )}
+                            </div>
+                          </div>
+                          <ChevronRight className="h-4 w-4 text-stone-300 shrink-0 group-hover:text-brand-600 transition-colors" />
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
-                <p className="text-stone-600 leading-relaxed mb-8 flex-1 text-[15px]">&quot;{review.text}&quot;</p>
-                <div className="border-t border-stone-100 pt-6 mt-auto">
-                  <h4 className="font-bold text-brand-950 uppercase tracking-wide text-sm">{review.name}</h4>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-stone-400 mt-1">{review.tour}</p>
+              )}
+
+              {/* International */}
+              {internationalPackages.length > 0 && (
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-serif text-lg font-medium text-brand-950 flex items-center gap-2">
+                      <span className="inline-block h-2.5 w-2.5 rounded-full bg-blue-500"></span>
+                      International Tours
+                    </h3>
+                    <Link href="/packages" className="text-xs font-semibold text-brand-600 hover:underline">View All</Link>
+                  </div>
+                  <div className="space-y-3">
+                    {internationalPackages.slice(0, 4).map((pkg) => {
+                      const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
+                      return (
+                        <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
+                          className="group flex items-center gap-3 rounded-xl border border-stone-100 bg-stone-50 p-3 hover:bg-brand-50 hover:border-brand-100 transition-colors">
+                          <div className="relative h-16 w-20 shrink-0 rounded-lg overflow-hidden bg-stone-200">
+                            {imgUrl ? (
+                              <Image src={imgUrl} alt={pkg.title} fill className="object-cover" unoptimized />
+                            ) : (
+                              <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1">{pkg.title}</h4>
+                            <div className="flex items-center gap-3 mt-1">
+                              {pkg.duration_nights && (
+                                <span className="text-[11px] text-stone-400 flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />{pkg.duration_nights}N/{pkg.duration_days}D
+                                </span>
+                              )}
+                              {pkg.price && (
+                                <span className="text-[11px] font-bold text-brand-700">₹{Number(pkg.price).toLocaleString("en-IN")}</span>
+                              )}
+                            </div>
+                          </div>
+                          <ChevronRight className="h-4 w-4 text-stone-300 shrink-0 group-hover:text-brand-600 transition-colors" />
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── EXPLORE BY THEME ── */}
+      {themePackages.length > 0 && (
+        <section className="py-12 lg:py-16 bg-stone-50">
+          <div className="container-inner">
+            <div className="mb-8 text-center">
+              <span className="section-label mx-auto">Travel Styles</span>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">Explore by Theme</h2>
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {themePackages.map((pkg, idx) => (
+                <Link href={`/packages?category=${encodeURIComponent(pkg.category)}`} key={pkg.id || idx}
+                  className="group relative w-full aspect-[3/4] sm:aspect-square overflow-hidden rounded-2xl bg-stone-900">
+                  <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.category} fill
+                    className="object-cover opacity-75 transition-transform duration-500 group-hover:scale-110 group-hover:opacity-90" unoptimized />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-4 text-center">
+                    <h3 className="font-serif text-base sm:text-xl font-medium text-white">{pkg.category}</h3>
+                    <p className="mt-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gold-400">Explore →</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── BUDGET PACKAGES ── */}
+      {budgetPackages.length > 0 && (
+        <section className="py-12 lg:py-16 bg-white">
+          <div className="container-inner">
+            <div className="mb-8 flex items-end justify-between gap-4">
+              <div>
+                <span className="section-label">Affordable Getaways</span>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Budget-Friendly Picks</h2>
+              </div>
+              <Link href="/packages?sort=price-asc" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800 shrink-0">
+                More Deals <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              {budgetPackages.map((pkg, idx) => (
+                <Link href={`/packages/${pkg.slug || pkg.id}`} key={pkg.id || idx}
+                  className="group relative overflow-hidden rounded-2xl aspect-[3/4] sm:aspect-[4/5] bg-stone-900">
+                  <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill
+                    className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" unoptimized />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
+                    <h3 className="font-serif text-sm sm:text-base font-medium text-white line-clamp-2 mb-1">{pkg.title}</h3>
+                    <p className="text-xs font-bold text-gold-400">From ₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── TESTIMONIALS ── */}
+      <section className="py-12 lg:py-16 bg-stone-50">
+        <div className="container-inner">
+          <div className="mb-10 text-center">
+            <span className="section-label mx-auto">Client Stories</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">What Travellers Say</h2>
+          </div>
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 -mx-4 px-4 sm:mx-0 sm:px-0 lg:grid lg:grid-cols-3 pb-4 scrollbar-hide">
+            {[
+              { name: "Rahul & Priya", tour: "Maldives Honeymoon", rating: 5, text: "IGHolidays planned the most magical honeymoon. The water villa upgrade was breathtaking. Truly the best luxury travel agency!" },
+              { name: "Suresh Menon", tour: "Dubai Corporate MICE", rating: 5, text: "Handling our 150-person corporate summit in Dubai was flawlessly executed — from visas to the grand gala dinner." },
+              { name: "Anjali Sharma", tour: "Discover Europe", rating: 5, text: "The customized 14-day Europe itinerary was perfectly paced. Every hotel exceeded our expectations. 100% recommended!" },
+            ].map((r, i) => (
+              <div key={i} className="shrink-0 w-[80vw] sm:w-auto snap-center rounded-2xl bg-white border border-stone-100 shadow-sm p-6 sm:p-8 flex flex-col">
+                <div className="flex gap-0.5 mb-4">
+                  {[...Array(r.rating)].map((_, j) => <Star key={j} className="h-4 w-4 fill-gold-400 text-gold-400" />)}
+                </div>
+                <p className="text-stone-600 text-sm sm:text-[15px] leading-relaxed flex-1 mb-6">&quot;{r.text}&quot;</p>
+                <div className="border-t border-stone-100 pt-4">
+                  <p className="font-bold text-brand-950 text-sm uppercase tracking-wide">{r.name}</p>
+                  <p className="text-xs text-stone-400 mt-0.5 font-medium">{r.tour}</p>
                 </div>
               </div>
             ))}
@@ -489,63 +521,33 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ──────────────────────────────────────────────────────────
-          SECTION 4: WHY CHOOSE US
-          ────────────────────────────────────────────────────────── */}
-      <section className="py-20 lg:py-32 bg-brand-950 text-stone-400">
+      {/* ── WHY CHOOSE US ── */}
+      <section className="py-12 lg:py-20 bg-brand-950 text-stone-400">
         <div className="container-inner">
-          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div>
               <span className="section-label !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30">
                 Why Choose Us?
               </span>
-              <h2 className="mb-6 font-serif text-4xl text-white md:text-5xl">
+              <h2 className="mb-4 font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-medium">
                 Top Rated Travel Planners in India.
               </h2>
-              <p className="mb-10 text-lg leading-relaxed text-stone-300">
-                As one of the leading luxury tour operators in India, our extensive network connects you to deep global expertise. With over 15 years of curating bespoke domestic & international trips, we guarantee unparalleled service to make your dream holidays spectacular.
+              <p className="mb-8 text-sm sm:text-base leading-relaxed text-stone-300">
+                With over 15 years of curating bespoke domestic & international trips, our extensive global network guarantees unparalleled service to make your dream holidays spectacular.
               </p>
-              <div className="flex gap-4">
-                <Link href="/contact" className="btn-gold px-8 py-3 text-sm">
-                  Speak to an Expert
-                </Link>
-              </div>
+              <Link href="/contact" className="btn-gold text-sm px-6 py-3">Speak to an Expert</Link>
             </div>
-
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="grid grid-cols-2 gap-4">
               {[
-                {
-                  icon: Shield,
-                  title: "100% Secure",
-                  desc: "Fully verified partners and trusted secure payment gateways.",
-                },
-                {
-                  icon: Globe,
-                  title: "Global Reach",
-                  desc: "Exclusive connections across 50+ countries worldwide.",
-                },
-                {
-                  icon: Headphones,
-                  title: "24/7 Concierge",
-                  desc: "Dedicated support team available round the clock during your trip.",
-                },
-                {
-                  icon: Award,
-                  title: "Best Price",
-                  desc: "Unbeatable value and exclusive upgrades you won't find anywhere else.",
-                },
-              ].map((feature, idx) => (
-                <div
-                  key={idx}
-                  className="rounded-3xl border border-brand-800 bg-brand-900/50 p-8 transition-colors hover:bg-brand-900"
-                >
-                  <feature.icon className="mb-6 h-8 w-8 text-gold-400" />
-                  <h3 className="mb-2 font-serif text-xl font-medium text-white">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-stone-400">
-                    {feature.desc}
-                  </p>
+                { icon: Shield, title: "100% Secure", desc: "Fully verified partners and trusted secure payments." },
+                { icon: Globe, title: "Global Reach", desc: "Exclusive connections across 50+ countries." },
+                { icon: Headphones, title: "24/7 Support", desc: "Dedicated support throughout your journey." },
+                { icon: Award, title: "Best Price", desc: "Unbeatable value and exclusive upgrades." },
+              ].map((f, idx) => (
+                <div key={idx} className="rounded-2xl border border-brand-800 bg-brand-900/50 p-5 sm:p-6">
+                  <f.icon className="mb-4 h-6 w-6 text-gold-400" />
+                  <h3 className="mb-1 font-serif text-base sm:text-lg font-medium text-white">{f.title}</h3>
+                  <p className="text-xs sm:text-sm leading-relaxed text-stone-400">{f.desc}</p>
                 </div>
               ))}
             </div>
@@ -553,107 +555,104 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ──────────────────────────────────────────────────────────
-          SECTION 5: BLOG (If present)
-          ────────────────────────────────────────────────────────── */}
-      {
-        latestBlogs.length > 0 && (
-          <section className="py-20 lg:py-32 bg-stone-50">
-            <div className="container-inner">
-              <div className="mb-14 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-                <div>
-                  <span className="section-label">Travel Journal</span>
-                  <h2 className="text-4xl text-stone-900 md:text-5xl">
-                    Stories & Insights
-                  </h2>
+      {/* ── HOW IT WORKS ── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="container-inner">
+          <div className="mb-10 text-center">
+            <span className="section-label mx-auto">Simple Process</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">How It Works</h2>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+            {[
+              { step: "01", icon: Compass, title: "Choose Destination", desc: "Browse our curated packages or tell us your dream destination." },
+              { step: "02", icon: Users, title: "Share Your Details", desc: "Fill in travel dates, group size, and preferences." },
+              { step: "03", icon: CheckCircle2, title: "Get Custom Quote", desc: "Our experts craft a personalised itinerary just for you." },
+              { step: "04", icon: Star, title: "Travel & Enjoy", desc: "Sit back and enjoy a flawlessly planned holiday." },
+            ].map((s, i) => (
+              <div key={i} className="flex flex-col items-center text-center">
+                <div className="relative mb-4">
+                  <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-brand-950 text-white">
+                    <s.icon className="h-6 w-6 sm:h-7 sm:w-7" />
+                  </div>
+                  <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-gold-400 text-[10px] font-black text-stone-950">{s.step}</span>
                 </div>
-                <Link
-                  href="/blog"
-                  className="group flex items-center gap-2 font-semibold text-brand-700 transition-colors hover:text-brand-800"
-                >
-                  Read All Articles{" "}
-                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+                <h3 className="font-serif text-sm sm:text-base font-medium text-brand-950 mb-1">{s.title}</h3>
+                <p className="text-xs sm:text-sm text-stone-500 leading-relaxed">{s.desc}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                {latestBlogs.map((post) => {
-                  const imgUrl = post.featured_image
-                    ? `${dUrl}/assets/${post.featured_image}`
-                    : null;
-
-                  return (
-                    <Link
-                      key={post.id}
-                      href={`/blog/${post.slug || post.id}`}
-                      className="group flex flex-col overflow-hidden rounded-[1.5rem] bg-white border border-stone-200 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
-                    >
-                      <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100 flex items-center justify-center">
-                        {imgUrl ? (
-                          <Image
-                            src={imgUrl}
-                            alt={post.title}
-                            fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            unoptimized
-                          />
-                        ) : (
-                          <Globe className="h-10 w-10 text-stone-300" />
-                        )}
-                      </div>
-                      <div className="p-6">
-                        <p className="mb-3 text-xs font-bold uppercase tracking-wider text-brand-700">
-                          {post.published_date
-                            ? new Date(post.published_date).toLocaleDateString(
-                              "en-IN",
-                              { month: "short", day: "numeric", year: "numeric" }
-                            )
-                            : "Journal"}
-                        </p>
-                        <h3 className="mb-3 font-serif text-xl font-medium leading-tight text-stone-900 transition-colors group-hover:text-brand-700">
-                          {post.title}
-                        </h3>
-                        {post.excerpt && (
-                          <p className="text-sm text-stone-500 line-clamp-2">
-                            {post.excerpt}
-                          </p>
-                        )}
-                      </div>
-                    </Link>
-                  );
-                })}
+      {/* ── BLOG ── */}
+      {latestBlogs.length > 0 && (
+        <section className="py-12 lg:py-16 bg-stone-50">
+          <div className="container-inner">
+            <div className="mb-8 flex items-end justify-between gap-4">
+              <div>
+                <span className="section-label">Travel Journal</span>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium">Stories & Insights</h2>
               </div>
+              <Link href="/blog" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800 shrink-0">
+                Read All <ChevronRight className="h-4 w-4" />
+              </Link>
             </div>
-          </section>
-        )
-      }
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 pb-3 scrollbar-hide">
+              {latestBlogs.map((post) => {
+                const imgUrl = post.featured_image ? `${dUrl}/assets/${post.featured_image}` : null;
+                return (
+                  <Link key={post.id} href={`/blog/${post.slug || post.id}`}
+                    className="group shrink-0 w-[78vw] sm:w-auto snap-center flex flex-col overflow-hidden rounded-2xl bg-white border border-stone-200 hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <div className="relative aspect-[16/9] w-full overflow-hidden bg-stone-100">
+                      {imgUrl ? (
+                        <Image src={imgUrl} alt={post.title} fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center">
+                          <Globe className="h-8 w-8 text-brand-700/40" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-4 sm:p-5 flex flex-col flex-1">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-brand-600 mb-2">
+                        {post.published_date ? new Date(post.published_date).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) : "Journal"}
+                      </p>
+                      <h3 className="font-serif text-base font-medium leading-snug text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-2 mb-auto">
+                        {post.title}
+                      </h3>
+                      <div className="mt-3 pt-3 border-t border-stone-100 flex items-center gap-1.5 text-xs font-semibold text-brand-600">
+                        Read More <ArrowRight className="h-3 w-3" />
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
-      {/* ──────────────────────────────────────────────────────────
-          SECTION 6: CTA BANNER
-          ────────────────────────────────────────────────────────── */}
-      <section className="bg-stone-50 px-4 py-20 lg:py-32 sm:px-6 lg:px-8">
-        <div className="mx-auto w-full max-w-5xl overflow-hidden rounded-[3rem] bg-brand-950 border border-brand-800 p-10 text-center shadow-2xl sm:p-20 relative">
-          <div className="absolute top-0 left-1/4 -m-32 h-64 w-64 rounded-full bg-emerald-500/30 blur-[100px]" />
-          <div className="absolute bottom-0 right-1/4 -m-32 h-64 w-64 rounded-full bg-amber-500/20 blur-[100px]" />
-
+      {/* ── CTA BANNER ── */}
+      <section className="bg-stone-50 px-4 py-12 lg:py-20">
+        <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl bg-brand-950 border border-brand-800 p-8 sm:p-14 text-center shadow-2xl relative">
+          <div className="absolute top-0 left-1/4 -m-24 h-48 w-48 rounded-full bg-emerald-500/20 blur-[80px]" />
+          <div className="absolute bottom-0 right-1/4 -m-24 h-48 w-48 rounded-full bg-amber-500/20 blur-[80px]" />
           <div className="relative z-10">
-            <h2 className="mb-6 font-serif text-4xl font-medium text-white md:text-5xl">
+            <h2 className="mb-4 font-serif text-2xl sm:text-3xl lg:text-4xl font-medium text-white">
               Start Planning Your Next Holiday
             </h2>
-            <p className="mb-10 text-lg text-brand-200 mx-auto max-w-2xl">
-              Contact our tourism experts today. We'll craft a customized local or international itinerary perfectly tailored to your budget and travel style.
+            <p className="mb-8 text-sm sm:text-base text-stone-300 mx-auto max-w-xl">
+              Contact our tourism experts today. We'll craft a customized itinerary perfectly tailored to your budget and travel style.
             </p>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/packages" className="btn-gold w-full sm:w-auto">
-                Browse Packages
-              </Link>
-              <Link href="/contact" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 hover:!border-white/50">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link href="/packages" className="btn-gold w-full sm:w-auto text-sm">Browse Packages</Link>
+              <Link href="/contact" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 text-sm">
                 Contact Us
               </Link>
             </div>
           </div>
         </div>
       </section>
-    </main >
+    </main>
   );
 }

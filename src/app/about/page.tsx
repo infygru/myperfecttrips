@@ -1,179 +1,252 @@
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
-import { Compass, Globe2, Award, Headset } from "lucide-react";
+import type { Metadata } from "next";
+import { Compass, Globe2, Award, Headset, CheckCircle2, MapPin, Users, Star } from "lucide-react";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+    title: "About Us | IG Holidays – Best Travel Agency in India",
+    description: "Book your holiday with IG Holidays – India's premier travel agency specializing in luxury international packages, honeymoon tours, corporate MICE, and domestic getaways. 15+ years of trusted travel planning.",
+    alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com"}/about` },
+};
 
 export default async function AboutPage() {
     noStore();
 
     return (
-        <main className="min-h-screen bg-stone-50 pb-24">
-            {/* ──────────────────────────────────────────────────────────
-          SECTION 1: HERO
-          ────────────────────────────────────────────────────────── */}
-            <section className="relative bg-stone-950 px-4 pt-20 pb-32 sm:px-6 lg:px-8 shadow-sm">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-stone-800 via-stone-950 to-stone-950 opacity-80" />
-                <div className="container-inner relative z-10 flex flex-col items-center text-center">
-                    <span className="section-label !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30">
-                        About IGHolidays
-                    </span>
-                    <h1 className="mb-6 font-serif text-5xl font-medium text-white sm:text-6xl md:text-7xl tracking-tight leading-[1.1]">
-                        Redefining Luxury <br /><em className="bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent italic font-semibold">Travel.</em>
+        <main className="min-h-screen bg-white">
+
+            {/* ── HERO ── */}
+            <section className="relative bg-brand-950 pt-20 pb-24 px-4">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-800 via-brand-950 to-brand-950 opacity-80" />
+                <div className="container-inner relative z-10 text-center">
+                    <span className="section-label !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30 mx-auto">About IGHolidays</span>
+                    <h1 className="mt-4 mb-5 font-serif text-4xl sm:text-5xl md:text-6xl font-medium text-white tracking-tight leading-tight">
+                        Redefining Luxury <em className="bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent italic font-semibold">Travel.</em>
                     </h1>
-                    <p className="max-w-2xl text-lg text-stone-300 font-light leading-relaxed">
-                        We are a premier travel management company, providing extraordinary bespoke vacations, flawless corporate retreats, and expert travel facilitation across India and the world.
+                    <p className="max-w-2xl mx-auto text-base sm:text-lg text-stone-300 font-light leading-relaxed">
+                        We are a premier travel management company providing extraordinary bespoke vacations, flawless corporate retreats, and expert travel facilitation across India and the world.
                     </p>
                 </div>
             </section>
 
-            {/* ──────────────────────────────────────────────────────────
-          SECTION 2: OUR STORY
-          ────────────────────────────────────────────────────────── */}
-            <section className="container-inner -mt-16 relative z-20">
-                <div className="rounded-[2.5rem] bg-white p-8 sm:p-16 shadow-2xl shadow-stone-200/50 border border-stone-100 grid gap-12 lg:grid-cols-2 lg:items-center">
-                    <div>
-                        <h2 className="mb-6 font-serif text-3xl font-medium text-brand-950 sm:text-4xl">
-                            Our Journey
+            {/* ── STATS ── */}
+            <section className="bg-white border-b border-stone-100">
+                <div className="container-inner">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-stone-100">
+                        {[
+                            { value: "15+", label: "Years Experience" },
+                            { value: "10K+", label: "Happy Travellers" },
+                            { value: "50+", label: "Destinations" },
+                            { value: "500+", label: "Packages Sold" },
+                        ].map((s) => (
+                            <div key={s.label} className="flex flex-col items-center py-8 px-4 text-center">
+                                <span className="font-serif text-3xl sm:text-4xl font-bold text-brand-950">{s.value}</span>
+                                <span className="text-xs font-medium uppercase tracking-widest text-stone-400 mt-1">{s.label}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── OUR STORY ── */}
+            <section className="py-16 lg:py-20 bg-stone-50">
+                <div className="container-inner">
+                    <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+                        <div>
+                            <span className="section-label">Our Story</span>
+                            <h2 className="mb-6 font-serif text-3xl sm:text-4xl font-medium text-brand-950">
+                                15 Years of Crafting Unforgettable Journeys
+                            </h2>
+                            <div className="space-y-4 text-stone-600 leading-relaxed text-sm sm:text-base">
+                                <p>
+                                    Welcome to <strong>IGHolidays</strong>, officially recognized as the <strong>Best Travel Agency in India</strong> for curating impeccable, tailor-made journeys. What began as a passionate endeavor to simplify global travel has since evolved into India&apos;s leading premium travel management company.
+                                </p>
+                                <p>
+                                    As <strong>Top Luxury Tour Operators</strong>, we specialize in crafting <em>Customized International Tour Packages</em> and bespoke domestic retreats across India&apos;s most beautiful destinations like Kerala, Kashmir, Rajasthan, and the Andaman Islands.
+                                </p>
+                                <p>
+                                    Today, IGHolidays is the most trusted name in B2B and B2C travel — handling everything from intimate honeymoons to corporate MICE events for 500+ attendees across the globe.
+                                </p>
+                            </div>
+                            <div className="mt-8 flex flex-wrap gap-3">
+                                <Link href="/packages" className="btn-gold text-sm">Browse Packages</Link>
+                                <Link href="/contact" className="btn-outline text-sm">Talk to an Expert</Link>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-4">
+                                <div className="aspect-[3/4] rounded-3xl bg-gradient-to-br from-brand-800 to-brand-950 overflow-hidden relative flex items-end p-5">
+                                    <div className="text-white">
+                                        <MapPin className="h-6 w-6 text-gold-400 mb-2" />
+                                        <p className="font-serif text-xl font-medium">50+ Destinations</p>
+                                        <p className="text-xs text-stone-400">Worldwide coverage</p>
+                                    </div>
+                                </div>
+                                <div className="aspect-square rounded-3xl bg-gold-50 border border-gold-100 flex items-center justify-center p-6 text-center">
+                                    <div>
+                                        <div className="font-serif text-4xl font-bold text-gold-700 mb-1">15+</div>
+                                        <div className="text-xs font-bold uppercase tracking-wider text-gold-900/60">Years Experience</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="space-y-4 pt-8">
+                                <div className="aspect-square rounded-3xl bg-brand-950 flex items-center justify-center p-6 text-center">
+                                    <div>
+                                        <div className="font-serif text-4xl font-bold text-white mb-1">10K+</div>
+                                        <div className="text-xs font-bold uppercase tracking-wider text-stone-400">Happy Travelers</div>
+                                    </div>
+                                </div>
+                                <div className="aspect-[3/4] rounded-3xl bg-gradient-to-br from-stone-700 to-stone-900 overflow-hidden relative flex items-end p-5">
+                                    <div className="text-white">
+                                        <Star className="h-6 w-6 text-gold-400 mb-2 fill-gold-400" />
+                                        <p className="font-serif text-xl font-medium">5-Star Rated</p>
+                                        <p className="text-xs text-stone-400">By verified clients</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── SEO SECTION: Book Your Holiday ── */}
+            <section className="py-16 lg:py-20 bg-white">
+                <div className="container-inner">
+                    <div className="max-w-4xl mx-auto">
+                        <span className="section-label">Plan Your Trip</span>
+                        <h2 className="mb-6 font-serif text-3xl sm:text-4xl font-medium text-brand-950">
+                            Book Your Holiday with IG Holidays
                         </h2>
-                        <div className="space-y-6 text-stone-600 leading-relaxed text-sm sm:text-base">
+                        <div className="prose prose-stone max-w-none text-stone-600 leading-relaxed text-sm sm:text-base space-y-4">
                             <p>
-                                Welcome to <strong>IGHolidays</strong>, officially recognized as the <strong>Best Travel Agency in India</strong> for curating impeccable, tailor-made journeys. What began as a passionate endeavor to simplify global travel has since evolved into India&apos;s leading premium travel management company.
+                                Planning your next holiday has never been easier. At <strong>IG Holidays</strong>, we believe every traveller deserves a seamless, personalized, and truly memorable vacation — whether it&apos;s a romantic Maldives honeymoon, a thrilling Bali adventure, an iconic European grand tour, or a serene Kerala backwater escape. As one of India&apos;s most trusted travel agencies, we handle every detail so you can focus on the joy of discovery.
                             </p>
                             <p>
-                                As <strong>Top Luxury Tour Operators</strong>, we specialize in crafting <em>Customized International Tour Packages</em> and bespoke domestic retreats across India&apos;s most beautiful destinations like Kerala, Kashmir, Rajasthan, and the Andaman Islands. We believe travel isn&apos;t just about the destination; it&apos;s about the seamlessness of the journey, exclusive hand-picked accommodations, and rich cultural experiences.
+                                Our team of expert <strong>travel consultants</strong> brings together deep destination knowledge, exclusive hotel partnerships, and years of experience planning holidays for thousands of Indian travellers. We offer <strong>customized holiday packages</strong> tailored precisely to your budget, travel style, and preferences — from budget-friendly group tours to ultra-luxury private escapes.
                             </p>
                             <p>
-                                Today, IGHolidays is the most trusted name in B2B and B2C travel. As expert <strong>Corporate MICE Organizers (Meetings, Incentives, Conferences, and Exhibitions)</strong>, we handle massive group logistics, international college industrial visits, and corporate offsites for leading enterprises pan-India.
+                                When you <strong>book your holiday with IG Holidays</strong>, you get end-to-end support: visa assistance, flight bookings, hotel reservations, airport transfers, guided tours, and 24/7 on-trip concierge support. We are accredited by leading tourism boards and partner with the world&apos;s finest hotels and airlines to guarantee you the best value with zero hidden charges.
+                            </p>
+                            <p>
+                                Whether you are planning a <strong>honeymoon in the Maldives</strong>, a <strong>family trip to Singapore</strong>, a <strong>corporate MICE event in Dubai</strong>, or an <strong>educational tour across Europe</strong> — IG Holidays is your one-stop travel partner. Our packages cover 50+ international destinations and all major domestic circuits including Goa, Rajasthan, Himachal Pradesh, Uttarakhand, Kerala, and the Andaman & Nicobar Islands.
+                            </p>
+                            <p>
+                                Start planning today. Reach out to our travel experts and receive a <strong>free customized holiday quote</strong> within 24 hours. With IG Holidays, your dream vacation is just one conversation away.
                             </p>
                         </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-4">
-                            <div className="aspect-[4/5] rounded-3xl bg-stone-200 overflow-hidden relative">
-                                {/* Placeholder for lifestyle image */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 opacity-90"></div>
-                            </div>
-                            <div className="aspect-square rounded-3xl bg-gold-100 flex items-center justify-center p-6 text-center">
-                                <div>
-                                    <div className="font-serif text-4xl font-semibold text-gold-700 mb-1">15+</div>
-                                    <div className="text-xs font-bold uppercase tracking-wider text-gold-900/60">Years Experience</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="space-y-4 pt-8">
-                            <div className="aspect-square rounded-3xl bg-brand-50 flex items-center justify-center p-6 text-center">
-                                <div>
-                                    <div className="font-serif text-4xl font-semibold text-brand-700 mb-1">5k+</div>
-                                    <div className="text-xs font-bold uppercase tracking-wider text-brand-900/60">Happy Travelers</div>
-                                </div>
-                            </div>
-                            <div className="aspect-[4/5] rounded-3xl bg-stone-200 overflow-hidden relative">
-                                <div className="absolute inset-0 bg-gradient-to-br from-stone-800 to-stone-900 opacity-90"></div>
-                            </div>
+
+                        <div className="mt-8 flex flex-wrap gap-3">
+                            <Link href="/packages" className="btn-gold text-sm">Explore Packages</Link>
+                            <Link href="/contact" className="btn-outline text-sm">Get Free Quote</Link>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* ──────────────────────────────────────────────────────────
-          SECTION 2.5: OUR EXPERTISE (SEO KEYWORDS)
-          ────────────────────────────────────────────────────────── */}
-            <section className="container-inner mt-24">
-                <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-                    <div className="order-2 lg:order-1 relative h-full min-h-[400px] w-full rounded-3xl overflow-hidden shadow-2xl">
-                        <div className="absolute inset-0 bg-stone-900 flex items-center justify-center p-8 text-center border overflow-hidden">
-                            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold-900/40 via-stone-950 to-stone-950 opacity-90" />
-                            <div className="relative z-10">
-                                <Compass className="h-16 w-16 text-gold-500 mx-auto mb-6 opacity-30" />
-                                <h3 className="font-serif text-3xl text-white mb-4">India&apos;s Premier Destination Management Company</h3>
-                                <p className="text-stone-400 font-light">Accredited by major domestic and international tourism boards.</p>
-                            </div>
-                        </div>
+            {/* ── EXPERTISE ── */}
+            <section className="py-16 lg:py-20 bg-stone-50">
+                <div className="container-inner">
+                    <div className="text-center mb-12">
+                        <span className="section-label mx-auto">What We Do</span>
+                        <h2 className="font-serif text-3xl sm:text-4xl font-medium text-brand-950">Our Core Expertise</h2>
                     </div>
-                    <div className="order-1 lg:order-2">
-                        <h2 className="mb-6 font-serif text-3xl font-medium text-brand-950 sm:text-4xl">
-                            Our Core Expertise
-                        </h2>
-                        <ul className="space-y-6">
-                            <li className="flex gap-4">
-                                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-700">
-                                    <span className="font-bold">1</span>
+                    <div className="grid gap-6 sm:grid-cols-3">
+                        {[
+                            {
+                                icon: Star,
+                                title: "Luxury Honeymoon & Family Packages",
+                                desc: "From Maldives water villas to European grand tours — we are the best honeymoon planners in India, ensuring every detail of your romantic escape is flawless.",
+                                tag: "Most Popular",
+                            },
+                            {
+                                icon: Users,
+                                title: "Corporate MICE & Group Travel",
+                                desc: "Top Corporate MICE event planners in India. We coordinate flights, visas, and luxury stays for corporate delegations of 50 to 500+ attendees, anywhere in the world.",
+                                tag: "Enterprise",
+                            },
+                            {
+                                icon: Globe2,
+                                title: "International Visa & Flight Assistance",
+                                desc: "Complete end-to-end B2B and B2C travel facilitation. We secure the best flight deals and provide expert visa consultation for the US, UK, Schengen, and Dubai.",
+                                tag: "Hassle-Free",
+                            },
+                        ].map((item, i) => (
+                            <div key={i} className="rounded-2xl bg-white border border-stone-200 p-6 sm:p-8 flex flex-col">
+                                <span className="inline-block rounded-full bg-gold-50 border border-gold-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-700 mb-5 self-start">
+                                    {item.tag}
+                                </span>
+                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-950 text-white mb-5">
+                                    <item.icon className="h-5 w-5" />
                                 </div>
-                                <div>
-                                    <h3 className="text-lg font-bold text-brand-950">Luxury Honeymoon & Family Packages</h3>
-                                    <p className="mt-1 text-sm text-stone-600">From Maldives water villas to European grand tours, we are the best honeymoon planners in India, ensuring every detail of your romantic escape is perfect.</p>
-                                </div>
-                            </li>
-                            <li className="flex gap-4">
-                                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-700">
-                                    <span className="font-bold">2</span>
-                                </div>
-                                <div>
-                                    <h3 className="text-lg font-bold text-brand-950">Corporate MICE & Group Travel Logistics</h3>
-                                    <p className="mt-1 text-sm text-stone-600">Top Corporate MICE event planners in India. We coordinate flights, visas, and luxury stays for corporate delegations of 50 to 500+ attendees anywhere in the world.</p>
-                                </div>
-                            </li>
-                            <li className="flex gap-4">
-                                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-700">
-                                    <span className="font-bold">3</span>
-                                </div>
-                                <div>
-                                    <h3 className="text-lg font-bold text-brand-950">International Visa & Flight Assistance</h3>
-                                    <p className="mt-1 text-sm text-stone-600">Complete end-to-end B2B and B2C travel facilitation. We secure the best flight deals in India and provide expert visa consultation for the US, UK, Schengen, and Dubai.</p>
-                                </div>
-                            </li>
-                        </ul>
+                                <h3 className="font-serif text-xl font-medium text-brand-950 mb-3">{item.title}</h3>
+                                <p className="text-sm text-stone-600 leading-relaxed">{item.desc}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* ──────────────────────────────────────────────────────────
-          SECTION 3: VALUES / WHY US
-          ────────────────────────────────────────────────────────── */}
-            <section className="container-inner mt-24 bg-stone-100 rounded-[3rem] p-8 sm:p-16">
-                <div className="text-center mb-16">
-                    <h2 className="font-serif text-4xl font-medium text-brand-950 mb-4">Why Travel With Us</h2>
-                    <p className="text-stone-500 max-w-2xl mx-auto">As the top-rated travel agency in India, we don&apos;t just book tickets; we engineer unforgettable experiences backed by round-the-clock premium support.</p>
-                </div>
-
-                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                    {[
-                        { icon: Compass, title: "Expert Navigation", desc: "Deep knowledge of global destinations ensuring authentic, safe, and remarkable journeys." },
-                        { icon: Award, title: "Premium Quality", desc: "Vetted luxury partners, top-tier hotels, and exclusive access to premium amenities." },
-                        { icon: Globe2, title: "Pan-India Reach", desc: "Operating across India, we handle complex multi-city departures and massive group logistics." },
-                        { icon: Headset, title: "24/7 Concierge", desc: "Unwavering support throughout your entire journey. You are never alone when traveling with us." }
-                    ].map((val, i) => (
-                        <div key={i} className="text-center p-6">
-                            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-stone-100 text-brand-700">
-                                <val.icon className="h-8 w-8" />
-                            </div>
-                            <h3 className="mb-3 font-serif text-xl font-medium text-brand-950">{val.title}</h3>
-                            <p className="text-stone-500 text-sm leading-relaxed">{val.desc}</p>
+            {/* ── WHY TRAVEL WITH US ── */}
+            <section className="py-16 lg:py-20 bg-white">
+                <div className="container-inner">
+                    <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+                        <div>
+                            <span className="section-label">Our Promise</span>
+                            <h2 className="mb-6 font-serif text-3xl sm:text-4xl font-medium text-brand-950">Why Travel With Us</h2>
+                            <ul className="space-y-4">
+                                {[
+                                    "100% Customisable Itineraries tailored to your style",
+                                    "Best Price Guarantee — no hidden charges ever",
+                                    "24/7 On-Trip Concierge & emergency support",
+                                    "Expert Visa & Documentation Assistance",
+                                    "Trusted by 10,000+ Travellers across India",
+                                    "Accredited by leading international tourism boards",
+                                ].map((item) => (
+                                    <li key={item} className="flex items-start gap-3 text-sm text-stone-600">
+                                        <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" />
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                    ))}
+                        <div className="grid grid-cols-2 gap-4">
+                            {[
+                                { icon: Compass, title: "Expert Navigation", desc: "Deep knowledge of global destinations." },
+                                { icon: Award, title: "Premium Quality", desc: "Vetted luxury partners & top-tier hotels." },
+                                { icon: Globe2, title: "Pan-India Reach", desc: "Multi-city departures & group logistics." },
+                                { icon: Headset, title: "24/7 Concierge", desc: "Unwavering support throughout your journey." },
+                            ].map((val, i) => (
+                                <div key={i} className="rounded-2xl bg-stone-50 border border-stone-100 p-5 sm:p-6 text-center">
+                                    <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-950 text-white">
+                                        <val.icon className="h-5 w-5" />
+                                    </div>
+                                    <h3 className="font-serif text-sm font-medium text-brand-950 mb-1">{val.title}</h3>
+                                    <p className="text-xs text-stone-500">{val.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            {/* ──────────────────────────────────────────────────────────
-          SECTION 4: CTA
-          ────────────────────────────────────────────────────────── */}
-            <section className="container-inner mt-24">
-                <div className="rounded-[2.5rem] bg-brand-950 p-12 text-center shadow-xl">
-                    <h2 className="mb-6 font-serif text-4xl font-medium text-white">Let&apos;s craft your next adventure.</h2>
-                    <p className="mb-8 text-stone-300 max-w-xl mx-auto">
+            {/* ── CTA ── */}
+            <section className="py-16 bg-brand-950">
+                <div className="container-inner text-center">
+                    <h2 className="mb-4 font-serif text-3xl sm:text-4xl font-medium text-white">Let&apos;s craft your next adventure.</h2>
+                    <p className="mb-8 text-stone-300 max-w-xl mx-auto text-sm sm:text-base">
                         Whether it&apos;s a corporate retreat for hundreds or an intimate honeymoon, our experts are ready to begin planning.
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-                        <Link href="/contact" className="btn-gold inline-flex">
-                            Contact Our Experts
-                        </Link>
-                        <a href="mailto:info@igholidays.com" className="btn-outline !text-white !border-white/30 hover:!border-gold-400 hover:!text-gold-400 inline-flex">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <Link href="/contact" className="btn-gold w-full sm:w-auto text-sm">Contact Our Experts</Link>
+                        <a href="mailto:info@igholidays.com" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 text-sm">
                             info@igholidays.com
                         </a>
                     </div>
-                    <p className="text-xs text-stone-500 border-t border-brand-900 pt-6 mt-4">
-                        IG Holidays is an official brand of <strong className="text-stone-400">Infygru Private Limited</strong> &mdash; Registered in India.
+                    <p className="text-xs text-stone-500 mt-8">
+                        IG Holidays is an official brand of <strong className="text-stone-400">Infygru Private Limited</strong> — Registered in India.
                     </p>
                 </div>
             </section>
