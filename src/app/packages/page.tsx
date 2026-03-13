@@ -43,6 +43,7 @@ export default async function PackagesPage(props: {
         duration?: string;
         sort?: string;
         maxPrice?: string;
+        package_type?: string;
     }>;
 }) {
     noStore();
@@ -53,6 +54,7 @@ export default async function PackagesPage(props: {
     const currentDuration = sp.duration || "";
     const currentSort = sp.sort || "default";
     const currentMaxPrice = sp.maxPrice || "";
+    const currentPackageType = sp.package_type || "";
 
     let packages: any[] = [];
     try {
@@ -84,6 +86,7 @@ export default async function PackagesPage(props: {
 
     // Filter
     let filtered = packages.filter((p) => {
+        if (currentPackageType && p.package_type !== currentPackageType) return false;
         if (currentCategory && p.category !== currentCategory) return false;
         
         // Theme filter

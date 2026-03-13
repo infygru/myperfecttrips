@@ -263,108 +263,170 @@ export default async function Home() {
       </section>
 
       {/* ── DOMESTIC vs INTERNATIONAL ── */}
-      {(domesticPackages.length > 0 || internationalPackages.length > 0) && (
-        <section className="py-12 lg:py-16 bg-white">
-          <div className="container-inner">
-            <div className="mb-8">
-              <span className="section-label">Browse by Type</span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Domestic & International</h2>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {(domesticPackages.length > 0 || internationalPackages.length > 0) && (() => {
+        const domesticBannerImg = domesticPackages.find((p: any) => p.image)?.image;
+        const intlBannerImg = internationalPackages.find((p: any) => p.image)?.image;
+        const domesticDests = [...new Set(domesticPackages.map((p: any) => p.destination).filter(Boolean))].slice(0, 4) as string[];
+        const intlDests = [...new Set(internationalPackages.map((p: any) => p.destination).filter(Boolean))].slice(0, 4) as string[];
+        return (
+          <section className="py-12 lg:py-20 bg-stone-100">
+            <div className="container-inner">
+              <div className="mb-8 text-center">
+                <span className="section-label mx-auto">Explore by Region</span>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">Domestic & International Tours</h2>
+                <p className="mt-2 text-sm text-stone-500 max-w-md mx-auto">Choose from our handpicked tours across India and around the world</p>
+              </div>
 
-              {/* Domestic */}
+              {/* Hero Banners */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+
+                {/* Domestic Banner */}
+                <Link href="/packages?package_type=domestic"
+                  className="group relative h-72 sm:h-80 overflow-hidden rounded-3xl bg-brand-950 block">
+                  {domesticBannerImg && (
+                    <Image src={`${dUrl}/assets/${domesticBannerImg}`} alt="Domestic Tours" fill
+                      className="object-cover opacity-55 transition-transform duration-700 group-hover:scale-110" unoptimized />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/80 via-brand-900/70 to-brand-900/40" />
+                  <div className="absolute inset-0 flex flex-col justify-between p-7">
+                    <div>
+                      <span className="inline-flex items-center rounded-full bg-emerald-400/20 border border-emerald-400/40 px-3.5 py-1 text-xs font-bold text-emerald-300 uppercase tracking-widest">
+                        Domestic
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-3xl sm:text-4xl font-medium text-white mb-3">Explore India</h3>
+                      {domesticDests.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-5">
+                          {domesticDests.map((d) => (
+                            <span key={d} className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs text-white/75">{d}</span>
+                          ))}
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-emerald-300">{domesticPackages.length} packages</span>
+                        <span className="flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-brand-950 transition-all group-hover:bg-gold-400">
+                          View All <ArrowRight className="h-3.5 w-3.5" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+
+                {/* International Banner */}
+                <Link href="/packages?package_type=international"
+                  className="group relative h-72 sm:h-80 overflow-hidden rounded-3xl bg-brand-950 block">
+                  {intlBannerImg && (
+                    <Image src={`${dUrl}/assets/${intlBannerImg}`} alt="International Tours" fill
+                      className="object-cover opacity-55 transition-transform duration-700 group-hover:scale-110" unoptimized />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-brand-900/70 to-brand-900/40" />
+                  <div className="absolute inset-0 flex flex-col justify-between p-7">
+                    <div>
+                      <span className="inline-flex items-center rounded-full bg-blue-400/20 border border-blue-400/40 px-3.5 py-1 text-xs font-bold text-blue-300 uppercase tracking-widest">
+                        International
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-3xl sm:text-4xl font-medium text-white mb-3">Explore the World</h3>
+                      {intlDests.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-5">
+                          {intlDests.map((d) => (
+                            <span key={d} className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs text-white/75">{d}</span>
+                          ))}
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-blue-300">{internationalPackages.length} packages</span>
+                        <span className="flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-brand-950 transition-all group-hover:bg-gold-400">
+                          View All <ArrowRight className="h-3.5 w-3.5" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Package Cards — horizontal scroll on mobile, grid on desktop */}
               {domesticPackages.length > 0 && (
-                <div className="rounded-2xl border border-stone-200 overflow-hidden bg-stone-50">
-                  <div className="flex items-center justify-between px-5 py-4 bg-white border-b border-stone-100">
-                    <div className="flex items-center gap-2.5">
-                      <span className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(34,197,94,0.5)]"></span>
-                      <h3 className="font-serif text-lg font-medium text-brand-950">Domestic Tours</h3>
-                      <span className="rounded-full bg-emerald-50 border border-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700">{domesticPackages.length}</span>
+                <div className="mb-8">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                      <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">Domestic Tours</h3>
                     </div>
-                    <Link href="/packages?package_type=domestic" className="text-xs font-semibold text-brand-600 hover:text-brand-800 transition-colors">View All →</Link>
+                    <Link href="/packages?package_type=domestic" className="text-xs font-semibold text-brand-600 hover:text-brand-800 transition-colors">
+                      See all {domesticPackages.length} →
+                    </Link>
                   </div>
-                  <div className="divide-y divide-stone-100">
-                    {domesticPackages.slice(0, 5).map((pkg) => {
+                  <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 pb-2 scrollbar-hide">
+                    {domesticPackages.slice(0, 4).map((pkg: any) => {
                       const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
                       return (
                         <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
-                          className="group flex items-center gap-4 px-5 py-4 bg-white hover:bg-stone-50 transition-colors">
-                          <div className="relative h-14 w-20 shrink-0 rounded-xl overflow-hidden bg-stone-200">
-                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover" unoptimized /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
+                          className="group flex flex-col shrink-0 w-[68vw] sm:w-auto snap-center overflow-hidden rounded-2xl bg-white border border-stone-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                          <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
+                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                            {pkg.duration_nights && (
+                              <span className="absolute bottom-2 right-2 flex items-center gap-1 rounded-lg bg-black/70 px-2 py-0.5 text-[10px] font-medium text-white">
+                                <Clock className="h-2.5 w-2.5 text-gold-400" />{pkg.duration_nights}N/{pkg.duration_days}D
+                              </span>
+                            )}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors truncate">{pkg.title}</p>
-                            <div className="flex items-center gap-3 mt-1 flex-wrap">
-                              {pkg.destination && <span className="text-[11px] text-stone-400 flex items-center gap-0.5"><MapPin className="h-3 w-3" />{pkg.destination}</span>}
-                              {pkg.duration_nights && <span className="text-[11px] text-stone-400 flex items-center gap-0.5"><Clock className="h-3 w-3" />{pkg.duration_nights}N/{pkg.duration_days}D</span>}
-                            </div>
-                          </div>
-                          <div className="shrink-0 text-right">
-                            {pkg.price ? <p className="text-sm font-bold text-brand-700">₹{Number(pkg.price).toLocaleString("en-IN")}</p> : <p className="text-xs text-stone-400 font-medium">On Request</p>}
-                            <ChevronRight className="h-4 w-4 text-stone-300 group-hover:text-brand-600 ml-auto mt-1 transition-colors" />
+                          <div className="p-3.5">
+                            <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">{pkg.title}</p>
+                            {pkg.destination && <p className="text-[11px] text-stone-400 flex items-center gap-0.5 mb-2"><MapPin className="h-2.5 w-2.5 shrink-0" />{pkg.destination}</p>}
+                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}</p>
                           </div>
                         </Link>
                       );
                     })}
                   </div>
-                  {domesticPackages.length > 5 && (
-                    <div className="px-5 py-3 bg-stone-50 border-t border-stone-100 text-center">
-                      <Link href="/packages?package_type=domestic" className="text-xs font-semibold text-brand-700 hover:underline">
-                        +{domesticPackages.length - 5} more domestic packages
-                      </Link>
-                    </div>
-                  )}
                 </div>
               )}
 
-              {/* International */}
               {internationalPackages.length > 0 && (
-                <div className="rounded-2xl border border-stone-200 overflow-hidden bg-stone-50">
-                  <div className="flex items-center justify-between px-5 py-4 bg-white border-b border-stone-100">
-                    <div className="flex items-center gap-2.5">
-                      <span className="h-3 w-3 rounded-full bg-blue-500 shadow-[0_0_6px_rgba(59,130,246,0.5)]"></span>
-                      <h3 className="font-serif text-lg font-medium text-brand-950">International Tours</h3>
-                      <span className="rounded-full bg-blue-50 border border-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700">{internationalPackages.length}</span>
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
+                      <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">International Tours</h3>
                     </div>
-                    <Link href="/packages" className="text-xs font-semibold text-brand-600 hover:text-brand-800 transition-colors">View All →</Link>
+                    <Link href="/packages?package_type=international" className="text-xs font-semibold text-brand-600 hover:text-brand-800 transition-colors">
+                      See all {internationalPackages.length} →
+                    </Link>
                   </div>
-                  <div className="divide-y divide-stone-100">
-                    {internationalPackages.slice(0, 5).map((pkg) => {
+                  <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 pb-2 scrollbar-hide">
+                    {internationalPackages.slice(0, 4).map((pkg: any) => {
                       const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
                       return (
                         <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
-                          className="group flex items-center gap-4 px-5 py-4 bg-white hover:bg-stone-50 transition-colors">
-                          <div className="relative h-14 w-20 shrink-0 rounded-xl overflow-hidden bg-stone-200">
-                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover" unoptimized /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
+                          className="group flex flex-col shrink-0 w-[68vw] sm:w-auto snap-center overflow-hidden rounded-2xl bg-white border border-stone-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                          <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
+                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                            {pkg.duration_nights && (
+                              <span className="absolute bottom-2 right-2 flex items-center gap-1 rounded-lg bg-black/70 px-2 py-0.5 text-[10px] font-medium text-white">
+                                <Clock className="h-2.5 w-2.5 text-gold-400" />{pkg.duration_nights}N/{pkg.duration_days}D
+                              </span>
+                            )}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors truncate">{pkg.title}</p>
-                            <div className="flex items-center gap-3 mt-1 flex-wrap">
-                              {pkg.destination && <span className="text-[11px] text-stone-400 flex items-center gap-0.5"><MapPin className="h-3 w-3" />{pkg.destination}</span>}
-                              {pkg.duration_nights && <span className="text-[11px] text-stone-400 flex items-center gap-0.5"><Clock className="h-3 w-3" />{pkg.duration_nights}N/{pkg.duration_days}D</span>}
-                            </div>
-                          </div>
-                          <div className="shrink-0 text-right">
-                            {pkg.price ? <p className="text-sm font-bold text-brand-700">₹{Number(pkg.price).toLocaleString("en-IN")}</p> : <p className="text-xs text-stone-400 font-medium">On Request</p>}
-                            <ChevronRight className="h-4 w-4 text-stone-300 group-hover:text-brand-600 ml-auto mt-1 transition-colors" />
+                          <div className="p-3.5">
+                            <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">{pkg.title}</p>
+                            {pkg.destination && <p className="text-[11px] text-stone-400 flex items-center gap-0.5 mb-2"><MapPin className="h-2.5 w-2.5 shrink-0" />{pkg.destination}</p>}
+                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}</p>
                           </div>
                         </Link>
                       );
                     })}
                   </div>
-                  {internationalPackages.length > 5 && (
-                    <div className="px-5 py-3 bg-stone-50 border-t border-stone-100 text-center">
-                      <Link href="/packages" className="text-xs font-semibold text-brand-700 hover:underline">
-                        +{internationalPackages.length - 5} more international packages
-                      </Link>
-                    </div>
-                  )}
                 </div>
               )}
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        );
+      })()}
 
       {/* ── EXPLORE BY THEME ── */}
       {themePackages.length > 0 && (

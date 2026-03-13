@@ -3,7 +3,7 @@ import { directus } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BookOpen, Calendar, User } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Calendar, Clock, User } from "lucide-react";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -34,10 +34,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
             };
         }
     } catch {}
-    return {
-        title: "Blog | IG Holidays",
-        alternates: { canonical: `${baseUrl}/blog/${slug}` },
-    };
+    return { title: "Blog | IG Holidays", alternates: { canonical: `${baseUrl}/blog/${slug}` } };
 }
 
 function readTime(content?: string) {
@@ -78,77 +75,76 @@ export default async function BlogDetailPage(props: Props) {
               year: "numeric",
           })
         : "";
+    const rt = readTime(post.content);
 
     return (
-        <main className="min-h-screen bg-stone-50">
+        <main className="min-h-screen bg-white">
 
             {/* ── HERO ── */}
             {imgUrl ? (
-                <div className="relative h-[50vh] sm:h-[60vh] w-full bg-brand-950 overflow-hidden">
+                <div className="relative h-[55vh] sm:h-[65vh] w-full overflow-hidden bg-brand-950">
                     <Image
                         src={imgUrl}
                         alt={post.title}
                         fill
-                        className="object-cover opacity-70"
+                        className="object-cover opacity-65"
                         priority
                         unoptimized
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-950/90 via-brand-950/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-950/95 via-brand-950/40 to-brand-950/10" />
 
-                    {/* Floating back link */}
-                    <div className="absolute top-0 left-0 right-0 pt-20 px-4">
-                        <div className="container-inner">
+                    {/* Hero content */}
+                    <div className="absolute inset-0 flex flex-col justify-end pb-10 px-4">
+                        <div className="container-inner max-w-3xl">
                             <Link
                                 href="/blog"
-                                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/70 hover:text-white transition-colors"
+                                className="mb-5 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-white/60 hover:text-white transition-colors"
                             >
-                                <ArrowLeft className="h-3.5 w-3.5" /> Back to Blog
+                                <ArrowLeft className="h-3.5 w-3.5" /> Blog
                             </Link>
-                        </div>
-                    </div>
-
-                    {/* Hero title */}
-                    <div className="absolute bottom-0 left-0 right-0 pb-8 px-4">
-                        <div className="container-inner max-w-3xl">
-                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-3">
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-4">
                                 <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-gold-400">
                                     <User className="h-3 w-3" />
                                     {post.author || "Editorial Team"}
                                 </span>
                                 {dateStr && (
-                                    <span className="flex items-center gap-1.5 text-[11px] text-white/60">
+                                    <span className="flex items-center gap-1.5 text-[11px] text-white/50">
                                         <Calendar className="h-3 w-3" /> {dateStr}
                                     </span>
                                 )}
-                                <span className="text-[11px] text-white/60">{readTime(post.content)}</span>
+                                <span className="flex items-center gap-1.5 text-[11px] text-white/50">
+                                    <Clock className="h-3 w-3" /> {rt}
+                                </span>
                             </div>
-                            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-medium text-white leading-tight">
+                            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium text-white leading-tight">
                                 {post.title}
                             </h1>
                         </div>
                     </div>
                 </div>
             ) : (
-                /* No image fallback header */
-                <div className="bg-brand-950 pt-20 pb-12 px-4">
+                /* Text-only header */
+                <div className="bg-brand-950 px-4 pt-20 pb-12">
                     <div className="container-inner max-w-3xl">
                         <Link
                             href="/blog"
-                            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/60 hover:text-white transition-colors mb-6"
+                            className="mb-6 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-white/60 hover:text-white transition-colors"
                         >
-                            <ArrowLeft className="h-3.5 w-3.5" /> Back to Blog
+                            <ArrowLeft className="h-3.5 w-3.5" /> Blog
                         </Link>
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-4">
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-5">
                             <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-gold-400">
                                 <User className="h-3 w-3" />
                                 {post.author || "Editorial Team"}
                             </span>
                             {dateStr && (
-                                <span className="flex items-center gap-1.5 text-[11px] text-white/60">
+                                <span className="flex items-center gap-1.5 text-[11px] text-white/50">
                                     <Calendar className="h-3 w-3" /> {dateStr}
                                 </span>
                             )}
-                            <span className="text-[11px] text-white/60">{readTime(post.content)}</span>
+                            <span className="flex items-center gap-1.5 text-[11px] text-white/50">
+                                <Clock className="h-3 w-3" /> {rt}
+                            </span>
                         </div>
                         <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium text-white leading-tight">
                             {post.title}
@@ -157,145 +153,130 @@ export default async function BlogDetailPage(props: Props) {
                 </div>
             )}
 
-            {/* ── ARTICLE BODY ── */}
-            <div className={`container-inner ${imgUrl ? "-mt-6 relative z-10" : ""} pb-20`}>
-                <div className="max-w-3xl mx-auto">
+            {/* ── ARTICLE ── */}
+            <div className="container-inner max-w-3xl py-10 sm:py-14 px-4">
 
-                    {/* Back link (no image variant has it in header; image variant gets one below) */}
-                    {imgUrl && (
-                        <Link
-                            href="/blog"
-                            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-stone-400 hover:text-brand-700 transition-colors mb-6"
-                        >
-                            <ArrowLeft className="h-3.5 w-3.5" /> Back to Blog
-                        </Link>
-                    )}
+                {/* Excerpt */}
+                {post.excerpt && (
+                    <p className="mb-10 border-l-4 border-gold-400 pl-5 font-serif text-lg sm:text-xl text-stone-600 leading-relaxed italic">
+                        {post.excerpt}
+                    </p>
+                )}
 
-                    {/* Article card */}
-                    <article className="bg-white rounded-2xl border border-stone-200 shadow-xl shadow-stone-200/40 overflow-hidden">
+                {/* Body */}
+                <div
+                    className="prose prose-stone max-w-none
+                        prose-headings:font-serif prose-headings:font-medium prose-headings:text-brand-950
+                        prose-h1:text-3xl prose-h1:mt-12 prose-h1:mb-5
+                        prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
+                        prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+                        prose-p:text-stone-600 prose-p:leading-[1.9] prose-p:text-base
+                        prose-a:text-brand-700 prose-a:no-underline prose-a:font-medium hover:prose-a:underline
+                        prose-img:rounded-2xl prose-img:shadow-lg prose-img:my-10
+                        prose-blockquote:not-italic prose-blockquote:border-l-4 prose-blockquote:border-gold-400
+                        prose-blockquote:bg-amber-50/70 prose-blockquote:py-5 prose-blockquote:px-6
+                        prose-blockquote:rounded-r-2xl prose-blockquote:font-serif prose-blockquote:text-stone-700
+                        prose-strong:text-brand-900 prose-strong:font-semibold
+                        prose-li:text-stone-600 prose-li:leading-relaxed
+                        prose-ul:my-5 prose-ol:my-5
+                        prose-hr:border-stone-100 prose-hr:my-10
+                        prose-code:text-brand-800 prose-code:bg-stone-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm"
+                    dangerouslySetInnerHTML={{
+                        __html:
+                            post.content ||
+                            "<p class='italic text-stone-400'>Article content coming soon.</p>",
+                    }}
+                />
 
-                        {/* Excerpt banner */}
-                        {post.excerpt && (
-                            <div className="px-7 sm:px-10 pt-8 pb-0">
-                                <p className="text-stone-600 text-base sm:text-lg leading-relaxed border-l-4 border-gold-400 pl-5 italic font-serif">
-                                    {post.excerpt}
-                                </p>
-                            </div>
-                        )}
-
-                        {/* Content */}
-                        <div className="px-7 sm:px-10 py-8">
-                            <div
-                                className="prose prose-stone max-w-none
-                                    prose-headings:font-serif prose-headings:font-medium prose-headings:text-brand-950
-                                    prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
-                                    prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-                                    prose-p:text-stone-600 prose-p:leading-[1.85] prose-p:text-[15px]
-                                    prose-a:text-brand-700 prose-a:no-underline hover:prose-a:underline prose-a:font-medium
-                                    prose-img:rounded-xl prose-img:shadow-md prose-img:my-8
-                                    prose-blockquote:border-l-4 prose-blockquote:border-gold-400
-                                    prose-blockquote:bg-amber-50 prose-blockquote:py-4 prose-blockquote:px-6
-                                    prose-blockquote:rounded-r-xl prose-blockquote:not-italic
-                                    prose-blockquote:font-serif prose-blockquote:text-stone-700
-                                    prose-strong:text-brand-900 prose-strong:font-semibold
-                                    prose-li:text-stone-600 prose-li:leading-relaxed
-                                    prose-ul:my-4 prose-ol:my-4
-                                    prose-hr:border-stone-200 prose-hr:my-8"
-                                dangerouslySetInnerHTML={{
-                                    __html:
-                                        post.content ||
-                                        "<p class='italic text-stone-400'>Article content coming soon.</p>",
-                                }}
-                            />
+                {/* Author Bio */}
+                <div className="mt-12 pt-10 border-t border-stone-100 flex flex-col sm:flex-row items-start sm:items-center gap-5 justify-between">
+                    <div className="flex items-center gap-4">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 text-brand-700 shrink-0">
+                            <User className="h-7 w-7" />
                         </div>
-
-                        {/* Author footer */}
-                        <div className="mx-7 sm:mx-10 mb-8 rounded-xl bg-stone-50 border border-stone-100 px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between">
-                            <div className="flex items-center gap-4">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-100 text-brand-700 shrink-0">
-                                    <User className="h-6 w-6" />
-                                </div>
-                                <div>
-                                    <p className="text-sm font-bold text-brand-950">{post.author || "Editorial Team"}</p>
-                                    <p className="text-xs text-stone-400 mt-0.5">IG Holidays Travel Expert</p>
-                                    {dateStr && <p className="text-xs text-stone-400 mt-0.5">{dateStr}</p>}
-                                </div>
-                            </div>
-                            <Link href="/contact" className="btn-gold text-sm shrink-0">
-                                Plan Your Trip
-                            </Link>
+                        <div>
+                            <p className="font-bold text-brand-950">{post.author || "Editorial Team"}</p>
+                            <p className="text-sm text-stone-400">IG Holidays Travel Expert</p>
+                            {dateStr && <p className="text-xs text-stone-400 mt-0.5">{dateStr}</p>}
                         </div>
-                    </article>
+                    </div>
+                    <Link href="/contact" className="btn-gold text-sm shrink-0">
+                        Plan Your Trip
+                    </Link>
+                </div>
+
+                {/* Back to Blog */}
+                <div className="mt-8">
+                    <Link
+                        href="/blog"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-stone-400 hover:text-brand-700 transition-colors"
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                        Back to all articles
+                    </Link>
                 </div>
             </div>
 
             {/* ── RELATED POSTS ── */}
             {recentPosts.length > 0 && (
-                <section className="bg-white border-t border-stone-100 py-14">
-                    <div className="container-inner">
-                        <div className="max-w-3xl mx-auto">
-                            <div className="flex items-center gap-3 mb-8">
-                                <div className="h-px flex-1 bg-stone-200" />
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">Keep Reading</span>
-                                <div className="h-px flex-1 bg-stone-200" />
-                            </div>
-
-                            <div className="grid gap-5 sm:grid-cols-3">
-                                {recentPosts.map((rpost) => {
-                                    const rimgUrl = rpost.featured_image
-                                        ? `${dUrl}/assets/${rpost.featured_image}`
-                                        : null;
-                                    return (
-                                        <Link
-                                            key={rpost.id}
-                                            href={`/blog/${rpost.slug || rpost.id}`}
-                                            className="group flex flex-col overflow-hidden rounded-xl bg-stone-50 border border-stone-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-                                        >
-                                            <div className="relative aspect-[16/9] w-full overflow-hidden bg-stone-200 shrink-0">
-                                                {rimgUrl ? (
-                                                    <Image
-                                                        src={rimgUrl}
-                                                        alt={rpost.title}
-                                                        fill
-                                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                                        unoptimized
-                                                    />
-                                                ) : (
-                                                    <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center">
-                                                        <BookOpen className="h-8 w-8 text-white/20" />
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div className="p-4 flex flex-col flex-1">
-                                                <h3 className="font-serif text-sm font-medium text-brand-950 group-hover:text-brand-700 transition-colors line-clamp-2 mb-auto leading-snug">
-                                                    {rpost.title}
-                                                </h3>
-                                                <div className="mt-3 pt-3 border-t border-stone-200 flex items-center gap-1 text-xs font-bold text-brand-700">
-                                                    Read <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                <section className="border-t border-stone-100 bg-stone-50 py-14 px-4">
+                    <div className="container-inner max-w-3xl">
+                        <h2 className="font-serif text-2xl font-medium text-brand-950 mb-8">
+                            Keep Reading
+                        </h2>
+                        <div className="grid gap-4 sm:grid-cols-3">
+                            {recentPosts.map((rpost) => {
+                                const rimgUrl = rpost.featured_image
+                                    ? `${dUrl}/assets/${rpost.featured_image}`
+                                    : null;
+                                return (
+                                    <Link
+                                        key={rpost.id}
+                                        href={`/blog/${rpost.slug || rpost.id}`}
+                                        className="group flex flex-col overflow-hidden rounded-xl bg-white border border-stone-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                                    >
+                                        <div className="relative aspect-[16/9] w-full overflow-hidden bg-stone-100 shrink-0">
+                                            {rimgUrl ? (
+                                                <Image
+                                                    src={rimgUrl}
+                                                    alt={rpost.title}
+                                                    fill
+                                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                                    unoptimized
+                                                />
+                                            ) : (
+                                                <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center">
+                                                    <BookOpen className="h-8 w-8 text-white/15" />
                                                 </div>
+                                            )}
+                                        </div>
+                                        <div className="p-4 flex flex-col flex-1">
+                                            <h3 className="font-serif text-sm font-medium text-brand-950 group-hover:text-brand-700 transition-colors line-clamp-2 leading-snug mb-auto">
+                                                {rpost.title}
+                                            </h3>
+                                            <div className="mt-3 pt-3 border-t border-stone-100 flex items-center gap-1 text-xs font-bold text-brand-700">
+                                                Read <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                                             </div>
-                                        </Link>
-                                    );
-                                })}
-                            </div>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </div>
                 </section>
             )}
 
-            {/* ── CTA STRIP ── */}
-            <section className="bg-brand-950 py-12 px-4">
-                <div className="container-inner text-center">
-                    <p className="font-serif text-2xl sm:text-3xl font-medium text-white mb-2">
-                        Inspired to travel?
-                    </p>
-                    <p className="text-stone-400 text-sm mb-6 max-w-md mx-auto">
-                        Our travel experts are ready to build your perfect itinerary. Get in touch today.
-                    </p>
-                    <Link href="/contact" className="btn-gold">
-                        Start Planning
-                    </Link>
-                </div>
+            {/* ── CTA ── */}
+            <section className="bg-brand-950 py-14 px-4 text-center">
+                <p className="font-serif text-2xl sm:text-3xl font-medium text-white mb-2">
+                    Inspired to travel?
+                </p>
+                <p className="text-stone-400 text-sm mb-7 max-w-sm mx-auto">
+                    Our travel experts are ready to build your perfect itinerary.
+                </p>
+                <Link href="/contact" className="btn-gold">
+                    Start Planning
+                </Link>
             </section>
         </main>
     );
