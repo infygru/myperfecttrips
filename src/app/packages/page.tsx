@@ -3,7 +3,7 @@ import { directus } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Clock, ChevronRight, Compass, SlidersHorizontal } from "lucide-react";
+import { MapPin, Clock, ChevronRight, Compass } from "lucide-react";
 import type { Metadata } from "next";
 import PackagesFilter from "@/components/PackagesFilter";
 import SortSelect from "@/components/SortSelect";
@@ -163,30 +163,29 @@ export default async function PackagesPage(props: {
                 </div>
             </section>
 
-            {/* ── MAIN CONTENT: SIDEBAR + GRID ── */}
+            {/* ── MAIN CONTENT ── */}
             <section className="container-inner mt-6">
-                <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 items-start">
 
-                    {/* ── SIDEBAR FILTER (client component) ── */}
-                    <PackagesFilter
-                        categories={categories}
-                        themes={themes}
-                        destinations={allDestinations}
-                        packageTypes={packageTypes}
-                        currentCategory={currentCategory}
-                        currentTheme={currentTheme}
-                        currentDest={currentDest}
-                        currentDuration={currentDuration}
-                        currentMaxPrice={currentMaxPrice}
-                        currentPackageType={currentPackageType}
-                        maxPriceRange={maxPriceRange}
-                        activeFilters={activeFilters}
-                    />
+                {/* ── FILTER (full-width horizontal bar) ── */}
+                <PackagesFilter
+                    categories={categories}
+                    themes={themes}
+                    destinations={allDestinations}
+                    packageTypes={packageTypes}
+                    currentCategory={currentCategory}
+                    currentTheme={currentTheme}
+                    currentDest={currentDest}
+                    currentDuration={currentDuration}
+                    currentMaxPrice={currentMaxPrice}
+                    currentPackageType={currentPackageType}
+                    maxPriceRange={maxPriceRange}
+                    activeFilters={activeFilters}
+                />
 
-                    {/* ── RIGHT: RESULTS ── */}
-                    <div className="flex-1 min-w-0">
-                        {/* Results bar */}
-                        <div className="flex items-center justify-between mb-6 flex-wrap gap-4 border-b border-stone-200/50 pb-4">
+                {/* ── RESULTS ── */}
+                <div className="mt-6">
+                    {/* Results bar */}
+                    <div className="flex items-center justify-between mb-6 flex-wrap gap-4 border-b border-stone-200/50 pb-4">
                             <div className="flex items-center gap-3">
                                 <p className="text-sm font-medium text-stone-600">
                                     Showing <strong className="text-brand-950 font-bold">{filtered.length}</strong>{" "}
@@ -310,7 +309,6 @@ export default async function PackagesPage(props: {
                                 </Link>
                             </div>
                         )}
-                    </div>
                 </div>
             </section>
         </main>
