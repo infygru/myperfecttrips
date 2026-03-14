@@ -2,7 +2,6 @@
 
 import { directus } from "@/lib/directus";
 import { createItem } from "@directus/sdk";
-import { sendLeadNotification } from "@/lib/mailer";
 
 export async function submitLeadAction(formData: FormData) {
     try {
@@ -27,20 +26,6 @@ export async function submitLeadAction(formData: FormData) {
 
         // Submit to Directus
         await directus.request(createItem("leads", rawData));
-
-        // Send email notification — fire-and-forget (never block the user)
-        sendLeadNotification({
-            name:             rawData.name,
-            email:            rawData.email,
-            phone:            rawData.phone,
-            package_interest: rawData.package_interest,
-            travel_date:      rawData.travel_date,
-            trip_type:        rawData.trip_type,
-            num_adults:       rawData.num_adults,
-            num_children:     rawData.num_children,
-            budget:           rawData.budget,
-            notes:            rawData.notes,
-        }).catch(err => console.error("Lead email notification failed:", err));
 
         return { success: true };
     } catch (error: unknown) {
