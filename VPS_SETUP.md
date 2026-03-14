@@ -1,158 +1,102 @@
-# MyPerfectTrips — Hostinger KVM2 VPS Setup Guide
+# MyPerfectTrips — Coolify Deployment Guide (Hostinger KVM2)
 
-## Prerequisites on VPS
-- Ubuntu 22.04 LTS
-- 2 vCPU / 8GB RAM (KVM2)
-- Root SSH access
+Coolify is already installed on the VPS and manages all sites via its built-in
+Traefik reverse proxy. No manual nginx or SSL setup is needed.
 
 ---
 
-## 1. Initial Server Setup
+## How Deployment Works
 
-```bash
-# Update system
-apt update && apt upgrade -y
-
-# Install essentials
-apt install -y git curl ufw fail2ban
-
-# Firewall setup
-ufw allow 22/tcp    # SSH
-ufw allow 80/tcp    # HTTP
-ufw allow 443/tcp   # HTTPS
-ufw enable
-
-# Install Docker
-curl -fsSL https://get.docker.com | sh
-systemctl enable docker
-systemctl start docker
-
-# Install Docker Compose plugin
-apt install -y docker-compose-plugin
+```
+GitHub push to main
+       ↓
+Coolify detects change (webhook)
+       ↓
+Coolify builds Docker image (using Dockerfile)
+       ↓
+Coolify starts container (port 3000 internally)
+       ↓
+Traefik routes myperfecttrips.com → container
+       ↓
+Let's Encrypt SSL handled automatically by Coolify
 ```
 
 ---
 
-## 2. Clone Repository
+## Setting Up the Project in Coolify
 
-```bash
-mkdir -p /var/www
-cd /var/www
-git clone https://github.com/YOUR_GITHUB_USERNAME/myperfecttrips.git
-cd myperfecttrips
-```
+1. **Create a new Resource** in your Coolify project
+2. **Select**: "Docker Compose" or "Dockerfile" as build pack
+   - If you choose **Dockerfile**: Coolify uses the `Dockerfile` directly
+   - If you choose **Docker Compose**: Coolify uses `docker-compose.yml` (app-only, no nginx)
+3. **Connect GitHub repo**: `infygru/myperfecttrips`, branch `main`
+4. **Set port**: `3000`
+5. **Add domain**: `myperfecttrips.com` and `www.myperfecttrips.com`
+   - Enable "Force HTTPS" in Coolify UI
+   - Enable "WWW to non-WWW redirect" (or apex to www — pick one consistently)
+6. **Auto-deploy**: Enable "Deploy on push"
 
 ---
 
-## 3. Create Production Environment File
+## Environment Variables (Set in Coolify UI)
 
-```bash
-cp .env.production.example .env.production
-nano .env.production   # Fill in real values
-```
+Go to your resource → **Environment Variables** tab and add:
 
-Required values:
 ```
+NODE_ENV=production
+NEXT_TELEMETRY_DISABLED=1
+PORT=3000
 NEXT_PUBLIC_SITE_URL=https://myperfecttrips.com
 NEXT_PUBLIC_DIRECTUS_URL=https://admin.myperfecttrips.com
-DIRECTUS_API_TOKEN=your_real_token_here
+DIRECTUS_API_TOKEN=your_directus_api_token_here
 ```
 
----
-
-## 4. SSL Certificate (Let's Encrypt)
-
-```bash
-# Install Certbot
-apt install -y certbot
-
-# Get certificate (stop nginx first if running)
-certbot certonly --standalone -d myperfecttrips.com -d www.myperfecttrips.com
-
-# Auto-renewal (add to crontab)
-echo "0 3 * * * certbot renew --quiet && docker compose -f /var/www/myperfecttrips/docker-compose.yml restart nginx" | crontab -
-```
+Do NOT use `.env.production` file — set everything in Coolify UI for security.
 
 ---
 
-## 5. Deploy with Docker Compose
+## Triggering a Redeploy
 
-```bash
-cd /var/www/myperfecttrips
-docker compose up -d --build
-docker compose ps   # Verify all containers running
-```
+Any push to the `main` branch automatically redeploys via Coolify webhook.
+
+To manually redeploy: Coolify Dashboard → your resource → **Redeploy** button.
 
 ---
 
-## 6. Verify Deployment
+## Sharing the VPS with Other Sites
 
-```bash
-# Check app is running
-curl -I http://localhost:3000
-
-# Check nginx is routing correctly
-curl -I https://myperfecttrips.com
-
-# View logs
-docker compose logs -f myperfecttrips
-docker compose logs -f nginx
-```
+Coolify handles this automatically. Each site runs in its own container with
+its own network. Traefik routes traffic based on domain name. No port conflicts.
 
 ---
 
-## 7. CI/CD via GitHub Actions
-
-Add these **Repository Secrets** in GitHub Settings → Secrets → Actions:
-
-| Secret              | Value                              |
-|---------------------|------------------------------------|
-| `VPS_HOST`          | Your VPS IP address                |
-| `VPS_USER`          | `root` or your SSH user            |
-| `VPS_SSH_KEY`       | Your private SSH key               |
-| `VPS_PORT`          | `22` (or custom SSH port)          |
-| `NEXT_PUBLIC_DIRECTUS_URL` | `https://admin.myperfecttrips.com` |
-| `DIRECTUS_API_TOKEN` | Your Directus API token           |
-
-After adding secrets, every push to `main` will auto-deploy.
-
----
-
-## 8. SEO Submission
-
-After deployment:
+## SEO Submission (After Deployment)
 
 1. **Google Search Console**: https://search.google.com/search-console
    - Add property: `https://myperfecttrips.com`
+   - Verify via DNS TXT record (easiest with Hostinger DNS panel)
    - Submit sitemap: `https://myperfecttrips.com/sitemap.xml`
 
 2. **Bing Webmaster Tools**: https://www.bing.com/webmasters
-   - Add site: `https://myperfecttrips.com`
-   - Submit sitemap: `https://myperfecttrips.com/sitemap.xml`
+   - Add site, verify, submit sitemap
 
-3. **Google Page Speed Insights**: https://pagespeed.web.dev
-   - Test: `https://myperfecttrips.com`
+3. **PageSpeed Insights**: https://pagespeed.web.dev
+   - Test both mobile and desktop for `https://myperfecttrips.com`
 
 ---
 
-## Maintenance Commands
+## Useful Commands (SSH into VPS if needed)
 
 ```bash
-# Pull latest code and redeploy
-cd /var/www/myperfecttrips && bash deploy.sh
+# View Coolify-managed containers
+docker ps
 
-# View running containers
-docker compose ps
+# Check logs for the app container
+docker logs <container_name> --tail 100 -f
 
-# Restart specific service
-docker compose restart myperfecttrips
-
-# Check disk usage
-df -h
-
-# Check memory
-free -h
-
-# Check container resources
+# Check resource usage
 docker stats
+
+# Restart a specific container (prefer using Coolify UI)
+docker restart <container_name>
 ```
