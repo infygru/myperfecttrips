@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+
 export const metadata: Metadata = {
     title: "Privacy Policy | IG Holidays",
-    description: "Learn how IG Holidays – an official brand of Infygru Private Limited – collects, uses, and protects your personal information.",
+    description: "Learn how IG Holidays collects, uses, and protects your personal information in compliance with applicable data protection laws.",
+    alternates: { canonical: `${BASE}/privacy-policy` },
+    robots: { index: true, follow: false },
+    openGraph: { title: "Privacy Policy | IG Holidays", url: `${BASE}/privacy-policy`, siteName: "IG Holidays", type: "website" },
 };
 
 export default function PrivacyPolicyPage() {

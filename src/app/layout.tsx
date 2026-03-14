@@ -75,9 +75,45 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com"}/#organization`,
+  name: "IG Holidays",
+  alternateName: "IGHolidays",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com",
+  logo: `${process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com"}/logo.png`,
+  description: "India's trusted travel agency specializing in luxury international and domestic holiday packages, honeymoon tours, corporate MICE, and group travel.",
+  foundingDate: "2020",
+  legalName: "Infygru Private Limited",
+  address: {
+    "@type": "PostalAddress",
+    addressRegion: "Tamil Nadu",
+    addressCountry: "IN",
+  },
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: "+91-8807709919",
+      contactType: "customer service",
+      availableLanguage: ["English", "Tamil", "Hindi"],
+    },
+  ],
+  sameAs: [
+    "https://www.instagram.com/igholidays",
+    "https://www.facebook.com/igholidays",
+  ],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${jakarta.variable} ${syne.variable} scroll-smooth`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body className="flex min-h-screen flex-col bg-stone-50 antialiased font-sans">
         <Header />
         <AOSProvider />

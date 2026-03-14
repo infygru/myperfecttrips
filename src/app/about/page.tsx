@@ -5,10 +5,25 @@ import { Compass, Globe2, Award, Headset, CheckCircle2, MapPin, Users, Star } fr
 
 export const dynamic = "force-dynamic";
 
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+
 export const metadata: Metadata = {
     title: "About Us | IG Holidays – Best Travel Agency in India",
-    description: "Book your holiday with IG Holidays – India's premier travel agency specializing in luxury international packages, honeymoon tours, corporate MICE, and domestic getaways. 15+ years of trusted travel planning.",
-    alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com"}/about` },
+    description: "IG Holidays is India's trusted travel agency specializing in luxury international packages, honeymoon tours, corporate MICE, and domestic getaways. 5,000+ happy travellers. 100% customisable itineraries.",
+    keywords: "about IG Holidays, travel agency India, luxury holiday planner, travel experts Chennai, Infygru Private Limited",
+    alternates: { canonical: `${BASE}/about` },
+    openGraph: {
+        title: "About Us | IG Holidays – Best Travel Agency in India",
+        description: "IG Holidays is India's trusted travel agency. 5,000+ happy travellers, 100% customisable itineraries, best price guarantee.",
+        url: `${BASE}/about`,
+        siteName: "IG Holidays",
+        type: "website",
+    },
+    twitter: {
+        card: "summary",
+        title: "About Us | IG Holidays",
+        description: "IG Holidays is India's trusted travel agency. 5,000+ happy travellers, 100% customisable itineraries.",
+    },
 };
 
 export default async function AboutPage() {

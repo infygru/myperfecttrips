@@ -3,6 +3,28 @@ import { unstable_noStore as noStore } from "next/cache";
 import { MapPin, Mail } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import type { Metadata } from "next";
+
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+
+export const metadata: Metadata = {
+    title: "Contact Us | IG Holidays – Travel Enquiries & Bookings",
+    description: "Get in touch with IG Holidays for holiday packages, group bookings, visa assistance, and corporate travel. Call, WhatsApp, or email our expert travel consultants.",
+    keywords: "contact IG Holidays, travel enquiry India, holiday booking contact, travel agent Chennai",
+    alternates: { canonical: `${BASE}/contact` },
+    openGraph: {
+        title: "Contact Us | IG Holidays – Travel Enquiries & Bookings",
+        description: "Reach our expert travel team for holiday packages, group bookings, and corporate travel enquiries.",
+        url: `${BASE}/contact`,
+        siteName: "IG Holidays",
+        type: "website",
+    },
+    twitter: {
+        card: "summary",
+        title: "Contact Us | IG Holidays",
+        description: "Reach our expert travel team for holiday packages, group bookings, and corporate travel enquiries.",
+    },
+};
 
 export const dynamic = "force-dynamic";
 

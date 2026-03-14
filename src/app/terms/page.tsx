@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+
 export const metadata: Metadata = {
     title: "Terms & Conditions | IG Holidays",
-    description: "Read the Terms & Conditions for using IG Holidays – an official brand of Infygru Private Limited.",
+    description: "Read the Terms & Conditions for using IG Holidays – an official brand of Infygru Private Limited. Governs bookings, payments, cancellations, and use of our services.",
+    alternates: { canonical: `${BASE}/terms` },
+    robots: { index: true, follow: false },
+    openGraph: { title: "Terms & Conditions | IG Holidays", url: `${BASE}/terms`, siteName: "IG Holidays", type: "website" },
 };
 
 export default function TermsPage() {

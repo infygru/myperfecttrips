@@ -21,15 +21,26 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         if (post) {
             const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
             const img = post.featured_image ? `${dUrl}/assets/${post.featured_image}` : undefined;
+            const desc = post.excerpt || post.title.slice(0, 160);
+            const ogImages = img ? [{ url: img, width: 1200, height: 630, alt: post.title }] : [];
             return {
                 title: `${post.title} | IG Holidays Blog`,
-                description: post.excerpt || post.title,
+                description: desc,
                 alternates: { canonical: `${baseUrl}/blog/${slug}` },
                 openGraph: {
                     title: post.title,
-                    description: post.excerpt || post.title,
-                    images: img ? [img] : [],
+                    description: desc,
+                    images: ogImages,
                     type: "article",
+                    publishedTime: post.date_created,
+                    modifiedTime: post.date_updated,
+                    siteName: "IG Holidays",
+                },
+                twitter: {
+                    card: "summary_large_image",
+                    title: post.title,
+                    description: desc,
+                    images: img ? [img] : [],
                 },
             };
         }
@@ -76,8 +87,36 @@ export default async function BlogDetailPage(props: Props) {
           })
         : "";
     const rt = readTime(post.content);
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+
+    const blogSchema = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: post.title,
+        description: post.excerpt || post.title,
+        url: `${baseUrl}/blog/${slug}`,
+        datePublished: post.date_created,
+        dateModified: post.date_updated || post.date_created,
+        image: imgUrl || undefined,
+        author: {
+            "@type": "Organization",
+            name: "IG Holidays",
+            url: baseUrl,
+        },
+        publisher: {
+            "@type": "Organization",
+            name: "IG Holidays",
+            logo: { "@type": "ImageObject", url: `${baseUrl}/logo.png` },
+        },
+        mainEntityOfPage: { "@type": "WebPage", "@id": `${baseUrl}/blog/${slug}` },
+    };
 
     return (
+        <>
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+        />
         <main className="min-h-screen bg-white">
 
             {/* ── HERO ── */}
@@ -316,5 +355,6 @@ export default async function BlogDetailPage(props: Props) {
                 </Link>
             </section>
         </main>
+        </>
     );
 }

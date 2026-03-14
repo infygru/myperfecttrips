@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+
 export const metadata: Metadata = {
     title: "Refund & Cancellation Policy | IG Holidays",
-    description: "Understand the cancellation and refund policy for bookings made through IG Holidays – an official brand of Infygru Private Limited.",
+    description: "Understand the cancellation and refund policy for bookings made through IG Holidays. Clear timelines, refund amounts, and conditions explained.",
+    alternates: { canonical: `${BASE}/refund-policy` },
+    robots: { index: true, follow: false },
+    openGraph: { title: "Refund & Cancellation Policy | IG Holidays", url: `${BASE}/refund-policy`, siteName: "IG Holidays", type: "website" },
 };
 
 export default function RefundPolicyPage() {

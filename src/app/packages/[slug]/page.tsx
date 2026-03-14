@@ -106,7 +106,33 @@ export default async function PackageDetailPage(props: Props) {
     const defaultInclusions = ["Handpicked Premium Accommodation", "Daily Breakfast & Select Meals", "All Airport & Hotel Transfers", "Expert Local Guides", "All Entry Permits & Tickets", "24/7 On-Trip Concierge Support"];
     const defaultExclusions = ["International / Domestic Flights", "Visa Fees & Documentation", "Personal & Shopping Expenses", "Travel Insurance", "Optional Activities & Tips", "Anything not mentioned in inclusions"];
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+    const destStr = pkg.destination || pkg.destinations?.join(", ") || "";
+    const packageSchema = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: pkg.title,
+        description: pkg.description
+            ? pkg.description.replace(/<[^>]+>/g, "").slice(0, 300)
+            : `${pkg.title} — ${pkg.duration_nights ? pkg.duration_nights + " nights / " + pkg.duration_days + " days" : "premium"} holiday package${destStr ? " in " + destStr : ""}.`,
+        url: `${baseUrl}/packages/${pkg.slug}`,
+        image: imgUrl || undefined,
+        brand: { "@type": "Brand", name: "IG Holidays" },
+        offers: pkg.price ? {
+            "@type": "Offer",
+            price: String(pkg.price),
+            priceCurrency: "INR",
+            availability: "https://schema.org/InStock",
+            url: `${baseUrl}/packages/${pkg.slug}`,
+        } : undefined,
+    };
+
     return (
+        <>
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(packageSchema) }}
+        />
         <main className="min-h-screen bg-[#F8F7F4]">
 
             {/* ── CINEMATIC HERO ── */}
@@ -526,5 +552,6 @@ export default async function PackageDetailPage(props: Props) {
                 </div>
             </div>
         </main>
+        </>
     );
 }

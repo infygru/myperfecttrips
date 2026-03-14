@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+
 export const metadata: Metadata = {
     title: "Cookie Policy | IG Holidays",
-    description: "Learn how IG Holidays uses cookies on its website.",
+    description: "Understand how IG Holidays uses cookies and similar tracking technologies to improve your browsing experience on our website.",
+    alternates: { canonical: `${BASE}/cookie-policy` },
+    robots: { index: true, follow: false },
+    openGraph: { title: "Cookie Policy | IG Holidays", url: `${BASE}/cookie-policy`, siteName: "IG Holidays", type: "website" },
 };
 
 export default function CookiePolicyPage() {
