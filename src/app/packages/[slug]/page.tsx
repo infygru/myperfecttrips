@@ -232,6 +232,24 @@ export default async function PackageDetailPage(props: Props) {
                                     <h2 className="font-serif text-2xl font-medium text-brand-950">Trip Overview</h2>
                                 </div>
                                 <div className="p-8">
+                                    {/* Quick-facts strip */}
+                                    <div className="mb-7 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                        {[
+                                            { icon: Clock,    label: "Duration",      value: pkg.duration_nights ? `${pkg.duration_nights}N / ${pkg.duration_days}D` : "Custom" },
+                                            { icon: MapPin,   label: "Destinations",  value: pkg.destinations?.length ? pkg.destinations.join(", ") : "Multiple" },
+                                            { icon: Users,    label: "Group Size",    value: "Flexible" },
+                                            { icon: Calendar, label: "Availability",  value: "All Year" },
+                                        ].map(({ icon: Icon, label, value }) => (
+                                            <div key={label} className="text-center bg-stone-50 rounded-xl p-4 border border-stone-100">
+                                                <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-brand-700">
+                                                    <Icon className="h-4 w-4" />
+                                                </div>
+                                                <p className="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-0.5">{label}</p>
+                                                <p className="text-xs font-semibold text-brand-950 leading-snug">{value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+
                                     {pkg.description ? (
                                         <div
                                             className="prose prose-stone max-w-none text-stone-600 leading-relaxed prose-p:text-stone-600 prose-p:leading-relaxed"
@@ -246,23 +264,6 @@ export default async function PackageDetailPage(props: Props) {
                                         </p>
                                     )}
 
-                                    {/* Highlights strip */}
-                                    <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                        {[
-                                            { icon: Clock, label: "Duration", value: pkg.duration_nights ? `${pkg.duration_nights}N/${pkg.duration_days}D` : "Custom" },
-                                            { icon: MapPin, label: "Destinations", value: pkg.destinations?.length ? `${pkg.destinations.length} Places` : "Multiple" },
-                                            { icon: Users, label: "Group Size", value: "Flexible" },
-                                            { icon: Calendar, label: "Availability", value: "All Year" },
-                                        ].map(({ icon: Icon, label, value }) => (
-                                            <div key={label} className="text-center bg-stone-50 rounded-xl p-4 border border-stone-100">
-                                                <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-brand-700">
-                                                    <Icon className="h-4 w-4" />
-                                                </div>
-                                                <p className="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-0.5">{label}</p>
-                                                <p className="text-sm font-semibold text-brand-950">{value}</p>
-                                            </div>
-                                        ))}
-                                    </div>
                                 </div>
                             </div>
                         )}
@@ -458,22 +459,6 @@ export default async function PackageDetailPage(props: Props) {
                                         {pkg.price ? "per person · taxes extra" : "Contact us for pricing"}
                                     </p>
                                 </div>
-                            </div>
-
-                            {/* Trip details grid */}
-                            <div className="grid grid-cols-2 divide-x divide-y divide-stone-100 border-b border-stone-100">
-                                {[
-                                    { icon: Clock, label: "Duration", value: pkg.duration_nights ? `${pkg.duration_nights}N / ${pkg.duration_days}D` : "Custom" },
-                                    { icon: MapPin, label: "Destinations", value: pkg.destinations?.length ? pkg.destinations.slice(0, 2).join(", ") : "Multiple" },
-                                    { icon: Users, label: "Group Size", value: "Flexible" },
-                                    { icon: Calendar, label: "Departure", value: "All Year" },
-                                ].map(({ icon: Icon, label, value }) => (
-                                    <div key={label} className="p-4 text-center">
-                                        <Icon className="h-4 w-4 text-brand-600 mx-auto mb-1.5" />
-                                        <p className="text-[9px] font-bold uppercase tracking-wider text-stone-400 mb-0.5">{label}</p>
-                                        <p className="text-xs font-semibold text-brand-950 leading-tight">{value}</p>
-                                    </div>
-                                ))}
                             </div>
 
                             {/* CTAs */}
