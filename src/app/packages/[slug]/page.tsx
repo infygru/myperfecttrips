@@ -87,18 +87,10 @@ export default async function PackageDetailPage(props: Props) {
             .slice(0, 3);
     } catch { }
 
-    // Fetch day-by-day itinerary
+    // itinerary_days comes as an array via O2M relation
     let itineraryDays: any[] = [];
-    try {
-        itineraryDays = (await directus.request(
-            readItems("itinerary_days" as any, {
-                filter: { package_id: { _eq: pkg.id } } as any,
-                sort: ["day_number"] as any,
-                limit: 100,
-            })
-        )) as any[];
-    } catch {
-        // collection may not exist yet - graceful fallback
+    if (Array.isArray(pkg.itinerary_days) && pkg.itinerary_days.length > 0) {
+        itineraryDays = [...pkg.itinerary_days].sort((a: any, b: any) => (a.day_number ?? 0) - (b.day_number ?? 0));
     }
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
@@ -118,7 +110,7 @@ export default async function PackageDetailPage(props: Props) {
         <main className="min-h-screen bg-[#F8F7F4]">
 
             {/* ── CINEMATIC HERO ── */}
-            <section className="relative h-[50vh] md:h-[60vh] min-h-[380px] md:min-h-[480px] w-full overflow-hidden bg-brand-950">
+            <section className="relative h-[42vh] md:h-[50vh] min-h-[320px] md:min-h-[400px] w-full overflow-hidden bg-brand-950">
                 {imgUrl ? (
                     <Image
                         src={imgUrl}

@@ -135,50 +135,36 @@ export default async function PackagesPage(props: {
     if (currentSort === "price-desc") filtered = [...filtered].sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
     if (currentSort === "duration-asc") filtered = [...filtered].sort((a, b) => (Number(a.duration_nights) || 0) - (Number(b.duration_nights) || 0));
 
-    const activeFilters = [currentCategory, currentTheme, currentDest, currentDuration, currentMaxPrice].filter(Boolean).length;
+    // Package types for filter
+    const packageTypes = Array.from(new Set(packages.map((p) => p.package_type).filter(Boolean))).sort() as string[];
+
+    const activeFilters = [currentCategory, currentTheme, currentDest, currentDuration, currentMaxPrice, currentPackageType].filter(Boolean).length;
 
     return (
         <main className="min-h-screen bg-[#F8F7F4] pb-24">
 
-            {/* ── HERO ── */}
-            <section className="relative bg-brand-950 overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_60%,_var(--tw-gradient-stops))] from-brand-700/60 via-brand-950 to-brand-950" />
-                {/* subtle grid texture */}
-                <div
-                    className="absolute inset-0 opacity-[0.035]"
-                    style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M0 0h80v80H0z' fill='none'/%3E%3Cpath d='M0 0h1v80H0zM79 0h1v80H79zM0 0v1h80V0M0 79v1h80V79' stroke='%23fff' stroke-width='0.5'/%3E%3C/svg%3E")`
-                    }}
-                />
-                <div className="container-inner relative z-10 py-24 pt-32">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            {/* ── COMPACT PAGE HEADER ── */}
+            <section className="bg-brand-950 pt-20 pb-7 border-b border-white/[0.06]">
+                <div className="container-inner">
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
                         <div>
-                            <p className="text-gold-400 text-xs font-bold uppercase tracking-[0.25em] mb-4 flex items-center gap-2">
-                                <span className="inline-block h-px w-8 bg-gold-400" />
+                            <p className="text-gold-400 text-[10px] font-bold uppercase tracking-[0.25em] mb-2 flex items-center gap-2">
+                                <span className="h-px w-6 bg-gold-400" />
                                 Curated Collection
                             </p>
-                            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-medium text-white tracking-tight leading-[0.95]">
-                                Extraordinary<br />
-                                <em className="text-gold-400 not-italic">Journeys</em>
+                            <h1 className="font-serif text-3xl sm:text-4xl font-medium text-white">
+                                Holiday <em className="text-gold-400 not-italic">Packages</em>
                             </h1>
                         </div>
-                        <div className="max-w-sm">
-                            <p className="text-stone-400 font-light text-base leading-relaxed">
-                                {packages.length} handpicked premium packages — from serene Kerala backwaters to the peaks of the Swiss Alps.
-                            </p>
-                        </div>
+                        <p className="text-stone-400 text-sm pb-1">
+                            {packages.length} handpicked premium packages
+                        </p>
                     </div>
-                </div>
-                {/* wave divider */}
-                <div className="relative h-16">
-                    <svg viewBox="0 0 1440 64" className="absolute bottom-0 w-full h-16" preserveAspectRatio="none">
-                        <path d="M0,64 L0,32 Q360,0 720,32 Q1080,64 1440,32 L1440,64 Z" fill="#F8F7F4" />
-                    </svg>
                 </div>
             </section>
 
             {/* ── MAIN CONTENT: SIDEBAR + GRID ── */}
-            <section className="container-inner mt-2">
+            <section className="container-inner mt-6">
                 <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 items-start">
 
                     {/* ── SIDEBAR FILTER (client component) ── */}
@@ -186,11 +172,13 @@ export default async function PackagesPage(props: {
                         categories={categories}
                         themes={themes}
                         destinations={allDestinations}
+                        packageTypes={packageTypes}
                         currentCategory={currentCategory}
                         currentTheme={currentTheme}
                         currentDest={currentDest}
                         currentDuration={currentDuration}
                         currentMaxPrice={currentMaxPrice}
+                        currentPackageType={currentPackageType}
                         maxPriceRange={maxPriceRange}
                         activeFilters={activeFilters}
                     />

@@ -68,25 +68,23 @@ export default async function BlogPage({ searchParams }: PageProps) {
     return (
         <main className="min-h-screen bg-stone-50">
 
-            {/* ── HERO HEADER ── */}
-            <section className="relative bg-brand-950 pt-20 pb-16 overflow-hidden">
-                <div
-                    className="absolute inset-0 opacity-[0.07]"
-                    style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                    }}
-                />
-                <div className="container-inner relative text-center">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-gold-400 mb-5">
-                        <BookOpen className="h-3.5 w-3.5" />
-                        Travel Journal
+            {/* ── COMPACT PAGE HEADER ── */}
+            <section className="bg-brand-950 pt-20 pb-7 border-b border-white/[0.06]">
+                <div className="container-inner">
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                        <div>
+                            <p className="text-gold-400 text-[10px] font-bold uppercase tracking-[0.25em] mb-2 flex items-center gap-2">
+                                <span className="h-px w-6 bg-gold-400" />
+                                Travel Journal
+                            </p>
+                            <h1 className="font-serif text-3xl sm:text-4xl font-medium text-white">
+                                Stories &amp; Travel Guides
+                            </h1>
+                        </div>
+                        <p className="text-stone-400 text-sm pb-1">
+                            Destination inspiration from our travel team
+                        </p>
                     </div>
-                    <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium text-white leading-tight tracking-tight mb-4">
-                        Stories &amp; Travel Guides
-                    </h1>
-                    <p className="text-stone-400 text-base max-w-lg mx-auto leading-relaxed">
-                        Destination inspiration, travel tips, and insider guides from our expert travel team.
-                    </p>
                 </div>
             </section>
 

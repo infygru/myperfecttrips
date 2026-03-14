@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
+import AOSProvider from "@/components/AOSProvider";
 import { directus, getSiteSettings } from "@/lib/directus";
 import type { DirectusSettings } from "@/types/settings";
 
@@ -26,7 +27,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
   try {
     const settings = (await getSiteSettings()) as DirectusSettings;
-
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const faviconUrl = settings?.public_favicon
       ? `${dUrl}/assets/${settings.public_favicon}`
@@ -50,11 +50,9 @@ export async function generateMetadata(): Promise<Metadata> {
         title: defaultTitle,
         description: defaultDesc,
       },
-      alternates: {
-        canonical: baseUrl,
-      },
+      alternates: { canonical: baseUrl },
     };
-  } catch (err) {
+  } catch {
     return {
       metadataBase: new URL(baseUrl),
       title: defaultTitle,
@@ -72,9 +70,7 @@ export async function generateMetadata(): Promise<Metadata> {
         title: defaultTitle,
         description: defaultDesc,
       },
-      alternates: {
-        canonical: baseUrl,
-      },
+      alternates: { canonical: baseUrl },
     };
   }
 }
@@ -84,6 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`${jakarta.variable} ${syne.variable} scroll-smooth`}>
       <body className="flex min-h-screen flex-col bg-stone-50 antialiased font-sans">
         <Header />
+        <AOSProvider />
         <div className="flex-1 w-full">{children}</div>
         <Footer />
         <CookieBanner />

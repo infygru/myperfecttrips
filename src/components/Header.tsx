@@ -5,6 +5,7 @@ import { directus, getSiteSettings } from "@/lib/directus";
 import { Compass } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import MobileMenu from "@/components/MobileMenu";
+import ServicesDropdown from "@/components/ServicesDropdown";
 
 export default async function Header() {
     noStore();
@@ -15,15 +16,30 @@ export default async function Header() {
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const logoUrl = s?.logo ? `${dUrl}/assets/${s.logo}` : null;
-    const phone = s?.contact_phone || "+91 98765 43210";
+    const phone = s?.contact_phone || "+91 8807709919";
     const siteName = s?.site_name || "IGHolidays";
 
-    const nav = [
-        { name: "Services", path: "/services" },
+    const otherNav = [
         { name: "Packages", path: "/packages" },
         { name: "About", path: "/about" },
         { name: "Blog", path: "/blog" },
         { name: "Contact", path: "/contact" },
+    ];
+
+    const mobileNav = [
+        {
+            name: "Services",
+            path: "/services",
+            children: [
+                { name: "Corporate MICE", path: "/services/corporate-mice" },
+                { name: "Corporate Travel", path: "/services/corporate-travel" },
+                { name: "Group Travel", path: "/services/group-travel" },
+                { name: "College Tours", path: "/services/college-tours" },
+                { name: "Visa Assistance", path: "/services/visa-assistance" },
+                { name: "Holiday Planning", path: "/services/holiday-planning" },
+            ],
+        },
+        ...otherNav,
     ];
 
     return (
@@ -53,12 +69,14 @@ export default async function Header() {
                     )}
                 </Link>
 
-
-
-                {/* Right actions & Nav */}
+                {/* Desktop Nav */}
                 <div className="hidden items-center gap-6 lg:flex">
-                    <nav className="flex items-center gap-2">
-                        {nav.map((link) => (
+                    <nav className="flex items-center gap-1">
+                        {/* Services dropdown */}
+                        <ServicesDropdown />
+
+                        {/* Other nav links */}
+                        {otherNav.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.path}
@@ -81,7 +99,7 @@ export default async function Header() {
                 </div>
 
                 {/* Mobile toggle */}
-                <MobileMenu nav={nav} phone={phone} />
+                <MobileMenu nav={mobileNav} phone={phone} />
             </div>
         </header>
     );

@@ -3,18 +3,25 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { Menu, X, Phone, ChevronRight } from "lucide-react";
+import { Menu, X, Phone, ChevronRight, ChevronDown } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+
+type NavItem = {
+    name: string;
+    path: string;
+    children?: { name: string; path: string }[];
+};
 
 export default function MobileMenu({
     nav,
     phone,
 }: {
-    nav: { name: string; path: string }[];
+    nav: NavItem[];
     phone: string;
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -27,7 +34,10 @@ export default function MobileMenu({
         };
     }, [isOpen]);
 
-    const close = () => setIsOpen(false);
+    const close = () => {
+        setIsOpen(false);
+        setExpandedItem(null);
+    };
 
     const portal = (
         <>
@@ -65,17 +75,60 @@ export default function MobileMenu({
 
                 {/* Nav Links */}
                 <nav className="flex-1 overflow-y-auto py-3">
-                    {nav.map((link) => (
-                        <Link
-                            key={link.name}
-                            href={link.path}
-                            onClick={close}
-                            className="flex items-center justify-between px-5 py-3.5 text-[15px] font-medium text-stone-800 transition-colors hover:bg-brand-50 hover:text-brand-700 active:bg-brand-100"
-                        >
-                            {link.name}
-                            <ChevronRight className="h-4 w-4 text-stone-300" />
-                        </Link>
-                    ))}
+                    {nav.map((link) => {
+                        const hasChildren = link.children && link.children.length > 0;
+                        const isExpanded = expandedItem === link.name;
+
+                        if (hasChildren) {
+                            return (
+                                <div key={link.name}>
+                                    <button
+                                        onClick={() => setExpandedItem(isExpanded ? null : link.name)}
+                                        className="flex w-full items-center justify-between px-5 py-3.5 text-[15px] font-medium text-stone-800 transition-colors hover:bg-brand-50 hover:text-brand-700"
+                                    >
+                                        {link.name}
+                                        <ChevronDown className={`h-4 w-4 text-stone-400 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
+                                    </button>
+                                    {isExpanded && (
+                                        <div className="bg-stone-50 border-y border-stone-100">
+                                            {/* Parent link */}
+                                            <Link
+                                                href={link.path}
+                                                onClick={close}
+                                                className="flex items-center justify-between px-8 py-3 text-[13px] font-bold text-brand-700 hover:bg-brand-100 transition-colors"
+                                            >
+                                                All Services
+                                                <ChevronRight className="h-3.5 w-3.5" />
+                                            </Link>
+                                            {link.children!.map((child) => (
+                                                <Link
+                                                    key={child.name}
+                                                    href={child.path}
+                                                    onClick={close}
+                                                    className="flex items-center justify-between px-8 py-2.5 text-[13px] font-medium text-stone-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
+                                                >
+                                                    {child.name}
+                                                    <ChevronRight className="h-3.5 w-3.5 text-stone-300" />
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        }
+
+                        return (
+                            <Link
+                                key={link.name}
+                                href={link.path}
+                                onClick={close}
+                                className="flex items-center justify-between px-5 py-3.5 text-[15px] font-medium text-stone-800 transition-colors hover:bg-brand-50 hover:text-brand-700"
+                            >
+                                {link.name}
+                                <ChevronRight className="h-4 w-4 text-stone-300" />
+                            </Link>
+                        );
+                    })}
                 </nav>
 
                 {/* Drawer Footer */}
@@ -105,7 +158,6 @@ export default function MobileMenu({
 
     return (
         <>
-            {/* Hamburger Button */}
             <button
                 onClick={() => setIsOpen(true)}
                 className="flex h-9 w-9 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-700 transition-colors hover:bg-stone-50 lg:hidden"
@@ -114,8 +166,6 @@ export default function MobileMenu({
             >
                 <Menu className="h-5 w-5" />
             </button>
-
-            {/* Portal: renders at document.body to escape any parent stacking context */}
             {mounted && createPortal(portal, document.body)}
         </>
     );

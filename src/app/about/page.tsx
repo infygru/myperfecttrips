@@ -17,16 +17,18 @@ export default async function AboutPage() {
     return (
         <main className="min-h-screen bg-white">
 
-            {/* ── HERO ── */}
-            <section className="relative bg-brand-950 pt-20 pb-24 px-4">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-800 via-brand-950 to-brand-950 opacity-80" />
-                <div className="container-inner relative z-10 text-center">
-                    <span className="section-label !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30 mx-auto">About IGHolidays</span>
-                    <h1 className="mt-4 mb-5 font-serif text-4xl sm:text-5xl md:text-6xl font-medium text-white tracking-tight leading-tight">
-                        Redefining Luxury <em className="bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent italic font-semibold">Travel.</em>
+            {/* ── COMPACT PAGE HEADER ── */}
+            <section className="bg-brand-950 pt-20 pb-8 border-b border-white/[0.06]">
+                <div className="container-inner">
+                    <p className="text-gold-400 text-[10px] font-bold uppercase tracking-[0.25em] mb-2 flex items-center gap-2">
+                        <span className="h-px w-6 bg-gold-400" />
+                        About IGHolidays
+                    </p>
+                    <h1 className="font-serif text-3xl sm:text-4xl font-medium text-white">
+                        Redefining Luxury <em className="text-gold-400 not-italic">Travel</em>
                     </h1>
-                    <p className="max-w-2xl mx-auto text-base sm:text-lg text-stone-300 font-light leading-relaxed">
-                        We are a premier travel management company providing extraordinary bespoke vacations, flawless corporate retreats, and expert travel facilitation across India and the world.
+                    <p className="text-stone-400 text-sm mt-2 max-w-xl">
+                        Premier travel management — bespoke vacations, corporate retreats, and expert facilitation across India and the world.
                     </p>
                 </div>
             </section>

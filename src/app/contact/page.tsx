@@ -21,23 +21,23 @@ export default async function ContactPage() {
     return (
         <main className="min-h-screen bg-stone-50 pb-24">
             {/* SECTION 1: HEADER */}
-            <section className="relative bg-brand-950 px-4 pt-20 pb-24 sm:px-6 lg:px-8 shadow-sm">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-800 via-brand-950 to-brand-950 opacity-80" />
-                <div className="container-inner relative z-10 flex flex-col items-center text-center">
-                    <span className="section-label !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30">
+            <section className="bg-brand-950 pt-20 pb-14 border-b border-white/[0.06]">
+                <div className="container-inner">
+                    <p className="text-gold-400 text-[10px] font-bold uppercase tracking-[0.25em] mb-2 flex items-center gap-2">
+                        <span className="h-px w-6 bg-gold-400" />
                         Get in Touch
-                    </span>
-                    <h1 className="mb-6 font-serif text-5xl font-medium text-white sm:text-6xl tracking-tight">
+                    </p>
+                    <h1 className="font-serif text-3xl sm:text-4xl font-medium text-white">
                         We&apos;re Here to Help
                     </h1>
-                    <p className="max-w-2xl text-lg text-stone-300 font-light leading-relaxed">
-                        Have a question about an upcoming trip or want to tailor a bespoke itinerary? Contact our travel experts today.
+                    <p className="text-stone-400 text-sm mt-2 max-w-xl">
+                        Have a question or want a bespoke itinerary? Contact our travel experts today.
                     </p>
                 </div>
             </section>
 
             {/* SECTION 2: CONTACT GRID */}
-            <section className="container-inner -mt-12 relative z-20">
+            <section className="container-inner -mt-6 relative z-20">
                 <div className="grid gap-8 lg:grid-cols-3">
 
                     {/* Contact Info Sidebar */}
