@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/layout/Header/Navbar";
+
+export const metadata: Metadata = {
+  title: "Terms and Conditions",
+  description: "Read the MyPerfectTrips Terms and Conditions governing your use of our website and travel booking services.",
+  alternates: { canonical: "https://myperfecttrips.com/terms-and-conditions" },
+  robots: { index: true, follow: true },
+};
 
 export default function TermsAndConditions() {
     return (

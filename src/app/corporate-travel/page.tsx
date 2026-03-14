@@ -4,9 +4,15 @@ import { ArrowRight, BarChart, Briefcase, Globe, Hotel, Plane, Shield, Check } f
 import ContactForm from "@/components/contact/ContactForm";
 
 export const metadata: Metadata = {
-    title: "Corporate Travel Management | My Perfect Trips",
+    title: "Corporate Travel Management",
     description:
-        "Expert corporate travel management for businesses. Seamless flight bookings, hotel partnerships, and 24/7 expense management support.",
+        "Expert corporate travel management for UK businesses. Seamless flight bookings, hotel partnerships, duty-of-care tracking and 24/7 expense management support from MyPerfectTrips, Manchester.",
+    alternates: { canonical: "https://myperfecttrips.com/corporate-travel" },
+    openGraph: {
+        title: "Corporate Travel Management | MyPerfectTrips Manchester",
+        description: "Bespoke corporate travel solutions for UK businesses. Cost savings, 24/7 support and dedicated account management.",
+        url: "https://myperfecttrips.com/corporate-travel",
+    },
 };
 
 export default function CorporateTravelPage() {

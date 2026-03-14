@@ -5,9 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-    title: "About Us | My Perfect Trips - Manchester's Premier Travel Agency",
-    description: "Discover why My Perfect Trips is Manchester's most trusted travel agency. Offering price match guarantees, low deposits, and 24/7 personal support for bespoke holidays.",
-    keywords: ["travel agency near me manchester", "bespoke holidays", "cheap flights manchester", "luxury travel deals", "dubai holidays", "usa travel packages", "best travel agency manchester"]
+    title: "About Us",
+    description: "Discover why MyPerfectTrips is Manchester's most trusted travel agency. Local experts in Altrincham offering price match guarantees, low deposits, and personal support for bespoke holidays.",
+    keywords: ["travel agency near me manchester", "bespoke holidays", "cheap flights manchester", "luxury travel deals", "dubai holidays", "best travel agency manchester", "travel agency altrincham"],
+    alternates: { canonical: "https://myperfecttrips.com/about" },
+    openGraph: {
+        title: "About MyPerfectTrips | Manchester's Premier Travel Agency",
+        description: "Local travel experts in Altrincham, Manchester. Price match guarantee, low deposits and personal service for Dubai, Turkey and Schengen holidays.",
+        url: "https://myperfecttrips.com/about",
+        type: "website",
+    },
 };
 
 export default function AboutPage() {

@@ -7,6 +7,48 @@ import Link from "next/link";
 
 type Props = { params: Promise<{ slug: string }> };
 
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+  let post: any = null;
+  try {
+    const result = await directus.request(readItems("Blog_Posts", {
+      filter: { slug: { _eq: slug } },
+      fields: ["title", "excerpt", "image", "author", "published_date"],
+      limit: 1,
+    }));
+    post = result[0];
+  } catch (e) { post = null; }
+
+  if (!post) return { title: "Article Not Found | MyPerfectTrips" };
+
+  const ogImage = post.image ? getAssetUrl(post.image) : "/og-image.jpg";
+  const publishedTime = post.published_date
+    ? new Date(post.published_date).toISOString()
+    : undefined;
+
+  return {
+    title: post.title,
+    description: post.excerpt || `Read "${post.title}" on the MyPerfectTrips travel blog — tips, guides and inspiration for your next holiday.`,
+    alternates: {
+      canonical: `https://myperfecttrips.com/blog/${slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || `Read this travel article on MyPerfectTrips.`,
+      url: `https://myperfecttrips.com/blog/${slug}`,
+      type: "article",
+      publishedTime,
+      authors: post.author ? [post.author] : ["MyPerfectTrips"],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      images: [ogImage],
+    },
+  };
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   

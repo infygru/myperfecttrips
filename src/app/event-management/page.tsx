@@ -5,9 +5,15 @@ import Link from "next/link";
 import { ArrowRight, Music, Calendar, Star, Heart, Camera, Check } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Event Management Services | Corporate & Private Events",
+    title: "Event Management Services",
     description:
-        "Premium event management for corporate galas, product launches, weddings, and private parties. We bring your vision to life.",
+        "Premium event management for corporate galas, product launches, luxury weddings and private parties across the UK. MyPerfectTrips brings your vision to life with end-to-end planning.",
+    alternates: { canonical: "https://myperfecttrips.com/event-management" },
+    openGraph: {
+        title: "Event Management Services | MyPerfectTrips",
+        description: "Corporate galas, product launches, luxury weddings and private parties — flawless event planning from Manchester.",
+        url: "https://myperfecttrips.com/event-management",
+    },
 };
 
 export default function EventManagementPage() {

@@ -3,8 +3,14 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { getGlobalSettings } from "@/lib/directus/getGlobalSettings";
 
 export const metadata = {
-  title: "Contact Us | MyPerfectTrips",
-  description: "Get in touch with Manchester's premier travel consultancy to plan your next escape.",
+  title: "Contact Us",
+  description: "Contact MyPerfectTrips — Manchester's premier travel agency. Call, email or visit us in Altrincham to plan your next Dubai, Turkey or Schengen holiday.",
+  alternates: { canonical: "https://myperfecttrips.com/contact" },
+  openGraph: {
+    title: "Contact MyPerfectTrips | Manchester Travel Agency",
+    description: "Get in touch with our travel experts to plan your perfect holiday. We are based in Altrincham, Manchester.",
+    url: "https://myperfecttrips.com/contact",
+  },
 };
 
 export default async function ContactPage() {

@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/layout/Header/Navbar";
 
+export const metadata: Metadata = {
+  title: "Cookie Policy",
+  description: "Learn how MyPerfectTrips uses cookies and similar technologies to improve your browsing experience on our travel website.",
+  alternates: { canonical: "https://myperfecttrips.com/cookie-policy" },
+  robots: { index: true, follow: true },
+};
 
 export default function CookiePolicy() {
     return (

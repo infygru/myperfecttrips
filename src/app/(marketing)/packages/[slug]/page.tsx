@@ -16,7 +16,41 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const pkg = await getPackage(slug);
-  return { title: pkg ? `${pkg.title} | MyPerfectTrips` : "Package Not Found" };
+  if (!pkg) return { title: "Package Not Found | MyPerfectTrips" };
+
+  const imageId = typeof pkg.banner_image === "object" ? pkg.banner_image?.id : pkg.banner_image
+    || typeof pkg.image === "object" ? pkg.image?.id : pkg.image;
+  const ogImage = imageId
+    ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${imageId}`
+    : "/og-image.jpg";
+
+  const location = pkg.destination?.name || pkg.location || "International";
+  const days = pkg.duration_days || pkg.duration || 5;
+  const nights = pkg.duration_nights || (Number(days) > 1 ? Number(days) - 1 : 0);
+
+  return {
+    title: pkg.title,
+    description: pkg.description
+      ? pkg.description.replace(/<[^>]+>/g, "").slice(0, 160)
+      : `${pkg.title} — ${days} days, ${nights} nights in ${location}. Book your dream holiday with MyPerfectTrips, Manchester's premier travel agency.`,
+    alternates: {
+      canonical: `https://myperfecttrips.com/packages/${slug}`,
+    },
+    openGraph: {
+      title: `${pkg.title} | MyPerfectTrips`,
+      description: pkg.description
+        ? pkg.description.replace(/<[^>]+>/g, "").slice(0, 160)
+        : `${pkg.title} — ${days} days, ${nights} nights in ${location}.`,
+      url: `https://myperfecttrips.com/packages/${slug}`,
+      type: "website",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: pkg.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${pkg.title} | MyPerfectTrips`,
+      images: [ogImage],
+    },
+  };
 }
 
 async function getPackage(slug: string) {

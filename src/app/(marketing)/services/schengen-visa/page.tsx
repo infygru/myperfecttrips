@@ -3,8 +3,14 @@ import { Check } from "lucide-react";
 import VisaForm from "@/components/services/VisaForm";
 
 export const metadata = {
-  title: "Schengen Visa for Spain, France & Italy | MyPerfectTrips",
-  description: "Dedicated visa appointment slots for UK residents with full documentation support.",
+  title: "Schengen Visa for Spain, France & Italy",
+  description: "Dedicated Schengen visa appointment slots for UK residents. Spain, France and Italy visas with full documentation support and 98% success rate from MyPerfectTrips Manchester.",
+  alternates: { canonical: "https://myperfecttrips.com/services/schengen-visa" },
+  openGraph: {
+    title: "Schengen Visa — Spain, France & Italy | MyPerfectTrips",
+    description: "Daily appointment slots for UK residents. Expert Schengen visa document checking and appointment booking.",
+    url: "https://myperfecttrips.com/services/schengen-visa",
+  },
 };
 
 export default function SchengenVisaPage() {

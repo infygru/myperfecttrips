@@ -4,17 +4,25 @@ import SchengenVisaForm from "@/components/visa/SchengenVisaForm";
 import { Check, Clock, FileText, MapPin, ShieldCheck, Plane } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Spain Visa Appointment London & Manchester | Premium Schengen Visa Services",
+    title: "Schengen Visa Appointment Manchester & London | Spain Visa Experts",
     description:
-        "Secure your Spain Schengen visa appointment in London or Manchester. Daily slots available. Fast-track processing and expert document assistance.",
+        "Secure your Spain Schengen visa appointment from Manchester or London. Daily slots, 98% success rate, expert document checking and fast-track processing by MyPerfectTrips.",
     keywords: [
         "Spain visa appointment",
         "Schengen visa Manchester",
         "Spain visa London",
         "BLS appointment Spain",
         "Schengen visa documents",
-        "fast track spain visa",
+        "fast track Spain visa",
+        "Spain visa UK",
+        "Schengen visa assistance UK",
     ],
+    alternates: { canonical: "https://myperfecttrips.com/schengen-visa" },
+    openGraph: {
+        title: "Schengen Visa Appointment Manchester & London | MyPerfectTrips",
+        description: "Spain Schengen visa appointments from Manchester or London. Daily slots, 98% success rate, expert document assistance.",
+        url: "https://myperfecttrips.com/schengen-visa",
+    },
 };
 
 export default function SchengenVisaPage() {

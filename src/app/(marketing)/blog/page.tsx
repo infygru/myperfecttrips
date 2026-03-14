@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import directus from "@/lib/directus/client";
 import { readItems } from "@directus/sdk";
 import BlogListClient from "@/components/blog/BlogListClient";
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: "Travel Blog & Guides",
+  description: "Read MyPerfectTrips travel blog — destination guides, visa tips, holiday inspiration for Dubai, Turkey, Schengen and beyond from our Manchester travel experts.",
+  alternates: { canonical: "https://myperfecttrips.com/blog" },
+  openGraph: {
+    title: "Travel Blog & Guides | MyPerfectTrips",
+    description: "Destination guides, visa tips and holiday inspiration from Manchester's premier travel agency.",
+    url: "https://myperfecttrips.com/blog",
+    type: "website",
+  },
+};
 
 export default async function BlogPage() {
   let posts: any[] = [];

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import directus from "@/lib/directus/client";
 import { readItems } from "@directus/sdk";
 import PackageList from "@/components/packages/PackageList";
@@ -5,6 +6,18 @@ import PackagesHero from "@/components/packages/PackagesHero";
 
 // Force dynamic rendering to ensure fresh data on every load
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: "Holiday Packages",
+  description: "Browse our handpicked holiday packages to Dubai, Turkey, Europe and beyond. All-inclusive deals, luxury breaks and budget getaways from Manchester's premier travel agency.",
+  alternates: { canonical: "https://myperfecttrips.com/packages" },
+  openGraph: {
+    title: "Holiday Packages | MyPerfectTrips Manchester",
+    description: "Dubai, Turkey, Europe and beyond — browse all-inclusive and bespoke holiday packages from MyPerfectTrips.",
+    url: "https://myperfecttrips.com/packages",
+    type: "website",
+  },
+};
 
 export default async function PackagesPage() {
   let packages: any[] = [];

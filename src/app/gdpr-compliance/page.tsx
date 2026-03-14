@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/layout/Header/Navbar";
+
+export const metadata: Metadata = {
+  title: "GDPR Compliance",
+  description: "MyPerfectTrips GDPR compliance statement. Understand your rights under the General Data Protection Regulation and how we protect your personal data.",
+  alternates: { canonical: "https://myperfecttrips.com/gdpr-compliance" },
+  robots: { index: true, follow: true },
+};
 
 export default function GDPRCompliance() {
     return (

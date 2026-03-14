@@ -2,31 +2,33 @@ import { MetadataRoute } from 'next';
 import directus from '@/lib/directus/client';
 import { readItems } from '@directus/sdk';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
+const BASE_URL = 'https://myperfecttrips.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    // Static Routes
-    const routes = [
-        '',
-        '/about',
-        '/contact',
-        '/packages',
-        '/blog',
-        '/services',
-        '/services/schengen-visa',
-        '/corporate-travel',
-        '/event-management',
-        '/mice',
-        '/schengen-visa',
-        '/privacy-policy',
-        '/terms-and-conditions',
-        '/cookie-policy',
-        '/gdpr-compliance',
-    ].map((route) => ({
-        url: `${BASE_URL}${route}`,
+    // Static Routes with differentiated priorities
+    const staticRoutes: Array<{ path: string; priority: number; changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never' }> = [
+        { path: '', priority: 1.0, changeFrequency: 'weekly' },
+        { path: '/packages', priority: 0.9, changeFrequency: 'daily' },
+        { path: '/schengen-visa', priority: 0.9, changeFrequency: 'weekly' },
+        { path: '/services', priority: 0.8, changeFrequency: 'monthly' },
+        { path: '/corporate-travel', priority: 0.8, changeFrequency: 'monthly' },
+        { path: '/mice', priority: 0.8, changeFrequency: 'monthly' },
+        { path: '/event-management', priority: 0.8, changeFrequency: 'monthly' },
+        { path: '/blog', priority: 0.8, changeFrequency: 'daily' },
+        { path: '/about', priority: 0.7, changeFrequency: 'monthly' },
+        { path: '/contact', priority: 0.7, changeFrequency: 'monthly' },
+        { path: '/services/schengen-visa', priority: 0.7, changeFrequency: 'monthly' },
+        { path: '/privacy-policy', priority: 0.3, changeFrequency: 'yearly' },
+        { path: '/terms-and-conditions', priority: 0.3, changeFrequency: 'yearly' },
+        { path: '/cookie-policy', priority: 0.3, changeFrequency: 'yearly' },
+        { path: '/gdpr-compliance', priority: 0.3, changeFrequency: 'yearly' },
+    ];
+
+    const routes = staticRoutes.map(({ path, priority, changeFrequency }) => ({
+        url: `${BASE_URL}${path}`,
         lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: route === '' ? 1 : 0.8,
+        changeFrequency,
+        priority,
     }));
 
     // Fetch Packages

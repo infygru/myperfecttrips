@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/layout/Header/Navbar";
 import ScrollAnimation from "@/components/ui/ScrollAnimation";
 
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Read the MyPerfectTrips Privacy Policy to understand how we collect, use and protect your personal data in compliance with UK GDPR.",
+  alternates: { canonical: "https://myperfecttrips.com/privacy-policy" },
+  robots: { index: true, follow: true },
+};
 
 export default function PrivacyPolicy() {
     return (

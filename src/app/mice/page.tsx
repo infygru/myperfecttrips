@@ -7,7 +7,13 @@ import { ArrowRight, Users, Mic, Presentation, Award, Globe, CheckCircle } from 
 export const metadata: Metadata = {
     title: "MICE Services | Meetings, Incentives, Conferences & Exhibitions",
     description:
-        "End-to-end MICE travel solutions. We organize successful corporate meetings, memorable incentive trips, large-scale conferences, and exhibitions worldwide.",
+        "End-to-end MICE travel solutions from MyPerfectTrips Manchester. We organize corporate meetings, incentive trips, large-scale conferences and international exhibitions with precision.",
+    alternates: { canonical: "https://myperfecttrips.com/mice" },
+    openGraph: {
+        title: "MICE Services | MyPerfectTrips Manchester",
+        description: "Corporate meetings, incentive travel, conferences and exhibitions — expert MICE solutions from Manchester's premier travel agency.",
+        url: "https://myperfecttrips.com/mice",
+    },
 };
 
 export default function MicePage() {

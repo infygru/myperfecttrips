@@ -7,8 +7,14 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata = {
-  title: "Professional Travel Services | MyPerfectTrips",
-  description: "Premium travel services including Schengen Visa assistance, Corporate Travel, and MICE.",
+  title: "Travel Services",
+  description: "Explore MyPerfectTrips' premium services: Schengen visa assistance, flight & hotel bookings, corporate travel management, MICE solutions and event planning — all from Manchester.",
+  alternates: { canonical: "https://myperfecttrips.com/services" },
+  openGraph: {
+    title: "Travel Services | MyPerfectTrips Manchester",
+    description: "Schengen visas, flight bookings, corporate travel and MICE — complete travel services from Manchester's premier agency.",
+    url: "https://myperfecttrips.com/services",
+  },
 };
 
 const serviceList = [
