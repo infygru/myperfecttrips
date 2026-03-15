@@ -103,7 +103,7 @@ export default async function Home() {
   const showBudgetSection   = budgetDomestic.length > 0 || budgetInternational.length > 0;
 
   return (
-    <main className="flex min-h-screen flex-col bg-stone-50">
+    <main className="flex min-h-screen flex-col bg-stone-50 overflow-x-hidden">
 
       {/* ── HERO ── */}
       <section className="relative flex min-h-[75svh] items-center justify-center bg-stone-950 z-30 pb-10 overflow-hidden">
@@ -144,7 +144,7 @@ export default async function Home() {
       {/* ── STATS STRIP ── */}
       <section className="bg-brand-950">
         <div className="container-inner">
-          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-brand-800">
+          <div className="grid grid-cols-2 sm:grid-cols-4 sm:divide-x sm:divide-brand-800">
             {[
               { value: "15+", label: "Years Experience" },
               { value: "10K+", label: "Happy Travellers" },
@@ -154,7 +154,7 @@ export default async function Home() {
               <div key={s.label}
                 data-aos="fade-up"
                 data-aos-delay={String(idx * 80)}
-                className="flex flex-col items-center py-4 px-2 text-center">
+                className={`flex flex-col items-center py-4 px-2 text-center${idx % 2 === 0 ? " border-r border-brand-800 sm:border-r-0" : ""}${idx < 2 ? " border-b border-brand-800 sm:border-b-0" : ""}`}>
                 <span className="font-serif text-xl sm:text-2xl font-bold text-gold-400">{s.value}</span>
                 <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-stone-400 mt-0.5">{s.label}</span>
               </div>

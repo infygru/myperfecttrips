@@ -36,10 +36,12 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden; /* stop AOS translateX overflow causing horizontal scroll */
   }
 
   body {
     @apply bg-stone-50 text-stone-900 font-sans tracking-[0.01em];
+    overflow-x: hidden;
   }
 
   h1,
@@ -142,6 +144,18 @@
               transform 0.75s cubic-bezier(0.16,1,0.3,1);
 }
 [data-aos="fade-right"].aos-animate { transform: translateX(0); }
+
+/* On mobile — convert horizontal slide animations to vertical to prevent overflow */
+@media (max-width: 767px) {
+  [data-aos="fade-left"],
+  [data-aos="fade-right"] {
+    transform: translateY(24px);
+  }
+  [data-aos="fade-left"].aos-animate,
+  [data-aos="fade-right"].aos-animate {
+    transform: translateY(0);
+  }
+}
 
 [data-aos="fade-in"] {
   transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1);

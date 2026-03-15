@@ -172,7 +172,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
       </head>
-      <body className="flex min-h-screen flex-col bg-stone-50 antialiased font-sans">
+      <body className="flex min-h-screen flex-col bg-stone-50 antialiased font-sans overflow-x-hidden">
         <Header />
         <AOSProvider />
         <div className="flex-1 w-full">{children}</div>

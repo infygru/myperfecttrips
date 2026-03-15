@@ -195,7 +195,7 @@ export default function HeroSearchTabs() {
         showDrop: boolean, setShowDrop: (v: boolean) => void,
         dropRef: React.RefObject<HTMLDivElement | null>
     ) => (
-        <div className={`relative ${inputContainerClass} hover:bg-stone-50/50 cursor-pointer`} ref={dropRef} onClick={() => setShowDrop(true)}>
+        <div className={`relative ${inputContainerClass} active:bg-stone-50/50 cursor-pointer`} ref={dropRef} onClick={() => setShowDrop(true)}>
             <Users className="h-5 w-5 text-brand-600 flex-shrink-0" />
             <div className="flex flex-col w-full text-left">
                 <label className={`${labelClass} cursor-pointer`}>Travelers</label>
@@ -213,9 +213,9 @@ export default function HeroSearchTabs() {
                             <p className="text-[11px] text-stone-500 text-left font-medium">Ages 12 or above</p>
                         </div>
                         <div className="flex items-center gap-3">
-                            <button type="button" onClick={() => setAdults(Math.max(1, parseInt(adults) - 1).toString())} className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-100 hover:bg-stone-200 text-brand-950 font-medium transition-colors">-</button>
+                            <button type="button" onClick={() => setAdults(Math.max(1, parseInt(adults) - 1).toString())} className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-100 active:bg-stone-200 text-brand-950 font-medium transition-colors">-</button>
                             <span className="font-semibold text-brand-950 w-4 text-center">{adults}</span>
-                            <button type="button" onClick={() => setAdults((parseInt(adults) + 1).toString())} className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-100 hover:bg-stone-200 text-brand-950 font-medium transition-colors">+</button>
+                            <button type="button" onClick={() => setAdults((parseInt(adults) + 1).toString())} className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-100 active:bg-stone-200 text-brand-950 font-medium transition-colors">+</button>
                         </div>
                     </div>
                     <div className="flex items-center justify-between">
@@ -224,9 +224,9 @@ export default function HeroSearchTabs() {
                             <p className="text-[11px] text-stone-500 text-left font-medium">Ages 2 - 11</p>
                         </div>
                         <div className="flex items-center gap-3">
-                            <button type="button" onClick={() => setChildren(Math.max(0, parseInt(children) - 1).toString())} className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-100 hover:bg-stone-200 text-brand-950 font-medium transition-colors">-</button>
+                            <button type="button" onClick={() => setChildren(Math.max(0, parseInt(children) - 1).toString())} className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-100 active:bg-stone-200 text-brand-950 font-medium transition-colors">-</button>
                             <span className="font-semibold text-brand-950 w-4 text-center">{children}</span>
-                            <button type="button" onClick={() => setChildren((parseInt(children) + 1).toString())} className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-100 hover:bg-stone-200 text-brand-950 font-medium transition-colors">+</button>
+                            <button type="button" onClick={() => setChildren((parseInt(children) + 1).toString())} className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-100 active:bg-stone-200 text-brand-950 font-medium transition-colors">+</button>
                         </div>
                     </div>
                 </div>
@@ -316,7 +316,7 @@ export default function HeroSearchTabs() {
                                                 <button
                                                     key={tier.value}
                                                     type="button"
-                                                    className="w-full text-left px-4 py-3 hover:bg-stone-50 rounded-2xl text-sm font-semibold text-brand-950 transition-colors flex items-center justify-between"
+                                                    className="w-full text-left px-4 py-3 active:bg-stone-50 rounded-2xl text-sm font-semibold text-brand-950 transition-colors flex items-center justify-between"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         setHolidayBudget(tier.value);
@@ -367,7 +367,7 @@ export default function HeroSearchTabs() {
                                         <div className="absolute top-[100%] left-0 w-[calc(100vw-32px)] sm:w-[320px] mt-2 bg-white rounded-3xl shadow-2xl border border-stone-100 overflow-hidden z-50 py-2">
                                             {filteredFromAirports.length > 0 ? (
                                                 filteredFromAirports.map(a => (
-                                                    <button key={a.iata_code} type="button" className="w-full text-left px-4 py-3 hover:bg-stone-50 transition-colors flex items-center justify-between mx-auto" onClick={() => { setFromQuery(`${a.city} (${a.iata_code})`); setFromAirport(a.iata_code); setShowFromDrop(false); }}>
+                                                    <button key={a.iata_code} type="button" className="w-full text-left px-4 py-3 active:bg-stone-50 transition-colors flex items-center justify-between mx-auto" onClick={() => { setFromQuery(`${a.city} (${a.iata_code})`); setFromAirport(a.iata_code); setShowFromDrop(false); }}>
                                                         <div className="flex-1 pr-4 min-w-0">
                                                             <p className="font-semibold text-brand-950 text-sm truncate">{a.city}, {a.country}</p>
                                                             <p className="text-xs text-stone-500 truncate">{a.name}</p>
@@ -406,7 +406,7 @@ export default function HeroSearchTabs() {
                                         <div className="absolute top-[100%] left-0 w-[calc(100vw-32px)] sm:w-[320px] mt-2 bg-white rounded-3xl shadow-2xl border border-stone-100 overflow-hidden z-50 py-2">
                                             {filteredToAirports.length > 0 ? (
                                                 filteredToAirports.map(a => (
-                                                    <button key={a.iata_code} type="button" className="w-full text-left px-4 py-3 hover:bg-stone-50 transition-colors flex items-center justify-between mx-auto" onClick={() => { setToQuery(`${a.city} (${a.iata_code})`); setToAirport(a.iata_code); setShowToDrop(false); }}>
+                                                    <button key={a.iata_code} type="button" className="w-full text-left px-4 py-3 active:bg-stone-50 transition-colors flex items-center justify-between mx-auto" onClick={() => { setToQuery(`${a.city} (${a.iata_code})`); setToAirport(a.iata_code); setShowToDrop(false); }}>
                                                         <div className="flex-1 pr-4 min-w-0">
                                                             <p className="font-semibold text-brand-950 text-sm truncate">{a.city}, {a.country}</p>
                                                             <p className="text-xs text-stone-500 truncate">{a.name}</p>
@@ -425,7 +425,7 @@ export default function HeroSearchTabs() {
                                 <div className={`flex flex-row items-stretch w-full lg:w-auto flex-shrink-0 relative`}>
                                     
                                     {/* DEPART */}
-                                    <div className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors border-r border-stone-200 hover:bg-stone-50/50`} ref={departRef} onClick={() => setShowDepartDrop(!showDepartDrop)}>
+                                    <div className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors border-r border-stone-200 active:bg-stone-50/50`} ref={departRef} onClick={() => setShowDepartDrop(!showDepartDrop)}>
                                         <Calendar className="h-5 w-5 text-brand-600 flex-shrink-0" />
                                         <div className="flex flex-col w-full min-w-0 text-left">
                                             <label className={`${labelClass} cursor-pointer`}>Depart</label>
@@ -450,7 +450,7 @@ export default function HeroSearchTabs() {
                                     </div>
 
                                     {/* RETURN */}
-                                    <div className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors hover:bg-stone-50/50`} ref={returnRef} onClick={() => setShowReturnDrop(!showReturnDrop)}>
+                                    <div className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors active:bg-stone-50/50`} ref={returnRef} onClick={() => setShowReturnDrop(!showReturnDrop)}>
                                         <div className="flex flex-col w-full min-w-0 text-left">
                                             <label className={`${labelClass} cursor-pointer`}>Return</label>
                                             <div className="w-full bg-transparent text-sm sm:text-base font-semibold text-brand-950 truncate flex items-center justify-between">
@@ -496,7 +496,7 @@ export default function HeroSearchTabs() {
                         </div>
 
                         {/* Name */}
-                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors hover:bg-stone-50/50" onClick={() => document.getElementById('usr-name')?.focus()}>
+                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors active:bg-stone-50/50" onClick={() => document.getElementById('usr-name')?.focus()}>
                             <User className="h-5 w-5 text-brand-600 flex-shrink-0" />
                             <div className="flex flex-col w-full min-w-0 text-left">
                                 <label htmlFor="usr-name" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left">Full Name</label>
@@ -513,7 +513,7 @@ export default function HeroSearchTabs() {
                         </div>
 
                         {/* Phone */}
-                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors hover:bg-stone-50/50" onClick={() => document.getElementById('usr-phone')?.focus()}>
+                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors active:bg-stone-50/50" onClick={() => document.getElementById('usr-phone')?.focus()}>
                             <Phone className="h-5 w-5 text-brand-600 flex-shrink-0" />
                             <div className="flex flex-col w-full min-w-0 text-left">
                                 <label htmlFor="usr-phone" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left">Mobile Number</label>
@@ -531,7 +531,7 @@ export default function HeroSearchTabs() {
 
                         {/* Submit Actions */}
                         <div className="flex w-full lg:w-auto p-3 lg:p-2 lg:pl-4 bg-white gap-2 flex-col sm:flex-row flex-shrink-0 lg:rounded-r-full">
-                            <button type="button" onClick={(e) => { e.preventDefault(); setStep(1); }} className="px-6 py-4 lg:py-3 rounded-full border border-stone-200 text-stone-600 text-sm font-bold hover:bg-stone-50 transition-colors w-full sm:w-auto text-center flex items-center justify-center z-10 relative">
+                            <button type="button" onClick={(e) => { e.preventDefault(); setStep(1); }} className="px-6 py-4 lg:py-3 rounded-full border border-stone-200 text-stone-600 text-sm font-bold active:bg-stone-50 transition-colors w-full sm:w-auto text-center flex items-center justify-center z-10 relative">
                                 Back
                             </button>
                             <button type="submit" disabled={loading} className="w-full sm:w-auto bg-gold-400 hover:bg-gold-500 text-brand-950 font-bold rounded-full px-8 py-4 lg:py-3 transition-colors text-sm flex justify-center items-center shadow-lg shadow-gold-500/20 hover:shadow-gold-500/40 whitespace-nowrap z-10 relative">

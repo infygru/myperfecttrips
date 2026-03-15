@@ -68,7 +68,7 @@ export default function MobileMenu({ nav, phone }: { nav: NavItem[]; phone: stri
                 </div>
 
                 {/* ── Nav links ── */}
-                <nav className="flex-1 overflow-y-auto divide-y divide-stone-50">
+                <nav className="flex-1 overflow-y-auto divide-y divide-stone-100">
                     {nav.map((item) => {
                         const hasChildren = !!item.children?.length;
                         const isExpanded  = expanded === item.name;
