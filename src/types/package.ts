@@ -12,4 +12,5 @@ export interface Package {
     inclusions?: string;
     exclusions?: string;
     gallery?: string[];
+    visa_status?: "none" | "visa_free" | "visa_on_arrival";
 }

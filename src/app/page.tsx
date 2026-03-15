@@ -2,6 +2,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { directus, getSiteSettings } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import HeroSearchTabs from "@/components/HeroSearchTabs";
+import VisaDestinationTabs from "@/components/VisaDestinationTabs";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -15,8 +16,8 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  let title = "IGHolidays | Best Holiday Packages & Flight Bookings in India";
-  let description = "Book premium domestic and international holiday packages with IG Holidays — India's trusted travel agency. Honeymoon tours, family packages, corporate MICE, and more.";
+  let title = "IG Holidays – Official Site | Best Holiday Packages & Flights from India | igholidays.com";
+  let description = "IG Holidays (igholidays.com) — India's trusted travel agency. Book premium international & domestic holiday packages, honeymoon tours, family trips, and corporate MICE. Get a free quote today.";
   let ogImage = undefined;
   try {
     const settings = await getSiteSettings();
@@ -90,6 +91,11 @@ export default async function Home() {
       if (themePackages.length === 4) break;
     }
   }
+
+  // Visa-friendly packages
+  const visaFreePackages     = allPackages.filter((p: any) => p.visa_status === "visa_free" && p.image).slice(0, 8);
+  const visaOnArrivalPackages = allPackages.filter((p: any) => p.visa_status === "visa_on_arrival" && p.image).slice(0, 8);
+  const showVisaSection      = visaFreePackages.length > 0 || visaOnArrivalPackages.length > 0;
 
   // Budget packages: domestic < ₹10k, international < ₹50k
   const budgetDomestic      = domesticPackages.filter(p => p.price > 0 && p.price <= 10000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
@@ -277,6 +283,15 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── VISA DESTINATIONS ── */}
+      {showVisaSection && (
+        <VisaDestinationTabs
+          visaFree={visaFreePackages}
+          visaOnArrival={visaOnArrivalPackages}
+          dUrl={dUrl}
+        />
+      )}
 
       {/* ── DOMESTIC vs INTERNATIONAL ── */}
       {(domesticPackages.length > 0 || internationalPackages.length > 0) && (() => {

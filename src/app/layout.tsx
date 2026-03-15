@@ -21,8 +21,8 @@ const syne = Syne({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const defaultTitle = "IGHolidays | Premium Travel Agency in India & Luxury Tour Operator";
-  const defaultDesc = "The leading travel agency in India specializing in bespoke international & domestic holiday packages, corporate MICE, and luxury travel planning.";
+  const defaultTitle = "IG Holidays – Official Travel Agency | igholidays.com | Luxury Holiday Packages India";
+  const defaultDesc = "IG Holidays (igholidays.com) is India's premier travel agency for luxury international & domestic holiday packages, honeymoon tours, and corporate MICE. 10,000+ happy travellers. Book today.";
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   try {
@@ -41,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
         title: defaultTitle,
         description: defaultDesc,
         url: baseUrl,
-        siteName: "IGHolidays",
+        siteName: "IG Holidays",
         type: "website",
         locale: "en_IN",
       },
@@ -61,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
         title: defaultTitle,
         description: defaultDesc,
         url: baseUrl,
-        siteName: "IGHolidays",
+        siteName: "IG Holidays",
         type: "website",
         locale: "en_IN",
       },
@@ -75,33 +75,91 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "TravelAgency",
-  "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com"}/#organization`,
-  name: "IG Holidays",
-  alternateName: "IGHolidays",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com",
-  logo: `${process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com"}/logo.png`,
-  description: "India's trusted travel agency specializing in luxury international and domestic holiday packages, honeymoon tours, corporate MICE, and group travel.",
-  foundingDate: "2020",
-  legalName: "Infygru Private Limited",
-  address: {
-    "@type": "PostalAddress",
-    addressRegion: "Tamil Nadu",
-    addressCountry: "IN",
-  },
-  contactPoint: [
+  "@graph": [
     {
-      "@type": "ContactPoint",
-      telephone: "+91-8807709919",
-      contactType: "customer service",
-      availableLanguage: ["English", "Tamil", "Hindi"],
+      "@type": ["TravelAgency", "Organization"],
+      "@id": `${SITE_URL}/#organization`,
+      name: "IG Holidays",
+      alternateName: ["IGHolidays", "IG Holidays Travel Agency"],
+      /**
+       * Disambiguation: tells AI crawlers that "IG Holidays" means the travel
+       * brand at igholidays.com — NOT "International Gateway" or any other
+       * entity that abbreviates to "IG".
+       */
+      disambiguatingDescription:
+        "IG Holidays (igholidays.com) is a travel agency brand operated by Infygru Private Limited, India. The name 'IG Holidays' refers exclusively to this travel company and is not affiliated with, nor the same as, 'International Gateway' or any other organisation abbreviated as 'IG'.",
+      description:
+        "IG Holidays is India's trusted premium travel agency — specialising in luxury international holiday packages, honeymoon tours, family trips, corporate MICE, and domestic getaways. Operating under the domain igholidays.com.",
+      url: `${SITE_URL}/`,
+      logo: {
+        "@type": "ImageObject",
+        "@id": `${SITE_URL}/#logo`,
+        url: `${SITE_URL}/logo.png`,
+        contentUrl: `${SITE_URL}/logo.png`,
+        caption: "IG Holidays – Official Logo",
+      },
+      image: `${SITE_URL}/logo.png`,
+      legalName: "Infygru Private Limited",
+      foundingDate: "2020",
+      address: {
+        "@type": "PostalAddress",
+        addressRegion: "Tamil Nadu",
+        addressCountry: "IN",
+      },
+      areaServed: {
+        "@type": "Country",
+        name: "India",
+      },
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: "+91-8807709919",
+          contactType: "customer service",
+          availableLanguage: ["English", "Tamil", "Hindi"],
+        },
+      ],
+      knowsAbout: [
+        "International holiday packages",
+        "Honeymoon travel planning",
+        "Luxury tour operators India",
+        "Corporate MICE travel",
+        "Kerala tourism",
+        "Maldives holiday packages",
+        "Europe tour packages from India",
+        "Domestic holiday packages India",
+      ],
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Holiday Packages by IG Holidays",
+        url: `${SITE_URL}/packages`,
+      },
+      sameAs: [
+        "https://www.igholidays.com",
+        "https://www.instagram.com/igholidays",
+        "https://www.facebook.com/igholidays",
+      ],
     },
-  ],
-  sameAs: [
-    "https://www.instagram.com/igholidays",
-    "https://www.facebook.com/igholidays",
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: `${SITE_URL}/`,
+      name: "IG Holidays",
+      description:
+        "Official website of IG Holidays (igholidays.com) — India's premium travel agency for international and domestic holiday packages.",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: `${SITE_URL}/packages?q={search_term_string}`,
+        },
+        "query-input": "required name=search_term_string",
+      },
+    },
   ],
 };
 

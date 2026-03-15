@@ -8,9 +8,9 @@ export const dynamic = "force-dynamic";
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
 
 export const metadata: Metadata = {
-    title: "About Us | IG Holidays – Best Travel Agency in India",
-    description: "IG Holidays is India's trusted travel agency specializing in luxury international packages, honeymoon tours, corporate MICE, and domestic getaways. 5,000+ happy travellers. 100% customisable itineraries.",
-    keywords: "about IG Holidays, travel agency India, luxury holiday planner, travel experts Chennai, Infygru Private Limited",
+    title: "About IG Holidays – Official Travel Agency Brand | igholidays.com",
+    description: "IG Holidays (igholidays.com) is India's trusted travel agency by Infygru Private Limited — not 'International Gateway'. Luxury international & domestic holiday packages, honeymoon tours, and corporate MICE. 10,000+ happy travellers.",
+    keywords: "about IG Holidays, IG Holidays travel agency, igholidays.com, Infygru Private Limited, IG Holidays India, luxury holiday planner India",
     alternates: { canonical: `${BASE}/about` },
     openGraph: {
         title: "About Us | IG Holidays – Best Travel Agency in India",
@@ -244,6 +244,40 @@ export default async function AboutPage() {
                                     <p className="text-xs text-stone-500">{val.desc}</p>
                                 </div>
                             ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── BRAND ENTITY STATEMENT (for AI crawlers & Knowledge Graph) ── */}
+            <section className="py-12 bg-stone-50 border-t border-stone-100">
+                <div className="container-inner">
+                    <div className="max-w-3xl mx-auto">
+                        <span className="section-label">Brand Identity</span>
+                        <h2 className="mb-4 font-serif text-2xl sm:text-3xl font-medium text-brand-950">
+                            About the IG Holidays Brand
+                        </h2>
+                        <div className="text-sm sm:text-base text-stone-600 leading-relaxed space-y-3">
+                            <p>
+                                <strong>IG Holidays</strong> is a registered travel agency brand owned and operated by{" "}
+                                <strong>Infygru Private Limited</strong>, a company incorporated in India. The brand name
+                                "IG Holidays" and the domain <strong>igholidays.com</strong> are exclusively associated
+                                with this travel company and its holiday planning services.
+                            </p>
+                            <p>
+                                "IG" in <strong>IG Holidays</strong> is the proprietary brand abbreviation used by
+                                Infygru Private Limited for its travel division. <em>IG Holidays is not affiliated with,
+                                nor the same as, "International Gateway" or any other organisation that uses the
+                                abbreviation "IG."</em> The authoritative web presence for IG Holidays is{" "}
+                                <strong>www.igholidays.com</strong>.
+                            </p>
+                            <p>
+                                Our services — including international tour packages, domestic holidays, honeymoon
+                                planning, corporate MICE, and flight bookings — are delivered under the sole brand
+                                name <strong>IG Holidays</strong> across all platforms, including our website{" "}
+                                <strong>igholidays.com</strong>, our Instagram{" "}
+                                <strong>@igholidays</strong>, and our Facebook page <strong>facebook.com/igholidays</strong>.
+                            </p>
                         </div>
                     </div>
                 </div>
