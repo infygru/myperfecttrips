@@ -745,7 +745,7 @@ export default async function Home() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link href="/packages" className="btn-gold w-full sm:w-auto text-sm">Browse Packages</Link>
-              <Link href="/contact" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 text-sm">Contact Us</Link>
+              <Link href="/contact" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 active:!bg-white/10 text-sm">Contact Us</Link>
             </div>
           </div>
         </div>

@@ -195,7 +195,7 @@ export default function HeroSearchTabs() {
         showDrop: boolean, setShowDrop: (v: boolean) => void,
         dropRef: React.RefObject<HTMLDivElement | null>
     ) => (
-        <div className={`relative ${inputContainerClass} active:bg-stone-50/50 cursor-pointer`} ref={dropRef} onClick={() => setShowDrop(true)}>
+        <div suppressHydrationWarning className={`relative ${inputContainerClass} active:bg-stone-50/50 cursor-pointer`} ref={dropRef} onClick={() => setShowDrop(true)}>
             <Users className="h-5 w-5 text-brand-600 flex-shrink-0" />
             <div className="flex flex-col w-full text-left">
                 <label className={`${labelClass} cursor-pointer`}>Travelers</label>
@@ -425,7 +425,7 @@ export default function HeroSearchTabs() {
                                 <div className={`flex flex-row items-stretch w-full lg:w-auto flex-shrink-0 relative`}>
                                     
                                     {/* DEPART */}
-                                    <div className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors border-r border-stone-200 active:bg-stone-50/50`} ref={departRef} onClick={() => setShowDepartDrop(!showDepartDrop)}>
+                                    <div suppressHydrationWarning className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors border-r border-stone-200`} ref={departRef} onClick={() => setShowDepartDrop(!showDepartDrop)}>
                                         <Calendar className="h-5 w-5 text-brand-600 flex-shrink-0" />
                                         <div className="flex flex-col w-full min-w-0 text-left">
                                             <label className={`${labelClass} cursor-pointer`}>Depart</label>
@@ -450,7 +450,7 @@ export default function HeroSearchTabs() {
                                     </div>
 
                                     {/* RETURN */}
-                                    <div className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors active:bg-stone-50/50`} ref={returnRef} onClick={() => setShowReturnDrop(!showReturnDrop)}>
+                                    <div suppressHydrationWarning className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors`} ref={returnRef} onClick={() => setShowReturnDrop(!showReturnDrop)}>
                                         <div className="flex flex-col w-full min-w-0 text-left">
                                             <label className={`${labelClass} cursor-pointer`}>Return</label>
                                             <div className="w-full bg-transparent text-sm sm:text-base font-semibold text-brand-950 truncate flex items-center justify-between">
@@ -496,7 +496,7 @@ export default function HeroSearchTabs() {
                         </div>
 
                         {/* Name */}
-                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors active:bg-stone-50/50" onClick={() => document.getElementById('usr-name')?.focus()}>
+                        <div suppressHydrationWarning className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors" onClick={() => document.getElementById('usr-name')?.focus()}>
                             <User className="h-5 w-5 text-brand-600 flex-shrink-0" />
                             <div className="flex flex-col w-full min-w-0 text-left">
                                 <label htmlFor="usr-name" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left">Full Name</label>
@@ -513,7 +513,7 @@ export default function HeroSearchTabs() {
                         </div>
 
                         {/* Phone */}
-                        <div className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors active:bg-stone-50/50" onClick={() => document.getElementById('usr-phone')?.focus()}>
+                        <div suppressHydrationWarning className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors" onClick={() => document.getElementById('usr-phone')?.focus()}>
                             <Phone className="h-5 w-5 text-brand-600 flex-shrink-0" />
                             <div className="flex flex-col w-full min-w-0 text-left">
                                 <label htmlFor="usr-phone" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left">Mobile Number</label>
