@@ -1,9 +1,10 @@
-import PaytmChecksum from 'paytmchecksum';
+// paytmchecksum is a CommonJS class — require it to avoid ESM interop issues
+const PaytmChecksum = require('paytmchecksum');
 
-const MERCHANT_ID  = process.env.PAYTM_MERCHANT_ID!;
-const MERCHANT_KEY = process.env.PAYTM_MERCHANT_KEY!;
-const WEBSITE      = process.env.PAYTM_WEBSITE || 'DEFAULT';
-const CHANNEL_ID   = process.env.PAYTM_CHANNEL_ID || 'WEB';
+const MERCHANT_ID    = process.env.PAYTM_MERCHANT_ID!;
+const MERCHANT_KEY   = process.env.PAYTM_MERCHANT_KEY!;
+const WEBSITE        = process.env.PAYTM_WEBSITE || 'DEFAULT';
+const CHANNEL_ID     = process.env.PAYTM_CHANNEL_ID || 'WEB';
 const PAYTM_BASE_URL = 'https://securegw.paytm.in';
 
 export async function initiateTransaction(params: {
@@ -14,10 +15,7 @@ export async function initiateTransaction(params: {
     customerPhone?: string;
     callbackUrl: string;
 }): Promise<{ txnToken: string; orderId: string }> {
-    // custId: alphanumeric only, max 64 chars
     const custId = params.customerId.replace(/[^a-zA-Z0-9]/g, '').slice(0, 64);
-
-    // PayTM requires 10-digit mobile (no country code)
     const rawPhone = (params.customerPhone || '').replace(/\D/g, '');
     const mobile   = rawPhone.length >= 10 ? rawPhone.slice(-10) : undefined;
 
@@ -38,8 +36,11 @@ export async function initiateTransaction(params: {
         },
     };
 
-    // Generate signature using official Paytm library
-    const signature = await PaytmChecksum.generateSignatureByObject(body, MERCHANT_KEY);
+    // generateSignature(jsonString, merchantKey) — takes stringified body
+    const signature: string = await PaytmChecksum.generateSignature(
+        JSON.stringify(body),
+        MERCHANT_KEY
+    );
 
     const payload = {
         body,
@@ -62,7 +63,7 @@ export async function initiateTransaction(params: {
     const data = await res.json();
 
     if (data?.body?.resultInfo?.resultStatus !== 'S') {
-        const msg = data?.body?.resultInfo?.resultMsg || 'PayTM initiation failed';
+        const msg  = data?.body?.resultInfo?.resultMsg  || 'PayTM initiation failed';
         const code = data?.body?.resultInfo?.resultCode || 'unknown';
         throw new Error(`[PayTM ${code}] ${msg}`);
     }
@@ -77,17 +78,17 @@ export async function verifyTransaction(orderId: string): Promise<{
     respMsg?: string;
 }> {
     const body = { mid: MERCHANT_ID, orderId };
-    const signature = await PaytmChecksum.generateSignatureByObject(body, MERCHANT_KEY);
+    const signature: string = await PaytmChecksum.generateSignature(
+        JSON.stringify(body),
+        MERCHANT_KEY
+    );
 
     const res = await fetch(`${PAYTM_BASE_URL}/v3/order/status`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({
             body,
-            head: {
-                version:   'v1',
-                signature,
-            },
+            head: { version: 'v1', signature },
         }),
     });
 
