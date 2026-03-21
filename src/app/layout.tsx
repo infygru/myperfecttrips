@@ -5,8 +5,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 import AOSProvider from "@/components/AOSProvider";
+import { AuthProvider } from "@/context/AuthContext";
 import { directus, getSiteSettings } from "@/lib/directus";
 import type { DirectusSettings } from "@/types/settings";
+import { headers } from "next/headers";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -163,7 +165,11 @@ const organizationSchema = {
   ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || '';
+  const isAuthPage = pathname.startsWith('/auth');
+
   return (
     <html lang="en" suppressHydrationWarning className={`${jakarta.variable} ${syne.variable} scroll-smooth`}>
       <head>
@@ -173,11 +179,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="flex min-h-screen flex-col bg-stone-50 antialiased font-sans overflow-x-hidden">
-        <Header />
-        <AOSProvider />
-        <div className="flex-1 w-full">{children}</div>
-        <Footer />
-        <CookieBanner />
+        <AuthProvider>
+          {!isAuthPage && <Header />}
+          {!isAuthPage && <AOSProvider />}
+          <div className={isAuthPage ? 'min-h-screen' : 'flex-1 w-full'}>{children}</div>
+          {!isAuthPage && <Footer />}
+          {!isAuthPage && <CookieBanner />}
+        </AuthProvider>
       </body>
     </html>
   );

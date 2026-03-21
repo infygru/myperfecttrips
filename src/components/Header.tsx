@@ -6,6 +6,7 @@ import { Compass } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import MobileMenu from "@/components/MobileMenu";
 import ServicesDropdown from "@/components/ServicesDropdown";
+import HeaderAuthButton from "@/components/HeaderAuthButton";
 
 export default async function Header() {
     noStore();
@@ -86,6 +87,8 @@ export default async function Header() {
                             </Link>
                         ))}
                     </nav>
+                    <div className="h-6 w-px bg-stone-300/50"></div>
+                    <HeaderAuthButton />
                     <div className="h-6 w-px bg-stone-300/50"></div>
                     <a
                         href={`https://wa.me/${phone.replace(/[^0-9]/g, "")}`}

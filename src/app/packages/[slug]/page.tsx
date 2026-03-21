@@ -489,6 +489,12 @@ export default async function PackageDetailPage(props: Props) {
 
                             {/* CTAs */}
                             <div className="p-5 space-y-3">
+                                <Link
+                                    href={`/checkout/${pkg.slug}`}
+                                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-brand-900 py-4 text-sm font-bold text-white shadow-md hover:bg-brand-800 transition-colors"
+                                >
+                                    Book &amp; Pay Online →
+                                </Link>
                                 <a href="#enquire" className="btn-gold w-full py-4 text-sm flex items-center justify-center gap-2 shadow-md">
                                     Enquire Now &amp; Get Quote
                                 </a>
