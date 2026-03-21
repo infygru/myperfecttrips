@@ -304,7 +304,7 @@ export default function RegisterForm() {
                 <label className="block text-sm font-semibold text-stone-700">Email address</label>
                 <div className="relative group">
                     <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400 group-focus-within:text-brand-700 transition-colors" />
-                    <input type="email" required autoComplete="email" value={form.email} onChange={set('email')}
+                    <input type="email" required autoComplete="email" suppressHydrationWarning value={form.email} onChange={set('email')}
                         placeholder="you@example.com"
                         className={`w-full h-12 rounded-xl border bg-stone-50/50 pl-10 pr-4 text-sm outline-none transition-all focus:bg-white focus:border-brand-700 focus:ring-2 focus:ring-brand-700/10 ${fieldErrors.email ? 'border-red-400' : 'border-stone-200'}`}
                     />
@@ -321,7 +321,7 @@ export default function RegisterForm() {
                     <div className="absolute left-0 h-full flex items-center pl-3.5 border-r border-stone-200 pr-3 pointer-events-none">
                         <span className="text-sm font-semibold text-stone-600">🇮🇳 +91</span>
                     </div>
-                    <input type="tel" value={form.phone} onChange={set('phone')}
+                    <input type="tel" suppressHydrationWarning value={form.phone} onChange={set('phone')}
                         placeholder="98765 43210" maxLength={10}
                         className="w-full h-12 rounded-xl border border-stone-200 bg-stone-50/50 pl-[80px] pr-4 text-sm outline-none transition-all focus:bg-white focus:border-brand-700 focus:ring-2 focus:ring-brand-700/10"
                     />
@@ -334,7 +334,7 @@ export default function RegisterForm() {
                 <label className="block text-sm font-semibold text-stone-700">Password</label>
                 <div className="relative group">
                     <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400 group-focus-within:text-brand-700 transition-colors" />
-                    <input type={showPw ? 'text' : 'password'} required autoComplete="new-password"
+                    <input type={showPw ? 'text' : 'password'} required autoComplete="new-password" suppressHydrationWarning
                         value={form.password} onChange={set('password')} placeholder="Min. 8 characters"
                         className={`w-full h-12 rounded-xl border bg-stone-50/50 pl-10 pr-12 text-sm outline-none transition-all focus:bg-white focus:border-brand-700 focus:ring-2 focus:ring-brand-700/10 ${fieldErrors.password ? 'border-red-400' : 'border-stone-200'}`}
                     />

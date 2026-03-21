@@ -49,6 +49,7 @@ export default function LoginForm() {
                         type="email" required autoComplete="email"
                         value={email} onChange={e => setEmail(e.target.value)}
                         placeholder="you@example.com"
+                        suppressHydrationWarning
                         className="w-full h-12 rounded-xl border border-stone-200 bg-stone-50/50 pl-10 pr-4 text-sm text-stone-900 placeholder-stone-400 outline-none transition-all focus:bg-white focus:border-brand-700 focus:ring-2 focus:ring-brand-700/10"
                     />
                 </div>
@@ -68,6 +69,7 @@ export default function LoginForm() {
                         type={showPw ? 'text' : 'password'} required autoComplete="current-password"
                         value={password} onChange={e => setPassword(e.target.value)}
                         placeholder="••••••••"
+                        suppressHydrationWarning
                         className="w-full h-12 rounded-xl border border-stone-200 bg-stone-50/50 pl-10 pr-12 text-sm text-stone-900 placeholder-stone-400 outline-none transition-all focus:bg-white focus:border-brand-700 focus:ring-2 focus:ring-brand-700/10"
                     />
                     <button type="button" onClick={() => setShowPw(s => !s)}
