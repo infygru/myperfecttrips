@@ -41,14 +41,14 @@ export async function POST(req: NextRequest) {
 
         const body = await req.json();
 
-        // Generate reference number
-        const ref = `IGH-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+        // Generate reference number — strictly alphanumeric (PayTM orderId requirement)
+        const ref = `IGH${Date.now().toString(36).toUpperCase()}${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 
         const bookingPayload = {
             user_id: user.id,
             user_name: `${user.first_name} ${user.last_name}`,
             user_email: user.email,
-            user_phone: user.phone || body.phone || '',
+            user_phone: body.phone || user.phone || '',
             package_id: body.package_id,
             package_title: body.package_title,
             package_slug: body.package_slug,
@@ -57,6 +57,8 @@ export async function POST(req: NextRequest) {
             num_children: body.num_children || 0,
             total_amount: body.total_amount,
             special_requests: body.special_requests || '',
+            points_redeemed: body.points_redeemed || 0,
+            discount_amount: body.discount_amount || 0,
             status: 'pending',
             payment_status: 'pending',
             reference_number: ref,

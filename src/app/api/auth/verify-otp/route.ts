@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyOTP } from '@/lib/otp';
+import { verifyOTPWithSession } from '@/lib/otp';
 
 export async function POST(req: NextRequest) {
     try {
@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
         }
 
         const normalized = phone.replace(/[^0-9]/g, '').slice(-10);
-        const valid = verifyOTP(normalized, otp.toString().trim());
+        const valid = await verifyOTPWithSession(normalized, otp.toString().trim());
 
         if (!valid) {
             return NextResponse.json({ error: 'Invalid or expired OTP. Please try again.' }, { status: 400 });
