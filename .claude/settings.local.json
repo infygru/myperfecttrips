@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd D:/igholidays && node -e \"\nconst https = require\\('https'\\);\n\nasync function run\\(\\) {\n  // Login\n  const loginRes = await fetch\\('https://api.igholidays.com/auth/login', {\n    method: 'POST', headers: {'Content-Type':'application/json'},\n    body: JSON.stringify\\({ email: 'admin@igholidays.com', password: 'e4HiSzm3PsFhR3mA6Uh7YoU2uqjOHrF3' }\\)\n  }\\);\n  const { data } = await loginRes.json\\(\\);\n  const token = data.access_token;\n  \n  // Get collections\n  const colRes = await fetch\\('https://api.igholidays.com/collections', { headers: { Authorization: 'Bearer ' + token } }\\);\n  const colData = await colRes.json\\(\\);\n  const cols = colData.data?.map\\(c => c.collection\\).filter\\(c => !c.startsWith\\('directus_'\\)\\);\n  console.log\\('Collections:', cols?.join\\(', '\\)\\);\n  \n  // Get fields for packages\n  const fRes = await fetch\\('https://api.igholidays.com/fields/packages', { headers: { Authorization: 'Bearer ' + token } }\\);\n  const fData = await fRes.json\\(\\);\n  const fields = fData.data?.map\\(f => f.field\\);\n  console.log\\('Packages fields:', fields?.join\\(', '\\)\\);\n}\nrun\\(\\).catch\\(console.error\\);\n\" 2>&1)"
+    ]
+  }
+}

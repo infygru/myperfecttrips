@@ -22,10 +22,10 @@ export async function POST(req: NextRequest) {
             return NextResponse.redirect(`${SITE_URL}/payment/failure?error=missing_order`);
         }
 
-        // Verify checksum
+        // Verify checksum using official Paytm library
         const paramsWithoutChecksum = { ...params };
         delete paramsWithoutChecksum.CHECKSUMHASH;
-        const isValid = verifyCallbackChecksum(paramsWithoutChecksum, checksumHash);
+        const isValid = await verifyCallbackChecksum(paramsWithoutChecksum, checksumHash);
 
         if (!isValid) {
             console.error('Checksum verification failed for order:', orderId);
