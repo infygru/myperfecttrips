@@ -56,6 +56,13 @@ export async function initiateTransaction(params: {
     customerPhone?: string;
     callbackUrl: string;
 }): Promise<{ txnToken: string; orderId: string }> {
+    // custId must be alphanumeric — strip UUID hyphens
+    const custId = params.customerId.replace(/-/g, '').slice(0, 64);
+
+    // PayTM requires exactly 10-digit mobile (no country code, no spaces/dashes)
+    const rawPhone = (params.customerPhone || '').replace(/\D/g, '');
+    const mobile = rawPhone.length >= 10 ? rawPhone.slice(-10) : undefined;
+
     const body = {
         requestType: 'Payment',
         mid: MERCHANT_ID,
@@ -67,20 +74,27 @@ export async function initiateTransaction(params: {
             currency: 'INR',
         },
         userInfo: {
-            custId: params.customerId,
+            custId,
             ...(params.customerEmail && { email: params.customerEmail }),
-            ...(params.customerPhone && { mobile: params.customerPhone }),
+            ...(mobile && { mobile }),
         },
     };
 
     const signature = generateSignature(body);
+
+    const head = {
+        version: 'v1',
+        requestTimestamp: String(Math.floor(Date.now() / 1000)),
+        channelId: CHANNEL_ID,
+        signature,
+    };
 
     const res = await fetch(
         `${PAYTM_BASE_URL}/theia/api/v1/initiateTransaction?mid=${MERCHANT_ID}&orderId=${params.orderId}`,
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ body, head: { signature } }),
+            body: JSON.stringify({ body, head }),
         }
     );
 

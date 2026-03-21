@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { Menu, X, Phone, ChevronDown, ChevronRight } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, ChevronRight, User, Ticket, LayoutDashboard, LogOut } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { useAuth } from "@/context/AuthContext";
 
 type NavItem = {
     name: string;
@@ -16,6 +17,7 @@ export default function MobileMenu({ nav, phone }: { nav: NavItem[]; phone: stri
     const [open, setOpen]         = useState(false);
     const [mounted, setMounted]   = useState(false);
     const [expanded, setExpanded] = useState<string | null>(null);
+    const { user, loading, logout } = useAuth();
 
     useEffect(() => { setMounted(true); }, []);
 
@@ -121,6 +123,48 @@ export default function MobileMenu({ nav, phone }: { nav: NavItem[]; phone: stri
                         );
                     })}
                 </nav>
+
+                {/* Auth section */}
+                <div className="shrink-0 border-t border-stone-100 px-4 pt-4 pb-2">
+                    {loading ? (
+                        <div className="h-12 w-full animate-pulse rounded-2xl bg-stone-100" />
+                    ) : user ? (
+                        <div className="space-y-1">
+                            <div className="flex items-center gap-3 rounded-2xl bg-brand-50 px-4 py-3 mb-2">
+                                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-900 text-white text-sm font-bold flex-shrink-0">
+                                    {user.first_name?.[0]?.toUpperCase()}
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="text-sm font-bold text-stone-900 truncate">{user.first_name} {user.last_name}</p>
+                                    <p className="text-xs text-stone-400 truncate">{user.email}</p>
+                                </div>
+                            </div>
+                            <Link href="/dashboard" onClick={close}
+                                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-700 active:bg-stone-100">
+                                <LayoutDashboard className="h-4 w-4 text-brand-700 flex-shrink-0" /> Dashboard
+                            </Link>
+                            <Link href="/dashboard/bookings" onClick={close}
+                                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-700 active:bg-stone-100">
+                                <Ticket className="h-4 w-4 text-brand-700 flex-shrink-0" /> My Bookings
+                            </Link>
+                            <button onClick={() => { close(); logout(); }}
+                                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-500 active:bg-red-50">
+                                <LogOut className="h-4 w-4 flex-shrink-0" /> Sign out
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 gap-2 mb-2">
+                            <Link href="/auth/login" onClick={close}
+                                className="flex items-center justify-center gap-2 rounded-2xl border-2 border-stone-200 px-4 py-3 text-sm font-semibold text-stone-700 active:bg-stone-50">
+                                <User className="h-4 w-4" /> Sign in
+                            </Link>
+                            <Link href="/auth/register" onClick={close}
+                                className="flex items-center justify-center gap-2 rounded-2xl bg-brand-900 px-4 py-3 text-sm font-semibold text-white active:bg-brand-800">
+                                Register
+                            </Link>
+                        </div>
+                    )}
+                </div>
 
                 {/* Footer CTAs */}
                 <div className="shrink-0 space-y-2.5 border-t border-stone-100 p-4">
