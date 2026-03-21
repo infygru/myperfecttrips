@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { CheckCircle2, Calendar, ArrowRight, Download } from 'lucide-react';
+import { CheckCircle2, Clock, Calendar, ArrowRight } from 'lucide-react';
 import { adminFetch } from '@/lib/auth';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Booking Confirmed! | IG Holidays' };
 
-type Props = { searchParams: Promise<{ bookingId?: string; ref?: string }> };
+type Props = { searchParams: Promise<{ bookingId?: string; ref?: string; pending?: string }> };
 
 function formatDate(d: string) {
     if (!d) return 'TBD';
@@ -13,7 +13,8 @@ function formatDate(d: string) {
 }
 
 export default async function PaymentSuccessPage({ searchParams }: Props) {
-    const { bookingId, ref } = await searchParams;
+    const { bookingId, ref, pending } = await searchParams;
+    const isPending = pending === '1';
 
     let booking: any = null;
     if (bookingId) {
@@ -27,14 +28,22 @@ export default async function PaymentSuccessPage({ searchParams }: Props) {
     return (
         <main className="min-h-screen bg-gradient-to-br from-green-50 via-white to-stone-50 flex items-center justify-center py-16 px-4">
             <div className="w-full max-w-lg text-center">
-                {/* Success icon */}
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-100 mx-auto mb-6">
-                    <CheckCircle2 className="h-10 w-10 text-green-600" />
+                {/* Icon */}
+                <div className={`flex h-20 w-20 items-center justify-center rounded-full mx-auto mb-6 ${isPending ? 'bg-amber-100' : 'bg-green-100'}`}>
+                    {isPending
+                        ? <Clock className="h-10 w-10 text-amber-600" />
+                        : <CheckCircle2 className="h-10 w-10 text-green-600" />
+                    }
                 </div>
 
-                <h1 className="text-3xl font-bold text-stone-900 mb-2">Booking Confirmed!</h1>
+                <h1 className="text-3xl font-bold text-stone-900 mb-2">
+                    {isPending ? 'Payment Submitted!' : 'Booking Confirmed!'}
+                </h1>
                 <p className="text-stone-500 mb-8">
-                    Your holiday adventure is all set. We&apos;ve sent confirmation details and will keep you updated.
+                    {isPending
+                        ? 'Your UPI payment is under verification. We\'ll confirm your booking within a few hours.'
+                        : 'Your holiday adventure is all set. We\'ve sent confirmation details and will keep you updated.'
+                    }
                 </p>
 
                 {/* Booking summary */}
@@ -61,8 +70,10 @@ export default async function PaymentSuccessPage({ searchParams }: Props) {
                                 </span>
                             </div>
                             <div className="flex justify-between text-sm border-t border-stone-100 pt-3">
-                                <span className="text-stone-500">Amount Paid</span>
-                                <span className="font-bold text-green-700 text-base">₹{Number(booking.total_amount).toLocaleString('en-IN')}</span>
+                                <span className="text-stone-500">Amount</span>
+                                <span className={`font-bold text-base ${isPending ? 'text-amber-700' : 'text-green-700'}`}>
+                                    ₹{Number(booking.total_amount).toLocaleString('en-IN')}
+                                </span>
                             </div>
                         </div>
                     ) : ref ? (
@@ -70,14 +81,15 @@ export default async function PaymentSuccessPage({ searchParams }: Props) {
                             <p className="text-sm text-stone-500">Reference: <span className="font-mono font-semibold text-stone-700">{ref}</span></p>
                         </div>
                     ) : (
-                        <p className="text-center text-sm text-stone-400">Payment successful</p>
+                        <p className="text-center text-sm text-stone-400">Payment submitted successfully</p>
                     )}
                 </div>
 
                 {/* What's next */}
-                <div className="rounded-2xl border border-green-100 bg-green-50 p-5 text-left mb-6">
-                    <p className="font-semibold text-green-800 mb-2">What happens next?</p>
-                    <ul className="space-y-1.5 text-sm text-green-700">
+                <div className={`rounded-2xl border p-5 text-left mb-6 ${isPending ? 'border-amber-100 bg-amber-50' : 'border-green-100 bg-green-50'}`}>
+                    <p className={`font-semibold mb-2 ${isPending ? 'text-amber-800' : 'text-green-800'}`}>What happens next?</p>
+                    <ul className={`space-y-1.5 text-sm ${isPending ? 'text-amber-700' : 'text-green-700'}`}>
+                        {isPending && <li>⏳ Your UPI payment is being verified (usually within 2–4 hours)</li>}
                         <li>✓ Our team will call you within 24 hours to confirm all details</li>
                         <li>✓ You&apos;ll receive SMS reminders 7 days &amp; 1 day before your trip</li>
                         <li>✓ Your itinerary and vouchers will be sent to your email</li>

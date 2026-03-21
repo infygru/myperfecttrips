@@ -128,7 +128,7 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
                             <div className="mt-4 pt-4 border-t border-stone-100 space-y-2">
                                 <div className="flex items-center gap-2 text-xs text-stone-500">
                                     <Shield className="h-3.5 w-3.5 text-green-500" />
-                                    Secure payment via PayTM
+                                    Secure UPI payment (infyguru@sbi)
                                 </div>
                                 <div className="flex items-center gap-2 text-xs text-stone-500">
                                     <Shield className="h-3.5 w-3.5 text-green-500" />

@@ -141,7 +141,7 @@ export default async function BookingDetailPage({ params }: Props) {
                         {payments.map(p => (
                             <div key={p.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-stone-50 px-4 py-3 text-sm">
                                 <div>
-                                    <p className="font-medium text-stone-700">PayTM · {p.transaction_id || p.order_id}</p>
+                                    <p className="font-medium text-stone-700">{p.gateway?.toUpperCase() || 'UPI'} · {p.transaction_id || p.order_id}</p>
                                     <p className="text-xs text-stone-400">{formatDateTime(p.date_created)}</p>
                                 </div>
                                 <div className="flex items-center gap-3">
