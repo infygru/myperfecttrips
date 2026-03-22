@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Calendar, Users, MessageSquare, Minus, Plus, Star, Gift, Phone, AlertCircle, Loader2, QrCode, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { Calendar, Users, MessageSquare, Minus, Plus, Star, Gift, Phone, AlertCircle, Loader2, CreditCard } from 'lucide-react';
 import { MIN_REDEEM } from '@/lib/loyalty-constants';
 
 interface Props {
@@ -43,19 +42,30 @@ function CounterInput({ label, sub, value, onChange, min = 0 }: {
     );
 }
 
-const UPI_APPS = [
-    { name: 'Google Pay', icon: '🟢', scheme: 'tez://upi/pay' },
-    { name: 'PhonePe', icon: '🟣', scheme: 'phonepe://pay' },
-    { name: 'Paytm', icon: '🔵', scheme: 'paytmmp://pay' },
-    { name: 'BHIM', icon: '🇮🇳', scheme: 'upi://pay' },
-];
+declare global {
+    interface Window {
+        Cashfree?: (config: { mode: string }) => {
+            checkout: (options: { paymentSessionId: string; redirectTarget?: string }) => void;
+        };
+    }
+}
+
+async function loadCashfreeSDK(): Promise<void> {
+    if (typeof window === 'undefined') return;
+    if (window.Cashfree) return;
+    await new Promise<void>((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('Failed to load payment SDK. Please refresh and try again.'));
+        document.head.appendChild(script);
+    });
+}
 
 export default function CheckoutForm({
     packageId, packageTitle, packageSlug, basePrice,
     userId, userName, userEmail, userPhone, loyaltyBalance,
 }: Props) {
-    const router = useRouter();
-
     // Form state
     const [adults, setAdults]             = useState(1);
     const [children, setChildren]         = useState(0);
@@ -65,14 +75,9 @@ export default function CheckoutForm({
     const [usePoints, setUsePoints]       = useState(false);
 
     // UI state
-    const [step, setStep]       = useState<'form' | 'payment'>('form');
-    const [error, setError]     = useState('');
-    const [loading, setLoading] = useState(false);
-
-    // Payment state (set after booking creation)
-    const [bookingId, setBookingId]         = useState('');
-    const [referenceNumber, setReferenceNumber] = useState('');
-    const [utrNumber, setUtrNumber]         = useState('');
+    const [error, setError]       = useState('');
+    const [loading, setLoading]   = useState(false);
+    const [redirecting, setRedirecting] = useState(false);
 
     const today    = new Date().toISOString().split('T')[0];
     const subtotal = basePrice * (adults + children * 0.5);
@@ -83,7 +88,6 @@ export default function CheckoutForm({
     const pointsToRedeem = usePoints ? Math.round(pointsDiscount) : 0;
     const pointsEarnable = Math.floor(totalAmount / 100);
 
-    // Step 1: Create booking and proceed to payment screen
     const handleProceed = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
@@ -91,6 +95,7 @@ export default function CheckoutForm({
         setLoading(true);
 
         try {
+            // 1. Create booking
             const bookingRes = await fetch('/api/bookings', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -111,147 +116,47 @@ export default function CheckoutForm({
             const bookingData = await bookingRes.json();
             if (!bookingRes.ok) throw new Error(bookingData.error || 'Booking creation failed');
 
-            setBookingId(bookingData.booking.id);
-            setReferenceNumber(bookingData.booking.reference_number);
-            setStep('payment');
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Step 2: Submit UTR and confirm payment
-    const handleConfirm = async () => {
-        if (!utrNumber.trim()) { setError('Please enter the UTR / Transaction ID from your UPI app'); return; }
-        setError('');
-        setLoading(true);
-
-        try {
-            const res = await fetch('/api/payment/confirm', {
+            // 2. Create Cashfree order
+            const orderRes = await fetch('/api/payment/create-order', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify({ bookingId, utrNumber }),
+                body: JSON.stringify({ bookingId: bookingData.booking.id }),
             });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Failed to confirm payment');
+            const orderData = await orderRes.json();
+            if (!orderRes.ok) throw new Error(orderData.error || 'Payment initiation failed');
 
-            router.push(`/payment/success?bookingId=${bookingId}&ref=${referenceNumber}&pending=1`);
+            // 3. Load Cashfree JS SDK and redirect to checkout
+            setRedirecting(true);
+            await loadCashfreeSDK();
+            const cashfree = window.Cashfree!({ mode: 'production' });
+            cashfree.checkout({
+                paymentSessionId: orderData.paymentSessionId,
+                redirectTarget: '_self',
+            });
+            // Page will redirect — no further state updates needed
         } catch (err: any) {
             setError(err.message);
             setLoading(false);
+            setRedirecting(false);
         }
     };
 
-    const upiBase = `pa=infyguru@sbi&pn=IG%20Holidays&am=${totalAmount}&cu=INR&tn=Booking%20${referenceNumber}`;
-
-    // ── STEP 2: UPI Payment Screen ──────────────────────────────────────────
-    if (step === 'payment') {
+    // Redirecting overlay
+    if (redirecting) {
         return (
-            <div className="space-y-5">
-                {/* Header */}
-                <div className="rounded-2xl border border-brand-200 bg-brand-50/50 p-5 shadow-sm text-center">
-                    <p className="text-stone-500 text-sm mb-1">Pay</p>
-                    <p className="text-3xl font-bold text-brand-900">₹{totalAmount.toLocaleString('en-IN')}</p>
-                    <p className="text-stone-500 text-sm mt-1">to <span className="font-semibold text-stone-800">infyguru@sbi</span> (IG Holidays)</p>
-                    <p className="text-xs text-stone-400 mt-1 font-mono">Ref: {referenceNumber}</p>
+            <div className="flex flex-col items-center justify-center py-20 gap-5">
+                <div className="h-16 w-16 rounded-full bg-brand-50 border border-brand-100 flex items-center justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin text-brand-700" />
                 </div>
-
-                {/* QR Code */}
-                <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm flex flex-col items-center gap-3">
-                    <div className="flex items-center gap-2 text-sm font-semibold text-stone-700">
-                        <QrCode className="h-4 w-4 text-brand-700" />
-                        Scan with any UPI app
-                    </div>
-                    <img
-                        src={`/api/payment/qr?amount=${totalAmount}&ref=${referenceNumber}`}
-                        alt="UPI QR Code"
-                        width={220}
-                        height={220}
-                        className="rounded-xl border border-stone-100"
-                    />
-                    <p className="text-xs text-stone-400">Works with GPay, PhonePe, BHIM, Paytm &amp; all UPI apps</p>
+                <div className="text-center">
+                    <p className="font-bold text-stone-900 text-lg">Redirecting to secure payment…</p>
+                    <p className="text-stone-400 text-sm mt-1">Please do not close or refresh this page</p>
                 </div>
-
-                {/* OR divider */}
-                <div className="flex items-center gap-3">
-                    <div className="flex-1 h-px bg-stone-200" />
-                    <span className="text-xs text-stone-400 font-semibold tracking-wide">OR OPEN YOUR UPI APP</span>
-                    <div className="flex-1 h-px bg-stone-200" />
-                </div>
-
-                {/* UPI App Buttons */}
-                <div className="grid grid-cols-2 gap-3">
-                    {UPI_APPS.map(app => (
-                        <a
-                            key={app.name}
-                            href={`${app.scheme}?${upiBase}`}
-                            className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white px-4 py-3 hover:border-brand-300 hover:bg-brand-50/40 transition-all"
-                        >
-                            <span className="text-2xl leading-none">{app.icon}</span>
-                            <span className="text-sm font-semibold text-stone-800">{app.name}</span>
-                        </a>
-                    ))}
-                </div>
-
-                {/* UTR Entry */}
-                <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm space-y-3">
-                    <h3 className="font-bold text-stone-900">Confirm Your Payment</h3>
-                    <p className="text-sm text-stone-500">
-                        After paying, enter the <span className="font-semibold text-stone-700">UTR / Transaction ID</span> shown in your UPI app to confirm your booking.
-                    </p>
-                    <input
-                        type="text"
-                        value={utrNumber}
-                        onChange={e => setUtrNumber(e.target.value)}
-                        placeholder="e.g. 406123456789"
-                        className="w-full h-11 rounded-xl border border-stone-200 bg-stone-50/50 px-4 text-sm font-mono outline-none focus:border-brand-700 focus:ring-2 focus:ring-brand-700/10 focus:bg-white transition-all"
-                    />
-                </div>
-
-                {error && (
-                    <div className="flex items-start gap-3 rounded-xl bg-red-50 border border-red-100 px-4 py-3">
-                        <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
-                        <p className="text-sm text-red-600">{error}</p>
-                    </div>
-                )}
-
-                <button
-                    onClick={handleConfirm}
-                    disabled={loading || !utrNumber.trim()}
-                    className="w-full h-14 rounded-xl bg-gradient-to-r from-brand-900 to-brand-800 text-white font-bold text-base flex items-center justify-center gap-2.5 hover:from-brand-800 hover:to-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
-                >
-                    {loading ? (
-                        <>
-                            <Loader2 className="h-5 w-5 animate-spin" />
-                            Confirming...
-                        </>
-                    ) : (
-                        <>
-                            <CheckCircle2 className="h-5 w-5" />
-                            I&apos;ve Paid — Confirm Booking
-                        </>
-                    )}
-                </button>
-
-                <button
-                    type="button"
-                    onClick={() => { setStep('form'); setError(''); }}
-                    className="w-full flex items-center justify-center gap-1.5 text-sm text-stone-500 hover:text-stone-700 transition-colors py-1"
-                >
-                    <ArrowLeft className="h-3.5 w-3.5" /> Back to booking details
-                </button>
-
-                <p className="text-center text-xs text-stone-400">
-                    By confirming you agree to our{' '}
-                    <a href="/terms" className="underline hover:text-stone-600">Terms</a> &{' '}
-                    <a href="/refund-policy" className="underline hover:text-stone-600">Refund Policy</a>
-                </p>
             </div>
         );
     }
 
-    // ── STEP 1: Booking Form ─────────────────────────────────────────────────
+    // ── Booking Form ─────────────────────────────────────────────────────────
     return (
         <form onSubmit={handleProceed} className="space-y-5">
             {error && (
@@ -383,18 +288,19 @@ export default function CheckoutForm({
                 {loading ? (
                     <>
                         <Loader2 className="h-5 w-5 animate-spin" />
-                        Creating booking...
+                        Creating booking…
                     </>
                 ) : (
                     <>
-                        <QrCode className="h-5 w-5" />
-                        Proceed to Pay ₹{totalAmount.toLocaleString('en-IN')}
+                        <CreditCard className="h-5 w-5" />
+                        Pay ₹{totalAmount.toLocaleString('en-IN')} Securely
                     </>
                 )}
             </button>
 
             <p className="text-center text-xs text-stone-400">
-                Secure UPI payment · By proceeding you agree to our{' '}
+                Secure payment via Cashfree · UPI, Cards, Netbanking &amp; Wallets accepted<br />
+                By proceeding you agree to our{' '}
                 <a href="/terms" className="underline hover:text-stone-600">Terms</a> &{' '}
                 <a href="/refund-policy" className="underline hover:text-stone-600">Refund Policy</a>
             </p>
