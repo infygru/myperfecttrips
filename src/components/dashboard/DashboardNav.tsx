@@ -3,26 +3,27 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { LayoutDashboard, Ticket, User, LogOut, Star } from 'lucide-react';
+import { LayoutDashboard, Ticket, User, LogOut, Star, ShieldCheck } from 'lucide-react';
 
 const navItems = [
-    { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
-    { href: '/dashboard/bookings', label: 'My Bookings', icon: Ticket },
-    { href: '/dashboard/profile', label: 'Profile', icon: User },
+    { href: '/dashboard',          label: 'Overview',    icon: LayoutDashboard, desc: 'Home' },
+    { href: '/dashboard/bookings', label: 'My Bookings', icon: Ticket,          desc: 'Trips' },
+    { href: '/dashboard/profile',  label: 'Profile',     icon: User,            desc: 'Account' },
 ];
 
 export default function DashboardNav({ user }: { user: any }) {
     const pathname = usePathname();
     const { logout } = useAuth();
+    const initials = `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase() || '?';
 
     return (
         <div className="rounded-2xl border border-stone-200 bg-white shadow-sm overflow-hidden">
             {/* Profile area */}
             <div className="p-5 border-b border-stone-100">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 mb-3">
                     <div className="relative flex-shrink-0">
-                        <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center text-white font-bold text-lg shadow-sm">
-                            {user.first_name?.[0]?.toUpperCase() || 'U'}
+                        <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center text-white font-bold text-base shadow-sm">
+                            {initials}
                         </div>
                         <div className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-emerald-500 border-2 border-white" />
                     </div>
@@ -32,10 +33,16 @@ export default function DashboardNav({ user }: { user: any }) {
                     </div>
                 </div>
 
-                {/* Loyalty mini-badge */}
-                <div className="mt-3 flex items-center gap-2 rounded-xl bg-brand-50 border border-brand-100 px-3 py-2">
-                    <Star className="h-3.5 w-3.5 text-gold-500 fill-gold-400 flex-shrink-0" />
-                    <span className="text-xs font-semibold text-brand-800">IG Rewards member</span>
+                {/* Status badges */}
+                <div className="space-y-1.5">
+                    <div className="flex items-center gap-2 rounded-xl bg-brand-50 border border-brand-100 px-3 py-2">
+                        <Star className="h-3.5 w-3.5 text-gold-500 fill-gold-400 flex-shrink-0" />
+                        <span className="text-xs font-semibold text-brand-800">IG Rewards member</span>
+                    </div>
+                    <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-100 px-3 py-2">
+                        <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 flex-shrink-0" />
+                        <span className="text-xs font-semibold text-emerald-700">Account secured</span>
+                    </div>
                 </div>
             </div>
 
@@ -60,8 +67,8 @@ export default function DashboardNav({ user }: { user: any }) {
             {/* Sign out */}
             <div className="p-3 border-t border-stone-100">
                 <button onClick={logout}
-                    className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-500 hover:bg-red-50 hover:text-red-600 transition-all">
-                    <LogOut className="h-4 w-4 flex-shrink-0" />
+                    className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-500 hover:bg-red-50 hover:text-red-600 transition-all group">
+                    <LogOut className="h-4 w-4 flex-shrink-0 group-hover:text-red-500 transition-colors" />
                     Sign out
                 </button>
             </div>

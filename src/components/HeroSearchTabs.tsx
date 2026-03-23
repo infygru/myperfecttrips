@@ -185,7 +185,7 @@ export default function HeroSearchTabs() {
     };
 
     // Shared CSS classes for inputs
-    const inputContainerClass = "flex-1 min-w-0 flex items-center px-5 py-4 lg:px-6 lg:py-4 gap-4 sm:gap-5 w-full cursor-text transition-colors";
+    const inputContainerClass = "flex-1 min-w-0 flex items-center px-4 py-3.5 lg:px-6 lg:py-4 gap-3.5 w-full cursor-text transition-colors rounded-2xl bg-stone-50 lg:bg-transparent lg:rounded-none";
     const labelClass = "text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left truncate w-full";
     const inputClass = "w-full bg-transparent text-base font-semibold text-brand-950 placeholder:text-stone-400 placeholder:font-medium focus:outline-none truncate";
 
@@ -266,15 +266,15 @@ export default function HeroSearchTabs() {
                 </div>
             )}
 
-            {/* Content Container (Mobile Stacked / Desktop Pill) */}
-            <div className="w-full bg-white rounded-[1.5rem] lg:rounded-full p-1 sm:p-2 shadow-2xl border border-stone-200 relative overflow-visible">
+            {/* Content Container (Mobile Card / Desktop Pill) */}
+            <div className="w-full bg-white/95 backdrop-blur-sm rounded-[2rem] lg:rounded-full p-3 lg:p-1.5 shadow-2xl border border-white/60 lg:border-stone-200 relative overflow-visible">
 
                 {/* ---------------- STEP 1: Search Criteria ---------------- */}
                 {step === 1 ? (
                     <>
                         {/* ---------------- HOLIDAYS TAB ---------------- */}
                         {activeTab === "holidays" && (
-                            <form onSubmit={handleNextStep} className="flex flex-col lg:flex-row w-full items-center divide-y lg:divide-y-0 lg:divide-x divide-stone-200">
+                            <form onSubmit={handleNextStep} className="flex flex-col lg:flex-row w-full items-stretch lg:items-center gap-2.5 lg:gap-0 lg:divide-x lg:divide-stone-200">
                                 {/* Destination */}
                                 <div className={inputContainerClass} onClick={() => document.getElementById('hol-dest')?.focus()}>
                                     <MapPin className="h-5 w-5 text-brand-600 flex-shrink-0" />
@@ -292,48 +292,50 @@ export default function HeroSearchTabs() {
                                     </div>
                                 </div>
 
-                                {/* Pax */}
-                                {renderPaxDropdown(holidayAdults, setHolidayAdults, holidayChildren, setHolidayChildren, showHolidayPaxDrop, setShowHolidayPaxDrop, holidayPaxRef)}
+                                {/* Pax + Budget — 2-col grid on mobile, inline on desktop */}
+                                <div className="grid grid-cols-2 gap-2.5 w-full lg:flex lg:flex-1 lg:divide-x lg:divide-stone-200 lg:gap-0">
+                                    {renderPaxDropdown(holidayAdults, setHolidayAdults, holidayChildren, setHolidayChildren, showHolidayPaxDrop, setShowHolidayPaxDrop, holidayPaxRef)}
 
-                                {/* Budget Dropdown */}
-                                <div className={`relative ${inputContainerClass}`} ref={budgetRef} onClick={() => setShowBudgetDrop(!showBudgetDrop)}>
-                                    <Wallet className="h-5 w-5 text-brand-600 flex-shrink-0" />
-                                    <div className="flex flex-col w-full text-left cursor-pointer">
-                                        <label className={`${labelClass} cursor-pointer`}>Budget Rate</label>
-                                        <div className="w-full bg-transparent text-base font-semibold text-brand-950 truncate flex items-center justify-between">
-                                            <span className={holidayBudget ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{holidayBudget || "Select Tier"}</span>
-                                            <ChevronDown className={`h-4 w-4 text-stone-400 transition-transform ${showBudgetDrop ? "rotate-180" : ""}`} />
+                                    {/* Budget Dropdown */}
+                                    <div className={`relative ${inputContainerClass}`} ref={budgetRef} onClick={() => setShowBudgetDrop(!showBudgetDrop)}>
+                                        <Wallet className="h-5 w-5 text-brand-600 flex-shrink-0" />
+                                        <div className="flex flex-col w-full text-left cursor-pointer">
+                                            <label className={`${labelClass} cursor-pointer`}>Budget Rate</label>
+                                            <div className="w-full bg-transparent text-base font-semibold text-brand-950 truncate flex items-center justify-between">
+                                                <span className={holidayBudget ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{holidayBudget || "Select Tier"}</span>
+                                                <ChevronDown className={`h-4 w-4 text-stone-400 transition-transform ${showBudgetDrop ? "rotate-180" : ""}`} />
+                                            </div>
                                         </div>
+
+                                        {showBudgetDrop && (
+                                            <div className="absolute top-[100%] left-0 mt-2 w-full min-w-[200px] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 p-2 z-50 animate-in fade-in zoom-in-95 duration-200">
+                                                {[
+                                                    { value: "economy", label: "Economy" },
+                                                    { value: "premium", label: "Premium" },
+                                                    { value: "luxury", label: "Luxury (5-Star)" }
+                                                ].map((tier) => (
+                                                    <button
+                                                        key={tier.value}
+                                                        type="button"
+                                                        className="w-full text-left px-4 py-3 active:bg-stone-50 rounded-2xl text-sm font-semibold text-brand-950 transition-colors flex items-center justify-between"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setHolidayBudget(tier.value);
+                                                            setShowBudgetDrop(false);
+                                                        }}
+                                                    >
+                                                        {tier.label}
+                                                        {holidayBudget === tier.value && <div className="h-2 w-2 rounded-full bg-brand-600" />}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
-
-                                    {showBudgetDrop && (
-                                        <div className="absolute top-[100%] left-0 mt-2 w-full min-w-[200px] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-stone-100 p-2 z-50 animate-in fade-in zoom-in-95 duration-200">
-                                            {[
-                                                { value: "economy", label: "Economy" },
-                                                { value: "premium", label: "Premium" },
-                                                { value: "luxury", label: "Luxury (5-Star)" }
-                                            ].map((tier) => (
-                                                <button
-                                                    key={tier.value}
-                                                    type="button"
-                                                    className="w-full text-left px-4 py-3 active:bg-stone-50 rounded-2xl text-sm font-semibold text-brand-950 transition-colors flex items-center justify-between"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setHolidayBudget(tier.value);
-                                                        setShowBudgetDrop(false);
-                                                    }}
-                                                >
-                                                    {tier.label}
-                                                    {holidayBudget === tier.value && <div className="h-2 w-2 rounded-full bg-brand-600" />}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    )}
                                 </div>
 
                                 {/* Next Button */}
-                                <div className="flex w-full lg:w-auto p-4 lg:p-2 bg-transparent justify-center items-center flex-shrink-0">
-                                    <button type="submit" className="w-full lg:w-auto bg-brand-900 hover:bg-brand-800 text-white font-semibold rounded-full px-8 py-4 lg:py-4 transition-colors text-sm flex justify-center items-center gap-2 group shadow-lg shadow-brand-900/20 hover:shadow-xl">
+                                <div className="flex w-full lg:w-auto lg:p-2 bg-transparent justify-center items-center flex-shrink-0">
+                                    <button type="submit" className="w-full lg:w-auto bg-gradient-to-r from-brand-900 to-brand-800 hover:from-brand-800 hover:to-brand-700 text-white font-semibold rounded-2xl lg:rounded-full px-8 py-4 transition-all text-sm flex justify-center items-center gap-2 group shadow-lg shadow-brand-900/20 hover:shadow-xl">
                                         Continue <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                                     </button>
                                 </div>
@@ -342,7 +344,7 @@ export default function HeroSearchTabs() {
 
                         {/* ---------------- FLIGHTS TAB ---------------- */}
                         {activeTab === "flights" && (
-                            <form onSubmit={handleNextStep} className="flex flex-col lg:flex-row w-full items-center divide-y lg:divide-y-0 lg:divide-x divide-stone-200">
+                            <form onSubmit={handleNextStep} className="flex flex-col lg:flex-row w-full items-stretch lg:items-center gap-2.5 lg:gap-0 lg:divide-x lg:divide-stone-200">
                                 {/* FROM */}
                                 <div className={`relative ${inputContainerClass}`} ref={fromRef} onClick={() => document.getElementById('fl-from')?.focus()}>
                                     <Plane className="h-5 w-5 text-brand-600 flex-shrink-0" style={{ transform: "rotate(45deg)" }} />
@@ -421,16 +423,15 @@ export default function HeroSearchTabs() {
                                     )}
                                 </div>
 
-                                {/* Dates */}
-                                <div className={`flex flex-row items-stretch w-full lg:w-auto flex-shrink-0 relative`}>
-                                    
+                                {/* Dates — side by side on both mobile & desktop */}
+                                <div className="grid grid-cols-2 gap-2.5 w-full lg:flex lg:flex-row lg:items-stretch lg:w-auto lg:flex-shrink-0 lg:relative lg:gap-0 lg:divide-x lg:divide-stone-200">
                                     {/* DEPART */}
-                                    <div suppressHydrationWarning className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors border-r border-stone-200`} ref={departRef} onClick={() => setShowDepartDrop(!showDepartDrop)}>
+                                    <div suppressHydrationWarning className={`relative flex items-center px-4 py-3.5 lg:px-6 lg:py-4 gap-3 lg:w-[180px] cursor-pointer transition-colors rounded-2xl bg-stone-50 lg:bg-transparent lg:rounded-none`} ref={departRef} onClick={() => setShowDepartDrop(!showDepartDrop)}>
                                         <Calendar className="h-5 w-5 text-brand-600 flex-shrink-0" />
                                         <div className="flex flex-col w-full min-w-0 text-left">
                                             <label className={`${labelClass} cursor-pointer`}>Depart</label>
-                                            <div className="w-full bg-transparent text-sm sm:text-base font-semibold text-brand-950 truncate flex items-center justify-between">
-                                                <span className={departDate ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{departDate ? format(departDate, "dd MMM") : "Select"}</span>
+                                            <div className="w-full bg-transparent text-sm lg:text-base font-semibold text-brand-950 truncate">
+                                                <span className={departDate ? "text-brand-950" : "text-stone-300 font-normal"}>{departDate ? format(departDate, "dd MMM") : "Select"}</span>
                                             </div>
                                         </div>
                                         {showDepartDrop && (
@@ -442,7 +443,6 @@ export default function HeroSearchTabs() {
                                                 />
                                             </div>
                                         )}
-
                                         {/* Visual separator dot visible on desktop */}
                                         <div className="hidden lg:block absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border border-stone-200 z-10 shadow-sm flex items-center justify-center">
                                             <div className="w-1.5 h-1.5 rounded-full bg-brand-400" />
@@ -450,11 +450,12 @@ export default function HeroSearchTabs() {
                                     </div>
 
                                     {/* RETURN */}
-                                    <div suppressHydrationWarning className={`relative flex-1 min-w-0 flex items-center px-4 py-4 sm:px-5 lg:px-6 lg:py-4 gap-3 sm:gap-5 lg:w-[180px] cursor-pointer transition-colors`} ref={returnRef} onClick={() => setShowReturnDrop(!showReturnDrop)}>
+                                    <div suppressHydrationWarning className={`relative flex items-center px-4 py-3.5 lg:px-6 lg:py-4 gap-3 lg:w-[180px] cursor-pointer transition-colors rounded-2xl bg-stone-50 lg:bg-transparent lg:rounded-none`} ref={returnRef} onClick={() => setShowReturnDrop(!showReturnDrop)}>
+                                        <Calendar className="h-5 w-5 text-stone-400 flex-shrink-0" />
                                         <div className="flex flex-col w-full min-w-0 text-left">
                                             <label className={`${labelClass} cursor-pointer`}>Return</label>
-                                            <div className="w-full bg-transparent text-sm sm:text-base font-semibold text-brand-950 truncate flex items-center justify-between">
-                                                <span className={returnDate ? "text-brand-950 capitalize" : "text-stone-300 font-normal"}>{returnDate ? format(returnDate, "dd MMM") : "One Way"}</span>
+                                            <div className="w-full bg-transparent text-sm lg:text-base font-semibold text-brand-950 truncate">
+                                                <span className={returnDate ? "text-brand-950" : "text-stone-300 font-normal"}>{returnDate ? format(returnDate, "dd MMM") : "One Way"}</span>
                                             </div>
                                         </div>
                                         {showReturnDrop && (
@@ -473,8 +474,8 @@ export default function HeroSearchTabs() {
                                 {renderPaxDropdown(flightAdults, setFlightAdults, flightChildren, setFlightChildren, showFlightPaxDrop, setShowFlightPaxDrop, flightPaxRef)}
 
                                 {/* Next Button */}
-                                <div className="flex w-full lg:w-auto p-4 lg:p-2 bg-transparent justify-center items-center flex-shrink-0">
-                                    <button type="submit" className="w-full lg:w-[140px] bg-brand-900 hover:bg-brand-800 text-white font-semibold rounded-full px-4 py-4 lg:py-4 transition-colors text-sm flex justify-center items-center gap-2 group shadow-lg shadow-brand-900/20 hover:shadow-xl">
+                                <div className="flex w-full lg:w-auto lg:p-2 bg-transparent justify-center items-center flex-shrink-0">
+                                    <button type="submit" className="w-full lg:w-[140px] bg-gradient-to-r from-brand-900 to-brand-800 hover:from-brand-800 hover:to-brand-700 text-white font-semibold rounded-2xl lg:rounded-full px-4 py-4 transition-all text-sm flex justify-center items-center gap-2 group shadow-lg shadow-brand-900/20 hover:shadow-xl">
                                         Continue <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                                     </button>
                                 </div>
@@ -483,9 +484,9 @@ export default function HeroSearchTabs() {
                     </>
                 ) : (
                     /* ---------------- STEP 2: Contact Details ---------------- */
-                    <form onSubmit={handleFinalSubmit} className="flex flex-col lg:flex-row w-full items-center divide-y lg:divide-y-0 lg:divide-x divide-stone-200 animate-in fade-in zoom-in-95 duration-300">
+                    <form onSubmit={handleFinalSubmit} className="flex flex-col lg:flex-row w-full items-stretch lg:items-center gap-2.5 lg:gap-0 lg:divide-x lg:divide-stone-200 animate-in fade-in zoom-in-95 duration-300">
 
-                        <div className="w-full lg:w-[240px] px-5 py-4 flex items-center gap-3 flex-shrink-0">
+                        <div className="w-full lg:w-[240px] px-4 py-3.5 flex items-center gap-3 flex-shrink-0 rounded-2xl bg-stone-50 lg:bg-transparent lg:rounded-none lg:border-r lg:border-stone-200">
                             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700 shadow-inner">
                                 {activeTab === "holidays" ? <Palmtree className="h-5 w-5" /> : <Plane className="h-5 w-5" />}
                             </div>
@@ -495,46 +496,46 @@ export default function HeroSearchTabs() {
                             </div>
                         </div>
 
-                        {/* Name */}
-                        <div suppressHydrationWarning className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors" onClick={() => document.getElementById('usr-name')?.focus()}>
-                            <User className="h-5 w-5 text-brand-600 flex-shrink-0" />
-                            <div className="flex flex-col w-full min-w-0 text-left">
-                                <label htmlFor="usr-name" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left">Full Name</label>
-                                <input
-                                    id="usr-name"
-                                    type="text"
-                                    placeholder="e.g. Rahul Sharma"
-                                    className="w-full bg-transparent text-base font-semibold text-brand-950 placeholder:text-stone-300 placeholder:font-normal focus:outline-none"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                />
+                        {/* Name + Phone — 2-col on mobile */}
+                        <div className="grid grid-cols-2 gap-2.5 w-full lg:flex lg:flex-1 lg:divide-x lg:divide-stone-200 lg:gap-0">
+                            <div suppressHydrationWarning className="flex-1 min-w-0 flex items-center px-4 py-3.5 lg:px-5 lg:py-4 gap-3.5 cursor-text transition-colors rounded-2xl bg-stone-50 lg:bg-transparent lg:rounded-none" onClick={() => document.getElementById('usr-name')?.focus()}>
+                                <User className="h-5 w-5 text-brand-600 flex-shrink-0" />
+                                <div className="flex flex-col w-full min-w-0 text-left">
+                                    <label htmlFor="usr-name" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left truncate">Full Name</label>
+                                    <input
+                                        id="usr-name"
+                                        type="text"
+                                        placeholder="Rahul Sharma"
+                                        className="w-full bg-transparent text-base font-semibold text-brand-950 placeholder:text-stone-300 placeholder:font-normal focus:outline-none truncate"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                    />
+                                </div>
                             </div>
-                        </div>
-
-                        {/* Phone */}
-                        <div suppressHydrationWarning className="flex-1 min-w-0 lg:min-w-[180px] flex items-center px-5 py-4 gap-4 w-full cursor-text transition-colors" onClick={() => document.getElementById('usr-phone')?.focus()}>
-                            <Phone className="h-5 w-5 text-brand-600 flex-shrink-0" />
-                            <div className="flex flex-col w-full min-w-0 text-left">
-                                <label htmlFor="usr-phone" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left">Mobile Number</label>
-                                <input
-                                    id="usr-phone"
-                                    type="tel"
-                                    placeholder="+91 98765 43210"
-                                    className="w-full bg-transparent text-base font-semibold text-brand-950 placeholder:text-stone-300 placeholder:font-normal focus:outline-none"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    required
-                                />
+                            <div suppressHydrationWarning className="flex-1 min-w-0 flex items-center px-4 py-3.5 lg:px-5 lg:py-4 gap-3.5 cursor-text transition-colors rounded-2xl bg-stone-50 lg:bg-transparent lg:rounded-none" onClick={() => document.getElementById('usr-phone')?.focus()}>
+                                <Phone className="h-5 w-5 text-brand-600 flex-shrink-0" />
+                                <div className="flex flex-col w-full min-w-0 text-left">
+                                    <label htmlFor="usr-phone" className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 block text-left truncate">Mobile No.</label>
+                                    <input
+                                        id="usr-phone"
+                                        type="tel"
+                                        placeholder="+91 98765 43210"
+                                        className="w-full bg-transparent text-base font-semibold text-brand-950 placeholder:text-stone-300 placeholder:font-normal focus:outline-none truncate"
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        required
+                                    />
+                                </div>
                             </div>
                         </div>
 
                         {/* Submit Actions */}
-                        <div className="flex w-full lg:w-auto p-3 lg:p-2 lg:pl-4 bg-white gap-2 flex-col sm:flex-row flex-shrink-0 lg:rounded-r-full">
-                            <button type="button" onClick={(e) => { e.preventDefault(); setStep(1); }} className="px-6 py-4 lg:py-3 rounded-full border border-stone-200 text-stone-600 text-sm font-bold active:bg-stone-50 transition-colors w-full sm:w-auto text-center flex items-center justify-center z-10 relative">
+                        <div className="flex w-full lg:w-auto lg:p-2 lg:pl-4 gap-2.5 flex-row flex-shrink-0">
+                            <button type="button" onClick={(e) => { e.preventDefault(); setStep(1); }} className="flex-none px-6 py-4 lg:py-3 rounded-2xl lg:rounded-full border border-stone-200 text-stone-600 text-sm font-bold active:bg-stone-50 transition-colors text-center flex items-center justify-center">
                                 Back
                             </button>
-                            <button type="submit" disabled={loading} className="w-full sm:w-auto bg-gold-400 hover:bg-gold-500 text-brand-950 font-bold rounded-full px-8 py-4 lg:py-3 transition-colors text-sm flex justify-center items-center shadow-lg shadow-gold-500/20 hover:shadow-gold-500/40 whitespace-nowrap z-10 relative">
+                            <button type="submit" disabled={loading} className="flex-1 lg:flex-none bg-gold-400 hover:bg-gold-500 text-brand-950 font-bold rounded-2xl lg:rounded-full px-8 py-4 lg:py-3 transition-colors text-sm flex justify-center items-center shadow-lg shadow-gold-500/20 hover:shadow-gold-500/40 whitespace-nowrap">
                                 {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Request Quote"}
                             </button>
                         </div>

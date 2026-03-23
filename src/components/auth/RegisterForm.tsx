@@ -8,6 +8,7 @@ import {
     Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight,
     ArrowLeft, CheckCircle2, AlertCircle, RefreshCw, ShieldCheck
 } from 'lucide-react';
+import GoogleSignInButton from './GoogleSignInButton';
 
 type Step = 'info' | 'otp' | 'done';
 
@@ -275,6 +276,16 @@ export default function RegisterForm() {
                 <p className="text-stone-500 text-sm mt-1.5">Free forever — earn rewards from day one</p>
             </div>
 
+            {/* Google Sign-Up */}
+            <GoogleSignInButton redirect="/dashboard" label="Sign up with Google" />
+
+            {/* Divider */}
+            <div className="relative flex items-center gap-3">
+                <div className="flex-1 h-px bg-stone-200" />
+                <span className="text-xs font-medium text-stone-400 whitespace-nowrap">or sign up with email</span>
+                <div className="flex-1 h-px bg-stone-200" />
+            </div>
+
             {error && (
                 <div className="flex items-start gap-3 rounded-xl bg-red-50 border border-red-100 px-4 py-3">
                     <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
@@ -315,7 +326,7 @@ export default function RegisterForm() {
             {/* Phone */}
             <div className="space-y-1.5">
                 <label className="block text-sm font-semibold text-stone-700">
-                    Mobile number <span className="text-stone-400 font-normal text-xs">(for OTP & reminders)</span>
+                    Mobile number <span className="text-stone-400 font-normal text-xs">(for OTP &amp; reminders)</span>
                 </label>
                 <div className="relative group flex items-center">
                     <div className="absolute left-0 h-full flex items-center pl-3.5 border-r border-stone-200 pr-3 pointer-events-none">
@@ -354,7 +365,7 @@ export default function RegisterForm() {
 
             <p className="text-center text-xs text-stone-400">
                 By creating an account you agree to our{' '}
-                <Link href="/terms" className="text-stone-600 hover:underline">Terms</Link> &{' '}
+                <Link href="/terms" className="text-stone-600 hover:underline">Terms</Link> &amp;{' '}
                 <Link href="/privacy-policy" className="text-stone-600 hover:underline">Privacy Policy</Link>
             </p>
 

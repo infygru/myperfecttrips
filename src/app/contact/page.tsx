@@ -105,26 +105,6 @@ export default async function ContactPage() {
                             </ul>
                         </div>
 
-                        {/* Quick Support */}
-                        <div className="rounded-[2rem] bg-brand-900 border border-brand-800 p-8 sm:p-10 text-white relative overflow-hidden">
-                            <div className="absolute top-0 right-0 -m-8 h-32 w-32 rounded-full bg-gold-500/10 blur-xl" />
-                            <div className="relative z-10">
-                                <h3 className="mb-2 font-serif text-2xl font-medium">Need immediate assistance?</h3>
-                                <p className="mb-8 text-sm text-stone-300 font-light leading-relaxed">
-                                    Message us on WhatsApp for quick answers to your travel queries.
-                                </p>
-                                <a
-                                    href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="btn-gold w-full text-brand-950 flex items-center justify-center gap-2"
-                                >
-                                    <WhatsAppIcon className="h-5 w-5" />
-                                    Chat on WhatsApp
-                                </a>
-                            </div>
-                        </div>
-
                         {/* IG Holidays Brand Statement */}
                         <div className="rounded-[2rem] bg-stone-100 border border-stone-200 p-6 text-center">
                             <p className="text-xs text-stone-500 leading-relaxed">

@@ -106,7 +106,7 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col bg-stone-50 overflow-x-hidden">
 
       {/* ── HERO ── */}
-      <section className="relative flex min-h-[75svh] items-center justify-center bg-stone-950 z-30 pb-10 overflow-hidden">
+      <section className="relative flex min-h-[92svh] sm:min-h-[80svh] items-center justify-center bg-stone-950 z-30 pb-14 sm:pb-10">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {heroVideoUrl ? (
             <video src={heroVideoUrl} autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover opacity-60" />
