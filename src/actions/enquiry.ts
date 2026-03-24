@@ -12,7 +12,6 @@ export async function submitFlightEnquiry(formData: FormData) {
             return_date: formData.get("return_date") as string,
             adults: parseInt(formData.get("adults") as string) || 1,
             children: parseInt(formData.get("children") as string) || 0,
-            pax: (parseInt(formData.get("adults") as string) || 1) + (parseInt(formData.get("children") as string) || 0),
             name: formData.get("name") as string,
             phone: formData.get("phone") as string,
             status: "new"
@@ -39,7 +38,6 @@ export async function submitHolidayEnquiry(formData: FormData) {
             budget: formData.get("budget") as string,
             adults: parseInt(formData.get("adults") as string) || 2,
             children: parseInt(formData.get("children") as string) || 0,
-            pax: (parseInt(formData.get("adults") as string) || 2) + (parseInt(formData.get("children") as string) || 0),
             name: formData.get("name") as string,
             phone: formData.get("phone") as string,
             status: "new"

@@ -15,7 +15,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
     try {
         const result = (await directus.request(
-            readItems("blog_posts" as any, { filter: { slug: { _eq: slug } } as any, limit: 1 })
+            readItems("blog_posts" as any, { filter: { slug: { _eq: slug }, status: { _eq: "published" } } as any, limit: 1 })
         )) as any[];
         const post = result?.[0];
         if (post) {
@@ -61,14 +61,14 @@ export default async function BlogDetailPage(props: Props) {
 
     try {
         const result = (await directus.request(
-            readItems("blog_posts" as any, { filter: { slug: { _eq: slug } } as any, limit: 1 })
+            readItems("blog_posts" as any, { filter: { slug: { _eq: slug }, status: { _eq: "published" } } as any, limit: 1 })
         )) as any[];
         if (!result?.length) return notFound();
         post = result[0];
 
         recentPosts = (await directus.request(
             readItems("blog_posts" as any, {
-                filter: { id: { _neq: post.id } } as any,
+                filter: { id: { _neq: post.id }, status: { _eq: "published" } } as any,
                 limit: 3,
                 sort: ["-id"] as any,
             })

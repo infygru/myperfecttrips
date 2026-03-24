@@ -36,7 +36,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
     let allPosts: any[] = [];
     try {
         allPosts = (await directus.request(
-            readItems("blog_posts" as any, { limit: 200, sort: ["-id"] as any })
+            readItems("blog_posts" as any, { filter: { status: { _eq: "published" } } as any, limit: 200, sort: ["-id"] as any })
         )) as any[];
     } catch {}
 
