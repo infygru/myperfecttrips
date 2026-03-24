@@ -66,7 +66,10 @@ export default async function DashboardPage() {
     const pointsToNext = Math.max(0, MIN_REDEEM - ((loyaltyBalance % MIN_REDEEM) || MIN_REDEEM));
     const progressPct  = Math.min(100, ((loyaltyBalance % MIN_REDEEM) / MIN_REDEEM) * 100);
     const canRedeem    = loyaltyBalance >= MIN_REDEEM;
-    const initials     = `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase() || '?';
+    const displayName  = [user.first_name, user.last_name].filter(Boolean).join(' ').trim() || user.email.split('@')[0];
+    const initials     = user.first_name || user.last_name
+        ? `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase()
+        : user.email[0].toUpperCase();
 
     return (
         <div className="space-y-6">
@@ -85,7 +88,7 @@ export default async function DashboardPage() {
                         </div>
                         <div>
                             <p className="text-stone-400 text-xs">{greeting()}</p>
-                            <h1 className="text-xl font-bold text-white mt-0.5">{user.first_name} {user.last_name}</h1>
+                            <h1 className="text-xl font-bold text-white mt-0.5">{displayName}</h1>
                             <p className="text-stone-500 text-xs mt-1">
                                 {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                             </p>

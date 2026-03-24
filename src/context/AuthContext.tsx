@@ -4,11 +4,12 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 
 interface AuthUser {
     id: string;
-    first_name: string;
-    last_name: string;
+    first_name: string | null;
+    last_name: string | null;
     email: string;
-    phone?: string;
-    avatar?: string;
+    phone?: string | null;
+    avatar?: string | null;
+    default_avatar_url?: string | null;
 }
 
 interface AuthContextType {
@@ -71,4 +72,25 @@ export function useAuth() {
     const ctx = useContext(AuthContext);
     if (!ctx) throw new Error('useAuth must be used within AuthProvider');
     return ctx;
+}
+
+/** Returns the display name — falls back to email prefix if no name set */
+export function getUserDisplayName(user: AuthUser): string {
+    const name = [user.first_name, user.last_name].filter(Boolean).join(' ').trim();
+    return name || user.email.split('@')[0];
+}
+
+/** Returns initials (2 chars) or first letter of email */
+export function getUserInitials(user: AuthUser): string {
+    if (user.first_name || user.last_name) {
+        return `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase();
+    }
+    return user.email[0].toUpperCase();
+}
+
+/** Returns the avatar URL to use: user photo > default_avatar > null */
+export function getAvatarUrl(user: AuthUser, directusUrl: string): string | null {
+    if (user.avatar) return `${directusUrl}/assets/${user.avatar}`;
+    if (user.default_avatar_url) return user.default_avatar_url;
+    return null;
 }

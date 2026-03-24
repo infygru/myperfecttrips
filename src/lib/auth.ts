@@ -13,13 +13,27 @@ export async function getCurrentUser(): Promise<any | null> {
     if (!token) return null;
 
     try {
-        const res = await fetch(`${DIRECTUS_URL}/users/me`, {
+        const res = await fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,last_name,email,phone,avatar,status`, {
             headers: { Authorization: `Bearer ${token}` },
             cache: 'no-store',
         });
         if (!res.ok) return null;
         const data = await res.json();
-        return data.data || null;
+        const user = data.data;
+        if (!user) return null;
+
+        // Attach default_avatar_url from site settings
+        try {
+            const ssRes = await fetch(`${DIRECTUS_URL}/items/site_settings?fields=default_avatar&limit=1`, {
+                headers: { Authorization: `Bearer ${token}` },
+                cache: 'no-store',
+            });
+            const ss = await ssRes.json();
+            const defaultAvatar = ss?.data?.[0]?.default_avatar || ss?.data?.default_avatar;
+            if (defaultAvatar) user.default_avatar_url = `${DIRECTUS_URL}/assets/${defaultAvatar}`;
+        } catch { /* optional */ }
+
+        return user;
     } catch {
         return null;
     }

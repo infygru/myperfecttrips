@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth, getUserDisplayName, getUserInitials, getAvatarUrl } from '@/context/AuthContext';
 import { LayoutDashboard, Ticket, User, LogOut, Star } from 'lucide-react';
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://api.igholidays.com';
@@ -17,8 +17,9 @@ const navItems = [
 export default function DashboardNav({ user }: { user: any }) {
     const pathname = usePathname();
     const { logout } = useAuth();
-    const initials = `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase() || '?';
-    const avatarUrl = user.avatar ? `${DIRECTUS_URL}/assets/${user.avatar}` : null;
+    const displayName = getUserDisplayName(user);
+    const initials = getUserInitials(user);
+    const avatarUrl = getAvatarUrl(user, DIRECTUS_URL);
 
     return (
         <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
@@ -28,7 +29,7 @@ export default function DashboardNav({ user }: { user: any }) {
                     <div className="relative shrink-0">
                         <div className="h-10 w-10 rounded-xl overflow-hidden bg-brand-900 flex items-center justify-center">
                             {avatarUrl ? (
-                                <Image src={avatarUrl} alt={user.first_name} width={40} height={40} className="h-full w-full object-cover" unoptimized />
+                                <Image src={avatarUrl} alt={displayName} width={40} height={40} className="h-full w-full object-cover" unoptimized />
                             ) : (
                                 <span className="text-sm font-bold text-white">{initials}</span>
                             )}
@@ -36,7 +37,7 @@ export default function DashboardNav({ user }: { user: any }) {
                         <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-500 border-2 border-white" />
                     </div>
                     <div className="min-w-0">
-                        <p className="text-sm font-semibold text-stone-900 truncate">{user.first_name} {user.last_name}</p>
+                        <p className="text-sm font-semibold text-stone-900 truncate">{displayName}</p>
                         <p className="text-xs text-stone-400 truncate">{user.email}</p>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { User, Mail, Phone, Save, Lock, Eye, EyeOff, Camera, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
+import { getUserDisplayName, getUserInitials } from '@/context/AuthContext';
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://api.igholidays.com';
 
@@ -21,9 +22,10 @@ export default function ProfileForm({ user }: { user: any }) {
     const [infoError, setInfoError] = useState('');
 
     // ── Avatar ─────────────────────────────────────────────────────────────
-    const [avatarUrl, setAvatarUrl] = useState<string | null>(
-        user.avatar ? `${DIRECTUS_URL}/assets/${user.avatar}` : null
-    );
+    const resolvedAvatar = user.avatar
+        ? `${DIRECTUS_URL}/assets/${user.avatar}`
+        : user.default_avatar_url || null;
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(resolvedAvatar);
     const [avatarUploading, setAvatarUploading] = useState(false);
     const [avatarError, setAvatarError] = useState('');
     const fileRef = useRef<HTMLInputElement>(null);
@@ -36,7 +38,8 @@ export default function ProfileForm({ user }: { user: any }) {
     const [pwSuccess, setPwSuccess] = useState(false);
     const [pwError, setPwError] = useState('');
 
-    const initials = `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase() || '?';
+    const initials = getUserInitials(user);
+    const displayName = getUserDisplayName(user);
 
     // ── Handlers ───────────────────────────────────────────────────────────
 
@@ -157,7 +160,7 @@ export default function ProfileForm({ user }: { user: any }) {
 
                     <div>
                         <p className="text-sm font-semibold text-stone-800">
-                            {user.first_name} {user.last_name}
+                            {displayName}
                         </p>
                         <p className="text-xs text-stone-400 mt-0.5">{user.email}</p>
                         <button

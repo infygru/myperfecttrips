@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth, getUserDisplayName, getUserInitials, getAvatarUrl } from '@/context/AuthContext';
 import { User, LogOut, Ticket, LayoutDashboard, ChevronDown, Settings, Lock } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
@@ -35,8 +35,9 @@ export default function HeaderAuthButton() {
         );
     }
 
-    const initials = `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase() || '?';
-    const avatarUrl = user.avatar ? `${DIRECTUS_URL}/assets/${user.avatar}` : null;
+    const displayName = getUserDisplayName(user);
+    const initials = getUserInitials(user);
+    const avatarUrl = getAvatarUrl(user, DIRECTUS_URL);
 
     return (
         <div className="relative" ref={ref}>
@@ -47,12 +48,12 @@ export default function HeaderAuthButton() {
                 {/* Avatar */}
                 <div className="h-7 w-7 rounded-full overflow-hidden bg-brand-900 flex items-center justify-center flex-shrink-0 border border-stone-100">
                     {avatarUrl ? (
-                        <Image src={avatarUrl} alt={user.first_name} width={28} height={28} className="h-full w-full object-cover" unoptimized />
+                        <Image src={avatarUrl} alt={displayName} width={28} height={28} className="h-full w-full object-cover" unoptimized />
                     ) : (
                         <span className="text-xs font-bold text-white">{initials}</span>
                     )}
                 </div>
-                <span className="hidden sm:block max-w-[90px] truncate">{user.first_name}</span>
+                <span className="hidden sm:block max-w-[90px] truncate">{displayName}</span>
                 <ChevronDown className={`h-3.5 w-3.5 text-stone-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
             </button>
 
@@ -63,13 +64,13 @@ export default function HeaderAuthButton() {
                         <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-xl overflow-hidden bg-brand-900 flex items-center justify-center flex-shrink-0">
                                 {avatarUrl ? (
-                                    <Image src={avatarUrl} alt={user.first_name} width={40} height={40} className="h-full w-full object-cover" unoptimized />
+                                    <Image src={avatarUrl} alt={displayName} width={40} height={40} className="h-full w-full object-cover" unoptimized />
                                 ) : (
                                     <span className="text-sm font-bold text-white">{initials}</span>
                                 )}
                             </div>
                             <div className="min-w-0">
-                                <p className="text-sm font-semibold text-stone-900 truncate">{user.first_name} {user.last_name}</p>
+                                <p className="text-sm font-semibold text-stone-900 truncate">{displayName}</p>
                                 <p className="text-xs text-stone-400 truncate">{user.email}</p>
                             </div>
                         </div>
