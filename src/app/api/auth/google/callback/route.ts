@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const code = searchParams.get('code');
   const state = searchParams.get('state');
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const base = process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin;
   const redirectTo = state ? decodeURIComponent(state) : '/dashboard';
 
   if (!code) {
