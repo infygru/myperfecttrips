@@ -1,9 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { LayoutDashboard, Ticket, User, LogOut, Star } from 'lucide-react';
+
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://api.igholidays.com';
 
 const navItems = [
     { href: '/dashboard',          label: 'Overview',    icon: LayoutDashboard },
@@ -15,6 +18,7 @@ export default function DashboardNav({ user }: { user: any }) {
     const pathname = usePathname();
     const { logout } = useAuth();
     const initials = `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase() || '?';
+    const avatarUrl = user.avatar ? `${DIRECTUS_URL}/assets/${user.avatar}` : null;
 
     return (
         <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
@@ -22,8 +26,12 @@ export default function DashboardNav({ user }: { user: any }) {
             <div className="px-4 py-5 border-b border-stone-100">
                 <div className="flex items-center gap-3 mb-4">
                     <div className="relative shrink-0">
-                        <div className="h-10 w-10 rounded-xl bg-brand-900 flex items-center justify-center text-white font-bold text-sm">
-                            {initials}
+                        <div className="h-10 w-10 rounded-xl overflow-hidden bg-brand-900 flex items-center justify-center">
+                            {avatarUrl ? (
+                                <Image src={avatarUrl} alt={user.first_name} width={40} height={40} className="h-full w-full object-cover" unoptimized />
+                            ) : (
+                                <span className="text-sm font-bold text-white">{initials}</span>
+                            )}
                         </div>
                         <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-500 border-2 border-white" />
                     </div>

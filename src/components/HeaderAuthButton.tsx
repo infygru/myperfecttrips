@@ -1,9 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
-import { User, LogOut, Ticket, LayoutDashboard, ChevronDown, Settings } from 'lucide-react';
+import { User, LogOut, Ticket, LayoutDashboard, ChevronDown, Settings, Lock } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://api.igholidays.com';
 
 export default function HeaderAuthButton() {
     const { user, loading, logout } = useAuth();
@@ -33,6 +36,7 @@ export default function HeaderAuthButton() {
     }
 
     const initials = `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase() || '?';
+    const avatarUrl = user.avatar ? `${DIRECTUS_URL}/assets/${user.avatar}` : null;
 
     return (
         <div className="relative" ref={ref}>
@@ -40,20 +44,29 @@ export default function HeaderAuthButton() {
                 onClick={() => setOpen(o => !o)}
                 className="flex items-center gap-2.5 rounded-full border border-stone-200 bg-white pl-1.5 pr-3 py-1.5 text-sm font-semibold text-stone-700 shadow-sm hover:bg-stone-50 hover:border-stone-300 transition-all"
             >
-                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-900 text-white text-xs font-bold flex-shrink-0">
-                    {initials}
+                {/* Avatar */}
+                <div className="h-7 w-7 rounded-full overflow-hidden bg-brand-900 flex items-center justify-center flex-shrink-0 border border-stone-100">
+                    {avatarUrl ? (
+                        <Image src={avatarUrl} alt={user.first_name} width={28} height={28} className="h-full w-full object-cover" unoptimized />
+                    ) : (
+                        <span className="text-xs font-bold text-white">{initials}</span>
+                    )}
                 </div>
                 <span className="hidden sm:block max-w-[90px] truncate">{user.first_name}</span>
                 <ChevronDown className={`h-3.5 w-3.5 text-stone-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
             </button>
 
             {open && (
-                <div className="absolute right-0 top-full mt-2 w-52 rounded-2xl border border-stone-200 bg-white shadow-xl py-1.5 z-50 overflow-hidden">
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-stone-200 bg-white shadow-xl py-1.5 z-50 overflow-hidden">
                     {/* User info */}
                     <div className="px-4 py-3 border-b border-stone-100">
                         <div className="flex items-center gap-3">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-900 text-white text-sm font-bold flex-shrink-0">
-                                {initials}
+                            <div className="h-10 w-10 rounded-xl overflow-hidden bg-brand-900 flex items-center justify-center flex-shrink-0">
+                                {avatarUrl ? (
+                                    <Image src={avatarUrl} alt={user.first_name} width={40} height={40} className="h-full w-full object-cover" unoptimized />
+                                ) : (
+                                    <span className="text-sm font-bold text-white">{initials}</span>
+                                )}
                             </div>
                             <div className="min-w-0">
                                 <p className="text-sm font-semibold text-stone-900 truncate">{user.first_name} {user.last_name}</p>
@@ -75,6 +88,10 @@ export default function HeaderAuthButton() {
                         <Link href="/dashboard/profile" onClick={() => setOpen(false)}
                             className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-colors">
                             <Settings className="h-4 w-4 text-stone-400" /> Profile Settings
+                        </Link>
+                        <Link href="/dashboard/profile#change-password" onClick={() => setOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-colors">
+                            <Lock className="h-4 w-4 text-stone-400" /> Change Password
                         </Link>
                     </div>
 
