@@ -13,24 +13,37 @@ export async function getCurrentUser(): Promise<any | null> {
     if (!token) return null;
 
     try {
-        const res = await fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,last_name,email,phone,avatar,status`, {
+        // Step 1: verify identity with user token — just need their ID
+        const meRes = await fetch(`${DIRECTUS_URL}/users/me?fields=id`, {
             headers: { Authorization: `Bearer ${token}` },
             cache: 'no-store',
         });
-        if (!res.ok) return null;
-        const data = await res.json();
-        const user = data.data;
+        if (!meRes.ok) return null;
+        const meData = await meRes.json();
+        const userId = meData.data?.id;
+        if (!userId) return null;
+
+        // Step 2: fetch complete profile via admin token — always returns full data
+        const [userRes, ssRes] = await Promise.all([
+            fetch(`${DIRECTUS_URL}/users/${userId}?fields=id,first_name,last_name,email,phone,avatar`, {
+                headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
+                cache: 'no-store',
+            }),
+            fetch(`${DIRECTUS_URL}/items/site_settings?fields=default_avatar&limit=1`, {
+                headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
+                cache: 'no-store',
+            }),
+        ]);
+
+        if (!userRes.ok) return null;
+        const user = (await userRes.json()).data;
         if (!user) return null;
 
-        // Attach default_avatar_url from site settings
+        // Attach default avatar
         try {
-            const ssRes = await fetch(`${DIRECTUS_URL}/items/site_settings?fields=default_avatar&limit=1`, {
-                headers: { Authorization: `Bearer ${token}` },
-                cache: 'no-store',
-            });
             const ss = await ssRes.json();
-            const defaultAvatar = ss?.data?.[0]?.default_avatar || ss?.data?.default_avatar;
-            if (defaultAvatar) user.default_avatar_url = `${DIRECTUS_URL}/assets/${defaultAvatar}`;
+            const da = ss?.data?.[0]?.default_avatar || ss?.data?.default_avatar;
+            if (da) user.default_avatar_url = `${DIRECTUS_URL}/assets/${da}`;
         } catch { /* optional */ }
 
         return user;
