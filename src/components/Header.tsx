@@ -3,22 +3,15 @@ import Image from "next/image";
 import { unstable_noStore as noStore } from "next/cache";
 import { getSiteSettings } from "@/lib/directus";
 import { Compass } from "lucide-react";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import MobileMenu from "@/components/MobileMenu";
 import ServicesDropdown from "@/components/ServicesDropdown";
 import HeaderAuthButton from "@/components/HeaderAuthButton";
-import { getCurrentUser } from "@/lib/auth";
 
 export default async function Header() {
     noStore();
     let s: any = null;
     try {
         s = await getSiteSettings();
-    } catch { }
-    let isLoggedIn = false;
-    try {
-        const u = await getCurrentUser();
-        isLoggedIn = !!u;
     } catch { }
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
@@ -79,10 +72,7 @@ export default async function Header() {
                 {/* Desktop Nav */}
                 <div className="hidden items-center gap-6 lg:flex">
                     <nav className="flex items-center gap-1">
-                        {/* Services dropdown */}
                         <ServicesDropdown />
-
-                        {/* Other nav links */}
                         {otherNav.map((link) => (
                             <Link
                                 key={link.name}
@@ -93,22 +83,8 @@ export default async function Header() {
                             </Link>
                         ))}
                     </nav>
-                    <div className="h-6 w-px bg-stone-300/50"></div>
+                    <div className="h-6 w-px bg-stone-300/50" />
                     <HeaderAuthButton />
-                    {!isLoggedIn && (
-                        <>
-                            <div className="h-6 w-px bg-stone-300/50"></div>
-                            <a
-                                href={`https://wa.me/${phone.replace(/[^0-9]/g, "")}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 rounded-full border border-stone-200 bg-white px-5 py-2 text-sm font-semibold text-stone-700 shadow-sm transition-all hover:bg-[#25D366]/10 hover:text-[#25D366] hover:border-[#25D366]/30"
-                            >
-                                <WhatsAppIcon className="h-4 w-4 text-[#25D366]" />
-                                {phone}
-                            </a>
-                        </>
-                    )}
                 </div>
 
                 {/* Mobile toggle */}
