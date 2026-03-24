@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { Ticket, Calendar, Users, ChevronRight, Plane, CheckCircle2, AlertCircle, XCircle, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = { title: 'My Bookings | IG Holidays' };
+export const metadata: Metadata = { title: 'My Bookings | My Perfect Trips' };
 export const dynamic = 'force-dynamic';
 
 function formatDate(d: string) {
     if (!d) return '—';
-    return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 const STATUS: Record<string, { label: string; bg: string; text: string; border: string; icon: any }> = {
@@ -103,7 +103,7 @@ export default async function BookingsPage() {
                                         </div>
                                         <div className="flex items-center gap-3 shrink-0">
                                             <div className="text-right">
-                                                <p className="text-base font-bold text-stone-900">₹{Number(b.total_amount).toLocaleString('en-IN')}</p>
+                                                <p className="text-base font-bold text-stone-900">£{Number(b.total_amount).toLocaleString('en-GB')}</p>
                                                 <p className={`text-xs font-semibold ${p.text}`}>{p.label}</p>
                                             </div>
                                             <Link href={`/dashboard/bookings/${b.id}`}

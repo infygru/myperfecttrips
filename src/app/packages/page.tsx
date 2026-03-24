@@ -10,7 +10,7 @@ import SortSelect from "@/components/SortSelect";
 
 export async function generateMetadata(): Promise<Metadata> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-    const title = "Holiday Packages | IG Holidays – Premium Travel Agency";
+    const title = "Holiday Packages | My Perfect Trips – Premium Travel Agency";
     const description = "Explore our handpicked collection of luxury holiday packages across India and the world. Customised itineraries for every traveller.";
 
     return {
@@ -282,7 +282,7 @@ export default async function PackagesPage(props: {
                                                         <p className="text-[9px] font-bold uppercase tracking-widest text-stone-400">Starting from</p>
                                                         {pkg.price ? (
                                                             <p className="font-serif text-xl font-semibold text-brand-900 leading-tight">
-                                                                ₹{Number(pkg.price).toLocaleString("en-IN")}
+                                                                £{Number(pkg.price).toLocaleString("en-GB")}
                                                             </p>
                                                         ) : (
                                                             <p className="font-serif text-lg font-semibold text-stone-700">On Request</p>

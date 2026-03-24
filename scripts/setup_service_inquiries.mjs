@@ -5,9 +5,9 @@
  * Run: node scripts/setup_service_inquiries.mjs
  */
 
-const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://api.igholidays.com";
-const ADMIN_EMAIL = "admin@igholidays.com";
-const ADMIN_PASSWORD = "e4HiSzm3PsFhR3mA6Uh7YoU2uqjOHrF3";
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://admin.myperfecttrips.com";
+const ADMIN_EMAIL = "hosting@infygru.com";
+const ADMIN_PASSWORD = "Naren@123info";
 const PUBLIC_POLICY_ID = "abf8a154-5b1c-4a46-ac9c-7300570f4f17";
 
 async function getToken() {

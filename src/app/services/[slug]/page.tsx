@@ -14,22 +14,22 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: Props): Promise<Metadata> {
     const { slug } = await props.params;
     const svc = getServiceBySlug(slug);
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
-    if (!svc) return { title: "Service Not Found | IG Holidays" };
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
+    if (!svc) return { title: "Service Not Found | My Perfect Trips" };
     return {
-        title: `${svc.title} in India | IG Holidays — ${svc.tagline}`,
+        title: `${svc.title} in India | My Perfect Trips — ${svc.tagline}`,
         description: svc.seoDescription,
         keywords: svc.seoKeywords.join(", "),
         alternates: { canonical: `${baseUrl}/services/${slug}` },
         openGraph: {
-            title: `${svc.title} | IG Holidays`,
+            title: `${svc.title} | My Perfect Trips`,
             description: svc.seoDescription,
             url: `${baseUrl}/services/${slug}`,
             type: "website",
         },
         twitter: {
             card: "summary_large_image",
-            title: `${svc.title} | IG Holidays`,
+            title: `${svc.title} | My Perfect Trips`,
             description: svc.seoDescription,
         },
     };

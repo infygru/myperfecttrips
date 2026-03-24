@@ -11,16 +11,16 @@ import CountUpNumber from "@/components/CountUpNumber";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-    title: "Travel Services in Chennai & India | Corporate MICE, Visa, Group & Holiday Planning | IG Holidays",
-    description: "IG Holidays offers complete travel services in India — Corporate MICE events, group travel bookings, visa assistance, college tours, corporate travel packages, and bespoke luxury holiday planning. Best travel agency in Chennai.",
+    title: "Travel Services in Chennai & India | Corporate MICE, Visa, Group & Holiday Planning | My Perfect Trips",
+    description: "My Perfect Trips offers complete travel services in India — Corporate MICE events, group travel bookings, visa assistance, college tours, corporate travel packages, and bespoke luxury holiday planning. Best travel agency in Chennai.",
     keywords: "travel services India, corporate MICE Chennai, group travel India, visa assistance Chennai, bespoke holiday planning India, travel agency Chennai, holiday packages India, corporate travel management",
     alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com"}/services`,
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com"}/services`,
     },
     openGraph: {
-        title: "Travel Services | IG Holidays — Corporate MICE, Visa & Holiday Planning",
+        title: "Travel Services | My Perfect Trips — Corporate MICE, Visa & Holiday Planning",
         description: "Complete travel services from India's leading travel agency — corporate events, group tours, visa processing, and luxury holidays.",
-        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com"}/services`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com"}/services`,
         type: "website",
     },
 };
@@ -100,7 +100,7 @@ export default async function ServicesPage() {
                             </h1>
 
                             <p className="hero-anim-3 text-slate-400 text-lg leading-relaxed max-w-xl mb-8">
-                                From corporate MICE and group bookings to visa facilitation and bespoke luxury holidays — IG Holidays is your single trusted partner for extraordinary travel.
+                                From corporate MICE and group bookings to visa facilitation and bespoke luxury holidays — My Perfect Trips is your single trusted partner for extraordinary travel.
                             </p>
 
                             <div className="hero-anim-4 flex flex-wrap gap-3 mb-12">
@@ -264,7 +264,7 @@ export default async function ServicesPage() {
                         {/* Left — statement */}
                         <div data-aos="fade-right">
                             <div className="inline-flex items-center gap-2 rounded-full bg-brand-950/5 border border-brand-950/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-700 mb-5">
-                                Why IG Holidays
+                                Why My Perfect Trips
                             </div>
                             <h2 className="font-serif text-3xl sm:text-4xl font-medium text-brand-950 leading-tight mb-6">
                                 The Difference Is in the Details
@@ -382,7 +382,7 @@ export default async function ServicesPage() {
                         {[
                             { q: "What destinations do you specialise in?", a: "Domestically: Andaman, Kashmir, Kerala, Goa, Rajasthan. Internationally: UAE, Maldives, Thailand, Bali, Singapore, Europe, and the UK, among many others." },
                             { q: "Do you offer group discounts for college or corporate tours?", a: "Yes. We hold volume contracts with airlines and hotel chains, securing subsidised B2B group rates for educational and corporate travel." },
-                            { q: "Can IGHolidays assist with travel insurance?", a: "Absolutely. Travel insurance is a core part of our offering — covering medical emergencies, trip cancellations, and baggage delays." },
+                            { q: "Can MyPerfectTrips assist with travel insurance?", a: "Absolutely. Travel insurance is a core part of our offering — covering medical emergencies, trip cancellations, and baggage delays." },
                             { q: "How early should we start planning an international holiday?", a: "For visa-required destinations (Europe, US, UK), plan 3–4 months ahead. For visa-on-arrival or domestic trips, 1–2 months is sufficient for best rates." },
                             { q: "Do you have a B2B partner program?", a: "Yes. We have a dedicated B2B desk for travel agents and corporate travel bookers. Contact us for partnership rates and commission structures." },
                             { q: "What is the booking process?", a: "Enquire → receive a custom proposal within 24h → review & refine → confirm with advance payment → travel. Simple and transparent throughout." },

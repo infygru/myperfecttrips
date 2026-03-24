@@ -10,12 +10,12 @@ import {
 import { getUserLoyaltyBalance, getLoyaltyTransactions, MIN_REDEEM } from '@/lib/loyalty';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = { title: 'My Dashboard | IG Holidays' };
+export const metadata: Metadata = { title: 'My Dashboard | My Perfect Trips' };
 export const dynamic = 'force-dynamic';
 
 function fmt(d: string) {
     if (!d) return '—';
-    return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 function daysUntil(d: string) {
     return Math.ceil((new Date(d).getTime() - Date.now()) / 86400000);
@@ -91,7 +91,7 @@ export default async function DashboardPage() {
                     { icon: Ticket,      color: 'text-indigo-600 bg-indigo-50',  label: 'Total Trips',  value: confirmed.length,                                        sub: 'all time'      },
                     { icon: CheckCircle2,color: 'text-emerald-600 bg-emerald-50',label: 'Confirmed',    value: all.filter(b => b.status === 'confirmed').length,         sub: 'active'        },
                     { icon: Globe,       color: 'text-sky-600 bg-sky-50',        label: 'Upcoming',     value: upcoming.length,                                         sub: 'trips ahead'   },
-                    { icon: TrendingUp,  color: 'text-amber-600 bg-amber-50',    label: 'Total Spent',  value: spent > 0 ? `₹${(spent/1000).toFixed(0)}K` : '₹0',      sub: 'on holidays'   },
+                    { icon: TrendingUp,  color: 'text-amber-600 bg-amber-50',    label: 'Total Spent',  value: spent > 0 ? `£${(spent/1000).toFixed(0)}K` : '£0',      sub: 'on holidays'   },
                 ].map(({ icon: Icon, color, label, value, sub }) => (
                     <div key={label} className="bg-white rounded-2xl border border-stone-200 shadow-sm p-4 flex items-center gap-3">
                         <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center ${color}`}>
@@ -132,11 +132,11 @@ export default async function DashboardPage() {
                         <p className="text-xs text-stone-400 font-medium mb-1">Your Points Balance</p>
                         <div className="flex items-baseline gap-2 mb-1">
                             <span className="text-5xl font-black text-stone-900 tabular-nums">
-                                {loyaltyBalance.toLocaleString('en-IN')}
+                                {loyaltyBalance.toLocaleString('en-GB')}
                             </span>
                             <span className="text-stone-400 text-sm font-semibold">pts</span>
                         </div>
-                        <p className="text-xs text-stone-400 mb-4">≈ ₹{loyaltyBalance.toLocaleString('en-IN')} cashback value</p>
+                        <p className="text-xs text-stone-400 mb-4">≈ £{loyaltyBalance.toLocaleString('en-GB')} cashback value</p>
 
                         {/* progress */}
                         {canRedeem ? (
@@ -144,7 +144,7 @@ export default async function DashboardPage() {
                                 <Gift className="h-5 w-5 text-emerald-600 shrink-0" />
                                 <div>
                                     <p className="text-sm font-black text-emerald-800">Ready to redeem!</p>
-                                    <p className="text-xs text-emerald-600">Apply at checkout for ₹{MIN_REDEEM} off</p>
+                                    <p className="text-xs text-emerald-600">Apply at checkout for £{MIN_REDEEM} off</p>
                                 </div>
                             </div>
                         ) : (
@@ -157,7 +157,7 @@ export default async function DashboardPage() {
                                     <div className="h-full rounded-full bg-gradient-to-r from-amber-400 to-yellow-400 transition-all"
                                         style={{ width: `${pctProgress || 2}%` }} />
                                 </div>
-                                <p className="text-[10px] text-stone-400 mt-1.5">₹100 spent = 1 point · Redeem at {MIN_REDEEM} pts</p>
+                                <p className="text-[10px] text-stone-400 mt-1.5">£100 spent = 1 point · Redeem at {MIN_REDEEM} pts</p>
                             </div>
                         )}
 
@@ -221,7 +221,7 @@ export default async function DashboardPage() {
 
                             <div className="flex items-center justify-between mb-4 rounded-xl bg-stone-50 border border-stone-100 px-4 py-2.5">
                                 <span className="text-xs text-stone-500">Total paid</span>
-                                <span className="text-base font-black text-stone-900">₹{Number(next.total_amount).toLocaleString('en-IN')}</span>
+                                <span className="text-base font-black text-stone-900">£{Number(next.total_amount).toLocaleString('en-GB')}</span>
                             </div>
 
                             <Link href={`/dashboard/bookings/${next.id}`}
@@ -289,7 +289,7 @@ export default async function DashboardPage() {
                                         </p>
                                     </div>
                                     <div className="text-right shrink-0">
-                                        <p className="text-sm font-black text-stone-900">₹{Number(b.total_amount).toLocaleString('en-IN')}</p>
+                                        <p className="text-sm font-black text-stone-900">£{Number(b.total_amount).toLocaleString('en-GB')}</p>
                                         <span className={`inline-flex items-center gap-1 text-[10px] font-bold rounded-full px-2 py-0.5 mt-0.5 ${s.bg} ${s.text}`}>
                                             <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />{s.label}
                                         </span>
@@ -333,10 +333,10 @@ export default async function DashboardPage() {
                             <span className="flex-1">+91 88077 09919</span>
                             <ArrowRight className="h-3.5 w-3.5 text-stone-300 group-hover:text-indigo-400" />
                         </a>
-                        <a href="mailto:info@igholidays.com"
+                        <a href="mailto:info@myperfecttrips.com"
                             className="flex items-center gap-3 rounded-xl border border-stone-200 px-4 py-2.5 text-sm font-semibold text-stone-700 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700 transition-all group">
                             <Mail className="h-4 w-4 text-indigo-500 shrink-0" />
-                            <span className="flex-1">info@igholidays.com</span>
+                            <span className="flex-1">info@myperfecttrips.com</span>
                             <ArrowRight className="h-3.5 w-3.5 text-stone-300 group-hover:text-indigo-400" />
                         </a>
                     </div>

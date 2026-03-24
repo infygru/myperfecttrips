@@ -4,7 +4,7 @@ function getBaseUrl(req: NextRequest): string {
     // Explicit env var always wins
     if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
     // Behind Coolify / any reverse proxy — use forwarded headers
-    const host  = req.headers.get('x-forwarded-host') || req.headers.get('host') || 'igholidays.com';
+    const host  = req.headers.get('x-forwarded-host') || req.headers.get('host') || 'myperfecttrips.com';
     const proto = req.headers.get('x-forwarded-proto') || 'https';
     return `${proto}://${host}`;
 }

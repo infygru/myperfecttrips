@@ -5,7 +5,7 @@ import { readItems } from "@directus/sdk";
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
   const staticRoutes: { path: string; freq: "daily" | "weekly" | "monthly"; priority: number }[] = [
     { path: "",                freq: "daily",   priority: 1.0 },

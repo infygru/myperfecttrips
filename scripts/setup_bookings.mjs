@@ -182,7 +182,7 @@ const paymentFields = [
     },
 ];
 
-console.log('🚀 IG Holidays — Setting up bookings & payments collections');
+console.log('🚀 My Perfect Trips — Setting up bookings & payments collections');
 console.log(`   API: ${BASE_URL}`);
 
 await createCollection('bookings', bookingFields, {

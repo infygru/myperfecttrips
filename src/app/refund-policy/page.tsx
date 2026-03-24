@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
 export const metadata: Metadata = {
-    title: "Refund & Cancellation Policy | IG Holidays",
-    description: "Understand the cancellation and refund policy for bookings made through IG Holidays. Clear timelines, refund amounts, and conditions explained.",
+    title: "Refund & Cancellation Policy | My Perfect Trips",
+    description: "Understand the cancellation and refund policy for bookings made through My Perfect Trips. Clear timelines, refund amounts, and conditions explained.",
     alternates: { canonical: `${BASE}/refund-policy` },
     robots: { index: true, follow: false },
-    openGraph: { title: "Refund & Cancellation Policy | IG Holidays", url: `${BASE}/refund-policy`, siteName: "IG Holidays", type: "website" },
+    openGraph: { title: "Refund & Cancellation Policy | My Perfect Trips", url: `${BASE}/refund-policy`, siteName: "My Perfect Trips", type: "website" },
 };
 
 export default function RefundPolicyPage() {
@@ -24,10 +24,10 @@ export default function RefundPolicyPage() {
 
             <section className="container-inner -mt-12 relative z-20">
                 <div className="rounded-[2.5rem] bg-white p-8 sm:p-16 shadow-2xl border border-stone-100 prose prose-stone max-w-none prose-headings:font-serif prose-headings:font-medium prose-headings:text-brand-950 prose-a:text-brand-700">
-                    <p className="lead">At <strong>IG Holidays</strong> (Infygru Private Limited), we understand that plans change. This policy outlines our cancellation and refund procedures for bookings made through us.</p>
+                    <p className="lead">At <strong>My Perfect Trips</strong> (Infygru Private Limited), we understand that plans change. This policy outlines our cancellation and refund procedures for bookings made through us.</p>
 
                     <h2>1. Cancellation by the Client</h2>
-                    <p>Cancellation charges are calculated from the date we receive your written cancellation notice at <a href="mailto:info@igholidays.com">info@igholidays.com</a>, and are as follows:</p>
+                    <p>Cancellation charges are calculated from the date we receive your written cancellation notice at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>, and are as follows:</p>
                     <ul>
                         <li><strong>60+ days before departure:</strong> Loss of deposit only.</li>
                         <li><strong>45–59 days before departure:</strong> 25% of total package cost.</li>
@@ -46,7 +46,7 @@ export default function RefundPolicyPage() {
                         <li>Payments to third-party suppliers who have their own non-refundable policies.</li>
                     </ul>
 
-                    <h2>3. Cancellation by IG Holidays</h2>
+                    <h2>3. Cancellation by My Perfect Trips</h2>
                     <p>In rare circumstances, we may need to cancel a booking (e.g., due to insufficient bookings, natural disasters, or events beyond our control). In such cases, we will:</p>
                     <ul>
                         <li>Notify you at the earliest opportunity.</li>
@@ -58,16 +58,16 @@ export default function RefundPolicyPage() {
                     <p>Approved refunds will be processed within <strong>10–15 business days</strong> of the cancellation confirmation to the original payment method. Processing time may vary depending on your bank or payment provider.</p>
 
                     <h2>5. Amendments</h2>
-                    <p>Changes to bookings (dates, destinations, accommodation) may incur amendment fees from airlines and hotels on top of our administrative fee of ₹1,500 per person per change.</p>
+                    <p>Changes to bookings (dates, destinations, accommodation) may incur amendment fees from airlines and hotels on top of our administrative fee of £1,500 per person per change.</p>
 
                     <h2>6. Travel Insurance</h2>
                     <p>We strongly recommend purchasing comprehensive travel insurance which may cover cancellation costs in certain circumstances. Please consult your insurance provider for details.</p>
 
                     <h2>7. Contact Us</h2>
-                    <p>To request a cancellation or discuss a refund, please contact us at <a href="mailto:info@igholidays.com">info@igholidays.com</a> with your booking reference number.</p>
+                    <p>To request a cancellation or discuss a refund, please contact us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a> with your booking reference number.</p>
 
                     <hr />
-                    <p className="text-sm text-stone-500">IG Holidays is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
+                    <p className="text-sm text-stone-500">My Perfect Trips is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
                 </div>
             </section>
         </main>

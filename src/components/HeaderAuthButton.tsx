@@ -6,7 +6,7 @@ import { useAuth, getUserDisplayName, getUserInitials, getAvatarUrl } from '@/co
 import { User, LogOut, Ticket, LayoutDashboard, ChevronDown, Settings, Lock } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
-const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://api.igholidays.com';
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://api.myperfecttrips.com';
 
 export default function HeaderAuthButton() {
     const { user, loading, logout } = useAuth();

@@ -1,6 +1,6 @@
-const DIRECTUS_URL = "https://api.igholidays.com";
+const DIRECTUS_URL = "https://admin.myperfecttrips.com";
 async function getToken() {
-    const r = await fetch(`${DIRECTUS_URL}/auth/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email:'admin@igholidays.com',password:'e4HiSzm3PsFhR3mA6Uh7YoU2uqjOHrF3'})});
+    const r = await fetch(`${DIRECTUS_URL}/auth/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email:'hosting@infygru.com',password:'Naren@123info'})});
     return (await r.json()).data?.access_token;
 }
 async function api(token, path) {

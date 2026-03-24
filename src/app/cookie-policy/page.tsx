@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
 export const metadata: Metadata = {
-    title: "Cookie Policy | IG Holidays",
-    description: "Understand how IG Holidays uses cookies and similar tracking technologies to improve your browsing experience on our website.",
+    title: "Cookie Policy | My Perfect Trips",
+    description: "Understand how My Perfect Trips uses cookies and similar tracking technologies to improve your browsing experience on our website.",
     alternates: { canonical: `${BASE}/cookie-policy` },
     robots: { index: true, follow: false },
-    openGraph: { title: "Cookie Policy | IG Holidays", url: `${BASE}/cookie-policy`, siteName: "IG Holidays", type: "website" },
+    openGraph: { title: "Cookie Policy | My Perfect Trips", url: `${BASE}/cookie-policy`, siteName: "My Perfect Trips", type: "website" },
 };
 
 export default function CookiePolicyPage() {
@@ -24,7 +24,7 @@ export default function CookiePolicyPage() {
 
             <section className="container-inner -mt-12 relative z-20">
                 <div className="rounded-[2.5rem] bg-white p-8 sm:p-16 shadow-2xl border border-stone-100 prose prose-stone max-w-none prose-headings:font-serif prose-headings:font-medium prose-headings:text-brand-950 prose-a:text-brand-700">
-                    <p className="lead">This Cookie Policy explains what cookies are, how <strong>IG Holidays</strong> (Infygru Private Limited) uses them, and how you can manage your cookie preferences.</p>
+                    <p className="lead">This Cookie Policy explains what cookies are, how <strong>My Perfect Trips</strong> (Infygru Private Limited) uses them, and how you can manage your cookie preferences.</p>
 
                     <h2>1. What are Cookies?</h2>
                     <p>Cookies are small text files placed on your device when you visit a website. They help websites remember your preferences, understand how you use the site, and improve your experience.</p>
@@ -47,10 +47,10 @@ export default function CookiePolicyPage() {
                     <p>On your first visit, we will ask for your consent to place non-essential cookies. You can change your preferences at any time by clearing your browser cookies and revisiting our site.</p>
 
                     <h2>6. Contact Us</h2>
-                    <p>For questions about our cookie use, contact us at <a href="mailto:info@igholidays.com">info@igholidays.com</a>.</p>
+                    <p>For questions about our cookie use, contact us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>.</p>
 
                     <hr />
-                    <p className="text-sm text-stone-500">IG Holidays is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
+                    <p className="text-sm text-stone-500">My Perfect Trips is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
                 </div>
             </section>
         </main>

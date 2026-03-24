@@ -1,11 +1,11 @@
 // Import Unsplash images into Directus and attach to packages
-const BASE = "https://api.igholidays.com";
+const BASE = "https://admin.myperfecttrips.com";
 
 async function login() {
   const r = await fetch(`${BASE}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: "admin@igholidays.com", password: "e4HiSzm3PsFhR3mA6Uh7YoU2uqjOHrF3" }),
+    body: JSON.stringify({ email: "hosting@infygru.com", password: "Naren@123info" }),
   });
   const d = await r.json();
   return d.data.access_token;

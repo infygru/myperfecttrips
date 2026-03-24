@@ -7,8 +7,8 @@ import { getSiteSettings } from '@/lib/directus';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sign In | IG Holidays',
-  description: 'Sign in to your IG Holidays account to manage bookings, earn loyalty points, and get trip reminders.',
+  title: 'Sign In | My Perfect Trips',
+  description: 'Sign in to your My Perfect Trips account to manage bookings, earn loyalty points, and get trip reminders.',
 };
 
 const features = [
@@ -49,13 +49,13 @@ export default async function LoginPage() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 w-fit group">
             {logoUrl ? (
-              <Image src={logoUrl} alt="IG Holidays" width={140} height={40} className="h-9 w-auto object-contain brightness-0 invert" unoptimized />
+              <Image src={logoUrl} alt="My Perfect Trips" width={140} height={40} className="h-9 w-auto object-contain brightness-0 invert" unoptimized />
             ) : (
               <div className="flex items-center gap-2.5">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 group-hover:bg-white/15 transition-colors">
                   <Compass className="h-5 w-5 text-white" />
                 </div>
-                <span className="font-serif text-xl font-semibold text-white">IG Holidays</span>
+                <span className="font-serif text-xl font-semibold text-white">My Perfect Trips</span>
               </div>
             )}
           </Link>
@@ -119,13 +119,13 @@ export default async function LoginPage() {
           <div className="lg:hidden mb-8 text-center">
             <Link href="/" className="inline-flex items-center gap-2.5">
               {logoUrl ? (
-                <Image src={logoUrl} alt="IG Holidays" width={120} height={36} className="h-8 w-auto" unoptimized />
+                <Image src={logoUrl} alt="My Perfect Trips" width={120} height={36} className="h-8 w-auto" unoptimized />
               ) : (
                 <>
                   <div className="h-9 w-9 rounded-xl bg-brand-900 flex items-center justify-center">
                     <Compass className="h-5 w-5 text-white" />
                   </div>
-                  <span className="font-serif text-xl font-semibold text-brand-950">IG Holidays</span>
+                  <span className="font-serif text-xl font-semibold text-brand-950">My Perfect Trips</span>
                 </>
               )}
             </Link>

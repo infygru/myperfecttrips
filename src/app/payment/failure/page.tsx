@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { XCircle, Phone, RotateCcw } from 'lucide-react';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = { title: 'Payment Failed | IG Holidays' };
+export const metadata: Metadata = { title: 'Payment Failed | My Perfect Trips' };
 
 type Props = { searchParams: Promise<{ bookingId?: string; ref?: string; error?: string }> };
 

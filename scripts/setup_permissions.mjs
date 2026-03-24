@@ -1,7 +1,7 @@
 async function setPermissions() {
-    const url = 'https://api.igholidays.com';
-    const email = 'admin@igholidays.com';
-    const password = 'e4HiSzm3PsFhR3mA6Uh7YoU2uqjOHrF3';
+    const url = 'https://admin.myperfecttrips.com';
+    const email = 'hosting@infygru.com';
+    const password = 'Naren@123info';
 
     const authRes = await fetch(`${url}/auth/login`, {
         method: 'POST',

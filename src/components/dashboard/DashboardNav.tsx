@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth, getUserDisplayName, getUserInitials, getAvatarUrl } from '@/context/AuthContext';
 import { LayoutDashboard, Ticket, User, LogOut, Star } from 'lucide-react';
 
-const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://api.igholidays.com';
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://api.myperfecttrips.com';
 
 const navItems = [
     { href: '/dashboard',          label: 'Overview',    icon: LayoutDashboard },

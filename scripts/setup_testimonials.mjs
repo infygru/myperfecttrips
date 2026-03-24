@@ -2,9 +2,9 @@
  * Setup: creates `testimonials` collection, adds fields, seeds data.
  * Run: node scripts/setup_testimonials.mjs
  */
-const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://api.igholidays.com";
-const ADMIN_EMAIL = "admin@igholidays.com";
-const ADMIN_PASSWORD = "e4HiSzm3PsFhR3mA6Uh7YoU2uqjOHrF3";
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://admin.myperfecttrips.com";
+const ADMIN_EMAIL = "hosting@infygru.com";
+const ADMIN_PASSWORD = "Naren@123info";
 const PUBLIC_POLICY_ID = "abf8a154-5b1c-4a46-ac9c-7300570f4f17";
 
 async function getToken() {
@@ -31,13 +31,13 @@ async function exists(token, path) {
 
 const SEEDS = [
     { name: "Rahul & Priya Sharma", location: "Bengaluru", tour_name: "Maldives Honeymoon Package", rating: 5, text: "IGHolidays planned the most magical honeymoon we could have imagined. The water villa upgrade was breathtaking, and every detail — from the sunset cruise to the private dining — was flawlessly arranged. Truly the best luxury travel agency we've ever worked with!", status: "published" },
-    { name: "Suresh Ramachandran", location: "Chennai", tour_name: "Dubai Corporate MICE Summit", rating: 5, text: "Handling our 150-person corporate incentive summit in Dubai was executed flawlessly. From group visa coordination to the grand gala dinner at the Burj Al Arab, not a single thing went wrong. IG Holidays is our go-to partner for all MICE events.", status: "published" },
-    { name: "Anjali & Vikram Mehta", location: "Mumbai", tour_name: "14-Day Europe Grand Tour", rating: 5, text: "The customized 14-day Europe itinerary was perfectly paced — Paris, Amsterdam, Zurich, and Rome. Every hotel exceeded our expectations and the private guided tours were exceptional. I've already recommended IG Holidays to a dozen friends!", status: "published" },
-    { name: "Deepa Krishnamurthy", location: "Coimbatore", tour_name: "Rajasthan Heritage Tour", rating: 5, text: "Our Rajasthan family trip was beyond anything we expected. The palace hotel stays in Jaipur and Udaipur were incredible, and the guides were so knowledgeable. My kids are still talking about the camel ride in Jaisalmer. Thank you IG Holidays!", status: "published" },
-    { name: "Mohammed Farhan", location: "Hyderabad", tour_name: "Thailand Group Package", rating: 5, text: "Organised a 22-person group trip to Thailand for my college reunion. The team at IG Holidays handled everything — flights, hotels, transfers, island hopping. Seamless from start to finish at an unbeatable group price. Highly recommended!", status: "published" },
-    { name: "Meenakshi Iyer", location: "Chennai", tour_name: "Kerala Backwaters Retreat", rating: 5, text: "The houseboat stay in Alleppey was divine. IG Holidays curated every moment beautifully — the Thekkady spice tour, the Munnar tea estate visit, and the Kovalam beach finale. A perfect family getaway that we'll treasure forever.", status: "published" },
-    { name: "Arjun & Kavitha Nair", location: "Kochi", tour_name: "Bali Honeymoon Special", rating: 5, text: "Bali was our dream honeymoon destination and IG Holidays made it a reality beyond our expectations. The private villa in Ubud, sunrise at Mount Batur, and the couples spa package were all perfectly arranged. Absolutely five stars!", status: "published" },
-    { name: "Srinivasan Family", location: "Madurai", tour_name: "Singapore & Malaysia Tour", rating: 5, text: "A wonderful family trip to Singapore and Malaysia organised for 6 of us including senior parents and two young kids. The IG Holidays team was extremely patient and thoughtful — they even arranged wheelchair assistance and child-friendly activities. Superb service!", status: "published" },
+    { name: "Suresh Ramachandran", location: "Chennai", tour_name: "Dubai Corporate MICE Summit", rating: 5, text: "Handling our 150-person corporate incentive summit in Dubai was executed flawlessly. From group visa coordination to the grand gala dinner at the Burj Al Arab, not a single thing went wrong. My Perfect Trips is our go-to partner for all MICE events.", status: "published" },
+    { name: "Anjali & Vikram Mehta", location: "Mumbai", tour_name: "14-Day Europe Grand Tour", rating: 5, text: "The customized 14-day Europe itinerary was perfectly paced — Paris, Amsterdam, Zurich, and Rome. Every hotel exceeded our expectations and the private guided tours were exceptional. I've already recommended My Perfect Trips to a dozen friends!", status: "published" },
+    { name: "Deepa Krishnamurthy", location: "Coimbatore", tour_name: "Rajasthan Heritage Tour", rating: 5, text: "Our Rajasthan family trip was beyond anything we expected. The palace hotel stays in Jaipur and Udaipur were incredible, and the guides were so knowledgeable. My kids are still talking about the camel ride in Jaisalmer. Thank you My Perfect Trips!", status: "published" },
+    { name: "Mohammed Farhan", location: "Hyderabad", tour_name: "Thailand Group Package", rating: 5, text: "Organised a 22-person group trip to Thailand for my college reunion. The team at My Perfect Trips handled everything — flights, hotels, transfers, island hopping. Seamless from start to finish at an unbeatable group price. Highly recommended!", status: "published" },
+    { name: "Meenakshi Iyer", location: "Chennai", tour_name: "Kerala Backwaters Retreat", rating: 5, text: "The houseboat stay in Alleppey was divine. My Perfect Trips curated every moment beautifully — the Thekkady spice tour, the Munnar tea estate visit, and the Kovalam beach finale. A perfect family getaway that we'll treasure forever.", status: "published" },
+    { name: "Arjun & Kavitha Nair", location: "Kochi", tour_name: "Bali Honeymoon Special", rating: 5, text: "Bali was our dream honeymoon destination and My Perfect Trips made it a reality beyond our expectations. The private villa in Ubud, sunrise at Mount Batur, and the couples spa package were all perfectly arranged. Absolutely five stars!", status: "published" },
+    { name: "Srinivasan Family", location: "Madurai", tour_name: "Singapore & Malaysia Tour", rating: 5, text: "A wonderful family trip to Singapore and Malaysia organised for 6 of us including senior parents and two young kids. The My Perfect Trips team was extremely patient and thoughtful — they even arranged wheelchair assistance and child-friendly activities. Superb service!", status: "published" },
 ];
 
 async function main() {

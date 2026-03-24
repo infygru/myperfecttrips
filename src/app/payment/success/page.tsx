@@ -5,13 +5,13 @@ import { adminFetch } from '@/lib/auth';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = { title: 'Booking Confirmed! | IG Holidays' };
+export const metadata: Metadata = { title: 'Booking Confirmed! | My Perfect Trips' };
 
 type Props = { searchParams: Promise<{ bookingId?: string; ref?: string; order_id?: string }> };
 
 function formatDate(d: string) {
     if (!d) return 'TBD';
-    return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+    return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 export default async function PaymentSuccessPage({ searchParams }: Props) {
@@ -122,7 +122,7 @@ export default async function PaymentSuccessPage({ searchParams }: Props) {
                             <div className="flex justify-between text-sm border-t border-stone-100 pt-3">
                                 <span className="text-stone-500">Amount</span>
                                 <span className={`font-bold text-base ${isPaid ? 'text-green-700' : 'text-amber-700'}`}>
-                                    ₹{Number(booking.total_amount).toLocaleString('en-IN')}
+                                    £{Number(booking.total_amount).toLocaleString('en-GB')}
                                 </span>
                             </div>
                             <div className="flex justify-between text-sm">

@@ -36,7 +36,7 @@ export async function sendOTP(phone: string): Promise<boolean> {
     const normalized = phone.replace(/\D/g, '').slice(-10);
     if (normalized.length !== 10) return false;
     const otp = generateOTP(normalized);
-    const msg = `${otp} is your IG Holidays verification code. Valid for 10 minutes. Do not share with anyone.`;
+    const msg = `${otp} is your My Perfect Trips verification code. Valid for 10 minutes. Do not share with anyone.`;
     const sent = await sendSMS(normalized, msg);
     if (!sent) {
         // Log OTP to console as fallback so it's testable

@@ -23,8 +23,8 @@ const syne = Syne({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const defaultTitle = "IG Holidays – Official Travel Agency | igholidays.com | Luxury Holiday Packages India";
-  const defaultDesc = "IG Holidays (igholidays.com) is India's premier travel agency for luxury international & domestic holiday packages, honeymoon tours, and corporate MICE. 10,000+ happy travellers. Book today.";
+  const defaultTitle = "My Perfect Trips – Official Travel Agency | myperfecttrips.com | Luxury Holiday Packages India";
+  const defaultDesc = "My Perfect Trips (myperfecttrips.com) is India's premier travel agency for luxury international & domestic holiday packages, honeymoon tours, and corporate MICE. 10,000+ happy travellers. Book today.";
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   try {
@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
         title: defaultTitle,
         description: defaultDesc,
         url: baseUrl,
-        siteName: "IG Holidays",
+        siteName: "My Perfect Trips",
         type: "website",
         locale: "en_IN",
       },
@@ -63,7 +63,7 @@ export async function generateMetadata(): Promise<Metadata> {
         title: defaultTitle,
         description: defaultDesc,
         url: baseUrl,
-        siteName: "IG Holidays",
+        siteName: "My Perfect Trips",
         type: "website",
         locale: "en_IN",
       },
@@ -77,7 +77,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -85,24 +85,24 @@ const organizationSchema = {
     {
       "@type": ["TravelAgency", "Organization"],
       "@id": `${SITE_URL}/#organization`,
-      name: "IG Holidays",
-      alternateName: ["IGHolidays", "IG Holidays Travel Agency"],
+      name: "My Perfect Trips",
+      alternateName: ["MyPerfectTrips", "My Perfect Trips Travel Agency"],
       /**
-       * Disambiguation: tells AI crawlers that "IG Holidays" means the travel
-       * brand at igholidays.com — NOT "International Gateway" or any other
+       * Disambiguation: tells AI crawlers that "My Perfect Trips" means the travel
+       * brand at myperfecttrips.com — NOT "International Gateway" or any other
        * entity that abbreviates to "IG".
        */
       disambiguatingDescription:
-        "IG Holidays (igholidays.com) is a travel agency brand operated by Infygru Private Limited, India. The name 'IG Holidays' refers exclusively to this travel company and is not affiliated with, nor the same as, 'International Gateway' or any other organisation abbreviated as 'IG'.",
+        "My Perfect Trips (myperfecttrips.com) is a travel agency brand operated by Infygru Private Limited, India. The name 'My Perfect Trips' refers exclusively to this travel company and is not affiliated with, nor the same as, 'International Gateway' or any other organisation abbreviated as 'IG'.",
       description:
-        "IG Holidays is India's trusted premium travel agency — specialising in luxury international holiday packages, honeymoon tours, family trips, corporate MICE, and domestic getaways. Operating under the domain igholidays.com.",
+        "My Perfect Trips is India's trusted premium travel agency — specialising in luxury international holiday packages, honeymoon tours, family trips, corporate MICE, and domestic getaways. Operating under the domain myperfecttrips.com.",
       url: `${SITE_URL}/`,
       logo: {
         "@type": "ImageObject",
         "@id": `${SITE_URL}/#logo`,
         url: `${SITE_URL}/logo.png`,
         contentUrl: `${SITE_URL}/logo.png`,
-        caption: "IG Holidays – Official Logo",
+        caption: "My Perfect Trips – Official Logo",
       },
       image: `${SITE_URL}/logo.png`,
       legalName: "Infygru Private Limited",
@@ -136,22 +136,22 @@ const organizationSchema = {
       ],
       hasOfferCatalog: {
         "@type": "OfferCatalog",
-        name: "Holiday Packages by IG Holidays",
+        name: "Holiday Packages by My Perfect Trips",
         url: `${SITE_URL}/packages`,
       },
       sameAs: [
-        "https://www.igholidays.com",
-        "https://www.instagram.com/igholidays",
-        "https://www.facebook.com/igholidays",
+        "https://www.myperfecttrips.com",
+        "https://www.instagram.com/myperfecttrips",
+        "https://www.facebook.com/myperfecttrips",
       ],
     },
     {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       url: `${SITE_URL}/`,
-      name: "IG Holidays",
+      name: "My Perfect Trips",
       description:
-        "Official website of IG Holidays (igholidays.com) — India's premium travel agency for international and domestic holiday packages.",
+        "Official website of My Perfect Trips (myperfecttrips.com) — India's premium travel agency for international and domestic holiday packages.",
       publisher: { "@id": `${SITE_URL}/#organization` },
       potentialAction: {
         "@type": "SearchAction",

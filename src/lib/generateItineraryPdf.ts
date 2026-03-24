@@ -68,7 +68,7 @@ async function loadLogo(
   let url = logoUrl;
   if (url.includes("localhost")) {
     const id = url.split("/assets/")[1]?.split("?")[0];
-    if (id) url = `https://api.igholidays.com/assets/${id}`;
+    if (id) url = `https://api.myperfecttrips.com/assets/${id}`;
   }
 
   // Proxy route first (avoids CORS), then direct as fallback
@@ -233,7 +233,7 @@ class Cursor {
     d.setFontSize(7);
     d.setTextColor(170, 170, 178);
     d.text(
-      "IG Holidays  |  A Brand of Infygru Private Limited",
+      "My Perfect Trips  |  A Brand of Infygru Private Limited",
       PW / 2, PH - FOT_H + FOT_H / 2 + capH(7) / 2,
       { align: "center" },
     );
@@ -297,7 +297,7 @@ export async function generateItineraryPdf(
 
   // Header right — date + contacts
   const dateStr = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-  const contactLines = ["igholidays.com", "+91 8807709919", "info@igholidays.com"];
+  const contactLines = ["myperfecttrips.com", "+91 8807709919", "info@myperfecttrips.com"];
   d.setFont("helvetica", "bold");
   d.setFontSize(7);
   t(d, GOLD);
@@ -340,7 +340,7 @@ export async function generateItineraryPdf(
     meta.push(`${pkg.duration_nights}N / ${pkg.duration_days}D`);
   const dest = pkg.destination || pkg.destinations?.join(" + ");
   if (dest) meta.push(dest);
-  if (pkg.price) meta.push(`From Rs.${Number(pkg.price).toLocaleString("en-IN")}`);
+  if (pkg.price) meta.push(`From Rs.${Number(pkg.price).toLocaleString("en-GB")}`);
   if (meta.length) {
     d.setFont("helvetica", "normal");
     d.setFontSize(8.5);
@@ -579,9 +579,9 @@ export async function generateItineraryPdf(
 
   const contacts = [
     ["Phone",    "+91 8807709919"],
-    ["Email",    "info@igholidays.com"],
+    ["Email",    "info@myperfecttrips.com"],
     ["WhatsApp", "+91 8807709919"],
-    ["Website",  "www.igholidays.com"],
+    ["Website",  "www.myperfecttrips.com"],
   ];
   d.setFontSize(8.5);
   const ctaCols = [ML + 8, ML + CW / 2 + 4];
@@ -614,5 +614,5 @@ export async function generateItineraryPdf(
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "") || "itinerary";
-  d.save(`${fname}-igholidays.pdf`);
+  d.save(`${fname}-myperfecttrips.pdf`);
 }

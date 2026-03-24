@@ -222,7 +222,7 @@ export default function CheckoutForm({
                             <div>
                                 <p className="text-sm font-bold text-stone-900">IG Reward Points</p>
                                 <p className="text-xs text-stone-500">
-                                    {loyaltyBalance.toLocaleString()} pts · worth ₹{loyaltyBalance.toLocaleString()}
+                                    {loyaltyBalance.toLocaleString()} pts · worth £{loyaltyBalance.toLocaleString()}
                                 </p>
                             </div>
                         </div>
@@ -239,7 +239,7 @@ export default function CheckoutForm({
                         <div className="mt-3 rounded-xl bg-gold-100 border border-gold-200 px-3 py-2.5 flex items-center gap-2">
                             <Gift className="h-4 w-4 text-gold-700 flex-shrink-0" />
                             <p className="text-sm font-semibold text-gold-800">
-                                ₹{Math.round(pointsDiscount).toLocaleString('en-IN')} discount applied
+                                £{Math.round(pointsDiscount).toLocaleString('en-GB')} discount applied
                                 <span className="font-normal text-gold-600 ml-1">({Math.round(pointsDiscount)} pts redeemed)</span>
                             </p>
                         </div>
@@ -252,24 +252,24 @@ export default function CheckoutForm({
                 <h3 className="font-bold text-stone-900 mb-4">Price Summary</h3>
                 <div className="space-y-2.5">
                     <div className="flex justify-between text-sm text-stone-600">
-                        <span>{adults} adult{adults !== 1 ? 's' : ''} × ₹{basePrice.toLocaleString('en-IN')}</span>
-                        <span>₹{(adults * basePrice).toLocaleString('en-IN')}</span>
+                        <span>{adults} adult{adults !== 1 ? 's' : ''} × £{basePrice.toLocaleString('en-GB')}</span>
+                        <span>£{(adults * basePrice).toLocaleString('en-GB')}</span>
                     </div>
                     {children > 0 && (
                         <div className="flex justify-between text-sm text-stone-600">
-                            <span>{children} child{children !== 1 ? 'ren' : ''} × ₹{(basePrice * 0.5).toLocaleString('en-IN')}</span>
-                            <span>₹{(children * basePrice * 0.5).toLocaleString('en-IN')}</span>
+                            <span>{children} child{children !== 1 ? 'ren' : ''} × £{(basePrice * 0.5).toLocaleString('en-GB')}</span>
+                            <span>£{(children * basePrice * 0.5).toLocaleString('en-GB')}</span>
                         </div>
                     )}
                     {pointsDiscount > 0 && (
                         <div className="flex justify-between text-sm text-emerald-600 font-medium">
                             <span className="flex items-center gap-1"><Star className="h-3.5 w-3.5 fill-current" /> Loyalty discount</span>
-                            <span>− ₹{Math.round(pointsDiscount).toLocaleString('en-IN')}</span>
+                            <span>− £{Math.round(pointsDiscount).toLocaleString('en-GB')}</span>
                         </div>
                     )}
                     <div className="flex justify-between text-base font-bold text-stone-900 pt-3 border-t border-stone-100">
                         <span>Total payable</span>
-                        <span>₹{totalAmount.toLocaleString('en-IN')}</span>
+                        <span>£{totalAmount.toLocaleString('en-GB')}</span>
                     </div>
                 </div>
                 {pointsEarnable > 0 && (
@@ -293,7 +293,7 @@ export default function CheckoutForm({
                 ) : (
                     <>
                         <CreditCard className="h-5 w-5" />
-                        Pay ₹{totalAmount.toLocaleString('en-IN')} Securely
+                        Pay £{totalAmount.toLocaleString('en-GB')} Securely
                     </>
                 )}
             </button>

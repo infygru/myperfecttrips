@@ -6,8 +6,8 @@ import { getSiteSettings } from '@/lib/directus';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Create Account | IG Holidays',
-  description: 'Join IG Holidays — earn loyalty points, get travel reminders, and manage all your bookings in one place.',
+  title: 'Create Account | My Perfect Trips',
+  description: 'Join My Perfect Trips — earn loyalty points, get travel reminders, and manage all your bookings in one place.',
 };
 
 export default async function RegisterPage() {
@@ -35,13 +35,13 @@ export default async function RegisterPage() {
         <div className="relative z-10 flex flex-col h-full px-10 xl:px-12 py-10 xl:py-12">
           <Link href="/" className="flex items-center gap-3 w-fit group">
             {logoUrl ? (
-              <Image src={logoUrl} alt="IG Holidays" width={130} height={36} className="h-8 w-auto brightness-0 invert" unoptimized />
+              <Image src={logoUrl} alt="My Perfect Trips" width={130} height={36} className="h-8 w-auto brightness-0 invert" unoptimized />
             ) : (
               <div className="flex items-center gap-2.5">
                 <div className="h-9 w-9 rounded-xl bg-white/10 flex items-center justify-center">
                   <Compass className="h-5 w-5 text-white" />
                 </div>
-                <span className="font-serif text-lg font-semibold text-white">IG Holidays</span>
+                <span className="font-serif text-lg font-semibold text-white">My Perfect Trips</span>
               </div>
             )}
           </Link>
@@ -71,8 +71,8 @@ export default async function RegisterPage() {
               </div>
               <div className="space-y-2.5">
                 {[
-                  '₹100 spent = 1 loyalty point',
-                  'Redeem from 500 points (= ₹500 off)',
+                  '£100 spent = 1 loyalty point',
+                  'Redeem from 500 points (= £500 off)',
                   'Valid on packages & hotel stays',
                 ].map(t => (
                   <div key={t} className="flex items-start gap-2.5">
@@ -100,13 +100,13 @@ export default async function RegisterPage() {
           <div className="lg:hidden mb-7 text-center">
             <Link href="/" className="inline-flex items-center gap-2.5">
               {logoUrl ? (
-                <Image src={logoUrl} alt="IG Holidays" width={120} height={36} className="h-8 w-auto" unoptimized />
+                <Image src={logoUrl} alt="My Perfect Trips" width={120} height={36} className="h-8 w-auto" unoptimized />
               ) : (
                 <>
                   <div className="h-8 w-8 rounded-xl bg-brand-900 flex items-center justify-center">
                     <Compass className="h-4 w-4 text-white" />
                   </div>
-                  <span className="font-serif text-lg font-semibold text-brand-950">IG Holidays</span>
+                  <span className="font-serif text-lg font-semibold text-brand-950">My Perfect Trips</span>
                 </>
               )}
             </Link>

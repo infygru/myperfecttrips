@@ -17,9 +17,9 @@
  * Run: node scripts/fix_directus_packages.mjs
  */
 
-const DIRECTUS_URL = "https://api.igholidays.com";
-const ADMIN_EMAIL = "admin@igholidays.com";
-const ADMIN_PASSWORD = "e4HiSzm3PsFhR3mA6Uh7YoU2uqjOHrF3";
+const DIRECTUS_URL = "https://admin.myperfecttrips.com";
+const ADMIN_EMAIL = "hosting@infygru.com";
+const ADMIN_PASSWORD = "Naren@123info";
 
 async function getToken() {
     const res = await fetch(`${DIRECTUS_URL}/auth/login`, {

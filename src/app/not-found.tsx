@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Page Not Found | IG Holidays",
+    title: "Page Not Found | My Perfect Trips",
     description: "The page you are looking for does not exist. Browse our holiday packages or return home.",
     robots: { index: false, follow: false },
 };

@@ -50,14 +50,14 @@ export default async function Footer() {
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const logoUrl  = s?.logo            ? `${dUrl}/assets/${s.logo}` : null;
-    const email    = s?.contact_email   || "info@igholidays.com";
+    const email    = s?.contact_email   || "info@myperfecttrips.com";
     const phone    = s?.contact_phone   || "+91 8807709919";
     const address  = s?.office_address  || "Tamil Nadu, India";
     const fbUrl    = s?.facebook_url    || "#";
     const igUrl    = s?.instagram_url   || "#";
     const liUrl    = s?.linkedin_url    || "#";
     const ytUrl    = s?.youtube_url     || "#";
-    const siteName = s?.site_name       || "IG Holidays";
+    const siteName = s?.site_name       || "My Perfect Trips";
 
     const year = new Date().getFullYear();
 
@@ -239,7 +239,7 @@ export default async function Footer() {
                                     { name: "Home",               href: "/"         },
                                     { name: "Holiday Packages",   href: "/packages" },
                                     { name: "Our Services",       href: "/services" },
-                                    { name: "About IG Holidays",  href: "/about"    },
+                                    { name: "About My Perfect Trips",  href: "/about"    },
                                     { name: "Travel Blog",        href: "/blog"     },
                                     { name: "Contact Us",         href: "/contact"  },
                                 ].map((l) => (
@@ -298,7 +298,7 @@ export default async function Footer() {
                 {/* ── SEO PARAGRAPH ── */}
                 <div className="mt-10 border-t border-brand-900 pt-10">
                     <p className="text-xs leading-relaxed text-stone-600 max-w-4xl">
-                        <strong className="text-stone-500">IG Holidays</strong> is a leading travel agency in India offering premium{" "}
+                        <strong className="text-stone-500">My Perfect Trips</strong> is a leading travel agency in India offering premium{" "}
                         <Link href="/packages?package_type=domestic" className="hover:text-stone-400 transition-colors">domestic tour packages</Link> across
                         Kerala, Rajasthan, Goa, Himachal Pradesh, Uttarakhand, Andaman, and Kashmir — and handcrafted{" "}
                         <Link href="/packages?package_type=international" className="hover:text-stone-400 transition-colors">international holiday packages</Link>{" "}

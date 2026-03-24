@@ -4,7 +4,7 @@ import { sendTravelReminderSMS } from '@/lib/sms';
 
 // This endpoint should be called daily by a cron job (e.g., Vercel Cron or an external cron).
 // Protect it with a secret header.
-const CRON_SECRET = process.env.CRON_SECRET || 'igholidays-cron-secret';
+const CRON_SECRET = process.env.CRON_SECRET || 'myperfecttrips-cron-secret';
 
 export async function GET(req: NextRequest) {
     // Vercel Cron sends Authorization: Bearer <CRON_SECRET>

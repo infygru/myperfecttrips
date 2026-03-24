@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
 export const metadata: Metadata = {
-    title: "Privacy Policy | IG Holidays",
-    description: "Learn how IG Holidays collects, uses, and protects your personal information in compliance with applicable data protection laws.",
+    title: "Privacy Policy | My Perfect Trips",
+    description: "Learn how My Perfect Trips collects, uses, and protects your personal information in compliance with applicable data protection laws.",
     alternates: { canonical: `${BASE}/privacy-policy` },
     robots: { index: true, follow: false },
-    openGraph: { title: "Privacy Policy | IG Holidays", url: `${BASE}/privacy-policy`, siteName: "IG Holidays", type: "website" },
+    openGraph: { title: "Privacy Policy | My Perfect Trips", url: `${BASE}/privacy-policy`, siteName: "My Perfect Trips", type: "website" },
 };
 
 export default function PrivacyPolicyPage() {
@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="container-inner -mt-12 relative z-20">
                 <div className="rounded-[2.5rem] bg-white p-8 sm:p-16 shadow-2xl border border-stone-100 prose prose-stone max-w-none prose-headings:font-serif prose-headings:font-medium prose-headings:text-brand-950 prose-a:text-brand-700">
-                    <p className="lead">Your privacy matters to us. This Privacy Policy explains how <strong>Infygru Private Limited</strong> (operating as <strong>IG Holidays</strong>) collects, uses, and safeguards your personal information.</p>
+                    <p className="lead">Your privacy matters to us. This Privacy Policy explains how <strong>Infygru Private Limited</strong> (operating as <strong>My Perfect Trips</strong>) collects, uses, and safeguards your personal information.</p>
 
                     <h2>1. Information We Collect</h2>
                     <p>We may collect the following personal information:</p>
@@ -58,7 +58,7 @@ export default function PrivacyPolicyPage() {
                     <p>We retain personal data for as long as necessary to provide our services and comply with legal obligations, generally up to 5 years for booking-related records.</p>
 
                     <h2>5. Your Rights</h2>
-                    <p>You have the right to access, correct, or request deletion of your personal data at any time by contacting us at <a href="mailto:info@igholidays.com">info@igholidays.com</a>.</p>
+                    <p>You have the right to access, correct, or request deletion of your personal data at any time by contacting us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>.</p>
 
                     <h2>6. Security</h2>
                     <p>We implement appropriate technical and organizational measures to protect your data against unauthorized access, alteration, disclosure, or destruction.</p>
@@ -70,10 +70,10 @@ export default function PrivacyPolicyPage() {
                     <p>We may update this Privacy Policy from time to time. We will notify you of significant changes via our website or email.</p>
 
                     <h2>9. Contact Us</h2>
-                    <p>For privacy-related queries: <a href="mailto:info@igholidays.com">info@igholidays.com</a></p>
+                    <p>For privacy-related queries: <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a></p>
 
                     <hr />
-                    <p className="text-sm text-stone-500">IG Holidays is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
+                    <p className="text-sm text-stone-500">My Perfect Trips is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
                 </div>
             </section>
         </main>

@@ -3,9 +3,9 @@
  * Run once: node scripts/setup_visa_field.mjs
  */
 async function setup() {
-    const url = 'https://api.igholidays.com';
-    const email = 'admin@igholidays.com';
-    const password = 'e4HiSzm3PsFhR3mA6Uh7YoU2uqjOHrF3';
+    const url = 'https://admin.myperfecttrips.com';
+    const email = 'hosting@infygru.com';
+    const password = 'Naren@123info';
 
     console.log("Logging in...");
     const authRes = await fetch(`${url}/auth/login`, {

@@ -5,9 +5,9 @@
  * Run: node scripts/setup_blog_categories.mjs
  */
 
-const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://api.igholidays.com";
-const ADMIN_EMAIL = "admin@igholidays.com";
-const ADMIN_PASSWORD = "e4HiSzm3PsFhR3mA6Uh7YoU2uqjOHrF3";
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://admin.myperfecttrips.com";
+const ADMIN_EMAIL = "hosting@infygru.com";
+const ADMIN_PASSWORD = "Naren@123info";
 const PUBLIC_POLICY_ID = "abf8a154-5b1c-4a46-ac9c-7300570f4f17";
 
 async function getToken() {
@@ -70,7 +70,7 @@ const SAMPLE_POSTS = [
 <p>Shikara rides on Dal Lake at dawn, houseboat stays, and the snow-capped Himalayas in the background — Kashmir remains timeless in its romantic appeal.</p>
 <h2>5. Goa</h2>
 <p>Beyond the parties, Goa's quieter south offers secluded beaches, boutique resorts, and exceptional seafood — perfect for a relaxed, sun-kissed honeymoon.</p>
-<p>At IG Holidays, we craft personalised honeymoon packages with exclusive upgrades, private dining arrangements, and seamless travel — all within your budget.</p>`,
+<p>At My Perfect Trips, we craft personalised honeymoon packages with exclusive upgrades, private dining arrangements, and seamless travel — all within your budget.</p>`,
         author: "Priya Nair",
         published_date: "2026-03-10T09:00:00Z",
         status: "Published",
@@ -83,14 +83,14 @@ const SAMPLE_POSTS = [
         excerpt: "Explore Thailand, Vietnam, Bali, and more without breaking the bank. Our complete budget travel guide covers accommodation, food, transport, and insider tips to travel smart.",
         content: `<p>Southeast Asia remains one of the best-value travel destinations in the world. With the right planning, you can experience world-class beaches, ancient temples, vibrant street food, and rich culture — all on a shoestring budget.</p>
 <h2>Thailand: The Classic Backpacker Trail</h2>
-<p>Bangkok's street food scene, Chiang Mai's temples, and the islands of Koh Tao and Koh Lanta offer incredible value. Budget guesthouses start from ₹800 per night and a full street-food meal costs under ₹200.</p>
+<p>Bangkok's street food scene, Chiang Mai's temples, and the islands of Koh Tao and Koh Lanta offer incredible value. Budget guesthouses start from £800 per night and a full street-food meal costs under £200.</p>
 <h2>Vietnam: History, Noodles & Motorbikes</h2>
 <p>From the French-colonial charm of Hanoi to the ancient town of Hoi An and the dramatic limestone karsts of Ha Long Bay, Vietnam packs extraordinary diversity into an affordable trip.</p>
 <h2>Bali, Indonesia: Temples & Rice Terraces</h2>
 <p>Ubud's spiritual heart, Seminyak's beach clubs, and the dramatic sea temples of Uluwatu — Bali is incredibly affordable when you stay in locally-owned homestays and eat at warungs.</p>
 <h2>Money-Saving Tips</h2>
 <ul><li>Travel shoulder season (April–May, September–October) for up to 40% lower hotel rates</li><li>Use overnight sleeper trains and buses to save on accommodation</li><li>Book group day tours for the best rates on snorkelling, trekking, and temple visits</li><li>Eat where the locals eat — street food is always the best and cheapest option</li></ul>
-<p>IG Holidays offers affordable group tour packages to Southeast Asia starting from ₹35,000 per person, including flights, hotels, and guided tours.</p>`,
+<p>My Perfect Trips offers affordable group tour packages to Southeast Asia starting from £35,000 per person, including flights, hotels, and guided tours.</p>`,
         author: "Arun Krishnamurthy",
         published_date: "2026-03-07T10:00:00Z",
         status: "Published",
@@ -109,10 +109,10 @@ const SAMPLE_POSTS = [
 <h2>Step 3: Venue & Accommodation</h2>
 <p>Select a property that can handle both event space and room blocks under one roof. This simplifies logistics and allows for negotiating a better package rate. Always request AV equipment, F&B packages, and team-building activity options upfront.</p>
 <h2>Step 4: Visa & Travel Logistics</h2>
-<p>For groups of 50+, visa processing can begin 6–8 weeks in advance. IG Holidays handles group visa applications, airport transfers, and customised welcome kits to make arrivals smooth.</p>
+<p>For groups of 50+, visa processing can begin 6–8 weeks in advance. My Perfect Trips handles group visa applications, airport transfers, and customised welcome kits to make arrivals smooth.</p>
 <h2>Step 5: Programme Design</h2>
 <p>The best MICE trips blend business sessions with unique local experiences — a desert safari in Dubai, a cooking class in Bangkok, or a sunset cruise in Singapore create memories that outlast the conference itself.</p>
-<p>Contact our MICE specialists at IG Holidays for a tailored proposal for your next corporate event.</p>`,
+<p>Contact our MICE specialists at My Perfect Trips for a tailored proposal for your next corporate event.</p>`,
         author: "Suresh Ramachandran",
         published_date: "2026-03-05T08:00:00Z",
         status: "Published",
@@ -134,7 +134,7 @@ const SAMPLE_POSTS = [
 <p>The drive to Jaisalmer cuts through the Thar Desert. The honey-coloured sandstone Jaisalmer Fort, rising from the dunes, is one of India's most dramatic sights. An evening camel ride and desert camp stay under the stars are unmissable.</p>
 <h2>Day 7: Udaipur – City of Lakes</h2>
 <p>End your Rajasthan journey in the romance capital of India. The Lake Palace hotel floating on Lake Pichola, the City Palace, and a boat ride at sunset make for a perfect finale.</p>
-<p>IG Holidays offers customised Rajasthan tour packages with palace hotel stays, private car and driver, and professional guides throughout.</p>`,
+<p>My Perfect Trips offers customised Rajasthan tour packages with palace hotel stays, private car and driver, and professional guides throughout.</p>`,
         author: "Meena Sharma",
         published_date: "2026-03-01T10:00:00Z",
         status: "Published",
@@ -156,7 +156,7 @@ const SAMPLE_POSTS = [
 <p>Acclimatise properly — don't rush ascent. Follow the "climb high, sleep low" principle. Stay hydrated, avoid alcohol, and carry Diamox (consult a doctor first). Know the symptoms: headache, nausea, dizziness.</p>
 <h2>Essential Gear</h2>
 <ul><li>Layered clothing system (base layer, mid layer, outer shell)</li><li>Sturdy waterproof trekking boots (broken in before the trek)</li><li>Trekking poles — a must for steep descents</li><li>Headlamp with extra batteries</li><li>High-SPF sunscreen and UV-protection sunglasses</li></ul>
-<p>IG Holidays organises group and customised Himalayan treks with certified guides, quality equipment, and full safety support.</p>`,
+<p>My Perfect Trips organises group and customised Himalayan treks with certified guides, quality equipment, and full safety support.</p>`,
         author: "Vikram Nair",
         published_date: "2026-02-25T09:00:00Z",
         status: "Published",
@@ -188,7 +188,7 @@ const SAMPLE_POSTS = [
 <p>Indian passport holders can visit Qatar visa-free for up to 30 days — making Doha a great stopover or short trip destination.</p>
 <h2>10. Jordan (Visa on Arrival)</h2>
 <p>Petra, Wadi Rum, the Dead Sea, and Aqaba are all accessible with a visa on arrival for Indian travellers.</p>
-<p>IG Holidays' visa assistance team can help you prepare documents for any destination, even if a prior visa is required.</p>`,
+<p>My Perfect Trips' visa assistance team can help you prepare documents for any destination, even if a prior visa is required.</p>`,
         author: "Ananya Pillai",
         published_date: "2026-02-20T10:00:00Z",
         status: "Published",

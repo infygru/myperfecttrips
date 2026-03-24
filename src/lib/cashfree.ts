@@ -40,7 +40,7 @@ export async function createCashfreeOrder(input: CashfreeOrderInput) {
         body: JSON.stringify({
             order_id: input.orderId,
             order_amount: input.amount,
-            order_currency: 'INR',
+            order_currency: 'GBP',
             customer_details: {
                 customer_id: input.customerId.replace(/-/g, '').substring(0, 32),
                 customer_email: input.customerEmail,
@@ -141,7 +141,7 @@ export async function verifyAndUpdatePayment(orderId: string, bookingId?: string
             body: JSON.stringify({
                 booking_id: booking.id,
                 amount: booking.total_amount,
-                currency: 'INR',
+                currency: 'GBP',
                 gateway: 'cashfree',
                 transaction_id: successPayment?.cf_payment_id?.toString() || cfOrder?.cf_order_id,
                 order_id: booking.reference_number,
@@ -160,7 +160,7 @@ export async function verifyAndUpdatePayment(orderId: string, bookingId?: string
     // SMS confirmation
     if (booking.user_phone) {
         const travelDate = booking.travel_date
-            ? new Date(booking.travel_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+            ? new Date(booking.travel_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
             : 'TBD';
         await sendBookingConfirmationSMS(
             booking.user_phone,

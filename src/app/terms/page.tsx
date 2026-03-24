@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
 export const metadata: Metadata = {
-    title: "Terms & Conditions | IG Holidays",
-    description: "Read the Terms & Conditions for using IG Holidays – an official brand of Infygru Private Limited. Governs bookings, payments, cancellations, and use of our services.",
+    title: "Terms & Conditions | My Perfect Trips",
+    description: "Read the Terms & Conditions for using My Perfect Trips – an official brand of Infygru Private Limited. Governs bookings, payments, cancellations, and use of our services.",
     alternates: { canonical: `${BASE}/terms` },
     robots: { index: true, follow: false },
-    openGraph: { title: "Terms & Conditions | IG Holidays", url: `${BASE}/terms`, siteName: "IG Holidays", type: "website" },
+    openGraph: { title: "Terms & Conditions | My Perfect Trips", url: `${BASE}/terms`, siteName: "My Perfect Trips", type: "website" },
 };
 
 export default function TermsPage() {
@@ -25,33 +25,33 @@ export default function TermsPage() {
 
             <section className="container-inner -mt-12 relative z-20">
                 <div className="rounded-[2.5rem] bg-white p-8 sm:p-16 shadow-2xl border border-stone-100 prose prose-stone max-w-none prose-headings:font-serif prose-headings:font-medium prose-headings:text-brand-950 prose-a:text-brand-700">
-                    <p className="lead">Welcome to <strong>IG Holidays</strong>, an official brand of <strong>Infygru Private Limited</strong>. By accessing or using our website and services, you agree to the following Terms &amp; Conditions. Please read them carefully.</p>
+                    <p className="lead">Welcome to <strong>My Perfect Trips</strong>, an official brand of <strong>Infygru Private Limited</strong>. By accessing or using our website and services, you agree to the following Terms &amp; Conditions. Please read them carefully.</p>
 
                     <h2>1. Acceptance of Terms</h2>
-                    <p>By using igholidays.com, you confirm that you are at least 18 years old and legally capable of entering into binding agreements. If you are booking on behalf of others, you accept these terms on their behalf as well.</p>
+                    <p>By using myperfecttrips.com, you confirm that you are at least 18 years old and legally capable of entering into binding agreements. If you are booking on behalf of others, you accept these terms on their behalf as well.</p>
 
                     <h2>2. Services Offered</h2>
-                    <p>IG Holidays, operated by Infygru Private Limited, provides travel planning and booking services including but not limited to holiday packages, flight bookings, hotel bookings, visa assistance, and travel insurance referrals. We act as an intermediary between clients and travel service providers.</p>
+                    <p>My Perfect Trips, operated by Infygru Private Limited, provides travel planning and booking services including but not limited to holiday packages, flight bookings, hotel bookings, visa assistance, and travel insurance referrals. We act as an intermediary between clients and travel service providers.</p>
 
                     <h2>3. Booking and Payments</h2>
                     <ul>
-                        <li>All bookings are subject to availability and confirmation by IG Holidays.</li>
+                        <li>All bookings are subject to availability and confirmation by My Perfect Trips.</li>
                         <li>A minimum non-refundable deposit is required at the time of booking, as communicated during the booking process.</li>
                         <li>Full payment is required at least 30 days prior to departure unless otherwise agreed in writing.</li>
                         <li>Prices are subject to change due to currency fluctuations, fuel surcharges, or actions by airlines, hotels, or other suppliers.</li>
                     </ul>
 
                     <h2>4. Cancellations and Refunds</h2>
-                    <p>Cancellations must be communicated in writing to <a href="mailto:info@igholidays.com">info@igholidays.com</a>. Applicable cancellation charges depend on the timing of cancellation and the policies of airlines, hotels, and other suppliers involved. Please also refer to our <Link href="/refund-policy">Refund Policy</Link>.</p>
+                    <p>Cancellations must be communicated in writing to <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>. Applicable cancellation charges depend on the timing of cancellation and the policies of airlines, hotels, and other suppliers involved. Please also refer to our <Link href="/refund-policy">Refund Policy</Link>.</p>
 
                     <h2>5. Passports, Visas, and Health Requirements</h2>
-                    <p>It is the client's responsibility to ensure they hold valid travel documents for all destinations. IG Holidays will provide guidance but bears no liability for denied boarding, entry, or visa refusals.</p>
+                    <p>It is the client's responsibility to ensure they hold valid travel documents for all destinations. My Perfect Trips will provide guidance but bears no liability for denied boarding, entry, or visa refusals.</p>
 
                     <h2>6. Travel Insurance</h2>
-                    <p>We strongly recommend all clients obtain comprehensive travel insurance prior to departure. IG Holidays is not liable for any losses, medical expenses, or other costs that travel insurance would typically cover.</p>
+                    <p>We strongly recommend all clients obtain comprehensive travel insurance prior to departure. My Perfect Trips is not liable for any losses, medical expenses, or other costs that travel insurance would typically cover.</p>
 
                     <h2>7. Liability</h2>
-                    <p>IG Holidays acts as an agent for airlines, hotels, and tour operators. We are not liable for failure to perform, delays, changes, or cancellations caused by or arising out of events beyond our reasonable control, including natural disasters, pandemics, government actions, or supplier insolvencies.</p>
+                    <p>My Perfect Trips acts as an agent for airlines, hotels, and tour operators. We are not liable for failure to perform, delays, changes, or cancellations caused by or arising out of events beyond our reasonable control, including natural disasters, pandemics, government actions, or supplier insolvencies.</p>
 
                     <h2>8. Intellectual Property</h2>
                     <p>All content on this website, including text, images, logos, and designs, is the intellectual property of Infygru Private Limited or its licensors and may not be reproduced without written consent.</p>
@@ -60,10 +60,10 @@ export default function TermsPage() {
                     <p>These Terms &amp; Conditions are governed by the laws of India. Any disputes will be subject to the exclusive jurisdiction of the courts in Tamil Nadu, India.</p>
 
                     <h2>10. Contact Us</h2>
-                    <p>For any queries regarding these Terms &amp; Conditions, please contact us at <a href="mailto:info@igholidays.com">info@igholidays.com</a>.</p>
+                    <p>For any queries regarding these Terms &amp; Conditions, please contact us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>.</p>
 
                     <hr />
-                    <p className="text-sm text-stone-500">IG Holidays is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
+                    <p className="text-sm text-stone-500">My Perfect Trips is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
                 </div>
             </section>
         </main>

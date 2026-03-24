@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Cookie, X } from "lucide-react";
 
-const CONSENT_KEY = "igholidays_cookie_consent";
+const CONSENT_KEY = "myperfecttrips_cookie_consent";
 
 export default function CookieBanner() {
     const [visible, setVisible] = useState(false);

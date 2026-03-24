@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
             body: JSON.stringify({
                 booking_id: booking.id,
                 amount: booking.total_amount,
-                currency: 'INR',
+                currency: 'GBP',
                 gateway: 'upi',
                 transaction_id: utrNumber.trim(),
                 order_id: booking.reference_number,
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
         // Send SMS confirmation
         if (booking.user_phone) {
             const travelDate = booking.travel_date
-                ? new Date(booking.travel_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+                ? new Date(booking.travel_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
                 : 'TBD';
             await sendBookingConfirmationSMS(
                 booking.user_phone,

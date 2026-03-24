@@ -12,7 +12,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
     const { slug } = await props.params;
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
     try {
         const result = (await directus.request(
             readItems("blog_posts" as any, { filter: { slug: { _eq: slug }, status: { _eq: "published" } } as any, limit: 1 })
@@ -24,7 +24,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
             const desc = post.excerpt || post.title.slice(0, 160);
             const ogImages = img ? [{ url: img, width: 1200, height: 630, alt: post.title }] : [];
             return {
-                title: `${post.title} | IG Holidays Blog`,
+                title: `${post.title} | My Perfect Trips Blog`,
                 description: desc,
                 alternates: { canonical: `${baseUrl}/blog/${slug}` },
                 openGraph: {
@@ -34,7 +34,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
                     type: "article",
                     publishedTime: post.date_created,
                     modifiedTime: post.date_updated,
-                    siteName: "IG Holidays",
+                    siteName: "My Perfect Trips",
                 },
                 twitter: {
                     card: "summary_large_image",
@@ -45,7 +45,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
             };
         }
     } catch {}
-    return { title: "Blog | IG Holidays", alternates: { canonical: `${baseUrl}/blog/${slug}` } };
+    return { title: "Blog | My Perfect Trips", alternates: { canonical: `${baseUrl}/blog/${slug}` } };
 }
 
 function readTime(content?: string) {
@@ -80,14 +80,14 @@ export default async function BlogDetailPage(props: Props) {
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const imgUrl = post.featured_image ? `${dUrl}/assets/${post.featured_image}` : null;
     const dateStr = post.published_date
-        ? new Date(post.published_date).toLocaleDateString("en-IN", {
+        ? new Date(post.published_date).toLocaleDateString("en-GB", {
               month: "long",
               day: "numeric",
               year: "numeric",
           })
         : "";
     const rt = readTime(post.content);
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
     const blogSchema = {
         "@context": "https://schema.org",
@@ -100,12 +100,12 @@ export default async function BlogDetailPage(props: Props) {
         image: imgUrl || undefined,
         author: {
             "@type": "Organization",
-            name: "IG Holidays",
+            name: "My Perfect Trips",
             url: baseUrl,
         },
         publisher: {
             "@type": "Organization",
-            name: "IG Holidays",
+            name: "My Perfect Trips",
             logo: { "@type": "ImageObject", url: `${baseUrl}/logo.png` },
         },
         mainEntityOfPage: { "@type": "WebPage", "@id": `${baseUrl}/blog/${slug}` },
@@ -256,7 +256,7 @@ export default async function BlogDetailPage(props: Props) {
                             </div>
                             <div>
                                 <p className="font-bold text-brand-950 text-base">{post.author || "Editorial Team"}</p>
-                                <p className="text-sm text-stone-400 mt-0.5">IG Holidays Travel Expert</p>
+                                <p className="text-sm text-stone-400 mt-0.5">My Perfect Trips Travel Expert</p>
                                 {dateStr && <p className="text-xs text-stone-400 mt-0.5">{dateStr} · {rt}</p>}
                             </div>
                         </div>

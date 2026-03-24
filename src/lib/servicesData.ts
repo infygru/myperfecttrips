@@ -41,7 +41,7 @@ export const servicesList: ServiceData[] = [
     shortDesc: "End-to-end planning and flawless execution for corporate events of every scale — from intimate boardroom meetings to grand international exhibitions.",
     Icon: Building2,
     isCorporate: true,
-    overview: "IG Holidays is a leading Corporate MICE specialist trusted by enterprises across India. We take full ownership of your event — from initial concept to post-event analysis — so your team can focus entirely on business outcomes. Our dedicated MICE desk operates round the clock, managing delegate travel, venue contracting, audio-visual production, themed gala dinners, and everything in between.",
+    overview: "My Perfect Trips is a leading Corporate MICE specialist trusted by enterprises across India. We take full ownership of your event — from initial concept to post-event analysis — so your team can focus entirely on business outcomes. Our dedicated MICE desk operates round the clock, managing delegate travel, venue contracting, audio-visual production, themed gala dinners, and everything in between.",
     features: [
       { title: "Venue Scouting & Contracting", desc: "Premium venues globally — from luxury hotel ballrooms to purpose-built convention centres." },
       { title: "Delegate Travel Management", desc: "Coordinated flights, visas, transfers, and hotel blocks for groups of any size." },
@@ -69,7 +69,7 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["corporate-travel", "group-travel"],
     accentColor: { hex: "#0EA5E9", rgb: "14,165,233", light: "#E0F2FE" },
-    seoDescription: "Expert Corporate MICE services in Chennai, India — meetings, incentives, conferences and exhibitions managed end-to-end by IG Holidays.",
+    seoDescription: "Expert Corporate MICE services in Chennai, India — meetings, incentives, conferences and exhibitions managed end-to-end by My Perfect Trips.",
     seoKeywords: ["corporate MICE services India", "MICE event management Chennai", "corporate event planning India", "incentive tour India", "conference management company Chennai", "corporate travel management", "B2B travel agency India", "corporate offsite planning"],
   },
   {
@@ -79,7 +79,7 @@ export const servicesList: ServiceData[] = [
     shortDesc: "Streamlined, policy-compliant corporate travel management for executives and teams — maximising efficiency and minimising costs.",
     Icon: Briefcase,
     isCorporate: true,
-    overview: "Managing business travel at scale requires deep expertise, strong supplier relationships, and airtight processes. IG Holidays acts as your dedicated corporate travel partner — implementing travel policies, securing negotiated rates, and providing 24/7 traveller support so your employees always move confidently and cost-effectively.",
+    overview: "Managing business travel at scale requires deep expertise, strong supplier relationships, and airtight processes. My Perfect Trips acts as your dedicated corporate travel partner — implementing travel policies, securing negotiated rates, and providing 24/7 traveller support so your employees always move confidently and cost-effectively.",
     features: [
       { title: "Bulk Airfare Contracts", desc: "Negotiated group and corporate fares with major carriers for significant cost savings." },
       { title: "Executive Travel Upgrades", desc: "Business class, premium lounges, and priority services for C-suite and leadership travel." },
@@ -107,7 +107,7 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["corporate-mice", "visa-assistance"],
     accentColor: { hex: "#8B5CF6", rgb: "139,92,246", light: "#EDE9FE" },
-    seoDescription: "Streamlined corporate travel packages for executives and teams in India. IG Holidays provides policy-compliant business travel management with 24/7 support.",
+    seoDescription: "Streamlined corporate travel packages for executives and teams in India. My Perfect Trips provides policy-compliant business travel management with 24/7 support.",
     seoKeywords: ["corporate travel packages India", "business travel management Chennai", "executive travel services India", "corporate tour organizer India", "business travel agency Chennai", "bulk airfare booking India", "corporate travel policy management"],
   },
   {
@@ -117,7 +117,7 @@ export const servicesList: ServiceData[] = [
     shortDesc: "From intimate family getaways to large-scale social tours — we handle the logistics so your group can focus on making memories.",
     Icon: Users,
     isCorporate: false,
-    overview: "Group travel presents unique challenges: coordinating schedules, securing group rates, managing varied preferences, and ensuring everyone has an exceptional experience. IG Holidays specialises in taking the stress entirely off your hands. With dedicated group travel coordinators and volume contracts with airlines and hotels, we deliver exceptional experiences at highly competitive rates.",
+    overview: "Group travel presents unique challenges: coordinating schedules, securing group rates, managing varied preferences, and ensuring everyone has an exceptional experience. My Perfect Trips specialises in taking the stress entirely off your hands. With dedicated group travel coordinators and volume contracts with airlines and hotels, we deliver exceptional experiences at highly competitive rates.",
     features: [
       { title: "Group Airfare Negotiation", desc: "Exclusive bulk fares and group seat blocks on preferred carriers and routes." },
       { title: "Multi-Room Hotel Blocks", desc: "Guaranteed room blocks at preferred properties with group amenities and dedicated check-in." },
@@ -145,7 +145,7 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["college-tours", "holiday-planning"],
     accentColor: { hex: "#10B981", rgb: "16,185,129", light: "#D1FAE5" },
-    seoDescription: "Group travel bookings for families, friend groups, and associations in India. IG Holidays handles everything — airfare, hotels, activities, and on-trip support.",
+    seoDescription: "Group travel bookings for families, friend groups, and associations in India. My Perfect Trips handles everything — airfare, hotels, activities, and on-trip support.",
     seoKeywords: ["group travel packages India", "group tour booking India", "family group tours India", "group holiday packages Chennai", "bulk travel booking India", "group tour operators India", "social group travel India"],
   },
   {
@@ -155,7 +155,7 @@ export const servicesList: ServiceData[] = [
     shortDesc: "Expertly managed educational tours and campus excursions for schools, colleges, and universities — prioritising safety, learning, and unforgettable experiences.",
     Icon: GraduationCap,
     isCorporate: false,
-    overview: "Student travel demands a higher standard of care, communication, and safety than any other segment. IG Holidays has managed hundreds of successful college and school tours, developing robust protocols for student group management, parent communication, institutional compliance, and emergency response. We work closely with institutions to craft journeys that complement academic learning while creating lifelong memories.",
+    overview: "Student travel demands a higher standard of care, communication, and safety than any other segment. My Perfect Trips has managed hundreds of successful college and school tours, developing robust protocols for student group management, parent communication, institutional compliance, and emergency response. We work closely with institutions to craft journeys that complement academic learning while creating lifelong memories.",
     features: [
       { title: "Safety-First Protocols", desc: "Verified accommodation, medical support on tours, 24/7 emergency contact, and risk assessment documentation." },
       { title: "Educational Itineraries", desc: "Curated visits to museums, historical sites, science parks, and cultural landmarks aligned with curriculum." },
@@ -183,7 +183,7 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["group-travel", "holiday-planning"],
     accentColor: { hex: "#F97316", rgb: "249,115,22", light: "#FFEDD5" },
-    seoDescription: "Safe, educational college tours and school excursions managed by IG Holidays. Trusted student travel operator in Chennai with safety-first protocols.",
+    seoDescription: "Safe, educational college tours and school excursions managed by My Perfect Trips. Trusted student travel operator in Chennai with safety-first protocols.",
     seoKeywords: ["college tours India", "student travel packages India", "school excursions Chennai", "educational tours India", "college trip organizer India", "student group travel India", "college industrial visits India"],
   },
   {
@@ -193,7 +193,7 @@ export const servicesList: ServiceData[] = [
     shortDesc: "Expert visa consultation, documentation support, and application processing for individuals, families, and corporate employees travelling worldwide.",
     Icon: FileText,
     isCorporate: false,
-    overview: "Visa rejections and delays can derail carefully planned travel. IG Holidays' dedicated visa cell has successfully processed thousands of visa applications across all major markets. Our expert consultants provide end-to-end support — from documentation checklist and application filling to appointment booking and status tracking — giving you the best possible chance of a swift, successful approval.",
+    overview: "Visa rejections and delays can derail carefully planned travel. My Perfect Trips' dedicated visa cell has successfully processed thousands of visa applications across all major markets. Our expert consultants provide end-to-end support — from documentation checklist and application filling to appointment booking and status tracking — giving you the best possible chance of a swift, successful approval.",
     features: [
       { title: "Schengen Visa Processing", desc: "Applications for all Schengen zone countries with high success rates and expedited processing." },
       { title: "UK & USA Visas", desc: "Comprehensive support for BRP, B1/B2, F1, and visitor visa applications with interview preparation." },
@@ -221,7 +221,7 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["corporate-travel", "holiday-planning"],
     accentColor: { hex: "#F43F5E", rgb: "244,63,94", light: "#FFE4E6" },
-    seoDescription: "Professional visa assistance services for all major destinations. IG Holidays processes Schengen, UK, USA, UAE, and South-East Asian visas from Chennai.",
+    seoDescription: "Professional visa assistance services for all major destinations. My Perfect Trips processes Schengen, UK, USA, UAE, and South-East Asian visas from Chennai.",
     seoKeywords: ["visa assistance Chennai", "visa processing India", "Schengen visa India", "UK visa agent Chennai", "USA visa consultation India", "travel visa services Chennai", "visa agent near me", "visa documentation support India"],
   },
   {
@@ -231,7 +231,7 @@ export const servicesList: ServiceData[] = [
     shortDesc: "Luxury, personalised holiday itineraries designed around your tastes, timeline, and travel style — from intimate honeymoons to once-in-a-lifetime bucket-list journeys.",
     Icon: PlaneTakeoff,
     isCorporate: false,
-    overview: "At IG Holidays, we believe a holiday should feel effortless and extraordinary. Our bespoke planning service begins with understanding you — your preferred pace, style, cuisine, interests, and budget — before we craft an itinerary that feels like it was made for you alone. From private villa stays in Bali to helicopter transfers in Switzerland, our curated experiences go far beyond the ordinary.",
+    overview: "At My Perfect Trips, we believe a holiday should feel effortless and extraordinary. Our bespoke planning service begins with understanding you — your preferred pace, style, cuisine, interests, and budget — before we craft an itinerary that feels like it was made for you alone. From private villa stays in Bali to helicopter transfers in Switzerland, our curated experiences go far beyond the ordinary.",
     features: [
       { title: "Personalised Itinerary Design", desc: "Every day planned around your interests — culture, adventure, relaxation, gastronomy, or all of the above." },
       { title: "Luxury Accommodation Curation", desc: "Handpicked boutique hotels, private villas, safari lodges, and heritage properties worldwide." },
@@ -259,7 +259,7 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["group-travel", "visa-assistance"],
     accentColor: { hex: "#F59E0B", rgb: "245,158,11", light: "#FEF3C7" },
-    seoDescription: "Bespoke luxury holiday planning for honeymoon couples and discerning travellers. IG Holidays crafts personalised itineraries to Maldives, Europe, Bali, and beyond.",
+    seoDescription: "Bespoke luxury holiday planning for honeymoon couples and discerning travellers. My Perfect Trips crafts personalised itineraries to Maldives, Europe, Bali, and beyond.",
     seoKeywords: ["bespoke holiday planning India", "luxury holiday packages India", "honeymoon packages Chennai", "customised tour packages India", "luxury travel agent India", "private holiday planner Chennai", "luxury international holidays India"],
   },
 ];

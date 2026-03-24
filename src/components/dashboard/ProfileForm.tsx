@@ -6,7 +6,7 @@ import { User, Mail, Phone, Save, Lock, Eye, EyeOff, Camera, CheckCircle2 } from
 import Image from 'next/image';
 import { getUserDisplayName, getUserInitials } from '@/context/AuthContext';
 
-const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://api.igholidays.com';
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://api.myperfecttrips.com';
 
 export default function ProfileForm({ user }: { user: any }) {
     const { refresh } = useAuth();

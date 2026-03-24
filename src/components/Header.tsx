@@ -17,7 +17,7 @@ export default async function Header() {
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const logoUrl = s?.logo ? `${dUrl}/assets/${s.logo}` : null;
     const phone = s?.contact_phone || "+91 8807709919";
-    const siteName = s?.site_name || "IGHolidays";
+    const siteName = s?.site_name || "MyPerfectTrips";
 
     const otherNav = [
         { name: "Packages", path: "/packages" },

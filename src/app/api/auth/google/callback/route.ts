@@ -9,7 +9,7 @@ function generateToken(): string {
 
 function getBaseUrl(req: NextRequest): string {
     if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-    const host  = req.headers.get('x-forwarded-host') || req.headers.get('host') || 'igholidays.com';
+    const host  = req.headers.get('x-forwarded-host') || req.headers.get('host') || 'myperfecttrips.com';
     const proto = req.headers.get('x-forwarded-proto') || 'https';
     return `${proto}://${host}`;
 }

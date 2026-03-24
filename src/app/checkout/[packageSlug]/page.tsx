@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic';
 type Props = { params: Promise<{ packageSlug: string }>; searchParams: Promise<{ bookingId?: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    return { title: 'Checkout | IG Holidays' };
+    return { title: 'Checkout | My Perfect Trips' };
 }
 
 export default async function CheckoutPage({ params, searchParams }: Props) {
@@ -101,7 +101,7 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
                             <div className="border-t border-stone-100 pt-4 space-y-2">
                                 <div className="flex justify-between text-sm text-stone-600">
                                     <span>Base price (per person)</span>
-                                    <span>₹{price.toLocaleString('en-IN')}</span>
+                                    <span>£{price.toLocaleString('en-GB')}</span>
                                 </div>
                                 <p className="text-xs text-stone-400">Final amount calculated based on travellers below</p>
                             </div>

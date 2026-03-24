@@ -3,7 +3,7 @@ import { adminFetch } from '@/lib/auth';
 import { createCashfreeOrder } from '@/lib/cashfree';
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055';
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://igholidays.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
 
 export async function POST(req: NextRequest) {
     const token = req.cookies.get('directus_token')?.value;
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
             customerPhone: booking.user_phone || user.phone || '9999999999',
             returnUrl,
             notifyUrl,
-            orderNote: `IG Holidays - ${booking.package_title}`,
+            orderNote: `My Perfect Trips - ${booking.package_title}`,
         });
 
         return NextResponse.json({

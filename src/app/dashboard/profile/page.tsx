@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import ProfileForm from '@/components/dashboard/ProfileForm';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = { title: 'My Profile | IG Holidays' };
+export const metadata: Metadata = { title: 'My Profile | My Perfect Trips' };
 export const dynamic = 'force-dynamic';
 
 export default async function ProfilePage() {

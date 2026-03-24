@@ -163,7 +163,7 @@ export default function VisaDestinationTabs({ visaFree, visaOnArrival, dUrl }: P
                     )}
                     <div className="mt-auto flex items-center justify-between">
                       <p className="text-sm font-bold text-brand-700">
-                        {pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}
+                        {pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "On Request"}
                       </p>
                       <div className="h-7 w-7 flex items-center justify-center rounded-full bg-brand-50 text-brand-700 group-hover:bg-brand-950 group-hover:text-white transition-colors">
                         <ArrowRight className="h-3.5 w-3.5 -rotate-45 group-hover:rotate-0 transition-transform" />

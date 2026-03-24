@@ -27,8 +27,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         
         if (pkg) {
             const destStr = pkg.destination || pkg.destinations?.join(", ") || "";
-            const title = `${pkg.title} | ${destStr ? destStr + " " : ""}Holiday Package — IG Holidays`;
-            const description = `Book ${pkg.title}${destStr ? " in " + destStr : ""} — ${pkg.duration_nights ? pkg.duration_nights + " nights / " + pkg.duration_days + " days" : "premium"} ${pkg.category ? pkg.category.toLowerCase() : "holiday"} package. Starting from ${pkg.price ? "₹" + Number(pkg.price).toLocaleString("en-IN") : "custom pricing"}. Customised itinerary, best price guarantee, 24/7 support. Book with IG Holidays.`;
+            const title = `${pkg.title} | ${destStr ? destStr + " " : ""}Holiday Package — My Perfect Trips`;
+            const description = `Book ${pkg.title}${destStr ? " in " + destStr : ""} — ${pkg.duration_nights ? pkg.duration_nights + " nights / " + pkg.duration_days + " days" : "premium"} ${pkg.category ? pkg.category.toLowerCase() : "holiday"} package. Starting from ${pkg.price ? "£" + Number(pkg.price).toLocaleString("en-GB") : "custom pricing"}. Customised itinerary, best price guarantee, 24/7 support. Book with My Perfect Trips.`;
             const canonicalUrl = `${baseUrl}/packages/${slug}`;
             const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
             const imageUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : undefined;
@@ -36,7 +36,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
             return {
                 title,
                 description,
-                keywords: [pkg.title, destStr, pkg.category, "holiday package", "tour package India", "IG Holidays"].filter(Boolean).join(", "),
+                keywords: [pkg.title, destStr, pkg.category, "holiday package", "tour package India", "My Perfect Trips"].filter(Boolean).join(", "),
                 alternates: { canonical: canonicalUrl },
                 openGraph: {
                     title,
@@ -56,7 +56,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     } catch { }
 
     return { 
-        title: "Package Details | IG Holidays",
+        title: "Package Details | My Perfect Trips",
         alternates: {
             canonical: `${baseUrl}/packages/${slug}`,
         }
@@ -106,7 +106,7 @@ export default async function PackageDetailPage(props: Props) {
     const defaultInclusions = ["Handpicked Premium Accommodation", "Daily Breakfast & Select Meals", "All Airport & Hotel Transfers", "Expert Local Guides", "All Entry Permits & Tickets", "24/7 On-Trip Concierge Support"];
     const defaultExclusions = ["International / Domestic Flights", "Visa Fees & Documentation", "Personal & Shopping Expenses", "Travel Insurance", "Optional Activities & Tips", "Anything not mentioned in inclusions"];
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
     const destStr = pkg.destination || pkg.destinations?.join(", ") || "";
     const packageSchema = {
         "@context": "https://schema.org",
@@ -117,11 +117,11 @@ export default async function PackageDetailPage(props: Props) {
             : `${pkg.title} — ${pkg.duration_nights ? pkg.duration_nights + " nights / " + pkg.duration_days + " days" : "premium"} holiday package${destStr ? " in " + destStr : ""}.`,
         url: `${baseUrl}/packages/${pkg.slug}`,
         image: imgUrl || undefined,
-        brand: { "@type": "Brand", name: "IG Holidays" },
+        brand: { "@type": "Brand", name: "My Perfect Trips" },
         offers: pkg.price ? {
             "@type": "Offer",
             price: String(pkg.price),
-            priceCurrency: "INR",
+            priceCurrency: "GBP",
             availability: "https://schema.org/InStock",
             url: `${baseUrl}/packages/${pkg.slug}`,
         } : undefined,
@@ -206,7 +206,7 @@ export default async function PackageDetailPage(props: Props) {
                                 <div className="flex items-center gap-2">
                                     <span className="text-xs text-white/50 font-medium">From</span>
                                     <span className="font-serif text-2xl font-semibold text-white">
-                                        ₹{Number(pkg.price).toLocaleString("en-IN")}
+                                        £{Number(pkg.price).toLocaleString("en-GB")}
                                     </span>
                                     <span className="text-xs text-white/50">/ person</span>
                                 </div>
@@ -456,7 +456,7 @@ export default async function PackageDetailPage(props: Props) {
                                                     <h3 className="font-serif text-sm font-medium text-brand-950 line-clamp-2 group-hover:text-brand-700 transition-colors mb-auto">{rel.title}</h3>
                                                     {rel.price && (
                                                         <p className="mt-3 pt-3 border-t border-stone-100 text-sm font-semibold text-brand-900">
-                                                            ₹{Number(rel.price).toLocaleString("en-IN")}
+                                                            £{Number(rel.price).toLocaleString("en-GB")}
                                                         </p>
                                                     )}
                                                 </div>
@@ -479,7 +479,7 @@ export default async function PackageDetailPage(props: Props) {
                                 <div className="relative z-10">
                                     <p className="text-[9px] font-black uppercase tracking-[0.25em] text-gold-400 mb-2">Starting from</p>
                                     <p className="font-serif text-5xl font-medium text-white leading-none mb-1">
-                                        {pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "Custom"}
+                                        {pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "Custom"}
                                     </p>
                                     <p className="text-[11px] text-brand-400 mt-2">
                                         {pkg.price ? "per person · taxes extra" : "Contact us for pricing"}
@@ -505,10 +505,10 @@ export default async function PackageDetailPage(props: Props) {
                                     <Phone className="h-4 w-4" /> Call Us Directly
                                 </a>
                                 <a
-                                    href="mailto:info@igholidays.com"
+                                    href="mailto:info@myperfecttrips.com"
                                     className="w-full flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-transparent py-3.5 text-sm font-semibold text-stone-600 hover:bg-stone-50 transition-colors"
                                 >
-                                    <Mail className="h-4 w-4" /> info@igholidays.com
+                                    <Mail className="h-4 w-4" /> info@myperfecttrips.com
                                 </a>
                                 <DownloadItineraryButton pkg={pkg} logoUrl={logoUrl} itineraryDays={itineraryDays} variant="sidebar" />
                             </div>
@@ -536,7 +536,7 @@ export default async function PackageDetailPage(props: Props) {
                             </ul>
                             <div className="mt-4 pt-4 border-t border-stone-100 text-center">
                                 <p className="text-[10px] text-stone-400 font-medium">
-                                    IG Holidays — official brand of <strong className="text-stone-600">Infygru Private Limited</strong>
+                                    My Perfect Trips — official brand of <strong className="text-stone-600">Infygru Private Limited</strong>
                                 </p>
                             </div>
                         </div>

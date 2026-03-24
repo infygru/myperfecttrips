@@ -114,7 +114,7 @@ export default function PackagesFilter({
         if (d) activeChips.push({ label: d.label, onRemove: () => navigate({ duration: "" }) });
     }
     if (currentMaxPrice && currentMaxPrice !== maxPriceRange.toString()) {
-        activeChips.push({ label: `Under ₹${Number(currentMaxPrice).toLocaleString("en-IN")}`, onRemove: () => navigate({ maxPrice: "" }) });
+        activeChips.push({ label: `Under £${Number(currentMaxPrice).toLocaleString("en-GB")}`, onRemove: () => navigate({ maxPrice: "" }) });
     }
     if (currentDest) activeChips.push({ label: currentDest, onRemove: () => navigate({ destination: "" }) });
     if (currentTheme) {
@@ -197,13 +197,13 @@ export default function PackagesFilter({
                 {/* Price dropdown */}
                 {maxPriceRange > 0 && (
                     <FilterDropdown
-                        label={currentMaxPrice && currentMaxPrice !== maxPriceRange.toString() ? `≤ ₹${Number(currentMaxPrice).toLocaleString("en-IN")}` : "Budget"}
+                        label={currentMaxPrice && currentMaxPrice !== maxPriceRange.toString() ? `≤ £${Number(currentMaxPrice).toLocaleString("en-GB")}` : "Budget"}
                         active={!!(currentMaxPrice && currentMaxPrice !== maxPriceRange.toString())}
                     >
                         <div className="w-64 p-1">
                             <div className="flex items-center justify-between mb-3 px-1">
                                 <span className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Max Budget</span>
-                                <span className="text-sm font-bold text-brand-950">₹{Number(localPrice).toLocaleString("en-IN")}</span>
+                                <span className="text-sm font-bold text-brand-950">£{Number(localPrice).toLocaleString("en-GB")}</span>
                             </div>
                             <input
                                 type="range" min="0" max={maxPriceRange} step="5000"
@@ -214,8 +214,8 @@ export default function PackagesFilter({
                                 className="w-full accent-brand-600 h-1.5 rounded-full cursor-pointer"
                             />
                             <div className="flex justify-between text-[11px] text-stone-400 mt-1.5 px-1">
-                                <span>₹0</span>
-                                <span>₹{maxPriceRange.toLocaleString("en-IN")}</span>
+                                <span>£0</span>
+                                <span>£{maxPriceRange.toLocaleString("en-GB")}</span>
                             </div>
                         </div>
                     </FilterDropdown>

@@ -2,8 +2,8 @@ import { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: "IG Holidays",
-        short_name: "IGHolidays",
+        name: "My Perfect Trips",
+        short_name: "MyPerfectTrips",
         description: "India's trusted travel agency — premium holiday packages, honeymoon tours, corporate MICE, and more.",
         start_url: "/",
         display: "standalone",

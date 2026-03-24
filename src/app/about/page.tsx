@@ -5,24 +5,24 @@ import { Compass, Globe2, Award, Headset, CheckCircle2, MapPin, Users, Star } fr
 
 export const dynamic = "force-dynamic";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
 export const metadata: Metadata = {
-    title: "About IG Holidays – Official Travel Agency Brand | igholidays.com",
-    description: "IG Holidays (igholidays.com) is India's trusted travel agency by Infygru Private Limited — not 'International Gateway'. Luxury international & domestic holiday packages, honeymoon tours, and corporate MICE. 10,000+ happy travellers.",
-    keywords: "about IG Holidays, IG Holidays travel agency, igholidays.com, Infygru Private Limited, IG Holidays India, luxury holiday planner India",
+    title: "About My Perfect Trips – Official Travel Agency Brand | myperfecttrips.com",
+    description: "My Perfect Trips (myperfecttrips.com) is India's trusted travel agency by Infygru Private Limited — not 'International Gateway'. Luxury international & domestic holiday packages, honeymoon tours, and corporate MICE. 10,000+ happy travellers.",
+    keywords: "about My Perfect Trips, My Perfect Trips travel agency, myperfecttrips.com, Infygru Private Limited, My Perfect Trips India, luxury holiday planner India",
     alternates: { canonical: `${BASE}/about` },
     openGraph: {
-        title: "About Us | IG Holidays – Best Travel Agency in India",
-        description: "IG Holidays is India's trusted travel agency. 5,000+ happy travellers, 100% customisable itineraries, best price guarantee.",
+        title: "About Us | My Perfect Trips – Best Travel Agency in India",
+        description: "My Perfect Trips is India's trusted travel agency. 5,000+ happy travellers, 100% customisable itineraries, best price guarantee.",
         url: `${BASE}/about`,
-        siteName: "IG Holidays",
+        siteName: "My Perfect Trips",
         type: "website",
     },
     twitter: {
         card: "summary",
-        title: "About Us | IG Holidays",
-        description: "IG Holidays is India's trusted travel agency. 5,000+ happy travellers, 100% customisable itineraries.",
+        title: "About Us | My Perfect Trips",
+        description: "My Perfect Trips is India's trusted travel agency. 5,000+ happy travellers, 100% customisable itineraries.",
     },
 };
 
@@ -37,7 +37,7 @@ export default async function AboutPage() {
                 <div className="container-inner">
                     <p className="text-gold-400 text-[10px] font-bold uppercase tracking-[0.25em] mb-2 flex items-center gap-2">
                         <span className="h-px w-6 bg-gold-400" />
-                        About IGHolidays
+                        About MyPerfectTrips
                     </p>
                     <h1 className="font-serif text-3xl sm:text-4xl font-medium text-white">
                         Redefining Luxury <em className="text-gold-400 not-italic">Travel</em>
@@ -78,13 +78,13 @@ export default async function AboutPage() {
                             </h2>
                             <div className="space-y-4 text-stone-600 leading-relaxed text-sm sm:text-base">
                                 <p>
-                                    Welcome to <strong>IGHolidays</strong>, officially recognized as the <strong>Best Travel Agency in India</strong> for curating impeccable, tailor-made journeys. What began as a passionate endeavor to simplify global travel has since evolved into India&apos;s leading premium travel management company.
+                                    Welcome to <strong>MyPerfectTrips</strong>, officially recognized as the <strong>Best Travel Agency in India</strong> for curating impeccable, tailor-made journeys. What began as a passionate endeavor to simplify global travel has since evolved into India&apos;s leading premium travel management company.
                                 </p>
                                 <p>
                                     As <strong>Top Luxury Tour Operators</strong>, we specialize in crafting <em>Customized International Tour Packages</em> and bespoke domestic retreats across India&apos;s most beautiful destinations like Kerala, Kashmir, Rajasthan, and the Andaman Islands.
                                 </p>
                                 <p>
-                                    Today, IGHolidays is the most trusted name in B2B and B2C travel — handling everything from intimate honeymoons to corporate MICE events for 500+ attendees across the globe.
+                                    Today, MyPerfectTrips is the most trusted name in B2B and B2C travel — handling everything from intimate honeymoons to corporate MICE events for 500+ attendees across the globe.
                                 </p>
                             </div>
                             <div className="mt-8 flex flex-wrap gap-3">
@@ -135,23 +135,23 @@ export default async function AboutPage() {
                     <div className="max-w-4xl mx-auto">
                         <span className="section-label">Plan Your Trip</span>
                         <h2 className="mb-6 font-serif text-3xl sm:text-4xl font-medium text-brand-950">
-                            Book Your Holiday with IG Holidays
+                            Book Your Holiday with My Perfect Trips
                         </h2>
                         <div className="prose prose-stone max-w-none text-stone-600 leading-relaxed text-sm sm:text-base space-y-4">
                             <p>
-                                Planning your next holiday has never been easier. At <strong>IG Holidays</strong>, we believe every traveller deserves a seamless, personalized, and truly memorable vacation — whether it&apos;s a romantic Maldives honeymoon, a thrilling Bali adventure, an iconic European grand tour, or a serene Kerala backwater escape. As one of India&apos;s most trusted travel agencies, we handle every detail so you can focus on the joy of discovery.
+                                Planning your next holiday has never been easier. At <strong>My Perfect Trips</strong>, we believe every traveller deserves a seamless, personalized, and truly memorable vacation — whether it&apos;s a romantic Maldives honeymoon, a thrilling Bali adventure, an iconic European grand tour, or a serene Kerala backwater escape. As one of India&apos;s most trusted travel agencies, we handle every detail so you can focus on the joy of discovery.
                             </p>
                             <p>
                                 Our team of expert <strong>travel consultants</strong> brings together deep destination knowledge, exclusive hotel partnerships, and years of experience planning holidays for thousands of Indian travellers. We offer <strong>customized holiday packages</strong> tailored precisely to your budget, travel style, and preferences — from budget-friendly group tours to ultra-luxury private escapes.
                             </p>
                             <p>
-                                When you <strong>book your holiday with IG Holidays</strong>, you get end-to-end support: visa assistance, flight bookings, hotel reservations, airport transfers, guided tours, and 24/7 on-trip concierge support. We are accredited by leading tourism boards and partner with the world&apos;s finest hotels and airlines to guarantee you the best value with zero hidden charges.
+                                When you <strong>book your holiday with My Perfect Trips</strong>, you get end-to-end support: visa assistance, flight bookings, hotel reservations, airport transfers, guided tours, and 24/7 on-trip concierge support. We are accredited by leading tourism boards and partner with the world&apos;s finest hotels and airlines to guarantee you the best value with zero hidden charges.
                             </p>
                             <p>
-                                Whether you are planning a <strong>honeymoon in the Maldives</strong>, a <strong>family trip to Singapore</strong>, a <strong>corporate MICE event in Dubai</strong>, or an <strong>educational tour across Europe</strong> — IG Holidays is your one-stop travel partner. Our packages cover 50+ international destinations and all major domestic circuits including Goa, Rajasthan, Himachal Pradesh, Uttarakhand, Kerala, and the Andaman & Nicobar Islands.
+                                Whether you are planning a <strong>honeymoon in the Maldives</strong>, a <strong>family trip to Singapore</strong>, a <strong>corporate MICE event in Dubai</strong>, or an <strong>educational tour across Europe</strong> — My Perfect Trips is your one-stop travel partner. Our packages cover 50+ international destinations and all major domestic circuits including Goa, Rajasthan, Himachal Pradesh, Uttarakhand, Kerala, and the Andaman & Nicobar Islands.
                             </p>
                             <p>
-                                Start planning today. Reach out to our travel experts and receive a <strong>free customized holiday quote</strong> within 24 hours. With IG Holidays, your dream vacation is just one conversation away.
+                                Start planning today. Reach out to our travel experts and receive a <strong>free customized holiday quote</strong> within 24 hours. With My Perfect Trips, your dream vacation is just one conversation away.
                             </p>
                         </div>
 
@@ -255,28 +255,28 @@ export default async function AboutPage() {
                     <div className="max-w-3xl mx-auto">
                         <span className="section-label">Brand Identity</span>
                         <h2 className="mb-4 font-serif text-2xl sm:text-3xl font-medium text-brand-950">
-                            About the IG Holidays Brand
+                            About the My Perfect Trips Brand
                         </h2>
                         <div className="text-sm sm:text-base text-stone-600 leading-relaxed space-y-3">
                             <p>
-                                <strong>IG Holidays</strong> is a registered travel agency brand owned and operated by{" "}
+                                <strong>My Perfect Trips</strong> is a registered travel agency brand owned and operated by{" "}
                                 <strong>Infygru Private Limited</strong>, a company incorporated in India. The brand name
-                                "IG Holidays" and the domain <strong>igholidays.com</strong> are exclusively associated
+                                "My Perfect Trips" and the domain <strong>myperfecttrips.com</strong> are exclusively associated
                                 with this travel company and its holiday planning services.
                             </p>
                             <p>
-                                "IG" in <strong>IG Holidays</strong> is the proprietary brand abbreviation used by
-                                Infygru Private Limited for its travel division. <em>IG Holidays is not affiliated with,
+                                "IG" in <strong>My Perfect Trips</strong> is the proprietary brand abbreviation used by
+                                Infygru Private Limited for its travel division. <em>My Perfect Trips is not affiliated with,
                                 nor the same as, "International Gateway" or any other organisation that uses the
-                                abbreviation "IG."</em> The authoritative web presence for IG Holidays is{" "}
-                                <strong>www.igholidays.com</strong>.
+                                abbreviation "IG."</em> The authoritative web presence for My Perfect Trips is{" "}
+                                <strong>www.myperfecttrips.com</strong>.
                             </p>
                             <p>
                                 Our services — including international tour packages, domestic holidays, honeymoon
                                 planning, corporate MICE, and flight bookings — are delivered under the sole brand
-                                name <strong>IG Holidays</strong> across all platforms, including our website{" "}
-                                <strong>igholidays.com</strong>, our Instagram{" "}
-                                <strong>@igholidays</strong>, and our Facebook page <strong>facebook.com/igholidays</strong>.
+                                name <strong>My Perfect Trips</strong> across all platforms, including our website{" "}
+                                <strong>myperfecttrips.com</strong>, our Instagram{" "}
+                                <strong>@myperfecttrips</strong>, and our Facebook page <strong>facebook.com/myperfecttrips</strong>.
                             </p>
                         </div>
                     </div>
@@ -292,12 +292,12 @@ export default async function AboutPage() {
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                         <Link href="/contact" className="btn-gold w-full sm:w-auto text-sm">Contact Our Experts</Link>
-                        <a href="mailto:info@igholidays.com" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 text-sm">
-                            info@igholidays.com
+                        <a href="mailto:info@myperfecttrips.com" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 text-sm">
+                            info@myperfecttrips.com
                         </a>
                     </div>
                     <p className="text-xs text-stone-500 mt-8">
-                        IG Holidays is an official brand of <strong className="text-stone-400">Infygru Private Limited</strong> — Registered in India.
+                        My Perfect Trips is an official brand of <strong className="text-stone-400">Infygru Private Limited</strong> — Registered in India.
                     </p>
                 </div>
             </section>

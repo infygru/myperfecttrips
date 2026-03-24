@@ -13,16 +13,16 @@ import type { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 type Props = { params: Promise<{ id: string }> };
 export async function generateMetadata(): Promise<Metadata> {
-    return { title: 'Booking Details | IG Holidays' };
+    return { title: 'Booking Details | My Perfect Trips' };
 }
 
 function formatDate(d: string) {
     if (!d) return '—';
-    return new Date(d).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    return new Date(d).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 }
 function formatDateTime(d: string) {
     if (!d) return '—';
-    return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 function daysUntil(d: string) {
     return Math.ceil((new Date(d).getTime() - Date.now()) / 86400000);
@@ -88,7 +88,7 @@ export default async function BookingDetailPage({ params }: Props) {
                     {[
                         { icon: Calendar,   label: 'Travel Date',  value: formatDate(b.travel_date) },
                         { icon: Users,      label: 'Travellers',   value: `${b.num_adults} adult${b.num_adults !== 1 ? 's' : ''}${b.num_children > 0 ? ` · ${b.num_children} child${b.num_children !== 1 ? 'ren' : ''}` : ''}` },
-                        { icon: CreditCard, label: 'Total Amount', value: `₹${Number(b.total_amount).toLocaleString('en-IN')}` },
+                        { icon: CreditCard, label: 'Total Amount', value: `£${Number(b.total_amount).toLocaleString('en-GB')}` },
                         { icon: Clock,      label: 'Booked On',    value: formatDateTime(b.date_created) },
                     ].map(({ icon: Icon, label, value }) => (
                         <div key={label} className="px-5 py-4">
@@ -167,7 +167,7 @@ export default async function BookingDetailPage({ params }: Props) {
                     </div>
                     <div className="flex items-center gap-3 mb-4">
                         <div className={`rounded-xl px-4 py-2 ${ps.bg}`}>
-                            <p className={`text-lg font-bold ${ps.text}`}>₹{Number(b.total_amount).toLocaleString('en-IN')}</p>
+                            <p className={`text-lg font-bold ${ps.text}`}>£{Number(b.total_amount).toLocaleString('en-GB')}</p>
                             <p className={`text-xs font-semibold ${ps.text}`}>{ps.label}</p>
                         </div>
                     </div>
@@ -184,7 +184,7 @@ export default async function BookingDetailPage({ params }: Props) {
                                         <p className="text-[10px] text-stone-400">{formatDateTime(p.date_created)}</p>
                                     </div>
                                     <span className={`text-sm font-bold shrink-0 ${p.status === 'success' ? 'text-emerald-600' : p.status === 'failed' ? 'text-red-500' : 'text-amber-600'}`}>
-                                        {p.status === 'success' ? '✓' : p.status === 'failed' ? '✗' : '~'} ₹{Number(p.amount).toLocaleString('en-IN')}
+                                        {p.status === 'success' ? '✓' : p.status === 'failed' ? '✗' : '~'} £{Number(p.amount).toLocaleString('en-GB')}
                                     </span>
                                 </div>
                             ))}

@@ -5,23 +5,23 @@ import ContactForm from "@/components/ContactForm";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import type { Metadata } from "next";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://igholidays.com";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
 export const metadata: Metadata = {
-    title: "Contact Us | IG Holidays – Travel Enquiries & Bookings",
-    description: "Get in touch with IG Holidays for holiday packages, group bookings, visa assistance, and corporate travel. Call, WhatsApp, or email our expert travel consultants.",
-    keywords: "contact IG Holidays, travel enquiry India, holiday booking contact, travel agent Chennai",
+    title: "Contact Us | My Perfect Trips – Travel Enquiries & Bookings",
+    description: "Get in touch with My Perfect Trips for holiday packages, group bookings, visa assistance, and corporate travel. Call, WhatsApp, or email our expert travel consultants.",
+    keywords: "contact My Perfect Trips, travel enquiry India, holiday booking contact, travel agent Chennai",
     alternates: { canonical: `${BASE}/contact` },
     openGraph: {
-        title: "Contact Us | IG Holidays – Travel Enquiries & Bookings",
+        title: "Contact Us | My Perfect Trips – Travel Enquiries & Bookings",
         description: "Reach our expert travel team for holiday packages, group bookings, and corporate travel enquiries.",
         url: `${BASE}/contact`,
-        siteName: "IG Holidays",
+        siteName: "My Perfect Trips",
         type: "website",
     },
     twitter: {
         card: "summary",
-        title: "Contact Us | IG Holidays",
+        title: "Contact Us | My Perfect Trips",
         description: "Reach our expert travel team for holiday packages, group bookings, and corporate travel enquiries.",
     },
 };
@@ -35,7 +35,7 @@ export default async function ContactPage() {
         s = await getSiteSettings();
     } catch { }
 
-    const email = s?.contact_email || "info@igholidays.com";
+    const email = s?.contact_email || "info@myperfecttrips.com";
     const phone = s?.contact_phone || "+91 98765 43210";
     const address = s?.office_address || "Tamil Nadu, India";
     const whatsapp = s?.whatsapp_number || "+91 98765 43210";
@@ -87,7 +87,7 @@ export default async function ContactPage() {
                                     </div>
                                     <div>
                                         <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-brand-950">Email Us</h3>
-                                        <a href="mailto:info@igholidays.com" className="text-lg font-medium hover:text-brand-700 transition-colors">info@igholidays.com</a>
+                                        <a href="mailto:info@myperfecttrips.com" className="text-lg font-medium hover:text-brand-700 transition-colors">info@myperfecttrips.com</a>
                                         <p className="mt-1 text-sm text-stone-500">We aim to reply within 24 hours</p>
                                     </div>
                                 </li>
@@ -105,10 +105,10 @@ export default async function ContactPage() {
                             </ul>
                         </div>
 
-                        {/* IG Holidays Brand Statement */}
+                        {/* My Perfect Trips Brand Statement */}
                         <div className="rounded-[2rem] bg-stone-100 border border-stone-200 p-6 text-center">
                             <p className="text-xs text-stone-500 leading-relaxed">
-                                <strong className="text-stone-700">IG Holidays</strong> is an official brand of{" "}
+                                <strong className="text-stone-700">My Perfect Trips</strong> is an official brand of{" "}
                                 <strong className="text-stone-700">Infygru Private Limited</strong>.
                             </p>
                             <div className="flex flex-wrap items-center justify-center gap-3 mt-3 text-xs text-brand-600">

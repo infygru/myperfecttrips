@@ -1,11 +1,11 @@
 // Seed sample packages + itinerary_days into Directus
-const BASE = "https://api.igholidays.com";
+const BASE = "https://admin.myperfecttrips.com";
 
 async function login() {
   const r = await fetch(`${BASE}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: "admin@igholidays.com", password: "e4HiSzm3PsFhR3mA6Uh7YoU2uqjOHrF3" }),
+    body: JSON.stringify({ email: "hosting@infygru.com", password: "Naren@123info" }),
   });
   const d = await r.json();
   return d.data.access_token;
@@ -147,7 +147,7 @@ const PACKAGES = [
       duration_days: 7,
       duration_nights: 6,
       inclusions: `<ul><li>3-star & 4-star hotel accommodation</li><li>Daily breakfast</li><li>Bangkok city tour (temples & floating market)</li><li>Phi Phi Island speedboat day trip</li><li>Elephant ethical sanctuary visit</li><li>Return airport transfers</li><li>Thailand e-Visa assistance</li></ul>`,
-      exclusions: `<ul><li>International flights</li><li>Thailand Visa fee (approx ₹2,500)</li><li>Lunch & dinners</li><li>Personal expenses & shopping</li><li>Travel insurance</li></ul>`,
+      exclusions: `<ul><li>International flights</li><li>Thailand Visa fee (approx £2,500)</li><li>Lunch & dinners</li><li>Personal expenses & shopping</li><li>Travel insurance</li></ul>`,
     },
     days: [
       { day_number: 1, title: "Arrival in Bangkok — The City of Angels", description: "Arrive at Suvarnabhumi International Airport, Bangkok. Transfer to hotel on Sukhumvit Road — the heart of the city. Check in and freshen up. Evening: iconic Asiatique Night Market for dinner and shopping. Experience Bangkok's vibrant street food scene.", accommodation: "Novotel Bangkok Sukhumvit (or similar)", meals: [] },

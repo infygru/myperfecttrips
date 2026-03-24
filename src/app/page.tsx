@@ -16,8 +16,8 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  let title = "IG Holidays – Official Site | Best Holiday Packages & Flights from India | igholidays.com";
-  let description = "IG Holidays (igholidays.com) — India's trusted travel agency. Book premium international & domestic holiday packages, honeymoon tours, family trips, and corporate MICE. Get a free quote today.";
+  let title = "My Perfect Trips – Official Site | Best Holiday Packages & Flights from India | myperfecttrips.com";
+  let description = "My Perfect Trips (myperfecttrips.com) — India's trusted travel agency. Book premium international & domestic holiday packages, honeymoon tours, family trips, and corporate MICE. Get a free quote today.";
   let ogImage = undefined;
   try {
     const settings = await getSiteSettings();
@@ -30,8 +30,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    keywords: "holiday packages India, international tour packages, domestic tour packages, honeymoon packages, IG Holidays, travel agency India",
-    openGraph: { title, description, url: baseUrl, images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: "IGHolidays" }] : [], type: "website" },
+    keywords: "holiday packages India, international tour packages, domestic tour packages, honeymoon packages, My Perfect Trips, travel agency India",
+    openGraph: { title, description, url: baseUrl, images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: "MyPerfectTrips" }] : [], type: "website" },
     twitter: { card: "summary_large_image", title, description, images: ogImage ? [ogImage] : [] },
     alternates: { canonical: baseUrl },
   };
@@ -97,7 +97,7 @@ export default async function Home() {
   const visaOnArrivalPackages = allPackages.filter((p: any) => p.visa_status === "visa_on_arrival" && p.image).slice(0, 8);
   const showVisaSection      = visaFreePackages.length > 0 || visaOnArrivalPackages.length > 0;
 
-  // Budget packages: domestic < ₹10k, international < ₹50k
+  // Budget packages: domestic < £10k, international < £50k
   const budgetDomestic      = domesticPackages.filter(p => p.price > 0 && p.price <= 10000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
   const budgetInternational = internationalPackages.filter(p => p.price > 0 && p.price <= 50000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
   const showBudgetSection   = budgetDomestic.length > 0 || budgetInternational.length > 0;
@@ -111,7 +111,7 @@ export default async function Home() {
           {heroVideoUrl ? (
             <video src={heroVideoUrl} autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover opacity-60" />
           ) : heroImgUrl ? (
-            <Image src={heroImgUrl} alt="IGHolidays" fill className="object-cover opacity-60 scale-105 animate-[heroZoomOut_12s_ease-out_forwards]" priority unoptimized />
+            <Image src={heroImgUrl} alt="MyPerfectTrips" fill className="object-cover opacity-60 scale-105 animate-[heroZoomOut_12s_ease-out_forwards]" priority unoptimized />
           ) : (
             <div className="absolute inset-0 bg-stone-950" />
           )}
@@ -259,7 +259,7 @@ export default async function Home() {
                         <div>
                           <p className="text-[10px] text-stone-400 font-medium uppercase tracking-wide">Starting from</p>
                           {pkg.price ? (
-                            <p className="font-serif text-lg font-bold text-brand-900">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+                            <p className="font-serif text-lg font-bold text-brand-900">£{Number(pkg.price).toLocaleString("en-GB")}</p>
                           ) : (
                             <p className="font-serif text-base font-bold text-stone-700">On Request</p>
                           )}
@@ -414,7 +414,7 @@ export default async function Home() {
                           <div className="p-3.5">
                             <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">{pkg.title}</p>
                             {pkg.destination && <p className="text-[11px] text-stone-400 flex items-center gap-0.5 mb-2"><MapPin className="h-2.5 w-2.5 shrink-0" />{pkg.destination}</p>}
-                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}</p>
+                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "On Request"}</p>
                           </div>
                         </Link>
                       );
@@ -454,7 +454,7 @@ export default async function Home() {
                           <div className="p-3.5">
                             <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">{pkg.title}</p>
                             {pkg.destination && <p className="text-[11px] text-stone-400 flex items-center gap-0.5 mb-2"><MapPin className="h-2.5 w-2.5 shrink-0" />{pkg.destination}</p>}
-                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}</p>
+                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "On Request"}</p>
                           </div>
                         </Link>
                       );
@@ -502,7 +502,7 @@ export default async function Home() {
             <div className="mb-8" data-aos="fade-up">
               <span className="section-label">Affordable Getaways</span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Budget-Friendly Deals</h2>
-              <p className="mt-2 text-sm text-stone-400">Domestic under ₹10,000 · International under ₹50,000</p>
+              <p className="mt-2 text-sm text-stone-400">Domestic under £10,000 · International under £50,000</p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
@@ -511,7 +511,7 @@ export default async function Home() {
                 <div data-aos="fade-right">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">Domestic · Under ₹10,000</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">Domestic · Under £10,000</h3>
                   </div>
                   <div className="grid gap-3">
                     {budgetDomestic.map((pkg, idx) => (
@@ -528,7 +528,7 @@ export default async function Home() {
                           </div>
                           <div className="text-right shrink-0 ml-3">
                             <p className="text-xs text-white/60 font-medium">From</p>
-                            <p className="font-serif text-lg font-bold text-gold-400">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+                            <p className="font-serif text-lg font-bold text-gold-400">£{Number(pkg.price).toLocaleString("en-GB")}</p>
                           </div>
                         </div>
                       </Link>
@@ -545,7 +545,7 @@ export default async function Home() {
                 <div data-aos="fade-left">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="h-2 w-2 rounded-full bg-blue-500"></span>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">International · Under ₹50,000</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">International · Under £50,000</h3>
                   </div>
                   <div className="grid gap-3">
                     {budgetInternational.map((pkg, idx) => (
@@ -562,7 +562,7 @@ export default async function Home() {
                           </div>
                           <div className="text-right shrink-0 ml-3">
                             <p className="text-xs text-white/60 font-medium">From</p>
-                            <p className="font-serif text-lg font-bold text-gold-400">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+                            <p className="font-serif text-lg font-bold text-gold-400">£{Number(pkg.price).toLocaleString("en-GB")}</p>
                           </div>
                         </div>
                       </Link>
@@ -716,7 +716,7 @@ export default async function Home() {
                     </div>
                     <div className="p-4 sm:p-5 flex flex-col flex-1">
                       <p className="text-[10px] font-bold uppercase tracking-wider text-brand-600 mb-2">
-                        {post.published_date ? new Date(post.published_date).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) : "Journal"}
+                        {post.published_date ? new Date(post.published_date).toLocaleDateString("en-GB", { month: "short", day: "numeric", year: "numeric" }) : "Journal"}
                       </p>
                       <h3 className="font-serif text-base font-medium leading-snug text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-2 mb-auto">
                         {post.title}

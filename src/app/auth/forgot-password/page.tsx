@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Compass, ArrowLeft, Mail } from 'lucide-react';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = { title: 'Reset Password | IG Holidays' };
+export const metadata: Metadata = { title: 'Reset Password | My Perfect Trips' };
 
 export default function ForgotPasswordPage() {
     return (
@@ -13,7 +13,7 @@ export default function ForgotPasswordPage() {
                         <div className="h-10 w-10 rounded-xl bg-brand-900 flex items-center justify-center group-hover:bg-brand-800 transition-colors">
                             <Compass className="h-5 w-5 text-white" />
                         </div>
-                        <span className="font-serif text-xl font-semibold text-brand-950">IG Holidays</span>
+                        <span className="font-serif text-xl font-semibold text-brand-950">My Perfect Trips</span>
                     </Link>
                 </div>
 
