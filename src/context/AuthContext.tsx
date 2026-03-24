@@ -77,7 +77,7 @@ export function useAuth() {
 /** Returns the display name — falls back to email prefix if no name set */
 export function getUserDisplayName(user: AuthUser): string {
     const name = [user.first_name, user.last_name].filter(Boolean).join(' ').trim();
-    return name || user.email.split('@')[0];
+    return name || user.email?.split('@')[0] || 'Traveller';
 }
 
 /** Returns initials (2 chars) or first letter of email */
@@ -85,7 +85,7 @@ export function getUserInitials(user: AuthUser): string {
     if (user.first_name || user.last_name) {
         return `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase();
     }
-    return user.email[0].toUpperCase();
+    return (user.email?.[0] || 'T').toUpperCase();
 }
 
 /** Returns the avatar URL to use: user photo > default_avatar > null */

@@ -66,10 +66,10 @@ export default async function DashboardPage() {
     const pointsToNext = Math.max(0, MIN_REDEEM - ((loyaltyBalance % MIN_REDEEM) || MIN_REDEEM));
     const progressPct  = Math.min(100, ((loyaltyBalance % MIN_REDEEM) / MIN_REDEEM) * 100);
     const canRedeem    = loyaltyBalance >= MIN_REDEEM;
-    const displayName  = [user.first_name, user.last_name].filter(Boolean).join(' ').trim() || user.email.split('@')[0];
+    const displayName  = [user.first_name, user.last_name].filter(Boolean).join(' ').trim() || user.email?.split('@')[0] || 'Traveller';
     const initials     = user.first_name || user.last_name
         ? `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase()
-        : user.email[0].toUpperCase();
+        : (user.email?.[0] || 'T').toUpperCase();
 
     return (
         <div className="space-y-6">
