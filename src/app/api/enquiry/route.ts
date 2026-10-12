@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { directus } from "@/lib/directus";
 import { createItem } from "@directus/sdk";
+import { sendContactEnquiryAlert } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
     try {
@@ -18,6 +19,9 @@ export async function POST(req: NextRequest) {
             message,
             status: "Pending",
         }));
+
+        sendContactEnquiryAlert({ name, email, phone: phone || undefined, message })
+            .catch(err => console.error('[ContactEnquiry email]', err));
 
         return NextResponse.json({ success: true });
     } catch (error) {

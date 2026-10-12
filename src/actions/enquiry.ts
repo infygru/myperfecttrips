@@ -1,7 +1,11 @@
 "use server";
 
-import { directus } from "@/lib/directus";
-import { createItem } from "@directus/sdk";
+import { adminFetch } from "@/lib/auth";
+import {
+    sendFlightEnquiryAlert,
+    sendHolidayEnquiryAlert,
+    sendContactEnquiryAlert,
+} from "@/lib/email";
 
 export async function submitFlightEnquiry(formData: FormData) {
     try {
@@ -21,8 +25,25 @@ export async function submitFlightEnquiry(formData: FormData) {
             return { success: false, error: "Missing required flight details." };
         }
 
-        // Use any assertion since the schema might not be strictly typed yet
-        await directus.request(createItem("flight_enquiries" as any, rawData));
+        const res = await adminFetch("/items/flight_enquiries", {
+            method: "POST",
+            body: JSON.stringify(rawData),
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err?.errors?.[0]?.message || `Directus error ${res.status}`);
+        }
+
+        sendFlightEnquiryAlert({
+            name:         rawData.name,
+            phone:        rawData.phone,
+            from_airport: rawData.from_airport,
+            to_airport:   rawData.to_airport,
+            depart_date:  rawData.depart_date,
+            return_date:  rawData.return_date || undefined,
+            adults:       rawData.adults,
+            children:     rawData.children,
+        }).catch(err => console.error('[FlightEnquiry email]', err));
 
         return { success: true };
     } catch (error: any) {
@@ -47,7 +68,23 @@ export async function submitHolidayEnquiry(formData: FormData) {
             return { success: false, error: "Missing required holiday details." };
         }
 
-        await directus.request(createItem("holiday_enquiries" as any, rawData));
+        const res = await adminFetch("/items/holiday_enquiries", {
+            method: "POST",
+            body: JSON.stringify(rawData),
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err?.errors?.[0]?.message || `Directus error ${res.status}`);
+        }
+
+        sendHolidayEnquiryAlert({
+            name:        rawData.name,
+            phone:       rawData.phone,
+            destination: rawData.destination,
+            budget:      rawData.budget,
+            adults:      rawData.adults,
+            children:    rawData.children,
+        }).catch(err => console.error('[HolidayEnquiry email]', err));
 
         return { success: true };
     } catch (error: any) {
@@ -70,7 +107,21 @@ export async function submitContactEnquiry(formData: FormData) {
             return { success: false, error: "Missing required contact details." };
         }
 
-        await directus.request(createItem("enquiries" as any, rawData));
+        const res = await adminFetch("/items/enquiries", {
+            method: "POST",
+            body: JSON.stringify(rawData),
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err?.errors?.[0]?.message || `Directus error ${res.status}`);
+        }
+
+        sendContactEnquiryAlert({
+            name:    rawData.name,
+            email:   rawData.email,
+            phone:   rawData.phone || undefined,
+            message: rawData.message,
+        }).catch(err => console.error('[ContactEnquiry email]', err));
 
         return { success: true };
     } catch (error: any) {

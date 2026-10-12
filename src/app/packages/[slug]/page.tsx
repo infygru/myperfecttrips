@@ -4,15 +4,19 @@ import { readItems } from "@directus/sdk";
 import Image from "next/image";
 import Link from "next/link";
 import {
-    MapPin, Clock, ArrowLeft, Phone, Mail,
+    MapPin, Clock, ArrowLeft, Phone,
     CheckCircle2, XCircle, Calendar, Users,
-    Star, Shield, ChevronRight
+    Star, Shield, ChevronRight, Tag,
+    CreditCard, Smartphone, Building2, Wallet,
+    Utensils, Car, Compass, Moon,
 } from "lucide-react";
-import LeadForm from "@/components/LeadForm";
 import DownloadItineraryButton from "@/components/DownloadItineraryButton";
+import ShareButtons from "@/components/ShareButtons";
+import CustomJourneyDropdown from "@/components/CustomJourneyDropdown";
+import { getActiveOffers } from "@/lib/offers";
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -28,7 +32,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         if (pkg) {
             const destStr = pkg.destination || pkg.destinations?.join(", ") || "";
             const title = `${pkg.title} | ${destStr ? destStr + " " : ""}Holiday Package — My Perfect Trips`;
-            const description = `Book ${pkg.title}${destStr ? " in " + destStr : ""} — ${pkg.duration_nights ? pkg.duration_nights + " nights / " + pkg.duration_days + " days" : "premium"} ${pkg.category ? pkg.category.toLowerCase() : "holiday"} package. Starting from ${pkg.price ? "£" + Number(pkg.price).toLocaleString("en-GB") : "custom pricing"}. Customised itinerary, best price guarantee, 24/7 support. Book with My Perfect Trips.`;
+            const description = `Book ${pkg.title}${destStr ? " in " + destStr : ""} — ${pkg.duration_nights ? pkg.duration_nights + " nights / " + pkg.duration_days + " days" : "premium"} ${pkg.category ? pkg.category.toLowerCase() : "holiday"} package. Starting from ${pkg.price ? "₹" + Number(pkg.price).toLocaleString("en-IN") : "custom pricing"}. Customised itinerary, best price guarantee, 24/7 support. Book with My Perfect Trips.`;
             const canonicalUrl = `${baseUrl}/packages/${slug}`;
             const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
             const imageUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : undefined;
@@ -73,9 +77,13 @@ export default async function PackageDetailPage(props: Props) {
         const result = (await directus.request(
             readItems("packages" as any, { filter: { slug: { _eq: slug } } as any, limit: 1 })
         )) as any[];
-        if (!result?.length) return notFound();
+        if (!result?.length) {
+            console.error(`[package detail] no package found for slug: "${slug}"`);
+            return notFound();
+        }
         pkg = result[0];
-    } catch {
+    } catch (err) {
+        console.error(`[package detail] error fetching slug "${slug}":`, err);
         return notFound();
     }
 
@@ -97,16 +105,33 @@ export default async function PackageDetailPage(props: Props) {
     const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
     const phone = "+91 8807709919";
 
-    // Fetch site settings for logo
-    const siteSettings = await getSiteSettings();
+    // Fetch site settings for logo + payment offers in parallel
+    const [siteSettings, paymentOffers] = await Promise.all([
+        getSiteSettings(),
+        getActiveOffers(),
+    ]);
     const logoUrl = (siteSettings?.logo || siteSettings?.project_logo)
         ? `${dUrl}/assets/${siteSettings.logo || siteSettings.project_logo}`
         : null;
+
+    const OFFER_ICON: Record<string, React.ElementType> = {
+        card: CreditCard, upi: Smartphone,
+        netbanking: Building2, wallet: Wallet,
+        emi: Calendar, all: Tag,
+    };
+    const OFFER_COLORS: Record<string, { bg: string; iconText: string; badge: string }> = {
+        blue:   { bg: "bg-blue-50",    iconText: "text-blue-500",    badge: "bg-blue-100 text-blue-700" },
+        purple: { bg: "bg-purple-50",  iconText: "text-purple-500",  badge: "bg-purple-100 text-purple-700" },
+        green:  { bg: "bg-emerald-50", iconText: "text-emerald-500", badge: "bg-emerald-100 text-emerald-700" },
+        orange: { bg: "bg-orange-50",  iconText: "text-orange-500",  badge: "bg-orange-100 text-orange-700" },
+        amber:  { bg: "bg-amber-50",   iconText: "text-amber-500",   badge: "bg-amber-100 text-amber-700" },
+    };
 
     const defaultInclusions = ["Handpicked Premium Accommodation", "Daily Breakfast & Select Meals", "All Airport & Hotel Transfers", "Expert Local Guides", "All Entry Permits & Tickets", "24/7 On-Trip Concierge Support"];
     const defaultExclusions = ["International / Domestic Flights", "Visa Fees & Documentation", "Personal & Shopping Expenses", "Travel Insurance", "Optional Activities & Tips", "Anything not mentioned in inclusions"];
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
+    const packageUrl = `${baseUrl}/packages/${pkg.slug}`;
     const destStr = pkg.destination || pkg.destinations?.join(", ") || "";
     const packageSchema = {
         "@context": "https://schema.org",
@@ -121,7 +146,7 @@ export default async function PackageDetailPage(props: Props) {
         offers: pkg.price ? {
             "@type": "Offer",
             price: String(pkg.price),
-            priceCurrency: "GBP",
+            priceCurrency: "INR",
             availability: "https://schema.org/InStock",
             url: `${baseUrl}/packages/${pkg.slug}`,
         } : undefined,
@@ -144,8 +169,7 @@ export default async function PackageDetailPage(props: Props) {
                         fill
                         className="object-cover"
                         priority
-                        unoptimized
-                    />
+                                           />
                 ) : (
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-700 to-brand-950" />
                 )}
@@ -206,7 +230,7 @@ export default async function PackageDetailPage(props: Props) {
                                 <div className="flex items-center gap-2">
                                     <span className="text-xs text-white/50 font-medium">From</span>
                                     <span className="font-serif text-2xl font-semibold text-white">
-                                        £{Number(pkg.price).toLocaleString("en-GB")}
+                                        ₹{Number(pkg.price).toLocaleString("en-IN")}
                                     </span>
                                     <span className="text-xs text-white/50">/ person</span>
                                 </div>
@@ -228,6 +252,7 @@ export default async function PackageDetailPage(props: Props) {
                     </nav>
                     <div className="flex items-center gap-3 shrink-0">
                         <DownloadItineraryButton pkg={pkg} logoUrl={logoUrl} itineraryDays={itineraryDays} variant="breadcrumb" />
+                        <ShareButtons url={packageUrl} title={pkg.title} />
                         <a
                             href={`tel:${phone}`}
                             className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-brand-700 hover:text-brand-900 transition-colors"
@@ -254,33 +279,85 @@ export default async function PackageDetailPage(props: Props) {
                         {/* Overview Card */}
                         {(pkg.description || pkg.duration_days) && (
                             <div id="overview" className="scroll-mt-28 bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm">
-                                <div className="border-b border-stone-100 px-8 py-5">
+                                <div className="border-b border-stone-100 px-8 py-5 flex items-center justify-between gap-4">
                                     <h2 className="font-serif text-2xl font-medium text-brand-950">Trip Overview</h2>
+                                    <DownloadItineraryButton pkg={pkg} logoUrl={logoUrl} itineraryDays={itineraryDays} variant="overview" />
                                 </div>
                                 <div className="p-8">
-                                    {/* Quick-facts strip */}
-                                    <div className="mb-7 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                    {/* What you get — value cards */}
+                                    <div className="mb-8 grid grid-cols-2 sm:grid-cols-3 gap-3">
                                         {[
-                                            { icon: Clock,    label: "Duration",      value: pkg.duration_nights ? `${pkg.duration_nights}N / ${pkg.duration_days}D` : "Custom" },
-                                            { icon: MapPin,   label: "Destinations",  value: pkg.destinations?.length ? pkg.destinations.join(", ") : "Multiple" },
-                                            { icon: Users,    label: "Group Size",    value: "Flexible" },
-                                            { icon: Calendar, label: "Availability",  value: "All Year" },
-                                        ].map(({ icon: Icon, label, value }) => (
-                                            <div key={label} className="text-center bg-stone-50 rounded-xl p-4 border border-stone-100">
-                                                <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-brand-700">
-                                                    <Icon className="h-4 w-4" />
+                                            {
+                                                icon: Moon,
+                                                iconColor: "#8b5cf6",
+                                                cardStyle: { background: "#f5f3ff", borderColor: "#ede9fe" },
+                                                label: "Stay Duration",
+                                                value: pkg.duration_nights ? `${pkg.duration_nights} Nights` : "Custom",
+                                                sub: pkg.duration_days ? `${pkg.duration_days} Days Tour` : "Flexible",
+                                            },
+                                            {
+                                                icon: MapPin,
+                                                iconColor: "#f43f5e",
+                                                cardStyle: { background: "#fff1f2", borderColor: "#ffe4e6" },
+                                                label: "Destinations",
+                                                value: pkg.destinations?.length
+                                                    ? `${pkg.destinations.length} ${pkg.destinations.length === 1 ? "City" : "Cities"}`
+                                                    : "Multiple",
+                                                sub: pkg.destinations?.slice(0, 2).join(" · ") || "Handpicked spots",
+                                            },
+                                            {
+                                                icon: Utensils,
+                                                iconColor: "#10b981",
+                                                cardStyle: { background: "#ecfdf5", borderColor: "#d1fae5" },
+                                                label: "Meals",
+                                                value: "Daily Breakfast",
+                                                sub: "Select meals incl.",
+                                            },
+                                            {
+                                                icon: Car,
+                                                iconColor: "#f59e0b",
+                                                cardStyle: { background: "#fffbeb", borderColor: "#fef3c7" },
+                                                label: "Transfers",
+                                                value: "All Included",
+                                                sub: "Airport & hotel",
+                                            },
+                                            {
+                                                icon: Compass,
+                                                iconColor: "#0ea5e9",
+                                                cardStyle: { background: "#f0f9ff", borderColor: "#e0f2fe" },
+                                                label: "Guided Tour",
+                                                value: "Expert Guide",
+                                                sub: "Local knowledge",
+                                            },
+                                            {
+                                                icon: Shield,
+                                                iconColor: "#6366f1",
+                                                cardStyle: { background: "#eef2ff", borderColor: "#e0e7ff" },
+                                                label: "Support",
+                                                value: "24/7 Concierge",
+                                                sub: "On-trip helpline",
+                                            },
+                                        ].map(({ icon: Icon, iconColor, cardStyle, label, value, sub }) => (
+                                            <div key={label} className="rounded-2xl border p-4" style={cardStyle}>
+                                                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl shadow-sm" style={{ background: iconColor }}>
+                                                    <Icon className="h-4 w-4" style={{ color: "#fff" }} />
                                                 </div>
                                                 <p className="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-0.5">{label}</p>
-                                                <p className="text-xs font-semibold text-brand-950 leading-snug">{value}</p>
+                                                <p className="text-sm font-bold text-brand-950 leading-tight">{value}</p>
+                                                <p className="text-[11px] text-stone-500 mt-0.5 leading-snug">{sub}</p>
                                             </div>
                                         ))}
                                     </div>
 
                                     {pkg.description ? (
-                                        <div
-                                            className="prose prose-stone max-w-none text-stone-600 leading-relaxed prose-p:text-stone-600 prose-p:leading-relaxed"
-                                            dangerouslySetInnerHTML={{ __html: pkg.description }}
-                                        />
+                                        pkg.description.trim().startsWith("<") ? (
+                                            <div
+                                                className="prose prose-stone max-w-none text-stone-600 leading-relaxed prose-p:text-stone-600 prose-p:leading-relaxed"
+                                                dangerouslySetInnerHTML={{ __html: pkg.description }}
+                                            />
+                                        ) : (
+                                            <p className="text-stone-600 leading-relaxed text-base whitespace-pre-line">{pkg.description}</p>
+                                        )
                                     ) : (
                                         <p className="text-stone-600 leading-relaxed text-base">
                                             Embark on an extraordinary {pkg.duration_days}-day journey through{" "}
@@ -301,44 +378,42 @@ export default async function PackageDetailPage(props: Props) {
                             </div>
                             <div className="p-6 sm:p-8">
                                 {itineraryDays.length > 0 ? (
-                                    <ol className="relative border-l border-stone-200 space-y-0">
+                                    <ol className="relative border-l-2 border-stone-100 space-y-0 ml-4">
                                         {itineraryDays.map((day: any, idx: number) => (
-                                            <li key={day.id || idx} className="mb-0 ml-6">
+                                            <li key={day.id || idx} className="relative pl-8 pb-10 last:pb-0">
                                                 {/* Timeline dot */}
-                                                <span className="absolute -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-brand-950 text-white text-[11px] font-bold ring-4 ring-white">
+                                                <span className="absolute -left-[18px] flex h-9 w-9 items-center justify-center rounded-full bg-brand-950 text-white text-[11px] font-bold ring-4 ring-white shadow-sm">
                                                     {day.day_number || idx + 1}
                                                 </span>
-                                                <details className="group pb-8" open={idx === 0}>
-                                                    <summary className="flex cursor-pointer items-center gap-3 rounded-xl px-4 py-3 hover:bg-stone-50 transition-colors list-none">
-                                                        <div className="flex-1">
-                                                            <p className="text-[10px] font-black uppercase tracking-widest text-gold-600 mb-0.5">Day {day.day_number || idx + 1}</p>
-                                                            <h3 className="font-serif text-lg font-medium text-brand-950">{day.title || `Day ${day.day_number || idx + 1}`}</h3>
-                                                        </div>
-                                                        <div className="flex shrink-0 items-center gap-3">
-                                                            {Array.isArray(day.meals) && day.meals.length > 0 && (
-                                                                <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700">
-                                                                    {day.meals.join(" · ")}
-                                                                </span>
-                                                            )}
-                                                            <Calendar className="h-4 w-4 text-stone-400 transition-transform duration-300 group-open:rotate-90" />
-                                                        </div>
-                                                    </summary>
-                                                    <div className="px-4 pt-2 pb-2">
-                                                        {day.description ? (
-                                                            <div
-                                                                className="prose prose-stone prose-sm max-w-none text-stone-600 leading-relaxed prose-p:text-stone-600"
-                                                                dangerouslySetInnerHTML={{ __html: day.description }}
-                                                            />
-                                                        ) : null}
-                                                        {day.accommodation && (
-                                                            <div className="mt-3 flex items-center gap-2 text-xs font-medium text-stone-500">
-                                                                <span className="inline-flex items-center gap-1.5 rounded-lg bg-stone-50 border border-stone-200 px-3 py-1.5">
-                                                                    🏨 <span className="font-semibold text-stone-700">{day.accommodation}</span>
-                                                                </span>
-                                                            </div>
+                                                {/* Day header */}
+                                                <div className="mb-3">
+                                                    <p className="text-[10px] font-black uppercase tracking-widest text-gold-600 mb-0.5">Day {day.day_number || idx + 1}</p>
+                                                    <div className="flex flex-wrap items-center gap-3">
+                                                        <h3 className="font-serif text-lg font-medium text-brand-950">{day.title || `Day ${day.day_number || idx + 1}`}</h3>
+                                                        {Array.isArray(day.meals) && day.meals.length > 0 && (
+                                                            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700">
+                                                                {day.meals.join(" · ")}
+                                                            </span>
                                                         )}
                                                     </div>
-                                                </details>
+                                                </div>
+                                                {/* Description */}
+                                                {day.description ? (
+                                                    day.description.trim().startsWith("<") ? (
+                                                        <div
+                                                            className="prose prose-stone prose-sm max-w-none text-stone-600 leading-relaxed prose-p:text-stone-600 mb-3"
+                                                            dangerouslySetInnerHTML={{ __html: day.description }}
+                                                        />
+                                                    ) : (
+                                                        <p className="text-stone-600 text-sm leading-relaxed whitespace-pre-line mb-3">{day.description}</p>
+                                                    )
+                                                ) : null}
+                                                {/* Accommodation */}
+                                                {day.accommodation && (
+                                                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-stone-50 border border-stone-200 px-3 py-1.5 text-xs font-medium text-stone-700">
+                                                        🏨 {day.accommodation}
+                                                    </span>
+                                                )}
                                             </li>
                                         ))}
                                     </ol>
@@ -359,72 +434,69 @@ export default async function PackageDetailPage(props: Props) {
                         </div>
 
                         {/* Inclusions & Exclusions */}
-                        <div id="details" className="scroll-mt-28 grid sm:grid-cols-2 gap-5">
-                            {/* Inclusions */}
-                            <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm">
-                                <div className="bg-emerald-50 border-b border-emerald-100 px-6 py-4 flex items-center gap-3">
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100">
-                                        <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                                    </div>
-                                    <h3 className="font-serif text-lg font-medium text-emerald-900">What&apos;s Included</h3>
-                                </div>
-                                <div className="p-6">
-                                    {pkg.inclusions ? (
-                                        <div className="prose prose-sm prose-stone max-w-none prose-li:text-stone-600" dangerouslySetInnerHTML={{ __html: pkg.inclusions }} />
-                                    ) : (
-                                        <ul className="space-y-3">
-                                            {defaultInclusions.map((item) => (
-                                                <li key={item} className="flex items-start gap-3 text-sm text-stone-600">
-                                                    <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                                                    {item}
+                        {(() => {
+                            // Parse either plain "one item per line" text OR legacy HTML (comma-separated inside <p> tags)
+                            function parseList(raw: string): string[] {
+                                if (!raw?.trim()) return [];
+                                // Strip HTML tags from each line individually, preserving line breaks
+                                const stripHtml = (s: string) =>
+                                    s.replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/\s+/g, " ").trim();
+                                // Split by newline first (new plain-text format); fall back to comma (legacy HTML)
+                                const lines = raw.split(/\r?\n/);
+                                if (lines.length > 1) {
+                                    return lines.map(stripHtml).filter(Boolean);
+                                }
+                                // Single line — strip HTML then split by comma
+                                return stripHtml(raw).split(",").map((s: string) => s.trim()).filter(Boolean);
+                            }
+                            const inclList = parseList(pkg.inclusions) || defaultInclusions;
+                            const exclList = parseList(pkg.exclusions) || defaultExclusions;
+                            if (!inclList.length) inclList.push(...defaultInclusions);
+                            if (!exclList.length) exclList.push(...defaultExclusions);
+                            return (
+                                <div id="details" className="scroll-mt-28 grid sm:grid-cols-2 gap-5">
+                                    {/* Inclusions */}
+                                    <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-white border border-emerald-100 p-6 shadow-sm">
+                                        <div className="flex items-center gap-3 mb-5">
+                                            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500 shadow-sm shadow-emerald-200">
+                                                <CheckCircle2 className="h-4 w-4 text-white" />
+                                            </span>
+                                            <h3 className="font-serif text-lg font-medium text-stone-900">What&apos;s Included</h3>
+                                        </div>
+                                        <ul className="divide-y divide-emerald-100/60">
+                                            {inclList.map((item: string) => (
+                                                <li key={item} className="flex items-start gap-3 py-2.5">
+                                                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500">
+                                                        <CheckCircle2 className="h-3 w-3 text-white" />
+                                                    </span>
+                                                    <span className="text-sm text-stone-700 leading-snug">{item}</span>
                                                 </li>
                                             ))}
                                         </ul>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Exclusions */}
-                            <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm">
-                                <div className="bg-stone-50 border-b border-stone-200 px-6 py-4 flex items-center gap-3">
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-stone-100">
-                                        <XCircle className="h-4 w-4 text-stone-400" />
                                     </div>
-                                    <h3 className="font-serif text-lg font-medium text-stone-700">Not Included</h3>
-                                </div>
-                                <div className="p-6">
-                                    {pkg.exclusions ? (
-                                        <div className="prose prose-sm prose-stone max-w-none prose-li:text-stone-500" dangerouslySetInnerHTML={{ __html: pkg.exclusions }} />
-                                    ) : (
-                                        <ul className="space-y-3">
-                                            {defaultExclusions.map((item) => (
-                                                <li key={item} className="flex items-start gap-3 text-sm text-stone-500">
-                                                    <XCircle className="h-4 w-4 text-stone-300 shrink-0 mt-0.5" />
-                                                    {item}
+
+                                    {/* Exclusions */}
+                                    <div className="rounded-2xl bg-white border border-stone-200 p-6 shadow-sm">
+                                        <div className="flex items-center gap-3 mb-5">
+                                            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-rose-50 border border-rose-100 shadow-sm">
+                                                <XCircle className="h-4 w-4 text-rose-400" />
+                                            </span>
+                                            <h3 className="font-serif text-lg font-medium text-stone-900">Not Included</h3>
+                                        </div>
+                                        <ul className="divide-y divide-stone-100">
+                                            {exclList.map((item: string) => (
+                                                <li key={item} className="flex items-start gap-3 py-2.5">
+                                                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-50 border border-rose-100">
+                                                        <XCircle className="h-3 w-3 text-rose-400" />
+                                                    </span>
+                                                    <span className="text-sm text-stone-500 leading-snug">{item}</span>
                                                 </li>
                                             ))}
                                         </ul>
-                                    )}
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        {/* Enquiry Form */}
-                        <div id="enquire" className="scroll-mt-28 bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm">
-                            <div className="bg-brand-950 px-8 py-7 relative overflow-hidden">
-                                <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full bg-gold-400/10 blur-2xl" />
-                                <div className="absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-brand-700/30 blur-2xl" />
-                                <div className="relative z-10">
-                                    <h2 className="font-serif text-3xl font-medium text-white mb-1">Customise This Journey</h2>
-                                    <p className="text-stone-400 text-sm font-light">
-                                        Tell us your preferences and we&apos;ll personalise <strong className="text-white">{pkg.title}</strong> just for you.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="p-8">
-                                <LeadForm prefilledPackage={pkg.title} />
-                            </div>
-                        </div>
+                            );
+                        })()}
 
                         {/* Related Packages */}
                         {relatedPackages.length > 0 && (
@@ -441,7 +513,7 @@ export default async function PackageDetailPage(props: Props) {
                                             >
                                                 <div className="relative aspect-[4/3] overflow-hidden bg-stone-100">
                                                     {relImg ? (
-                                                        <Image src={relImg} alt={rel.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" unoptimized />
+                                                        <Image src={relImg} alt={rel.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
                                                     ) : (
                                                         <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />
                                                     )}
@@ -456,7 +528,7 @@ export default async function PackageDetailPage(props: Props) {
                                                     <h3 className="font-serif text-sm font-medium text-brand-950 line-clamp-2 group-hover:text-brand-700 transition-colors mb-auto">{rel.title}</h3>
                                                     {rel.price && (
                                                         <p className="mt-3 pt-3 border-t border-stone-100 text-sm font-semibold text-brand-900">
-                                                            £{Number(rel.price).toLocaleString("en-GB")}
+                                                            ₹{Number(rel.price).toLocaleString("en-IN")}
                                                         </p>
                                                     )}
                                                 </div>
@@ -471,83 +543,92 @@ export default async function PackageDetailPage(props: Props) {
                     {/* ── RIGHT SIDEBAR ── */}
                     <div className="lg:col-span-4 lg:sticky lg:top-[112px] self-start space-y-4">
 
-                        {/* Booking Card */}
+                        {/* ── PRIMARY BOOKING CARD ── */}
                         <div className="rounded-2xl overflow-hidden border border-stone-200 bg-white shadow-lg">
-                            {/* Price */}
-                            <div className="bg-brand-950 p-7 text-center relative overflow-hidden">
+
+                            {/* Price header */}
+                            <div className="bg-brand-950 px-6 pt-6 pb-5 text-center relative overflow-hidden">
                                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,_var(--tw-gradient-stops))] from-brand-700/40 to-transparent" />
                                 <div className="relative z-10">
-                                    <p className="text-[9px] font-black uppercase tracking-[0.25em] text-gold-400 mb-2">Starting from</p>
-                                    <p className="font-serif text-5xl font-medium text-white leading-none mb-1">
-                                        {pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "Custom"}
+                                    <p className="text-[9px] font-black uppercase tracking-[0.25em] text-gold-400 mb-1.5">Starting from</p>
+                                    <p className="font-serif text-5xl font-medium text-white leading-none">
+                                        {pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "Custom"}
                                     </p>
-                                    <p className="text-[11px] text-brand-400 mt-2">
+                                    <p className="text-[11px] text-brand-400 mt-1.5">
                                         {pkg.price ? "per person · taxes extra" : "Contact us for pricing"}
                                     </p>
                                 </div>
                             </div>
 
-                            {/* CTAs */}
-                            <div className="p-5 space-y-3">
+                            <div className="p-5 space-y-4">
+                                {/* CTA */}
                                 <Link
                                     href={`/checkout/${pkg.slug}`}
-                                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-brand-900 py-4 text-sm font-bold text-white shadow-md hover:bg-brand-800 transition-colors"
+                                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-brand-900 py-3.5 text-sm font-bold text-white shadow-sm hover:bg-brand-800 active:scale-[0.98] transition-all"
                                 >
                                     Book &amp; Pay Online →
                                 </Link>
-                                <a href="#enquire" className="btn-gold w-full py-4 text-sm flex items-center justify-center gap-2 shadow-md">
-                                    Enquire Now &amp; Get Quote
-                                </a>
-                                <a
-                                    href={`tel:${phone}`}
-                                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50 py-3.5 text-sm font-semibold text-brand-800 hover:bg-brand-100 transition-colors"
-                                >
-                                    <Phone className="h-4 w-4" /> Call Us Directly
-                                </a>
-                                <a
-                                    href="mailto:info@myperfecttrips.com"
-                                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-transparent py-3.5 text-sm font-semibold text-stone-600 hover:bg-stone-50 transition-colors"
-                                >
-                                    <Mail className="h-4 w-4" /> info@myperfecttrips.com
-                                </a>
-                                <DownloadItineraryButton pkg={pkg} logoUrl={logoUrl} itineraryDays={itineraryDays} variant="sidebar" />
+
+                                {/* Payment Offers */}
+                                {paymentOffers.length > 0 && (
+                                    <div className="rounded-xl border border-gold-200 overflow-hidden bg-gradient-to-b from-gold-50 to-amber-50/40">
+                                        <div className="flex items-center gap-2 px-3.5 py-2.5 border-b border-gold-200/60">
+                                            <div className="flex h-5 w-5 items-center justify-center rounded-md bg-gold-500">
+                                                <Tag className="h-3 w-3 text-white" />
+                                            </div>
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-gold-700">Exclusive Offers</span>
+                                            <span className="ml-auto text-[10px] font-bold text-gold-500">{paymentOffers.length} active</span>
+                                        </div>
+                                        <ul className="divide-y divide-gold-100/80">
+                                            {paymentOffers.map((offer) => {
+                                                const Icon = OFFER_ICON[offer.payment_method] ?? Tag;
+                                                const c = OFFER_COLORS[offer.badge_color] ?? OFFER_COLORS.blue;
+                                                return (
+                                                    <li key={offer.id} className="flex items-center gap-3 px-3.5 py-3">
+                                                        <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${c.bg}`}>
+                                                            <Icon className={`h-3.5 w-3.5 ${c.iconText}`} />
+                                                        </div>
+                                                        <span className="flex-1 min-w-0 text-xs font-medium text-stone-700 leading-snug">{offer.title}</span>
+                                                        <span className={`shrink-0 rounded-lg px-2 py-0.5 text-[10px] font-black ${c.badge}`}>
+                                                            {offer.discount_label}
+                                                        </span>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                        <p className="px-3.5 py-2 text-[10px] text-gold-600 font-medium border-t border-gold-100">
+                                            Select matching method in Razorpay to redeem
+                                        </p>
+                                    </div>
+                                )}
+
+                                {/* Trust list */}
+                                <div className="border-t border-stone-100 pt-4 space-y-2">
+                                    {[
+                                        { icon: CheckCircle2, text: "100% Customisable Itineraries", color: "text-emerald-500" },
+                                        { icon: CheckCircle2, text: "Best Price Guarantee",           color: "text-emerald-500" },
+                                        { icon: CheckCircle2, text: "24/7 On-Trip Support",           color: "text-emerald-500" },
+                                        { icon: CheckCircle2, text: "No Hidden Charges",              color: "text-emerald-500" },
+                                    ].map(({ icon: Icon, text, color }) => (
+                                        <div key={text} className="flex items-center gap-2.5">
+                                            <Icon className={`h-3.5 w-3.5 shrink-0 ${color}`} />
+                                            <span className="text-xs text-stone-600">{text}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
-                        {/* Trust block */}
-                        <div className="rounded-2xl bg-white border border-stone-200 p-5 shadow-sm">
-                            <h3 className="font-serif text-base font-medium text-brand-950 mb-4 flex items-center gap-2">
-                                <Shield className="h-4 w-4 text-brand-600" />
-                                Why Book With Us
-                            </h3>
-                            <ul className="space-y-3">
-                                {[
-                                    "100% Customisable Itineraries",
-                                    "Best Price Guarantee",
-                                    "24/7 On-Trip Support",
-                                    "Trusted by 5,000+ Travellers",
-                                    "No Hidden Charges",
-                                ].map((item) => (
-                                    <li key={item} className="flex items-center gap-2.5 text-sm text-stone-600">
-                                        <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
-                            <div className="mt-4 pt-4 border-t border-stone-100 text-center">
-                                <p className="text-[10px] text-stone-400 font-medium">
-                                    My Perfect Trips — official brand of <strong className="text-stone-600">Infygru Private Limited</strong>
-                                </p>
-                            </div>
-                        </div>
+                        {/* Custom Journey */}
+                        <CustomJourneyDropdown packageTitle={pkg.title} />
 
-                        {/* Help box */}
+                        {/* Need Help */}
                         <div className="rounded-2xl bg-brand-50 border border-brand-100 p-5">
-                            <h3 className="font-serif text-base font-medium text-brand-900 mb-2">Need Help?</h3>
-                            <p className="text-sm text-brand-700 mb-4 font-light">Our travel experts are available Mon–Sat, 9am to 6pm.</p>
+                            <h3 className="font-serif text-base font-medium text-brand-900 mb-1">Need Help?</h3>
+                            <p className="text-xs text-brand-600 mb-3">Mon–Sat, 9 am to 6 pm</p>
                             <a
                                 href={`tel:${phone}`}
-                                className="text-sm font-bold text-brand-800 hover:text-brand-950 flex items-center gap-2 transition-colors"
+                                className="inline-flex items-center gap-2 text-sm font-bold text-brand-800 hover:text-brand-950 transition-colors"
                             >
                                 <Phone className="h-4 w-4" />
                                 {phone}

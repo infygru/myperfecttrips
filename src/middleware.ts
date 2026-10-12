@@ -5,15 +5,10 @@ const PROTECTED_ROUTES = ['/dashboard', '/checkout'];
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
-
-    // Forward pathname to server components via request header
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set('x-pathname', pathname);
-
     const isProtected = PROTECTED_ROUTES.some(route => pathname.startsWith(route));
 
     if (!isProtected) {
-        return NextResponse.next({ request: { headers: requestHeaders } });
+        return NextResponse.next();
     }
 
     const token = request.cookies.get('directus_token')?.value;
@@ -23,7 +18,7 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(loginUrl);
     }
 
-    return NextResponse.next({ request: { headers: requestHeaders } });
+    return NextResponse.next();
 }
 
 export const config = {

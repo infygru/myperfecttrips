@@ -1,4 +1,3 @@
-import { unstable_noStore as noStore } from "next/cache";
 import { directus, getSiteSettings } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import HeroSearchTabs from "@/components/HeroSearchTabs";
@@ -10,9 +9,10 @@ import {
   Shield, Star, Award, Headphones, Globe,
   Compass, Users, CheckCircle2,
 } from "lucide-react";
+import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -31,14 +31,13 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     keywords: "holiday packages India, international tour packages, domestic tour packages, honeymoon packages, My Perfect Trips, travel agency India",
-    openGraph: { title, description, url: baseUrl, images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: "MyPerfectTrips" }] : [], type: "website" },
+    openGraph: { title, description, url: baseUrl, images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: "My Perfect Trips" }] : [], type: "website" },
     twitter: { card: "summary_large_image", title, description, images: ogImage ? [ogImage] : [] },
     alternates: { canonical: baseUrl },
   };
 }
 
 export default async function Home() {
-  noStore();
   let settings: any = null;
   let allPackages: any[] = [];
   let latestBlogs: any[] = [];
@@ -97,21 +96,64 @@ export default async function Home() {
   const visaOnArrivalPackages = allPackages.filter((p: any) => p.visa_status === "visa_on_arrival" && p.image).slice(0, 8);
   const showVisaSection      = visaFreePackages.length > 0 || visaOnArrivalPackages.length > 0;
 
-  // Budget packages: domestic < £10k, international < £50k
+  // Budget packages: domestic < ₹10k, international < ₹50k
   const budgetDomestic      = domesticPackages.filter(p => p.price > 0 && p.price <= 10000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
   const budgetInternational = internationalPackages.filter(p => p.price > 0 && p.price <= 50000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
   const showBudgetSection   = budgetDomestic.length > 0 || budgetInternational.length > 0;
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What makes My Perfect Trips the best travel agency in India?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "My Perfect Trips (myperfecttrips.com) offers 100% customisable itineraries, completely transparent pricing with zero hidden charges, and 24/7 on-trip support. With over 15 years of expertise as premium luxury tour operators, we guarantee exceptional quality for both international and domestic holiday packages."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Do you offer international holiday packages from India?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, we specialise in international tour packages to over 50+ countries. Some of our top-selling destinations include the Maldives, Bali, Thailand, Europe, Dubai, and Singapore. We handle everything from flight bookings and visas to luxury accommodations."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Are your honeymoon packages customisable?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Absolutely. We are renowned as top honeymoon planners in India because we tailor every single detail to your preferences. Whether you want a private pool villa in the Maldives or a romantic European escape, we craft it to perfection."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Does My Perfect Trips help with Corporate MICE travel?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, we are experts in Corporate MICE (Meetings, Incentives, Conferences, and Exhibitions). We manage complex logistics, multi-city flights, premium stays, and event planning for group sizes ranging from 50 to 500+ professionals globally."
+        }
+      }
+    ]
+  };
+
   return (
     <main className="flex min-h-screen flex-col bg-stone-50 overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       {/* ── HERO ── */}
-      <section className="relative flex min-h-[92svh] sm:min-h-[80svh] items-center justify-center bg-stone-950 z-30 pb-14 sm:pb-10">
+      <section className="relative flex min-h-[100svh] sm:min-h-[86svh] items-center justify-center bg-stone-950 z-30 pb-20 sm:pb-12">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {heroVideoUrl ? (
             <video src={heroVideoUrl} autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover opacity-60" />
           ) : heroImgUrl ? (
-            <Image src={heroImgUrl} alt="MyPerfectTrips" fill className="object-cover opacity-60 scale-105 animate-[heroZoomOut_12s_ease-out_forwards]" priority unoptimized />
+            <Image src={heroImgUrl} alt="My Perfect Trips" fill className="object-cover opacity-60 scale-105 animate-[heroZoomOut_12s_ease-out_forwards]" priority />
           ) : (
             <div className="absolute inset-0 bg-stone-950" />
           )}
@@ -186,7 +228,7 @@ export default async function Home() {
                     className="group flex flex-col items-center gap-2">
                     <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-stone-200 ring-2 ring-transparent group-hover:ring-brand-400 transition-all">
                       {imgUrl ? (
-                        <Image src={imgUrl} alt={dest.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" unoptimized />
+                        <Image src={imgUrl} alt={dest.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-brand-700 to-brand-950 flex items-center justify-center">
                           <MapPin className="h-6 w-6 text-white/40" />
@@ -204,69 +246,68 @@ export default async function Home() {
       )}
 
       {/* ── FEATURED PACKAGES ── */}
-      <section className="py-12 lg:py-16 bg-stone-50">
+      <section className="py-16 lg:py-24 bg-white" id="packages">
         <div className="container-inner">
-          <div className="mb-8 flex items-end justify-between gap-4">
+          <div className="mb-10 flex items-end justify-between gap-4">
             <div data-aos="fade-up">
-              <span className="section-label">Curated For You</span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Handpicked Packages</h2>
+              <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gold-600 mb-2">Curated For You</p>
+              <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 font-medium tracking-tight">Handpicked Packages</h2>
             </div>
-            <Link href="/packages" data-aos="fade-up" data-aos-delay="100" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800 shrink-0">
-              See All <ChevronRight className="h-4 w-4" />
+            <Link href="/packages" data-aos="fade-up" data-aos-delay="100"
+              className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-stone-500 hover:text-stone-900 transition-colors shrink-0">
+              View all <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
           {featuredPackages.length > 0 ? (
-            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 pb-3 scrollbar-hide">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
               {featuredPackages.map((pkg, idx) => {
                 const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
                 return (
                   <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
                     data-aos="fade-up"
-                    data-aos-delay={String((idx % 3) * 100)}
-                    className="group flex flex-col shrink-0 w-[75vw] sm:w-auto snap-center overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
+                    data-aos-delay={String((idx % 3) * 80)}
+                    className="group flex flex-col overflow-hidden rounded-3xl bg-white shadow-[0_2px_16px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.13)] transition-all duration-300 hover:-translate-y-1.5">
+                    <div className="relative aspect-[3/2] w-full overflow-hidden bg-stone-100">
                       {imgUrl ? (
-                        <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
+                        <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center">
-                          <Compass className="h-10 w-10 text-brand-700/40" />
+                          <Compass className="h-10 w-10 text-brand-700/30" />
                         </div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
                       {pkg.category && (
-                        <span className="absolute top-3 left-3 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-brand-900 shadow-sm">
+                        <span className="absolute top-3 left-3 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-[10px] font-black uppercase tracking-widest text-stone-700">
                           {pkg.category}
                         </span>
                       )}
                       {pkg.duration_nights && (
-                        <span className="absolute bottom-3 right-3 flex items-center gap-1 rounded-lg bg-black/70 px-2.5 py-1 text-[11px] font-medium text-white">
-                          <Clock className="h-3 w-3 text-gold-400" />{pkg.duration_nights}N / {pkg.duration_days}D
+                        <span className="absolute bottom-3 right-3 flex items-center gap-1 rounded-lg bg-black/60 backdrop-blur-sm px-2.5 py-1 text-[11px] font-semibold text-white">
+                          <Clock className="h-3 w-3 text-gold-400" />{pkg.duration_nights}N · {pkg.duration_days}D
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-1 flex-col p-4 sm:p-5">
-                      <h3 className="font-serif text-base sm:text-lg font-medium leading-snug text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-2 mb-2">
+                    <div className="flex flex-1 flex-col p-5">
+                      <h3 className="font-serif text-[17px] font-medium leading-snug text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1.5">
                         {pkg.title}
                       </h3>
                       {(pkg.destination || pkg.destinations?.length > 0) && (
-                        <p className="flex items-center gap-1 text-xs text-stone-400 mb-3">
+                        <p className="flex items-center gap-1 text-xs text-stone-400 mb-4">
                           <MapPin className="h-3 w-3 shrink-0" />
                           <span className="truncate">{pkg.destination || pkg.destinations?.slice(0, 2).join(", ")}</span>
                         </p>
                       )}
-                      <div className="mt-auto flex items-center justify-between pt-3 border-t border-stone-100">
+                      <div className="mt-auto flex items-center justify-between pt-4 border-t border-stone-100">
                         <div>
-                          <p className="text-[10px] text-stone-400 font-medium uppercase tracking-wide">Starting from</p>
-                          {pkg.price ? (
-                            <p className="font-serif text-lg font-bold text-brand-900">£{Number(pkg.price).toLocaleString("en-GB")}</p>
-                          ) : (
-                            <p className="font-serif text-base font-bold text-stone-700">On Request</p>
-                          )}
+                          <p className="text-[9px] font-black uppercase tracking-[0.15em] text-stone-400 mb-0.5">From</p>
+                          <p className="font-serif text-xl font-semibold text-brand-950">
+                            {pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}
+                          </p>
                         </div>
-                        <div className="h-8 w-8 flex items-center justify-center rounded-full bg-brand-50 text-brand-700 group-hover:bg-brand-950 group-hover:text-white transition-colors">
-                          <ArrowRight className="h-4 w-4 -rotate-45 group-hover:rotate-0 transition-transform" />
-                        </div>
+                        <span className="h-9 w-9 flex items-center justify-center rounded-full border border-stone-200 text-stone-400 group-hover:bg-brand-950 group-hover:border-brand-950 group-hover:text-white transition-all duration-200">
+                          <ArrowRight className="h-4 w-4" />
+                        </span>
                       </div>
                     </div>
                   </Link>
@@ -274,12 +315,12 @@ export default async function Home() {
               })}
             </div>
           ) : (
-            <div className="flex items-center justify-center rounded-2xl border border-dashed border-stone-300 bg-white py-20 text-center">
+            <div className="flex items-center justify-center rounded-3xl border border-dashed border-stone-200 bg-stone-50 py-20 text-center">
               <p className="text-stone-400 font-medium">Packages coming soon</p>
             </div>
           )}
-          <div className="mt-5 text-center sm:hidden">
-            <Link href="/packages" className="btn-outline text-sm">See All Packages</Link>
+          <div className="mt-8 text-center">
+            <Link href="/packages" className="btn-outline text-sm">Browse All Packages</Link>
           </div>
         </div>
       </section>
@@ -318,7 +359,7 @@ export default async function Home() {
                   className="group relative h-72 sm:h-80 overflow-hidden rounded-3xl bg-brand-950 block">
                   {domesticBannerImg && (
                     <Image src={`${dUrl}/assets/${domesticBannerImg}`} alt="Domestic Tours" fill
-                      className="object-cover opacity-55 transition-transform duration-700 group-hover:scale-110" unoptimized />
+                      className="object-cover opacity-55 transition-transform duration-700 group-hover:scale-110" />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/80 via-brand-900/70 to-brand-900/40" />
                   <div className="absolute inset-0 flex flex-col justify-between p-7">
@@ -353,7 +394,7 @@ export default async function Home() {
                   className="group relative h-72 sm:h-80 overflow-hidden rounded-3xl bg-brand-950 block">
                   {intlBannerImg && (
                     <Image src={`${dUrl}/assets/${intlBannerImg}`} alt="International Tours" fill
-                      className="object-cover opacity-55 transition-transform duration-700 group-hover:scale-110" unoptimized />
+                      className="object-cover opacity-55 transition-transform duration-700 group-hover:scale-110" />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-brand-900/70 to-brand-900/40" />
                   <div className="absolute inset-0 flex flex-col justify-between p-7">
@@ -403,7 +444,7 @@ export default async function Home() {
                           data-aos-delay={String(idx * 80)}
                           className="group flex flex-col shrink-0 w-[68vw] sm:w-auto snap-center overflow-hidden rounded-2xl bg-white border border-stone-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                           <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
-                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
+                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                             {pkg.duration_nights && (
                               <span className="absolute bottom-2 right-2 flex items-center gap-1 rounded-lg bg-black/70 px-2 py-0.5 text-[10px] font-medium text-white">
@@ -414,7 +455,7 @@ export default async function Home() {
                           <div className="p-3.5">
                             <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">{pkg.title}</p>
                             {pkg.destination && <p className="text-[11px] text-stone-400 flex items-center gap-0.5 mb-2"><MapPin className="h-2.5 w-2.5 shrink-0" />{pkg.destination}</p>}
-                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "On Request"}</p>
+                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}</p>
                           </div>
                         </Link>
                       );
@@ -443,7 +484,7 @@ export default async function Home() {
                           data-aos-delay={String(idx * 80)}
                           className="group flex flex-col shrink-0 w-[68vw] sm:w-auto snap-center overflow-hidden rounded-2xl bg-white border border-stone-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                           <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
-                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
+                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                             {pkg.duration_nights && (
                               <span className="absolute bottom-2 right-2 flex items-center gap-1 rounded-lg bg-black/70 px-2 py-0.5 text-[10px] font-medium text-white">
@@ -454,7 +495,7 @@ export default async function Home() {
                           <div className="p-3.5">
                             <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">{pkg.title}</p>
                             {pkg.destination && <p className="text-[11px] text-stone-400 flex items-center gap-0.5 mb-2"><MapPin className="h-2.5 w-2.5 shrink-0" />{pkg.destination}</p>}
-                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "On Request"}</p>
+                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}</p>
                           </div>
                         </Link>
                       );
@@ -482,7 +523,7 @@ export default async function Home() {
                   data-aos-delay={String(idx * 100)}
                   className="group relative w-full aspect-[3/4] sm:aspect-square overflow-hidden rounded-2xl bg-stone-900">
                   <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.category} fill
-                    className="object-cover opacity-75 transition-transform duration-500 group-hover:scale-110 group-hover:opacity-90" unoptimized />
+                    className="object-cover opacity-75 transition-transform duration-500 group-hover:scale-110 group-hover:opacity-90" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute inset-x-0 bottom-0 p-4 text-center">
                     <h3 className="font-serif text-sm sm:text-xl font-medium text-white">{pkg.category}</h3>
@@ -502,7 +543,7 @@ export default async function Home() {
             <div className="mb-8" data-aos="fade-up">
               <span className="section-label">Affordable Getaways</span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Budget-Friendly Deals</h2>
-              <p className="mt-2 text-sm text-stone-400">Domestic under £10,000 · International under £50,000</p>
+              <p className="mt-2 text-sm text-stone-400">Domestic under ₹10,000 · International under ₹50,000</p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
@@ -511,7 +552,7 @@ export default async function Home() {
                 <div data-aos="fade-right">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">Domestic · Under £10,000</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">Domestic · Under ₹10,000</h3>
                   </div>
                   <div className="grid gap-3">
                     {budgetDomestic.map((pkg, idx) => (
@@ -519,7 +560,7 @@ export default async function Home() {
                         data-aos="fade-up"
                         data-aos-delay={String(idx * 80)}
                         className="group relative overflow-hidden rounded-2xl h-36 bg-stone-900 flex items-end">
-                        <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" unoptimized />
+                        <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" />
                         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
                         <div className="relative z-10 p-4 flex items-end justify-between w-full">
                           <div>
@@ -528,7 +569,7 @@ export default async function Home() {
                           </div>
                           <div className="text-right shrink-0 ml-3">
                             <p className="text-xs text-white/60 font-medium">From</p>
-                            <p className="font-serif text-lg font-bold text-gold-400">£{Number(pkg.price).toLocaleString("en-GB")}</p>
+                            <p className="font-serif text-lg font-bold text-gold-400">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
                           </div>
                         </div>
                       </Link>
@@ -545,7 +586,7 @@ export default async function Home() {
                 <div data-aos="fade-left">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="h-2 w-2 rounded-full bg-blue-500"></span>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">International · Under £50,000</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">International · Under ₹50,000</h3>
                   </div>
                   <div className="grid gap-3">
                     {budgetInternational.map((pkg, idx) => (
@@ -553,7 +594,7 @@ export default async function Home() {
                         data-aos="fade-up"
                         data-aos-delay={String(idx * 80)}
                         className="group relative overflow-hidden rounded-2xl h-36 bg-stone-900 flex items-end">
-                        <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" unoptimized />
+                        <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" />
                         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
                         <div className="relative z-10 p-4 flex items-end justify-between w-full">
                           <div>
@@ -562,7 +603,7 @@ export default async function Home() {
                           </div>
                           <div className="text-right shrink-0 ml-3">
                             <p className="text-xs text-white/60 font-medium">From</p>
-                            <p className="font-serif text-lg font-bold text-gold-400">£{Number(pkg.price).toLocaleString("en-GB")}</p>
+                            <p className="font-serif text-lg font-bold text-gold-400">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
                           </div>
                         </div>
                       </Link>
@@ -613,6 +654,9 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+      {/* ── GOOGLE REVIEWS ── */}
+      <GoogleReviewsSection />
 
       {/* ── WHY CHOOSE US ── */}
       <section className="py-12 lg:py-20 bg-brand-950">
@@ -702,7 +746,7 @@ export default async function Home() {
                     className="group shrink-0 w-[78vw] sm:w-auto snap-center flex flex-col overflow-hidden rounded-2xl bg-white border border-stone-200 hover:shadow-lg hover:-translate-y-1 transition-all">
                     <div className="relative aspect-[16/9] w-full overflow-hidden bg-stone-100">
                       {imgUrl ? (
-                        <Image src={imgUrl} alt={post.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
+                        <Image src={imgUrl} alt={post.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center">
                           <Globe className="h-8 w-8 text-brand-700/40" />
@@ -716,7 +760,7 @@ export default async function Home() {
                     </div>
                     <div className="p-4 sm:p-5 flex flex-col flex-1">
                       <p className="text-[10px] font-bold uppercase tracking-wider text-brand-600 mb-2">
-                        {post.published_date ? new Date(post.published_date).toLocaleDateString("en-GB", { month: "short", day: "numeric", year: "numeric" }) : "Journal"}
+                        {post.published_date ? new Date(post.published_date).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) : "Journal"}
                       </p>
                       <h3 className="font-serif text-base font-medium leading-snug text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-2 mb-auto">
                         {post.title}
@@ -732,6 +776,41 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+      {/* ── FAQ & SEO CONTENT ── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="container-inner">
+          <div className="mb-8 text-center" data-aos="fade-up">
+            <span className="section-label mx-auto">Travel Queries</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">Frequently Asked Questions</h2>
+          </div>
+          <div className="max-w-3xl mx-auto space-y-4">
+            {[
+              {
+                q: "What makes My Perfect Trips the best travel agency in India?",
+                a: "My Perfect Trips (myperfecttrips.com) offers 100% customisable itineraries, completely transparent pricing with zero hidden charges, and 24/7 on-trip support. With over 15 years of expertise as premium luxury tour operators, we guarantee exceptional quality for both international and domestic holiday packages."
+              },
+              {
+                q: "Do you offer international holiday packages from India?",
+                a: "Yes, we specialise in international tour packages to over 50+ countries. Some of our top-selling destinations include the Maldives, Bali, Thailand, Europe, Dubai, and Singapore. We handle everything from flight bookings and visas to luxury accommodations."
+              },
+              {
+                q: "Are your honeymoon packages customisable?",
+                a: "Absolutely. We are renowned as top honeymoon planners in India because we tailor every single detail to your preferences. Whether you want a private pool villa in the Maldives or a romantic European escape, we craft it to perfection."
+              },
+              {
+                q: "Does My Perfect Trips help with Corporate MICE travel?",
+                a: "Yes, we are experts in Corporate MICE (Meetings, Incentives, Conferences, and Exhibitions). We manage complex logistics, multi-city flights, premium stays, and event planning for group sizes ranging from 50 to 500+ professionals globally."
+              }
+            ].map((faq, idx) => (
+              <div key={idx} data-aos="fade-up" data-aos-delay={String(idx * 100)} className="rounded-2xl border border-stone-200 bg-stone-50 p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="font-serif text-lg font-medium text-brand-950 mb-2">{faq.q}</h3>
+                <p className="text-sm text-stone-600 leading-relaxed">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ── CTA BANNER ── */}
       <section className="bg-white px-4 py-12 lg:py-20">

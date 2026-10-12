@@ -22,7 +22,7 @@ export default async function RegisterPage() {
       {/* LEFT */}
       <div className="hidden lg:flex lg:w-[42%] flex-col relative overflow-hidden">
         {heroImgUrl ? (
-          <Image src={heroImgUrl} alt="" fill className="object-cover" unoptimized priority />
+          <Image src={heroImgUrl} alt="" fill className="object-cover" priority />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800" />
         )}
@@ -35,7 +35,7 @@ export default async function RegisterPage() {
         <div className="relative z-10 flex flex-col h-full px-10 xl:px-12 py-10 xl:py-12">
           <Link href="/" className="flex items-center gap-3 w-fit group">
             {logoUrl ? (
-              <Image src={logoUrl} alt="My Perfect Trips" width={130} height={36} className="h-8 w-auto brightness-0 invert" unoptimized />
+              <Image src={logoUrl} alt="My Perfect Trips" width={130} height={36} className="h-8 w-auto brightness-0 invert" />
             ) : (
               <div className="flex items-center gap-2.5">
                 <div className="h-9 w-9 rounded-xl bg-white/10 flex items-center justify-center">
@@ -71,8 +71,8 @@ export default async function RegisterPage() {
               </div>
               <div className="space-y-2.5">
                 {[
-                  '£100 spent = 1 loyalty point',
-                  'Redeem from 500 points (= £500 off)',
+                  '₹100 spent = 1 loyalty point',
+                  'Redeem from 500 points (= ₹500 off)',
                   'Valid on packages & hotel stays',
                 ].map(t => (
                   <div key={t} className="flex items-start gap-2.5">
@@ -100,7 +100,7 @@ export default async function RegisterPage() {
           <div className="lg:hidden mb-7 text-center">
             <Link href="/" className="inline-flex items-center gap-2.5">
               {logoUrl ? (
-                <Image src={logoUrl} alt="My Perfect Trips" width={120} height={36} className="h-8 w-auto" unoptimized />
+                <Image src={logoUrl} alt="My Perfect Trips" width={120} height={36} className="h-8 w-auto" />
               ) : (
                 <>
                   <div className="h-8 w-8 rounded-xl bg-brand-900 flex items-center justify-center">

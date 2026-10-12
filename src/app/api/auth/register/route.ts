@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { registerUser, loginUser } from '@/lib/auth';
+import { sendWelcomeEmail } from '@/lib/email';
 
 export async function POST(req: NextRequest) {
     try {
@@ -13,6 +14,9 @@ export async function POST(req: NextRequest) {
         }
 
         await registerUser({ first_name, last_name, email, password, phone });
+
+        // Welcome email (non-blocking)
+        sendWelcomeEmail(`${first_name} ${last_name}`.trim(), email).catch(() => {});
 
         // Auto-login after registration
         const authData = await loginUser(email, password);

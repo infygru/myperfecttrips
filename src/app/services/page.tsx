@@ -1,4 +1,3 @@
-import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
@@ -7,8 +6,6 @@ import {
 } from "lucide-react";
 import { servicesList } from "@/lib/servicesData";
 import CountUpNumber from "@/components/CountUpNumber";
-
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
     title: "Travel Services in Chennai & India | Corporate MICE, Visa, Group & Holiday Planning | My Perfect Trips",
@@ -49,7 +46,6 @@ const bookingProcess = [
 ];
 
 export default async function ServicesPage() {
-    noStore();
 
     return (
         <main className="min-h-screen overflow-hidden">
@@ -382,7 +378,7 @@ export default async function ServicesPage() {
                         {[
                             { q: "What destinations do you specialise in?", a: "Domestically: Andaman, Kashmir, Kerala, Goa, Rajasthan. Internationally: UAE, Maldives, Thailand, Bali, Singapore, Europe, and the UK, among many others." },
                             { q: "Do you offer group discounts for college or corporate tours?", a: "Yes. We hold volume contracts with airlines and hotel chains, securing subsidised B2B group rates for educational and corporate travel." },
-                            { q: "Can MyPerfectTrips assist with travel insurance?", a: "Absolutely. Travel insurance is a core part of our offering — covering medical emergencies, trip cancellations, and baggage delays." },
+                            { q: "Can My Perfect Trips assist with travel insurance?", a: "Absolutely. Travel insurance is a core part of our offering — covering medical emergencies, trip cancellations, and baggage delays." },
                             { q: "How early should we start planning an international holiday?", a: "For visa-required destinations (Europe, US, UK), plan 3–4 months ahead. For visa-on-arrival or domestic trips, 1–2 months is sufficient for best rates." },
                             { q: "Do you have a B2B partner program?", a: "Yes. We have a dedicated B2B desk for travel agents and corporate travel bookers. Contact us for partnership rates and commission structures." },
                             { q: "What is the booking process?", a: "Enquire → receive a custom proposal within 24h → review & refine → confirm with advance payment → travel. Simple and transparent throughout." },

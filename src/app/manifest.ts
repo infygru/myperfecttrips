@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
     return {
         name: "My Perfect Trips",
-        short_name: "MyPerfectTrips",
+        short_name: "My Perfect Trips",
         description: "India's trusted travel agency — premium holiday packages, honeymoon tours, corporate MICE, and more.",
         start_url: "/",
         display: "standalone",

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, BookOpen, Calendar, Clock, User } from "lucide-react";
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -14,9 +14,14 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const { slug } = await props.params;
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
     try {
-        const result = (await directus.request(
-            readItems("blog_posts" as any, { filter: { slug: { _eq: slug }, status: { _eq: "published" } } as any, limit: 1 })
+        let result = (await directus.request(
+            readItems("blog_posts" as any, { filter: { slug: { _eq: slug }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
         )) as any[];
+        if (!result?.length && /^\d+$/.test(slug)) {
+            result = (await directus.request(
+                readItems("blog_posts" as any, { filter: { id: { _eq: Number(slug) }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
+            )) as any[];
+        }
         const post = result?.[0];
         if (post) {
             const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
@@ -60,15 +65,20 @@ export default async function BlogDetailPage(props: Props) {
     let recentPosts: any[] = [];
 
     try {
-        const result = (await directus.request(
-            readItems("blog_posts" as any, { filter: { slug: { _eq: slug }, status: { _eq: "published" } } as any, limit: 1 })
+        let result = (await directus.request(
+            readItems("blog_posts" as any, { filter: { slug: { _eq: slug }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
         )) as any[];
+        if (!result?.length && /^\d+$/.test(slug)) {
+            result = (await directus.request(
+                readItems("blog_posts" as any, { filter: { id: { _eq: Number(slug) }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
+            )) as any[];
+        }
         if (!result?.length) return notFound();
         post = result[0];
 
         recentPosts = (await directus.request(
             readItems("blog_posts" as any, {
-                filter: { id: { _neq: post.id }, status: { _eq: "published" } } as any,
+                filter: { id: { _neq: post.id }, status: { _in: ["published", "Published", "Live", "live"] } } as any,
                 limit: 3,
                 sort: ["-id"] as any,
             })
@@ -80,7 +90,7 @@ export default async function BlogDetailPage(props: Props) {
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const imgUrl = post.featured_image ? `${dUrl}/assets/${post.featured_image}` : null;
     const dateStr = post.published_date
-        ? new Date(post.published_date).toLocaleDateString("en-GB", {
+        ? new Date(post.published_date).toLocaleDateString("en-IN", {
               month: "long",
               day: "numeric",
               year: "numeric",
@@ -128,7 +138,6 @@ export default async function BlogDetailPage(props: Props) {
                         fill
                         className="object-cover opacity-60"
                         priority
-                        unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-brand-950/98 via-brand-950/50 to-brand-950/20" />
 
@@ -308,7 +317,6 @@ export default async function BlogDetailPage(props: Props) {
                                                     alt={rpost.title}
                                                     fill
                                                     className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                                    unoptimized
                                                 />
                                             ) : (
                                                 <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center">

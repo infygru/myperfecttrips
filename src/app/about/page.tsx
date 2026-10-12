@@ -1,9 +1,6 @@
-import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Compass, Globe2, Award, Headset, CheckCircle2, MapPin, Users, Star } from "lucide-react";
-
-export const dynamic = "force-dynamic";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
@@ -27,17 +24,31 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-    noStore();
+    const aboutPageSchema = {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        name: "About My Perfect Trips",
+        description: "My Perfect Trips is India's trusted travel agency. 5,000+ happy travellers, 100% customisable itineraries.",
+        url: `${BASE}/about`,
+        publisher: {
+            "@type": "Organization",
+            name: "My Perfect Trips"
+        }
+    };
 
     return (
         <main className="min-h-screen bg-white">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }}
+            />
 
             {/* ── COMPACT PAGE HEADER ── */}
             <section className="bg-brand-950 pt-20 pb-8 border-b border-white/[0.06]">
                 <div className="container-inner">
                     <p className="text-gold-400 text-[10px] font-bold uppercase tracking-[0.25em] mb-2 flex items-center gap-2">
                         <span className="h-px w-6 bg-gold-400" />
-                        About MyPerfectTrips
+                        About My Perfect Trips
                     </p>
                     <h1 className="font-serif text-3xl sm:text-4xl font-medium text-white">
                         Redefining Luxury <em className="text-gold-400 not-italic">Travel</em>
@@ -78,13 +89,13 @@ export default async function AboutPage() {
                             </h2>
                             <div className="space-y-4 text-stone-600 leading-relaxed text-sm sm:text-base">
                                 <p>
-                                    Welcome to <strong>MyPerfectTrips</strong>, officially recognized as the <strong>Best Travel Agency in India</strong> for curating impeccable, tailor-made journeys. What began as a passionate endeavor to simplify global travel has since evolved into India&apos;s leading premium travel management company.
+                                    Welcome to <strong>My Perfect Trips</strong>, officially recognized as the <strong>Best Travel Agency in India</strong> for curating impeccable, tailor-made journeys. What began as a passionate endeavor to simplify global travel has since evolved into India&apos;s leading premium travel management company.
                                 </p>
                                 <p>
                                     As <strong>Top Luxury Tour Operators</strong>, we specialize in crafting <em>Customized International Tour Packages</em> and bespoke domestic retreats across India&apos;s most beautiful destinations like Kerala, Kashmir, Rajasthan, and the Andaman Islands.
                                 </p>
                                 <p>
-                                    Today, MyPerfectTrips is the most trusted name in B2B and B2C travel — handling everything from intimate honeymoons to corporate MICE events for 500+ attendees across the globe.
+                                    Today, My Perfect Trips is the most trusted name in B2B and B2C travel — handling everything from intimate honeymoons to corporate MICE events for 500+ attendees across the globe.
                                 </p>
                             </div>
                             <div className="mt-8 flex flex-wrap gap-3">
@@ -276,7 +287,7 @@ export default async function AboutPage() {
                                 planning, corporate MICE, and flight bookings — are delivered under the sole brand
                                 name <strong>My Perfect Trips</strong> across all platforms, including our website{" "}
                                 <strong>myperfecttrips.com</strong>, our Instagram{" "}
-                                <strong>@myperfecttrips</strong>, and our Facebook page <strong>facebook.com/myperfecttrips</strong>.
+                                <strong>@igholidays</strong>, and our Facebook page <strong>facebook.com/igholidays</strong>.
                             </p>
                         </div>
                     </div>

@@ -48,7 +48,7 @@ export default function HeaderAuthButton() {
                 {/* Avatar */}
                 <div className="h-7 w-7 rounded-full overflow-hidden bg-brand-900 flex items-center justify-center flex-shrink-0 border border-stone-100">
                     {avatarUrl ? (
-                        <Image src={avatarUrl} alt={displayName} width={28} height={28} className="h-full w-full object-cover" unoptimized />
+                        <Image src={avatarUrl} alt={displayName} width={28} height={28} className="h-full w-full object-cover" />
                     ) : (
                         <span className="text-xs font-bold text-white">{initials}</span>
                     )}
@@ -64,7 +64,7 @@ export default function HeaderAuthButton() {
                         <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-xl overflow-hidden bg-brand-900 flex items-center justify-center flex-shrink-0">
                                 {avatarUrl ? (
-                                    <Image src={avatarUrl} alt={displayName} width={40} height={40} className="h-full w-full object-cover" unoptimized />
+                                    <Image src={avatarUrl} alt={displayName} width={40} height={40} className="h-full w-full object-cover" />
                                 ) : (
                                     <span className="text-sm font-bold text-white">{initials}</span>
                                 )}

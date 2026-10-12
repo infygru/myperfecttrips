@@ -1,4 +1,3 @@
-import { unstable_noStore as noStore } from "next/cache";
 import { directus } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import Image from "next/image";
@@ -33,8 +32,6 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function PackagesPage(props: {
     searchParams: Promise<{
         category?: string;
@@ -46,7 +43,6 @@ export default async function PackagesPage(props: {
         package_type?: string;
     }>;
 }) {
-    noStore();
     const sp = await props.searchParams;
     const currentCategory = sp.category || "";
     const currentTheme = sp.theme || "";
@@ -59,7 +55,9 @@ export default async function PackagesPage(props: {
     let packages: any[] = [];
     try {
         packages = (await directus.request(readItems("packages" as any, { limit: 200 }))) as any[];
-    } catch { }
+    } catch (err) {
+        console.error('[packages page] failed to fetch packages:', err);
+    }
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
 
@@ -236,8 +234,7 @@ export default async function PackagesPage(props: {
                                                         alt={pkg.title}
                                                         fill
                                                         className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                                                        unoptimized
-                                                    />
+                                                                                                           />
                                                 ) : (
                                                     <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-800 to-brand-950">
                                                         <Compass className="h-10 w-10 text-brand-700/40" />
@@ -282,7 +279,7 @@ export default async function PackagesPage(props: {
                                                         <p className="text-[9px] font-bold uppercase tracking-widest text-stone-400">Starting from</p>
                                                         {pkg.price ? (
                                                             <p className="font-serif text-xl font-semibold text-brand-900 leading-tight">
-                                                                £{Number(pkg.price).toLocaleString("en-GB")}
+                                                                ₹{Number(pkg.price).toLocaleString("en-IN")}
                                                             </p>
                                                         ) : (
                                                             <p className="font-serif text-lg font-semibold text-stone-700">On Request</p>
@@ -309,6 +306,29 @@ export default async function PackagesPage(props: {
                                 </Link>
                             </div>
                         )}
+                </div>
+            </section>
+
+            {/* ── SEO FOOTPRINT ── */}
+            <section className="container-inner mt-16 mb-8">
+                <div className="rounded-[2rem] bg-white border border-stone-200 p-8 sm:p-12 shadow-sm">
+                    <h2 className="font-serif text-2xl sm:text-3xl font-medium text-brand-950 mb-6">Explore Premium Holiday Packages with My Perfect Trips</h2>
+                    <div className="prose prose-stone max-w-none text-stone-600 leading-relaxed text-sm sm:text-base space-y-4">
+                        <p>
+                            Welcome to the ultimate collection of <strong>luxury holiday packages</strong> curated by the expert travel planners at My Perfect Trips. Whether you are looking for a romantic honeymoon escape, a thrilling family vacation, or a seamless corporate MICE trip, we have the perfect itinerary for you. We specialise in both domestic tours within India and international holiday packages to over 50 prominent global destinations.
+                        </p>
+                        <h3 className="font-serif text-xl font-medium text-brand-950 mt-8 mb-3">Popular International & Domestic Destinations</h3>
+                        <p>
+                            Our <strong>international tour packages from India</strong> cover highly sought-after locations like the Maldives, Bali, Dubai, Thailand, Singapore, and extensive European circuits. For domestic travelers, we offer deeply immersive experiences in Kashmir, Kerala, Rajasthan, Goa, and the Andaman Islands. We handpick top-tier accommodations, arrange seamless local transfers, and ensure you have access to exclusive sightseeing tours with expert guides.
+                        </p>
+                        <h3 className="font-serif text-xl font-medium text-brand-950 mt-8 mb-3">Why Book Your Tour With Us?</h3>
+                        <p>
+                            As one of India&apos;s most trusted <strong>luxury tour operators</strong>, My Perfect Trips guarantees 100% customisable itineraries. We understand that no two travellers are the same. That is why our travel consultants work closely with you to design a tailored trip that fits your budget, time, and specific interests. With our "Best Price Guarantee," you can book with confidence knowing there are absolutely zero hidden fees. Plus, our 24/7 on-trip concierge service provides total peace of mind throughout your entire journey.
+                        </p>
+                        <p>
+                            Browse our extensive list of holiday packages above, filter by destination, duration, or budget, and reach out to our team to get your free customised quote today!
+                        </p>
+                    </div>
                 </div>
             </section>
         </main>

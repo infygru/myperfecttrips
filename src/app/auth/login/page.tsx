@@ -31,7 +31,7 @@ export default async function LoginPage() {
       <div className="hidden lg:flex lg:w-[52%] xl:w-[56%] flex-col relative overflow-hidden">
         {/* Background: hero image or brand gradient */}
         {heroImgUrl ? (
-          <Image src={heroImgUrl} alt="" fill className="object-cover" unoptimized priority />
+          <Image src={heroImgUrl} alt="" fill className="object-cover" priority />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800" />
         )}
@@ -49,7 +49,7 @@ export default async function LoginPage() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 w-fit group">
             {logoUrl ? (
-              <Image src={logoUrl} alt="My Perfect Trips" width={140} height={40} className="h-9 w-auto object-contain brightness-0 invert" unoptimized />
+              <Image src={logoUrl} alt="My Perfect Trips" width={140} height={40} className="h-9 w-auto object-contain brightness-0 invert" />
             ) : (
               <div className="flex items-center gap-2.5">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 group-hover:bg-white/15 transition-colors">
@@ -119,7 +119,7 @@ export default async function LoginPage() {
           <div className="lg:hidden mb-8 text-center">
             <Link href="/" className="inline-flex items-center gap-2.5">
               {logoUrl ? (
-                <Image src={logoUrl} alt="My Perfect Trips" width={120} height={36} className="h-8 w-auto" unoptimized />
+                <Image src={logoUrl} alt="My Perfect Trips" width={120} height={36} className="h-8 w-auto" />
               ) : (
                 <>
                   <div className="h-9 w-9 rounded-xl bg-brand-900 flex items-center justify-center">

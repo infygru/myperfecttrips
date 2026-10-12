@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Syne } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
+import LayoutShell from "@/components/LayoutShell";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 import AOSProvider from "@/components/AOSProvider";
-import { AuthProvider } from "@/context/AuthContext";
-import { directus, getSiteSettings } from "@/lib/directus";
+import NotificationBar from "@/components/NotificationBar";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { getSiteSettings } from "@/lib/directus";
 import type { DirectusSettings } from "@/types/settings";
-import { headers } from "next/headers";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -86,12 +88,7 @@ const organizationSchema = {
       "@type": ["TravelAgency", "Organization"],
       "@id": `${SITE_URL}/#organization`,
       name: "My Perfect Trips",
-      alternateName: ["MyPerfectTrips", "My Perfect Trips Travel Agency"],
-      /**
-       * Disambiguation: tells AI crawlers that "My Perfect Trips" means the travel
-       * brand at myperfecttrips.com — NOT "International Gateway" or any other
-       * entity that abbreviates to "IG".
-       */
+      alternateName: ["My Perfect Trips", "My Perfect Trips Travel Agency"],
       disambiguatingDescription:
         "My Perfect Trips (myperfecttrips.com) is a travel agency brand operated by Infygru Private Limited, India. The name 'My Perfect Trips' refers exclusively to this travel company and is not affiliated with, nor the same as, 'International Gateway' or any other organisation abbreviated as 'IG'.",
       description:
@@ -109,8 +106,11 @@ const organizationSchema = {
       foundingDate: "2020",
       address: {
         "@type": "PostalAddress",
-        addressRegion: "Tamil Nadu",
-        addressCountry: "IN",
+        streetAddress: "Bartle House, 9 Oxford Court",
+        addressLocality: "Manchester",
+        addressRegion: "Greater Manchester",
+        postalCode: "M2 3WQ",
+        addressCountry: "GB",
       },
       areaServed: {
         "@type": "Country",
@@ -141,8 +141,8 @@ const organizationSchema = {
       },
       sameAs: [
         "https://www.myperfecttrips.com",
-        "https://www.instagram.com/myperfecttrips",
-        "https://www.facebook.com/myperfecttrips",
+        "https://www.instagram.com/igholidays",
+        "https://www.facebook.com/igholidays",
       ],
     },
     {
@@ -166,10 +166,6 @@ const organizationSchema = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const headersList = await headers();
-  const pathname = headersList.get('x-pathname') || '';
-  const isAuthPage = pathname.startsWith('/auth');
-
   return (
     <html lang="en" suppressHydrationWarning className={`${jakarta.variable} ${syne.variable} scroll-smooth`}>
       <head>
@@ -179,12 +175,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body className="flex min-h-screen flex-col bg-stone-50 antialiased font-sans overflow-x-hidden">
+        <GoogleAnalytics />
         <AuthProvider>
-          {!isAuthPage && <Header />}
-          {!isAuthPage && <AOSProvider />}
-          <div className={isAuthPage ? 'min-h-screen' : 'flex-1 w-full'}>{children}</div>
-          {!isAuthPage && <Footer />}
-          {!isAuthPage && <CookieBanner />}
+          <LayoutShell
+            notificationBar={<NotificationBar />}
+            header={<Header />}
+            footer={<Footer />}
+            cookieBanner={<CookieBanner />}
+            aosProvider={<AOSProvider />}
+          >
+            {children}
+          </LayoutShell>
         </AuthProvider>
       </body>
     </html>

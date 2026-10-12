@@ -1,4 +1,3 @@
-import { unstable_noStore as noStore } from "next/cache";
 import { directus } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import Image from "next/image";
@@ -7,8 +6,6 @@ import { ArrowRight, BookOpen, Calendar, Search, User } from "lucide-react";
 import { Suspense } from "react";
 import BlogFilters from "@/components/BlogFilters";
 import type { Metadata } from "next";
-
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
     title: "Travel Blog | My Perfect Trips – Tips, Guides & Destination Stories",
@@ -30,13 +27,12 @@ function readTime(content?: string) {
 }
 
 export default async function BlogPage({ searchParams }: PageProps) {
-    noStore();
     const { search = "", category = "" } = await searchParams;
 
     let allPosts: any[] = [];
     try {
         allPosts = (await directus.request(
-            readItems("blog_posts" as any, { filter: { status: { _eq: "published" } } as any, limit: 200, sort: ["-id"] as any })
+            readItems("blog_posts" as any, { filter: { status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 50, sort: ["-id"] as any })
         )) as any[];
     } catch {}
 
@@ -125,7 +121,6 @@ export default async function BlogPage({ searchParams }: PageProps) {
                                         alt={featured.title}
                                         fill
                                         className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                        unoptimized
                                         priority
                                     />
                                 ) : (
@@ -149,7 +144,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
                                     {featured.published_date && (
                                         <span className="flex items-center gap-1.5 text-[11px] text-stone-400">
                                             <Calendar className="h-3 w-3" />
-                                            {new Date(featured.published_date).toLocaleDateString("en-GB", {
+                                            {new Date(featured.published_date).toLocaleDateString("en-IN", {
                                                 month: "short",
                                                 day: "numeric",
                                                 year: "numeric",
@@ -205,7 +200,6 @@ export default async function BlogPage({ searchParams }: PageProps) {
                                                     alt={post.title}
                                                     fill
                                                     className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                                    unoptimized
                                                 />
                                             ) : (
                                                 <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950 flex items-center justify-center">
@@ -229,7 +223,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
                                                     <>
                                                         <span className="text-stone-300 text-xs">·</span>
                                                         <span className="text-[10px] text-stone-400">
-                                                            {new Date(post.published_date).toLocaleDateString("en-GB", {
+                                                            {new Date(post.published_date).toLocaleDateString("en-IN", {
                                                                 month: "short",
                                                                 day: "numeric",
                                                                 year: "numeric",

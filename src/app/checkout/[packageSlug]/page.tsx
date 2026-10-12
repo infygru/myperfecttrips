@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Shield, Clock, MapPin, Star } from 'lucide-react';
 import { getUserLoyaltyBalance, MIN_REDEEM } from '@/lib/loyalty';
+import OffersWidget from '@/components/offers/OffersWidget';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -78,7 +79,7 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
 
                             {imageUrl && (
                                 <div className="relative aspect-[16/9] rounded-xl overflow-hidden mb-4">
-                                    <Image src={imageUrl} alt={pkg.title} fill className="object-cover" unoptimized />
+                                    <Image src={imageUrl} alt={pkg.title} fill className="object-cover" />
                                 </div>
                             )}
 
@@ -101,7 +102,7 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
                             <div className="border-t border-stone-100 pt-4 space-y-2">
                                 <div className="flex justify-between text-sm text-stone-600">
                                     <span>Base price (per person)</span>
-                                    <span>£{price.toLocaleString('en-GB')}</span>
+                                    <span>₹{price.toLocaleString('en-IN')}</span>
                                 </div>
                                 <p className="text-xs text-stone-400">Final amount calculated based on travellers below</p>
                             </div>
@@ -124,11 +125,16 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
                                 </div>
                             )}
 
+                            {/* Offers widget */}
+                            <div className="mt-4">
+                                <OffersWidget />
+                            </div>
+
                             {/* Trust badges */}
                             <div className="mt-4 pt-4 border-t border-stone-100 space-y-2">
                                 <div className="flex items-center gap-2 text-xs text-stone-500">
                                     <Shield className="h-3.5 w-3.5 text-green-500" />
-                                    Secure payment via Cashfree
+                                    Secure payment via Razorpay
                                 </div>
                                 <div className="flex items-center gap-2 text-xs text-stone-500">
                                     <Shield className="h-3.5 w-3.5 text-green-500" />

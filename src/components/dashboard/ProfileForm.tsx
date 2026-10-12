@@ -119,11 +119,11 @@ export default function ProfileForm({ user }: { user: any }) {
     };
 
     return (
-        <div className="space-y-6 max-w-2xl">
+        <div className="space-y-4 max-w-2xl">
 
             {/* ── Avatar + name ── */}
-            <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-6">
-                <h2 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-5">Profile Photo</h2>
+            <div className="bg-white rounded-xl border border-stone-200 p-5">
+                <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Profile Photo</h2>
                 <div className="flex items-center gap-5">
                     {/* Avatar */}
                     <div className="relative shrink-0">
@@ -134,7 +134,6 @@ export default function ProfileForm({ user }: { user: any }) {
                                     alt="Profile photo"
                                     width={80} height={80}
                                     className="h-full w-full object-cover"
-                                    unoptimized
                                 />
                             ) : (
                                 <span className="text-2xl font-bold text-white">{initials}</span>
@@ -178,8 +177,8 @@ export default function ProfileForm({ user }: { user: any }) {
             </div>
 
             {/* ── Personal info ── */}
-            <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-6">
-                <h2 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-5">Personal Information</h2>
+            <div className="bg-white rounded-xl border border-stone-200 p-5">
+                <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Personal Information</h2>
                 <form onSubmit={handleInfoSubmit} className="space-y-4">
                     {infoSuccess && (
                         <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3">
@@ -252,8 +251,8 @@ export default function ProfileForm({ user }: { user: any }) {
             </div>
 
             {/* ── Change password ── */}
-            <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-6">
-                <h2 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-1">Change Password</h2>
+            <div className="bg-white rounded-xl border border-stone-200 p-5">
+                <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-1">Change Password</h2>
                 <p className="text-xs text-stone-400 mb-5">Choose a strong password of at least 8 characters.</p>
 
                 <form onSubmit={handlePasswordSubmit} className="space-y-4">

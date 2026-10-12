@@ -1,4 +1,4 @@
-import { sendSMS } from './sms';
+import { sendOTPSMS } from './sms';
 
 interface OTPEntry {
     otp: string;
@@ -36,11 +36,8 @@ export async function sendOTP(phone: string): Promise<boolean> {
     const normalized = phone.replace(/\D/g, '').slice(-10);
     if (normalized.length !== 10) return false;
     const otp = generateOTP(normalized);
-    const msg = `${otp} is your My Perfect Trips verification code. Valid for 10 minutes. Do not share with anyone.`;
-    const sent = await sendSMS(normalized, msg);
-    if (!sent) {
-        // Log OTP to console as fallback so it's testable
-        console.log(`[OTP] Phone: +91${normalized} OTP: ${otp}`);
-    }
+    // Always log OTP to server console — visible in Coolify logs for testing/fallback
+    console.log(`[OTP] +91${normalized} → ${otp}`);
+    const sent = await sendOTPSMS(normalized, otp);
     return sent;
 }

@@ -58,7 +58,7 @@ export default function RefundPolicyPage() {
                     <p>Approved refunds will be processed within <strong>10–15 business days</strong> of the cancellation confirmation to the original payment method. Processing time may vary depending on your bank or payment provider.</p>
 
                     <h2>5. Amendments</h2>
-                    <p>Changes to bookings (dates, destinations, accommodation) may incur amendment fees from airlines and hotels on top of our administrative fee of £1,500 per person per change.</p>
+                    <p>Changes to bookings (dates, destinations, accommodation) may incur amendment fees from airlines and hotels on top of our administrative fee of ₹1,500 per person per change.</p>
 
                     <h2>6. Travel Insurance</h2>
                     <p>We strongly recommend purchasing comprehensive travel insurance which may cover cancellation costs in certain circumstances. Please consult your insurance provider for details.</p>

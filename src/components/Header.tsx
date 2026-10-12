@@ -17,7 +17,7 @@ export default async function Header() {
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const logoUrl = s?.logo ? `${dUrl}/assets/${s.logo}` : null;
     const phone = s?.contact_phone || "+91 8807709919";
-    const siteName = s?.site_name || "MyPerfectTrips";
+    const siteName = s?.site_name || "My Perfect Trips";
 
     const otherNav = [
         { name: "Packages", path: "/packages" },
@@ -55,7 +55,6 @@ export default async function Header() {
                             height={44}
                             className="h-8 max-w-[140px] sm:max-w-none sm:h-10 w-auto object-contain"
                             priority
-                            unoptimized
                         />
                     ) : (
                         <div className="flex items-center gap-3">

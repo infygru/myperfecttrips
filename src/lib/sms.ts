@@ -17,10 +17,38 @@ export async function sendSMS(phone: string, message: string): Promise<boolean> 
             body: JSON.stringify({ route: 'q', message, language: 'english', flash: 0, numbers: normalized }),
         });
         const data = await res.json();
-        if (!data.return) console.error('[Fast2SMS] error:', data);
+        if (!data.return) console.error('[Fast2SMS bulk] error:', data);
         return !!data.return;
     } catch (err) {
         console.error('[SMS] send failed:', err);
+        return false;
+    }
+}
+
+/** Use Fast2SMS dedicated OTP route — uses their pre-approved DLT template, no registration needed */
+export async function sendOTPSMS(phone: string, otp: string): Promise<boolean> {
+    if (!FAST2SMS_API_KEY) {
+        console.warn('[SMS] FAST2SMS_API_KEY not set — skipping OTP SMS');
+        return false;
+    }
+    const normalized = normalizePhone(phone);
+    try {
+        const res = await fetch('https://www.fast2sms.com/dev/bulkV2', {
+            method: 'POST',
+            headers: { authorization: FAST2SMS_API_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                route: 'otp',
+                variables_values: otp,
+                flash: 0,
+                numbers: normalized,
+            }),
+        });
+        const data = await res.json();
+        console.log('[Fast2SMS OTP] response:', JSON.stringify(data));
+        if (!data.return) console.error('[Fast2SMS OTP] failed:', data);
+        return !!data.return;
+    } catch (err) {
+        console.error('[SMS OTP] send failed:', err);
         return false;
     }
 }

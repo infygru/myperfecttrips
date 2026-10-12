@@ -1,5 +1,4 @@
 import { getSiteSettings } from "@/lib/directus";
-import { unstable_noStore as noStore } from "next/cache";
 import { MapPin, Mail } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
@@ -26,10 +25,9 @@ export const metadata: Metadata = {
     },
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function ContactPage() {
-    noStore();
     let s: any = null;
     try {
         s = await getSiteSettings();
@@ -37,11 +35,57 @@ export default async function ContactPage() {
 
     const email = s?.contact_email || "info@myperfecttrips.com";
     const phone = s?.contact_phone || "+91 98765 43210";
-    const address = s?.office_address || "Tamil Nadu, India";
-    const whatsapp = s?.whatsapp_number || "+91 98765 43210";
+    const address = s?.office_address || "Bartle House, 9 Oxford Court, Manchester, M2 3WQ";
+    const localBusinessSchema = {
+        "@context": "https://schema.org",
+        "@type": "TravelAgency",
+        name: "My Perfect Trips",
+        image: `${BASE}/logo.png`,
+        "@id": `${BASE}/contact`,
+        url: `${BASE}/contact`,
+        telephone: phone,
+        email: email,
+        address: {
+            "@type": "PostalAddress",
+            streetAddress: "Bartle House, 9 Oxford Court",
+            addressLocality: "Manchester",
+            addressRegion: "Greater Manchester",
+            postalCode: "M2 3WQ",
+            addressCountry: "GB"
+        },
+        openingHoursSpecification: {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+            ],
+            opens: "09:00",
+            closes: "18:00"
+        }
+    };
+
+    const contactPageSchema = {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        name: "Contact My Perfect Trips",
+        description: "Get in touch with My Perfect Trips for holiday packages, group bookings, visa assistance, and corporate travel.",
+        url: `${BASE}/contact`
+    };
 
     return (
         <main className="min-h-screen bg-stone-50 pb-24">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }}
+            />
             {/* SECTION 1: HEADER */}
             <section className="bg-brand-950 pt-20 pb-14 border-b border-white/[0.06]">
                 <div className="container-inner">
