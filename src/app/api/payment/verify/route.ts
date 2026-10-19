@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
             const booking = result.booking;
 
             const travelDate = booking.travel_date
-                ? new Date(booking.travel_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+                ? new Date(booking.travel_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
                 : 'TBD';
 
             const emailData = {

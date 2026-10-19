@@ -114,13 +114,13 @@ export default function LeadForm({ prefilledPackage }: { prefilledPackage?: stri
                 </div>
 
                 <div>
-                    <label htmlFor="budget" className={labelClass} style={{ color: "#6B4F3A" }}>Estimated Budget (₹)</label>
+                    <label htmlFor="budget" className={labelClass} style={{ color: "#6B4F3A" }}>Estimated Budget (£)</label>
                     <select id="budget" name="budget" disabled={isSubmitting} className={inputClass}>
                         <option value="Not Sure">Not Sure</option>
-                        <option value="< 50,000">Less than ₹50,000</option>
-                        <option value="50k - 1L">₹50,000 – ₹1,00,000</option>
-                        <option value="1L - 3L">₹1,00,000 – ₹3,00,000</option>
-                        <option value="3L+">More than ₹3,00,000</option>
+                        <option value="< 1,000">Less than £1,000</option>
+                        <option value="1k - 3k">£1,000 – £3,000</option>
+                        <option value="3k - 5k">£3,000 – £5,000</option>
+                        <option value="5k+">More than £5,000</option>
                     </select>
                 </div>
 

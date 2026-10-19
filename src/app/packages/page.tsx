@@ -279,7 +279,7 @@ export default async function PackagesPage(props: {
                                                         <p className="text-[9px] font-bold uppercase tracking-widest text-stone-400">Starting from</p>
                                                         {pkg.price ? (
                                                             <p className="font-serif text-xl font-semibold text-brand-900 leading-tight">
-                                                                ₹{Number(pkg.price).toLocaleString("en-IN")}
+                                                                £{Number(pkg.price).toLocaleString("en-GB")}
                                                             </p>
                                                         ) : (
                                                             <p className="font-serif text-lg font-semibold text-stone-700">On Request</p>

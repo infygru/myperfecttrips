@@ -127,7 +127,7 @@ export async function sendBookingConfirmationEmail(data: BookingEmailData): Prom
             </div>
             <div style="${ROW_STYLE}">
               <span style="${LABEL_STYLE}">Amount Paid</span>
-              <span style="${VALUE_STYLE}; color:#16a34a;">₹${Number(data.totalAmount).toLocaleString('en-IN')}</span>
+              <span style="${VALUE_STYLE}; color:#16a34a;">£${Number(data.totalAmount).toLocaleString('en-GB')}</span>
             </div>
             <div style="${ROW_STYLE} border-bottom:none;">
               <span style="${LABEL_STYLE}">Booking Ref</span>
@@ -226,7 +226,7 @@ export async function sendAdminBookingAlert(data: BookingEmailData): Promise<boo
             <div style="${ROW_STYLE}">
               <span style="${LABEL_STYLE}">Amount Paid</span>
               <span style="${VALUE_STYLE}; color:#16a34a; font-size:16px;">
-                ₹${Number(data.totalAmount).toLocaleString('en-IN')}
+                £${Number(data.totalAmount).toLocaleString('en-GB')}
               </span>
             </div>
             ${data.specialRequests ? `
@@ -251,7 +251,7 @@ export async function sendAdminBookingAlert(data: BookingEmailData): Promise<boo
 
     return sendEmail(
         ADMIN_EMAILS,
-        `[New Booking] ${data.packageTitle} — ₹${Number(data.totalAmount).toLocaleString('en-IN')} — ${data.customerName}`,
+        `[New Booking] ${data.packageTitle} — £${Number(data.totalAmount).toLocaleString('en-GB')} — ${data.customerName}`,
         html,
     );
 }
@@ -317,7 +317,7 @@ export async function sendWelcomeEmail(name: string, email: string): Promise<boo
               🎁 First-time booking perks
             </p>
             <ul style="margin:8px 0 0; padding-left:18px; color:#92400e; font-size:13px; line-height:1.8;">
-              <li>Earn 1 loyalty point for every ₹100 spent</li>
+              <li>Earn 1 loyalty point for every £100 spent</li>
               <li>Priority customer support on all bookings</li>
               <li>Free itinerary planning consultation</li>
             </ul>

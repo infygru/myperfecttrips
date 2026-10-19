@@ -132,7 +132,7 @@ export default function VisaDestinationTabs({ visaFree, visaOnArrival, dUrl }: P
                     </p>
                     <div className="flex items-center justify-between">
                       {pkg.price ? (
-                        <p className="text-sm font-bold text-gold-400">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+                        <p className="text-sm font-bold text-gold-400">£{Number(pkg.price).toLocaleString("en-GB")}</p>
                       ) : (
                         <p className="text-xs text-white/50 font-medium">On Request</p>
                       )}

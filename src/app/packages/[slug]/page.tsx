@@ -32,7 +32,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         if (pkg) {
             const destStr = pkg.destination || pkg.destinations?.join(", ") || "";
             const title = `${pkg.title} | ${destStr ? destStr + " " : ""}Holiday Package — My Perfect Trips`;
-            const description = `Book ${pkg.title}${destStr ? " in " + destStr : ""} — ${pkg.duration_nights ? pkg.duration_nights + " nights / " + pkg.duration_days + " days" : "premium"} ${pkg.category ? pkg.category.toLowerCase() : "holiday"} package. Starting from ${pkg.price ? "₹" + Number(pkg.price).toLocaleString("en-IN") : "custom pricing"}. Customised itinerary, best price guarantee, 24/7 support. Book with My Perfect Trips.`;
+            const description = `Book ${pkg.title}${destStr ? " in " + destStr : ""} — ${pkg.duration_nights ? pkg.duration_nights + " nights / " + pkg.duration_days + " days" : "premium"} ${pkg.category ? pkg.category.toLowerCase() : "holiday"} package. Starting from ${pkg.price ? "£" + Number(pkg.price).toLocaleString("en-GB") : "custom pricing"}. Customised itinerary, best price guarantee, 24/7 support. Book with My Perfect Trips.`;
             const canonicalUrl = `${baseUrl}/packages/${slug}`;
             const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
             const imageUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : undefined;
@@ -230,7 +230,7 @@ export default async function PackageDetailPage(props: Props) {
                                 <div className="flex items-center gap-2">
                                     <span className="text-xs text-white/50 font-medium">From</span>
                                     <span className="font-serif text-2xl font-semibold text-white">
-                                        ₹{Number(pkg.price).toLocaleString("en-IN")}
+                                        £{Number(pkg.price).toLocaleString("en-GB")}
                                     </span>
                                     <span className="text-xs text-white/50">/ person</span>
                                 </div>
@@ -528,7 +528,7 @@ export default async function PackageDetailPage(props: Props) {
                                                     <h3 className="font-serif text-sm font-medium text-brand-950 line-clamp-2 group-hover:text-brand-700 transition-colors mb-auto">{rel.title}</h3>
                                                     {rel.price && (
                                                         <p className="mt-3 pt-3 border-t border-stone-100 text-sm font-semibold text-brand-900">
-                                                            ₹{Number(rel.price).toLocaleString("en-IN")}
+                                                            £{Number(rel.price).toLocaleString("en-GB")}
                                                         </p>
                                                     )}
                                                 </div>
@@ -552,7 +552,7 @@ export default async function PackageDetailPage(props: Props) {
                                 <div className="relative z-10">
                                     <p className="text-[9px] font-black uppercase tracking-[0.25em] text-gold-400 mb-1.5">Starting from</p>
                                     <p className="font-serif text-5xl font-medium text-white leading-none">
-                                        {pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "Custom"}
+                                        {pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "Custom"}
                                     </p>
                                     <p className="text-[11px] text-brand-400 mt-1.5">
                                         {pkg.price ? "per person · taxes extra" : "Contact us for pricing"}

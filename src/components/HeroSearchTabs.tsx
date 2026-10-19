@@ -309,7 +309,7 @@ export default function HeroSearchTabs() {
                                     {/* Dropdown panel — sibling of trigger */}
                                     {showBudgetDrop && (
                                         <div className="absolute top-[calc(100%+8px)] left-4 right-4 lg:left-auto lg:right-0 lg:w-[240px] bg-white rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.15)] border border-stone-100 p-2 z-[60] animate-in fade-in zoom-in-95 duration-200">
-                                            {["Under ₹25,000", "₹25,000 – ₹50,000", "₹50,000 – ₹1,00,000", "Above ₹1,00,000"].map((range) => (
+                                            {["Under £1,000", "£1,000 – £3,000", "£3,000 – £5,000", "Above £5,000"].map((range) => (
                                                 <button key={range} type="button"
                                                     className="w-full text-left px-4 py-3 hover:bg-stone-50 active:bg-stone-100 rounded-2xl text-sm font-semibold text-brand-950 transition-colors flex items-center justify-between"
                                                     onClick={() => { setHolidayBudget(range); setShowBudgetDrop(false); }}>

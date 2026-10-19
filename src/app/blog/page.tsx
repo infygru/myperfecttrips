@@ -144,7 +144,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
                                     {featured.published_date && (
                                         <span className="flex items-center gap-1.5 text-[11px] text-stone-400">
                                             <Calendar className="h-3 w-3" />
-                                            {new Date(featured.published_date).toLocaleDateString("en-IN", {
+                                            {new Date(featured.published_date).toLocaleDateString("en-GB", {
                                                 month: "short",
                                                 day: "numeric",
                                                 year: "numeric",
@@ -223,7 +223,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
                                                     <>
                                                         <span className="text-stone-300 text-xs">·</span>
                                                         <span className="text-[10px] text-stone-400">
-                                                            {new Date(post.published_date).toLocaleDateString("en-IN", {
+                                                            {new Date(post.published_date).toLocaleDateString("en-GB", {
                                                                 month: "short",
                                                                 day: "numeric",
                                                                 year: "numeric",

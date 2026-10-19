@@ -137,7 +137,7 @@ export async function verifyAndUpdatePayment(
     await awardPoints(booking.user_id, booking.id, Number(booking.total_amount), booking.package_title).catch(() => {});
 
     const travelDate = booking.travel_date
-        ? new Date(booking.travel_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+        ? new Date(booking.travel_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
         : 'TBD';
 
     // SMS confirmation

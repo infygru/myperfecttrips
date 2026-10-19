@@ -71,8 +71,8 @@ export default async function RegisterPage() {
               </div>
               <div className="space-y-2.5">
                 {[
-                  '₹100 spent = 1 loyalty point',
-                  'Redeem from 500 points (= ₹500 off)',
+                  '£100 spent = 1 loyalty point',
+                  'Redeem from 500 points (= £500 off)',
                   'Valid on packages & hotel stays',
                 ].map(t => (
                   <div key={t} className="flex items-start gap-2.5">

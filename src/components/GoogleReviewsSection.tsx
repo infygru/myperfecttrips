@@ -87,7 +87,7 @@ export default async function GoogleReviewsSection() {
             <span className="font-serif text-5xl font-semibold text-brand-950 leading-none">{data.rating.toFixed(1)}</span>
             <StarRow rating={data.rating} size="lg" />
             <span className="text-sm text-stone-500">
-              Based on <span className="font-semibold text-stone-700">{data.user_ratings_total.toLocaleString('en-IN')}</span> Google reviews
+              Based on <span className="font-semibold text-stone-700">{data.user_ratings_total.toLocaleString('en-GB')}</span> Google reviews
             </span>
           </div>
         </div>

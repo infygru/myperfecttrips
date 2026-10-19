@@ -90,7 +90,7 @@ export default async function BlogDetailPage(props: Props) {
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const imgUrl = post.featured_image ? `${dUrl}/assets/${post.featured_image}` : null;
     const dateStr = post.published_date
-        ? new Date(post.published_date).toLocaleDateString("en-IN", {
+        ? new Date(post.published_date).toLocaleDateString("en-GB", {
               month: "long",
               day: "numeric",
               year: "numeric",

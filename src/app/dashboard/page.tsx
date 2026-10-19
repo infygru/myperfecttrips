@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic';
 
 function fmt(d: string) {
     if (!d) return '—';
-    return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 function daysUntil(d: string) {
     return Math.ceil((new Date(d).getTime() - Date.now()) / 86400000);
@@ -88,7 +88,7 @@ export default async function DashboardPage() {
                     { label: 'Total Trips',   value: confirmed.length,                                   sub: 'all time'    },
                     { label: 'Confirmed',     value: all.filter(b => b.status === 'confirmed').length,   sub: 'active'      },
                     { label: 'Upcoming',      value: upcoming.length,                                    sub: 'ahead'       },
-                    { label: 'Total Spent',   value: spent > 0 ? `₹${(spent / 1000).toFixed(0)}K` : '₹0', sub: 'on holidays' },
+                    { label: 'Total Spent',   value: spent > 0 ? `£${(spent / 1000).toFixed(0)}K` : '£0', sub: 'on holidays' },
                 ].map(({ label, value, sub }) => (
                     <div key={label} className="bg-white rounded-xl border border-stone-200 px-4 py-3">
                         <p className="text-2xl font-bold text-stone-900">{value}</p>
@@ -118,18 +118,18 @@ export default async function DashboardPage() {
                         <p className="text-[10px] text-stone-400 mb-1">Points balance</p>
                         <div className="flex items-baseline gap-1.5 mb-0.5">
                             <span className="text-4xl font-bold text-stone-900 tabular-nums">
-                                {loyaltyBalance.toLocaleString('en-IN')}
+                                {loyaltyBalance.toLocaleString('en-GB')}
                             </span>
                             <span className="text-sm text-stone-400">pts</span>
                         </div>
-                        <p className="text-xs text-stone-400 mb-4">≈ ₹{loyaltyBalance.toLocaleString('en-IN')} value</p>
+                        <p className="text-xs text-stone-400 mb-4">≈ £{loyaltyBalance.toLocaleString('en-GB')} value</p>
 
                         {canRedeem ? (
                             <div className="flex items-center gap-2.5 rounded-lg bg-stone-50 border border-stone-200 px-3 py-2.5">
                                 <Gift className="h-4 w-4 text-stone-500 shrink-0" />
                                 <div>
                                     <p className="text-xs font-semibold text-stone-800">Ready to redeem</p>
-                                    <p className="text-[11px] text-stone-500">Apply at checkout for ₹{MIN_REDEEM} off</p>
+                                    <p className="text-[11px] text-stone-500">Apply at checkout for £{MIN_REDEEM} off</p>
                                 </div>
                             </div>
                         ) : (
@@ -142,7 +142,7 @@ export default async function DashboardPage() {
                                     <div className="h-full rounded-full bg-stone-900 transition-all"
                                         style={{ width: `${pctProgress || 2}%` }} />
                                 </div>
-                                <p className="text-[10px] text-stone-400 mt-1.5">₹100 spent = 1 pt · Redeem at {MIN_REDEEM} pts</p>
+                                <p className="text-[10px] text-stone-400 mt-1.5">£100 spent = 1 pt · Redeem at {MIN_REDEEM} pts</p>
                             </div>
                         )}
 
@@ -192,7 +192,7 @@ export default async function DashboardPage() {
                                 </div>
                                 <div className="flex justify-between text-xs pt-2 border-t border-stone-100">
                                     <span className="text-stone-400">Total paid</span>
-                                    <span className="font-bold text-stone-900">₹{Number(next.total_amount).toLocaleString('en-IN')}</span>
+                                    <span className="font-bold text-stone-900">£{Number(next.total_amount).toLocaleString('en-GB')}</span>
                                 </div>
                             </div>
 
@@ -245,7 +245,7 @@ export default async function DashboardPage() {
                                         <p className="text-xs text-stone-400 mt-0.5">{fmt(b.travel_date)}</p>
                                     </div>
                                     <div className="text-right shrink-0">
-                                        <p className="text-sm font-semibold text-stone-900">₹{Number(b.total_amount).toLocaleString('en-IN')}</p>
+                                        <p className="text-sm font-semibold text-stone-900">£{Number(b.total_amount).toLocaleString('en-GB')}</p>
                                         <span className={`inline-flex items-center gap-1 text-[10px] font-medium mt-0.5 ${s.text}`}>
                                             <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />{s.label}
                                         </span>

@@ -97,7 +97,7 @@ export default async function Home() {
   const visaOnArrivalPackages = allPackages.filter((p: any) => p.visa_status === "visa_on_arrival" && p.image).slice(0, 8);
   const showVisaSection      = visaFreePackages.length > 0 || visaOnArrivalPackages.length > 0;
 
-  // Budget packages: domestic < ₹10k, international < ₹50k
+  // Budget packages: domestic < £10k, international < £50k
   const budgetDomestic      = domesticPackages.filter(p => p.price > 0 && p.price <= 10000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
   const budgetInternational = internationalPackages.filter(p => p.price > 0 && p.price <= 50000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
   const showBudgetSection   = budgetDomestic.length > 0 || budgetInternational.length > 0;
@@ -108,18 +108,18 @@ export default async function Home() {
     mainEntity: [
       {
         "@type": "Question",
-        name: "What makes My Perfect Trips the best travel agency in India?",
+        name: "What makes My Perfect Trips the best travel agency in the UK?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "My Perfect Trips (myperfecttrips.com) offers 100% customisable itineraries, completely transparent pricing with zero hidden charges, and 24/7 on-trip support. With over 15 years of expertise as premium luxury tour operators, we guarantee exceptional quality for both international and domestic holiday packages."
+          text: "My Perfect Trips (myperfecttrips.com) is a Manchester-based travel agency offering 100% customisable itineraries, completely transparent pricing with zero hidden charges, and 24/7 on-trip support. As a premium UK travel agency, we specialise in bespoke international holiday packages, honeymoon tours, family trips, and corporate travel — all priced in GBP."
         }
       },
       {
         "@type": "Question",
-        name: "Do you offer international holiday packages from India?",
+        name: "Do you offer international holiday packages from the UK?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Yes, we specialise in international tour packages to over 50+ countries. Some of our top-selling destinations include the Maldives, Bali, Thailand, Europe, Dubai, and Singapore. We handle everything from flight bookings and visas to luxury accommodations."
+          text: "Yes, we specialise in international holiday packages departing from the UK to over 50+ countries. Top destinations include the Maldives, Bali, Thailand, Dubai, Europe, and Singapore. We handle everything from flights and visas to luxury hotel stays — with all pricing in pounds sterling."
         }
       },
       {
@@ -127,7 +127,7 @@ export default async function Home() {
         name: "Are your honeymoon packages customisable?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Absolutely. We are renowned as top honeymoon planners in India because we tailor every single detail to your preferences. Whether you want a private pool villa in the Maldives or a romantic European escape, we craft it to perfection."
+          text: "Absolutely. We tailor every honeymoon to your exact preferences and budget. Whether you dream of a private pool villa in the Maldives, a safari in Kenya, or a romantic European escape, our Manchester-based team crafts it to perfection — with transparent GBP pricing and no hidden costs."
         }
       },
       {
@@ -135,7 +135,7 @@ export default async function Home() {
         name: "Does My Perfect Trips help with Corporate MICE travel?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Yes, we are experts in Corporate MICE (Meetings, Incentives, Conferences, and Exhibitions). We manage complex logistics, multi-city flights, premium stays, and event planning for group sizes ranging from 50 to 500+ professionals globally."
+          text: "Yes, we are experts in Corporate MICE (Meetings, Incentives, Conferences, and Exhibitions) travel for UK businesses. We manage complex logistics, multi-city flights, premium stays, and event planning for group sizes ranging from 50 to 500+ professionals worldwide."
         }
       }
     ]
@@ -303,7 +303,7 @@ export default async function Home() {
                         <div>
                           <p className="text-[9px] font-black uppercase tracking-[0.15em] text-stone-400 mb-0.5">From</p>
                           <p className="font-serif text-xl font-semibold text-brand-950">
-                            {pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}
+                            {pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "On Request"}
                           </p>
                         </div>
                         <span className="h-9 w-9 flex items-center justify-center rounded-full border border-stone-200 text-stone-400 group-hover:bg-brand-950 group-hover:border-brand-950 group-hover:text-white transition-all duration-200">
@@ -456,7 +456,7 @@ export default async function Home() {
                           <div className="p-3.5">
                             <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">{pkg.title}</p>
                             {pkg.destination && <p className="text-[11px] text-stone-400 flex items-center gap-0.5 mb-2"><MapPin className="h-2.5 w-2.5 shrink-0" />{pkg.destination}</p>}
-                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}</p>
+                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "On Request"}</p>
                           </div>
                         </Link>
                       );
@@ -496,7 +496,7 @@ export default async function Home() {
                           <div className="p-3.5">
                             <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">{pkg.title}</p>
                             {pkg.destination && <p className="text-[11px] text-stone-400 flex items-center gap-0.5 mb-2"><MapPin className="h-2.5 w-2.5 shrink-0" />{pkg.destination}</p>}
-                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `₹${Number(pkg.price).toLocaleString("en-IN")}` : "On Request"}</p>
+                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "On Request"}</p>
                           </div>
                         </Link>
                       );
@@ -544,7 +544,7 @@ export default async function Home() {
             <div className="mb-8" data-aos="fade-up">
               <span className="section-label">Affordable Getaways</span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Budget-Friendly Deals</h2>
-              <p className="mt-2 text-sm text-stone-400">Domestic under ₹10,000 · International under ₹50,000</p>
+              <p className="mt-2 text-sm text-stone-400">Domestic under £10,000 · International under £50,000</p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
@@ -553,7 +553,7 @@ export default async function Home() {
                 <div data-aos="fade-right">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">Domestic · Under ₹10,000</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">Domestic · Under £10,000</h3>
                   </div>
                   <div className="grid gap-3">
                     {budgetDomestic.map((pkg, idx) => (
@@ -570,7 +570,7 @@ export default async function Home() {
                           </div>
                           <div className="text-right shrink-0 ml-3">
                             <p className="text-xs text-white/60 font-medium">From</p>
-                            <p className="font-serif text-lg font-bold text-gold-400">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+                            <p className="font-serif text-lg font-bold text-gold-400">£{Number(pkg.price).toLocaleString("en-GB")}</p>
                           </div>
                         </div>
                       </Link>
@@ -587,7 +587,7 @@ export default async function Home() {
                 <div data-aos="fade-left">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="h-2 w-2 rounded-full bg-blue-500"></span>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">International · Under ₹50,000</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">International · Under £50,000</h3>
                   </div>
                   <div className="grid gap-3">
                     {budgetInternational.map((pkg, idx) => (
@@ -604,7 +604,7 @@ export default async function Home() {
                           </div>
                           <div className="text-right shrink-0 ml-3">
                             <p className="text-xs text-white/60 font-medium">From</p>
-                            <p className="font-serif text-lg font-bold text-gold-400">₹{Number(pkg.price).toLocaleString("en-IN")}</p>
+                            <p className="font-serif text-lg font-bold text-gold-400">£{Number(pkg.price).toLocaleString("en-GB")}</p>
                           </div>
                         </div>
                       </Link>
@@ -761,7 +761,7 @@ export default async function Home() {
                     </div>
                     <div className="p-4 sm:p-5 flex flex-col flex-1">
                       <p className="text-[10px] font-bold uppercase tracking-wider text-brand-600 mb-2">
-                        {post.published_date ? new Date(post.published_date).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) : "Journal"}
+                        {post.published_date ? new Date(post.published_date).toLocaleDateString("en-GB", { month: "short", day: "numeric", year: "numeric" }) : "Journal"}
                       </p>
                       <h3 className="font-serif text-base font-medium leading-snug text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-2 mb-auto">
                         {post.title}

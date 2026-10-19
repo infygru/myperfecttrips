@@ -340,7 +340,7 @@ export async function generateItineraryPdf(
     meta.push(`${pkg.duration_nights}N / ${pkg.duration_days}D`);
   const dest = pkg.destination || pkg.destinations?.join(" + ");
   if (dest) meta.push(dest);
-  if (pkg.price) meta.push(`From Rs.${Number(pkg.price).toLocaleString("en-IN")}`);
+  if (pkg.price) meta.push(`From Rs.${Number(pkg.price).toLocaleString("en-GB")}`);
   if (meta.length) {
     d.setFont("helvetica", "normal");
     d.setFontSize(8.5);

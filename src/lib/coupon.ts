@@ -74,7 +74,7 @@ export async function validateCoupon(
     if (minOrder > 0 && subtotal < minOrder) {
         return {
             valid: false,
-            message: `Minimum booking value of ₹${minOrder.toLocaleString('en-IN')} required for this coupon`,
+            message: `Minimum booking value of £${minOrder.toLocaleString('en-GB')} required for this coupon`,
         };
     }
 
@@ -99,11 +99,11 @@ export async function validateCoupon(
         discountAmount = couponValue;
     }
 
-    // Never discount the entire amount (ensure at least ₹1 remains payable)
+    // Never discount the entire amount (ensure at least £1 remains payable)
     discountAmount = Math.max(0, Math.min(discountAmount, subtotal - 1));
     discountAmount = Math.round(discountAmount);
 
-    const displayDiscount = `₹${discountAmount.toLocaleString('en-IN')}`;
+    const displayDiscount = `£${discountAmount.toLocaleString('en-GB')}`;
     const message =
         coupon.description ||
         (coupon.type === 'percentage'

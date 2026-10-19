@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 function formatDate(d: string) {
     if (!d) return '—';
-    return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 const STATUS: Record<string, { label: string; dot: string; text: string; icon: any }> = {
@@ -72,7 +72,7 @@ export default async function BookingsPage() {
                                         </div>
                                         <div className="flex items-center gap-2 shrink-0">
                                             <div className="text-right">
-                                                <p className="text-sm font-bold text-stone-900">₹{Number(b.total_amount).toLocaleString('en-IN')}</p>
+                                                <p className="text-sm font-bold text-stone-900">£{Number(b.total_amount).toLocaleString('en-GB')}</p>
                                                 <p className={`text-[10px] font-medium ${p.text}`}>{p.label}</p>
                                             </div>
                                             <Link href={`/dashboard/bookings/${b.id}`}

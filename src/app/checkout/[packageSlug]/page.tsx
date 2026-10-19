@@ -102,7 +102,7 @@ export default async function CheckoutPage({ params, searchParams }: Props) {
                             <div className="border-t border-stone-100 pt-4 space-y-2">
                                 <div className="flex justify-between text-sm text-stone-600">
                                     <span>Base price (per person)</span>
-                                    <span>₹{price.toLocaleString('en-IN')}</span>
+                                    <span>£{price.toLocaleString('en-GB')}</span>
                                 </div>
                                 <p className="text-xs text-stone-400">Final amount calculated based on travellers below</p>
                             </div>

@@ -40,7 +40,7 @@ export default function CountUpNumber({ end, suffix = "", prefix = "", duration 
 
   return (
     <span ref={ref}>
-      {prefix}{count.toLocaleString("en-IN")}{suffix}
+      {prefix}{count.toLocaleString("en-GB")}{suffix}
     </span>
   );
 }
