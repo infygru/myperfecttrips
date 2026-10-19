@@ -91,10 +91,9 @@ export default async function Home() {
     }
   }
 
-  // Budget packages: domestic < £10k, international < £50k
-  const budgetDomestic      = domesticPackages.filter(p => p.price > 0 && p.price <= 10000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
-  const budgetInternational = internationalPackages.filter(p => p.price > 0 && p.price <= 50000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
-  const showBudgetSection   = budgetDomestic.length > 0 || budgetInternational.length > 0;
+  // Budget packages: all under £1,000
+  const budgetPackages    = allPackages.filter(p => p.price > 0 && p.price <= 1000 && p.image).sort((a, b) => a.price - b.price).slice(0, 6);
+  const showBudgetSection = budgetPackages.length > 0;
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -353,80 +352,43 @@ export default async function Home() {
       {showBudgetSection && (
         <section className="py-12 lg:py-16 bg-white">
           <div className="container-inner">
-            <div className="mb-8" data-aos="fade-up">
-              <span className="section-label">Affordable Getaways</span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Budget-Friendly Deals</h2>
-              <p className="mt-2 text-sm text-stone-400">Domestic under £10,000 · International under £50,000</p>
+            <div className="mb-8 flex items-end justify-between gap-4" data-aos="fade-up">
+              <div>
+                <span className="section-label">Affordable Getaways</span>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl text-stone-900 font-medium tracking-tight">Holidays Under £1,000</h2>
+              </div>
+              <Link href="/packages?sort=price-asc" data-aos="fade-up" data-aos-delay="100"
+                className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-stone-500 hover:text-stone-900 transition-colors shrink-0">
+                View all <ChevronRight className="h-4 w-4" />
+              </Link>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-              {/* Domestic Budget */}
-              {budgetDomestic.length > 0 && (
-                <div data-aos="fade-right">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">Domestic · Under £10,000</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {budgetPackages.map((pkg, idx) => (
+                <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
+                  data-aos="fade-up"
+                  data-aos-delay={String((idx % 3) * 80)}
+                  className="group relative overflow-hidden rounded-2xl h-44 bg-stone-900 flex items-end">
+                  <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                  <div className="relative z-10 p-4 flex items-end justify-between w-full">
+                    <div className="min-w-0">
+                      <p className="font-serif text-base font-medium text-white line-clamp-1">{pkg.title}</p>
+                      {pkg.destination && (
+                        <p className="text-[11px] text-white/60 mt-0.5 flex items-center gap-1">
+                          <MapPin className="h-3 w-3 shrink-0" />{pkg.destination}
+                        </p>
+                      )}
+                    </div>
+                    <div className="text-right shrink-0 ml-3">
+                      <p className="text-xs text-white/60 font-medium">From</p>
+                      <p className="font-serif text-lg font-bold text-gold-400">£{Number(pkg.price).toLocaleString("en-GB")}</p>
+                    </div>
                   </div>
-                  <div className="grid gap-3">
-                    {budgetDomestic.map((pkg, idx) => (
-                      <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
-                        data-aos="fade-up"
-                        data-aos-delay={String(idx * 80)}
-                        className="group relative overflow-hidden rounded-2xl h-36 bg-stone-900 flex items-end">
-                        <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-                        <div className="relative z-10 p-4 flex items-end justify-between w-full">
-                          <div>
-                            <p className="font-serif text-base font-medium text-white line-clamp-1">{pkg.title}</p>
-                            {pkg.destination && <p className="text-[11px] text-white/60 mt-0.5 flex items-center gap-1"><MapPin className="h-3 w-3" />{pkg.destination}</p>}
-                          </div>
-                          <div className="text-right shrink-0 ml-3">
-                            <p className="text-xs text-white/60 font-medium">From</p>
-                            <p className="font-serif text-lg font-bold text-gold-400">£{Number(pkg.price).toLocaleString("en-GB")}</p>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                  <Link href="/packages?package_type=domestic&sort=price-asc" className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800">
-                    More domestic deals <ChevronRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              )}
-
-              {/* International Budget */}
-              {budgetInternational.length > 0 && (
-                <div data-aos="fade-left">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="h-2 w-2 rounded-full bg-blue-500"></span>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">International · Under £50,000</h3>
-                  </div>
-                  <div className="grid gap-3">
-                    {budgetInternational.map((pkg, idx) => (
-                      <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
-                        data-aos="fade-up"
-                        data-aos-delay={String(idx * 80)}
-                        className="group relative overflow-hidden rounded-2xl h-36 bg-stone-900 flex items-end">
-                        <Image src={`${dUrl}/assets/${pkg.image}`} alt={pkg.title} fill className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-                        <div className="relative z-10 p-4 flex items-end justify-between w-full">
-                          <div>
-                            <p className="font-serif text-base font-medium text-white line-clamp-1">{pkg.title}</p>
-                            {pkg.destination && <p className="text-[11px] text-white/60 mt-0.5 flex items-center gap-1"><MapPin className="h-3 w-3" />{pkg.destination}</p>}
-                          </div>
-                          <div className="text-right shrink-0 ml-3">
-                            <p className="text-xs text-white/60 font-medium">From</p>
-                            <p className="font-serif text-lg font-bold text-gold-400">£{Number(pkg.price).toLocaleString("en-GB")}</p>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                  <Link href="/packages?sort=price-asc" className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-blue-700 hover:text-blue-800">
-                    More international deals <ChevronRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              )}
+                </Link>
+              ))}
+            </div>
+            <div className="mt-6 text-center sm:hidden">
+              <Link href="/packages?sort=price-asc" className="btn-outline text-sm">View All Budget Deals</Link>
             </div>
           </div>
         </section>
