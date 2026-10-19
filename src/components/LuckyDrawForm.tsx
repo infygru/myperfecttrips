@@ -10,7 +10,8 @@ const DESTINATIONS = [
     { value: 'Georgia', flag: '🇬🇪' },
 ];
 
-const inputClass = "w-full pl-10 pr-4 py-3.5 rounded-xl bg-white/6 border border-white/12 text-white placeholder-stone-500 focus:outline-none focus:border-gold-400/70 focus:bg-white/8 transition-all text-sm";
+// text-base (16px) prevents iOS Safari from auto-zooming on input focus
+const inputClass = "w-full pl-10 pr-4 py-3.5 rounded-xl bg-white/6 border border-white/12 text-white placeholder-stone-500 focus:outline-none focus:border-gold-400/70 focus:bg-white/8 transition-all text-base sm:text-sm";
 const labelClass = "block text-xs font-bold uppercase tracking-widest text-stone-400 mb-2";
 
 export default function LuckyDrawForm() {

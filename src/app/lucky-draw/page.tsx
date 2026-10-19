@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Gift, Instagram, Share2, UserCheck, Trophy, Plane, Star, CheckCircle, ArrowDown } from 'lucide-react';
 import LuckyDrawForm from '@/components/LuckyDrawForm';
 import CountdownTimer from '@/components/CountdownTimer';
@@ -94,7 +93,7 @@ const STEPS = [
         Icon: Trophy,
         number: '04',
         title: 'Win Your Trip!',
-        detail: 'One lucky winner is announced live on 31 December 2026.',
+        detail: 'One lucky winner announced live on 31 December 2026.',
         grad: 'from-gold-400 to-amber-600',
         shadow: 'shadow-gold-500/30',
     },
@@ -113,12 +112,12 @@ const schema = {
     eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
 };
 
-export default function WinPage() {
+export default function LuckyDrawPage() {
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
-            {/* ── MARQUEE CSS ── */}
+            {/* Marquee + misc keyframes */}
             <style>{`
                 @keyframes ticker { from { transform: translateX(0) } to { transform: translateX(-50%) } }
                 .ticker-track { animation: ticker 28s linear infinite; }
@@ -126,110 +125,114 @@ export default function WinPage() {
             `}</style>
 
             {/* ══════════════════════════════════════════
-                HERO — full viewport, dramatic dark
+                HERO
             ══════════════════════════════════════════ */}
             <section className="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden bg-brand-950">
 
-                {/* Background layers */}
+                {/* Background */}
                 <div className="absolute inset-0 pointer-events-none">
-                    {/* Rich multi-stop gradient */}
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_110%,rgba(251,191,36,0.18),transparent)]" />
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_80%_10%,rgba(139,92,246,0.12),transparent)]" />
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_35%_at_10%_20%,rgba(59,130,246,0.10),transparent)]" />
-                    {/* Subtle dot grid */}
-                    <div className="absolute inset-0 opacity-[0.035]" style={{ backgroundImage: 'radial-gradient(circle, #fbbf24 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+                    <div className="absolute inset-0 opacity-[0.03]"
+                        style={{ backgroundImage: 'radial-gradient(circle, #fbbf24 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
                 </div>
 
-                {/* Animated orbs */}
-                <div className="absolute top-1/4 left-1/6 h-80 w-80 rounded-full bg-gold-400/8 blur-[100px] animate-float pointer-events-none" />
-                <div className="absolute bottom-1/4 right-1/6 h-64 w-64 rounded-full bg-violet-500/8 blur-[80px] animate-float-2 pointer-events-none" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-brand-700/10 blur-[120px] animate-float-3 pointer-events-none" />
+                {/* Orbs */}
+                <div className="absolute top-1/4 left-1/6 h-56 w-56 sm:h-80 sm:w-80 rounded-full bg-gold-400/8 blur-[80px] sm:blur-[100px] animate-float pointer-events-none" />
+                <div className="absolute bottom-1/4 right-1/6 h-48 w-48 sm:h-64 sm:w-64 rounded-full bg-violet-500/8 blur-[60px] sm:blur-[80px] animate-float-2 pointer-events-none" />
 
-                {/* Decorative plane */}
-                <div className="absolute top-16 right-8 sm:top-20 sm:right-20 opacity-10 hero-anim-scale">
-                    <Plane className="w-24 h-24 sm:w-40 sm:h-40 text-gold-300 rotate-45" />
+                {/* Decorative plane — hidden on very small screens */}
+                <div className="hidden xs:block absolute top-16 right-4 sm:top-20 sm:right-16 opacity-8 hero-anim-scale pointer-events-none">
+                    <Plane className="w-20 h-20 sm:w-36 sm:h-36 text-gold-300 rotate-45" />
                 </div>
-                <div className="absolute bottom-24 left-6 sm:left-16 opacity-8 animate-float-2">
-                    <Star className="w-10 h-10 text-gold-400" fill="currentColor" />
-                </div>
-                <div className="absolute top-40 left-10 opacity-8 animate-float-3">
-                    <Star className="w-6 h-6 text-gold-300" fill="currentColor" />
+                <div className="absolute bottom-20 left-4 sm:left-14 opacity-8 animate-float-2 pointer-events-none">
+                    <Star className="w-7 h-7 sm:w-10 sm:h-10 text-gold-400" fill="currentColor" />
                 </div>
 
                 {/* Content */}
-                <div className="relative z-10 container-inner text-center px-4 py-24 sm:py-32">
+                <div className="relative z-10 container-inner text-center px-5 pt-24 pb-20 sm:py-28">
 
-                    {/* Eyebrow badge */}
-                    <div className="hero-anim-1 inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-gold-400/15 border border-gold-400/30 text-gold-300 text-xs sm:text-sm font-bold tracking-widest uppercase mb-8 backdrop-blur-sm">
-                        <Gift className="w-4 h-4 text-gold-400" />
+                    {/* Badge */}
+                    <div className="hero-anim-1 inline-flex items-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-gold-400/15 border border-gold-400/30 text-gold-300 text-[10px] sm:text-sm font-bold tracking-wider sm:tracking-widest uppercase mb-6 sm:mb-8 backdrop-blur-sm">
+                        <Gift className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gold-400 shrink-0" />
                         Free Trip Giveaway 2026
-                        <Gift className="w-4 h-4 text-gold-400" />
+                        <Gift className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gold-400 shrink-0" />
                     </div>
 
-                    {/* Headline */}
-                    <h1 className="hero-anim-2 mx-auto max-w-4xl leading-[0.95] mb-6">
-                        <span className="block font-serif text-2xl sm:text-3xl text-stone-300 font-light mb-2">We're giving away a</span>
-                        <span className="block font-serif font-bold text-6xl sm:text-8xl md:text-9xl bg-gradient-to-r from-gold-200 via-gold-400 to-amber-500 bg-clip-text text-transparent">
+                    {/* Headline — fluid sizing prevents overflow on 360px screens */}
+                    <h1 className="hero-anim-2 mx-auto max-w-4xl leading-[0.92] mb-5 sm:mb-6">
+                        <span className="block font-serif text-base sm:text-2xl text-stone-300 font-light mb-1 sm:mb-2">
+                            We&apos;re giving away a
+                        </span>
+                        <span className="block font-serif font-black bg-gradient-to-r from-gold-200 via-gold-400 to-amber-500 bg-clip-text text-transparent"
+                            style={{ fontSize: 'clamp(2.8rem, 16vw, 9rem)', lineHeight: 1 }}>
                             FREE TRIP
                         </span>
-                        <span className="block font-serif text-3xl sm:text-5xl text-white font-medium mt-2">for Two — on Us.</span>
+                        <span className="block font-serif text-xl sm:text-4xl md:text-5xl text-white font-medium mt-1 sm:mt-2">
+                            for Two — on Us.
+                        </span>
                     </h1>
 
-                    {/* Prize value */}
-                    <div className="hero-anim-3 inline-flex flex-wrap items-center justify-center gap-3 mb-8">
-                        <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/8 border border-white/15 text-stone-200 text-sm font-semibold backdrop-blur-sm">
-                            <CheckCircle className="w-3.5 h-3.5 text-gold-400" /> Flights Included
-                        </span>
-                        <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/8 border border-white/15 text-stone-200 text-sm font-semibold backdrop-blur-sm">
-                            <CheckCircle className="w-3.5 h-3.5 text-gold-400" /> Hotel Included
-                        </span>
-                        <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/8 border border-white/15 text-stone-200 text-sm font-semibold backdrop-blur-sm">
-                            <CheckCircle className="w-3.5 h-3.5 text-gold-400" /> Worth up to £3,000
-                        </span>
+                    {/* Prize chips */}
+                    <div className="hero-anim-3 flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+                        {[
+                            { label: 'Flights Included' },
+                            { label: 'Hotel Included' },
+                            { label: 'Worth up to £3,000' },
+                        ].map(chip => (
+                            <span key={chip.label}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 rounded-full bg-white/8 border border-white/15 text-stone-200 text-xs sm:text-sm font-semibold backdrop-blur-sm">
+                                <CheckCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gold-400 shrink-0" />
+                                {chip.label}
+                            </span>
+                        ))}
                     </div>
 
                     {/* Destination flags */}
-                    <div className="hero-anim-4 flex flex-wrap items-center justify-center gap-3 sm:gap-5 mb-10">
+                    <div className="hero-anim-4 flex flex-wrap items-center justify-center gap-2.5 sm:gap-5 mb-8 sm:mb-10">
                         {DESTINATIONS.map(d => (
-                            <div key={d.name} className="flex items-center gap-1.5 text-stone-300 text-sm sm:text-base font-medium">
-                                <span className="text-xl sm:text-2xl">{d.flag}</span>
+                            <div key={d.name} className="flex items-center gap-1.5 text-stone-300 text-sm font-medium">
+                                <span className="text-lg sm:text-2xl">{d.flag}</span>
                                 <span>{d.name}</span>
                             </div>
                         ))}
                     </div>
 
-                    {/* CTA */}
-                    <div className="hero-anim-5 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    {/* CTAs — stacked on mobile, row on sm+ */}
+                    <div className="hero-anim-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                         <a href="#enter"
-                            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-gold-400 hover:bg-gold-300 text-brand-950 font-black text-base sm:text-lg shadow-[0_8px_32px_rgba(251,191,36,0.35)] hover:shadow-[0_12px_40px_rgba(251,191,36,0.5)] transition-all duration-300 hover:-translate-y-1">
-                            <Gift className="w-5 h-5" />
+                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-full bg-gold-400 hover:bg-gold-300 text-brand-950 font-black text-base shadow-[0_8px_32px_rgba(251,191,36,0.35)] hover:shadow-[0_12px_40px_rgba(251,191,36,0.5)] transition-all duration-300 active:scale-95">
+                            <Gift className="w-5 h-5 shrink-0" />
                             Enter the Draw — It&apos;s Free
                         </a>
-                        <a href="#destinations" className="inline-flex items-center gap-2 text-stone-400 hover:text-white text-sm font-semibold transition-colors">
+                        <a href="#destinations"
+                            className="inline-flex items-center gap-1.5 text-stone-400 hover:text-white text-sm font-semibold transition-colors py-2">
                             See destinations <ArrowDown className="w-4 h-4" />
                         </a>
                     </div>
 
-                    <p className="mt-6 text-stone-500 text-xs font-medium tracking-wide">
+                    <p className="mt-5 text-stone-500 text-xs font-medium tracking-wide">
                         Winner announced 31 December 2026 · Open to UK residents 18+
                     </p>
                 </div>
 
-                {/* Bottom fade to next section */}
-                <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-gold-400 to-transparent pointer-events-none" />
+                {/* Bottom fade */}
+                <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-gold-400 to-transparent pointer-events-none" />
             </section>
 
             {/* ══════════════════════════════════════════
                 SCROLLING TICKER
             ══════════════════════════════════════════ */}
-            <div className="bg-gold-400 overflow-hidden py-3 select-none">
-                <div className="ticker-track flex items-center gap-0 whitespace-nowrap w-max">
+            <div className="bg-gold-400 overflow-hidden py-2.5 sm:py-3 select-none">
+                <div className="ticker-track flex items-center whitespace-nowrap w-max">
                     {[0, 1].map(i => (
-                        <div key={i} className="flex items-center gap-8 px-8">
+                        <div key={i} className="flex items-center gap-6 sm:gap-8 px-6 sm:px-8">
                             {['🏆 ONE LUCKY WINNER', '✈️ FLIGHTS INCLUDED', '🏨 HOTEL INCLUDED', '🚗 TRANSFERS INCLUDED', '💰 WORTH UP TO £3,000', '🇦🇪 DUBAI', '🇹🇷 TURKEY', '🇫🇷 PARIS', '🇬🇪 GEORGIA', '📸 SHARE & WIN'].map(item => (
-                                <span key={item} className="text-brand-950 font-black text-sm tracking-widest uppercase flex items-center gap-3">
+                                <span key={item}
+                                    className="text-brand-950 font-black text-xs sm:text-sm tracking-widest uppercase flex items-center gap-3">
                                     {item}
-                                    <span className="text-brand-900/40 font-light">·</span>
+                                    <span className="text-brand-900/40 font-light ml-1">·</span>
                                 </span>
                             ))}
                         </div>
@@ -238,62 +241,64 @@ export default function WinPage() {
             </div>
 
             {/* ══════════════════════════════════════════
-                DESTINATION SHOWCASE
+                DESTINATIONS
             ══════════════════════════════════════════ */}
-            <section id="destinations" className="py-20 lg:py-28 bg-white">
-                <div className="container-inner">
-                    <div className="text-center mb-12 lg:mb-16" data-aos="fade-up">
+            <section id="destinations" className="py-14 sm:py-20 lg:py-28 bg-white">
+                <div className="container-inner px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-10 sm:mb-14" data-aos="fade-up">
                         <span className="section-label mx-auto">The Prize</span>
-                        <h2 className="font-serif text-4xl sm:text-5xl text-brand-950 font-bold mb-4">
+                        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-brand-950 font-bold mb-3">
                             Choose Your Dream Destination
                         </h2>
-                        <p className="text-stone-500 text-lg max-w-xl mx-auto">
-                            The winner picks any one of these four incredible destinations. All flights, hotel, and transfers are included.
+                        <p className="text-stone-500 text-sm sm:text-base max-w-lg mx-auto">
+                            The winner picks any one of these four incredible destinations. Flights, hotel &amp; transfers all included.
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
+                    {/* 1 col on mobile, 2 col on sm+ */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
                         {DESTINATIONS.map((dest, idx) => (
                             <div key={dest.name}
                                 data-aos="zoom-in"
-                                data-aos-delay={String(idx * 100)}
-                                className="group relative overflow-hidden rounded-3xl aspect-[4/3] bg-brand-950 cursor-default">
+                                data-aos-delay={String(idx * 80)}
+                                className="group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-brand-950 cursor-default"
+                                style={{ aspectRatio: '4/3' }}>
 
-                                {/* Photo */}
                                 <Image
                                     src={dest.img}
                                     alt={dest.name}
                                     fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                                     sizes="(max-width: 640px) 100vw, 50vw"
                                 />
 
-                                {/* Gradient overlays */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                                {/* Overlays */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                                 <div className={`absolute inset-0 bg-gradient-to-br ${dest.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-                                {/* Border glow on hover */}
-                                <div className="absolute inset-0 rounded-3xl ring-0 group-hover:ring-2 group-hover:ring-gold-400/60 transition-all duration-300" />
+                                <div className="absolute inset-0 rounded-2xl sm:rounded-3xl ring-0 group-hover:ring-2 group-hover:ring-gold-400/50 transition-all duration-300" />
 
                                 {/* Flag */}
-                                <div className="absolute top-5 right-5 text-4xl sm:text-5xl leading-none filter drop-shadow-lg">
+                                <div className="absolute top-4 right-4 text-3xl sm:text-4xl leading-none drop-shadow-lg">
                                     {dest.flag}
                                 </div>
 
-                                {/* Tagline chip */}
-                                <div className="absolute top-5 left-5 px-3 py-1 rounded-full bg-black/40 border border-white/20 backdrop-blur-sm text-white text-xs font-bold tracking-wider uppercase">
+                                {/* Tagline */}
+                                <div className="absolute top-4 left-4 px-2.5 py-1 rounded-full bg-black/40 border border-white/20 backdrop-blur-sm text-white text-[10px] sm:text-xs font-bold tracking-wider uppercase">
                                     {dest.tagline}
                                 </div>
 
                                 {/* Bottom info */}
-                                <div className="absolute bottom-0 inset-x-0 p-6">
-                                    <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-1">{dest.subtitle}</p>
-                                    <h3 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-3 group-hover:text-gold-300 transition-colors">
+                                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-6">
+                                    <p className="text-white/60 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1">
+                                        {dest.subtitle}
+                                    </p>
+                                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white mb-2.5 group-hover:text-gold-300 transition-colors">
                                         {dest.name}
                                     </h3>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-1.5">
                                         {dest.highlights.map(h => (
-                                            <span key={h} className="px-2.5 py-1 rounded-full bg-white/15 border border-white/20 text-white text-xs font-semibold backdrop-blur-sm">
+                                            <span key={h}
+                                                className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-white/15 border border-white/20 text-white text-[10px] sm:text-xs font-semibold backdrop-blur-sm">
                                                 {h}
                                             </span>
                                         ))}
@@ -308,52 +313,60 @@ export default function WinPage() {
             {/* ══════════════════════════════════════════
                 HOW TO ENTER — Infographic
             ══════════════════════════════════════════ */}
-            <section className="py-20 lg:py-28 bg-brand-950 overflow-hidden">
-                <div className="container-inner">
-                    <div className="text-center mb-14 lg:mb-20" data-aos="fade-up">
+            <section className="py-14 sm:py-20 lg:py-28 bg-brand-950 overflow-hidden">
+                <div className="container-inner px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-12 sm:mb-16" data-aos="fade-up">
                         <span className="section-label mx-auto !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30">How It Works</span>
-                        <h2 className="font-serif text-4xl sm:text-5xl text-white font-bold mb-4">
+                        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white font-bold mb-3">
                             Enter in 3 Simple Steps
                         </h2>
-                        <p className="text-stone-400 text-lg max-w-md mx-auto">
+                        <p className="text-stone-400 text-sm sm:text-base max-w-sm mx-auto">
                             No purchase necessary. No catch. Just follow, share, and enter.
                         </p>
                     </div>
 
-                    {/* Steps — desktop: horizontal with connecting line, mobile: vertical */}
-                    <div className="relative">
+                    {/*
+                        Mobile: vertical list with connecting line on left
+                        Desktop (lg): horizontal row with connecting dashed line between circles
+                    */}
+                    <div className="relative max-w-sm mx-auto lg:max-w-none">
 
-                        {/* Connecting dashed line — desktop only */}
-                        <div className="hidden lg:block absolute top-[52px] left-[calc(12.5%+40px)] right-[calc(12.5%+40px)] h-px border-t-2 border-dashed border-white/15 z-0" />
+                        {/* Vertical connector — mobile & sm only */}
+                        <div className="absolute left-[39px] top-12 bottom-12 w-px border-l-2 border-dashed border-white/15 z-0 lg:hidden" />
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 relative z-10">
+                        {/* Horizontal connector — lg only */}
+                        <div className="hidden lg:block absolute top-[48px] left-[calc(12.5%+44px)] right-[calc(12.5%+44px)] h-px border-t-2 border-dashed border-white/15 z-0" />
+
+                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-0 lg:gap-6 relative z-10">
                             {STEPS.map(({ Icon, number, title, detail, grad, shadow }, idx) => (
                                 <div key={number}
                                     data-aos="fade-up"
-                                    data-aos-delay={String(idx * 120)}
-                                    className="flex flex-col items-center text-center group">
+                                    data-aos-delay={String(idx * 100)}
+                                    className="flex lg:flex-col items-start lg:items-center gap-5 lg:gap-0 lg:text-center group pb-8 lg:pb-0 last:pb-0">
 
-                                    {/* Circle + icon */}
-                                    <div className={`relative mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br ${grad} shadow-xl ${shadow} ring-4 ring-white/5 group-hover:scale-110 transition-transform duration-300`}>
-                                        <Icon className="w-9 h-9 text-white" strokeWidth={1.8} />
-                                        {/* Step number badge */}
-                                        <span className="absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-brand-950 border-2 border-white/20 text-white text-xs font-black">
+                                    {/* Circle */}
+                                    <div className={`relative shrink-0 flex h-20 w-20 lg:h-24 lg:w-24 items-center justify-center rounded-full bg-gradient-to-br ${grad} shadow-xl ${shadow} ring-4 ring-white/5 group-hover:scale-105 transition-transform duration-300`}>
+                                        <Icon className="w-8 h-8 lg:w-9 lg:h-9 text-white" strokeWidth={1.8} />
+                                        <span className="absolute -top-2 -right-2 flex h-7 w-7 lg:h-8 lg:w-8 items-center justify-center rounded-full bg-brand-950 border-2 border-white/20 text-white text-xs font-black">
                                             {number}
                                         </span>
                                     </div>
 
-                                    <h3 className="font-serif text-xl font-bold text-white mb-2">{title}</h3>
-                                    <p className="text-stone-400 text-sm leading-relaxed max-w-[220px]">{detail}</p>
+                                    {/* Text */}
+                                    <div className="lg:mt-5 flex-1">
+                                        <h3 className="font-serif text-lg sm:text-xl font-bold text-white mb-1.5">{title}</h3>
+                                        <p className="text-stone-400 text-sm leading-relaxed">{detail}</p>
+                                    </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     {/* CTA */}
-                    <div className="mt-14 text-center" data-aos="fade-up" data-aos-delay="500">
+                    <div className="mt-12 sm:mt-14 text-center" data-aos="fade-up" data-aos-delay="450">
                         <a href="#enter"
-                            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-gold-400 hover:bg-gold-300 text-brand-950 font-black text-base shadow-[0_8px_32px_rgba(251,191,36,0.3)] hover:shadow-[0_12px_40px_rgba(251,191,36,0.45)] transition-all duration-300 hover:-translate-y-1">
-                            <Gift className="w-5 h-5" />
+                            className="inline-flex items-center gap-2.5 px-7 py-4 rounded-full bg-gold-400 hover:bg-gold-300 text-brand-950 font-black text-base shadow-[0_8px_32px_rgba(251,191,36,0.3)] hover:shadow-[0_12px_40px_rgba(251,191,36,0.45)] transition-all duration-300 active:scale-95">
+                            <Gift className="w-5 h-5 shrink-0" />
                             Enter Now — It&apos;s Free
                         </a>
                     </div>
@@ -363,24 +376,32 @@ export default function WinPage() {
             {/* ══════════════════════════════════════════
                 PRIZE VALUE CALLOUT
             ══════════════════════════════════════════ */}
-            <section className="relative py-20 lg:py-28 bg-gradient-to-br from-stone-950 via-brand-950 to-stone-950 overflow-hidden">
+            <section className="relative py-14 sm:py-20 lg:py-28 bg-gradient-to-br from-stone-950 via-brand-950 to-stone-950 overflow-hidden">
                 <div className="absolute inset-0 pointer-events-none">
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(251,191,36,0.08),transparent)]" />
                     <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
                     <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
                 </div>
 
-                <div className="relative z-10 container-inner text-center">
-                    <p className="font-sans text-stone-400 text-sm font-bold uppercase tracking-widest mb-4" data-aos="fade-up">Total Prize Value</p>
-                    <div className="font-serif font-black text-[80px] sm:text-[120px] md:text-[160px] leading-none bg-gradient-to-r from-gold-200 via-gold-400 to-amber-500 bg-clip-text text-transparent mb-6 animate-gradient" data-aos="scale-up">
+                <div className="relative z-10 container-inner px-4 sm:px-6 text-center">
+                    <p className="text-stone-400 text-xs sm:text-sm font-bold uppercase tracking-widest mb-3" data-aos="fade-up">
+                        Total Prize Value
+                    </p>
+
+                    {/* Fluid £3,000 — clamp prevents overflow on 320px screens */}
+                    <div className="font-serif font-black bg-gradient-to-r from-gold-200 via-gold-400 to-amber-500 bg-clip-text text-transparent mb-4 sm:mb-6 animate-gradient"
+                        style={{ fontSize: 'clamp(3.5rem, 22vw, 10rem)', lineHeight: 1 }}
+                        data-aos="scale-up">
                         £3,000
                     </div>
-                    <p className="text-white font-serif text-2xl sm:text-3xl mb-10" data-aos="fade-up" data-aos-delay="100">
+
+                    <p className="text-white font-serif text-xl sm:text-2xl lg:text-3xl mb-8 sm:mb-10" data-aos="fade-up" data-aos-delay="100">
                         One winner. Two people. Unforgettable memories.
                     </p>
 
-                    {/* What's included */}
-                    <div className="flex flex-wrap items-center justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
+                    {/* Included items — 2×2 on mobile, row on sm+ */}
+                    <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-4"
+                        data-aos="fade-up" data-aos-delay="200">
                         {[
                             { icon: '✈️', label: 'Return Flights', sub: 'From any UK airport' },
                             { icon: '🏨', label: 'Hotel Stay', sub: '4 or 5 star' },
@@ -388,10 +409,10 @@ export default function WinPage() {
                             { icon: '📋', label: 'Itinerary', sub: 'Fully planned by us' },
                         ].map(item => (
                             <div key={item.label}
-                                className="flex flex-col items-center gap-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 min-w-[130px] hover:border-gold-400/30 hover:bg-white/8 transition-all">
-                                <span className="text-3xl mb-1">{item.icon}</span>
-                                <span className="text-white font-bold text-sm">{item.label}</span>
-                                <span className="text-stone-500 text-xs">{item.sub}</span>
+                                className="flex flex-col items-center gap-1 bg-white/5 border border-white/10 rounded-2xl px-3 sm:px-6 py-4 hover:border-gold-400/30 transition-all">
+                                <span className="text-2xl sm:text-3xl mb-0.5">{item.icon}</span>
+                                <span className="text-white font-bold text-xs sm:text-sm">{item.label}</span>
+                                <span className="text-stone-500 text-[10px] sm:text-xs">{item.sub}</span>
                             </div>
                         ))}
                     </div>
@@ -401,23 +422,23 @@ export default function WinPage() {
             {/* ══════════════════════════════════════════
                 COUNTDOWN TIMER
             ══════════════════════════════════════════ */}
-            <section className="py-20 lg:py-24 bg-stone-950 relative overflow-hidden">
+            <section className="py-14 sm:py-20 lg:py-24 bg-stone-950 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,rgba(30,58,138,0.15),transparent)] pointer-events-none" />
-                <div className="relative z-10 container-inner text-center">
+                <div className="relative z-10 container-inner px-4 sm:px-6 text-center">
                     <div data-aos="fade-up">
                         <span className="section-label mx-auto !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30">Draw Closing</span>
-                        <h2 className="font-serif text-3xl sm:text-4xl text-white font-bold mb-2">
+                        <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-bold mb-1.5">
                             Winner Announced In
                         </h2>
-                        <p className="text-stone-500 mb-10 text-sm">
+                        <p className="text-stone-500 mb-8 sm:mb-10 text-sm">
                             31 December 2026 — don&apos;t miss your chance
                         </p>
                     </div>
                     <div data-aos="zoom-in" data-aos-delay="100">
                         <CountdownTimer target="2026-12-31T23:59:59" />
                     </div>
-                    <p className="mt-10 text-stone-600 text-xs font-medium tracking-wide" data-aos="fade-up" data-aos-delay="200">
-                        The draw closes midnight 31 December 2026. Winner contacted within 7 days.
+                    <p className="mt-8 text-stone-600 text-xs font-medium tracking-wide" data-aos="fade-up" data-aos-delay="200">
+                        Draw closes midnight 31 December 2026 · Winner contacted within 7 days
                     </p>
                 </div>
             </section>
@@ -425,39 +446,38 @@ export default function WinPage() {
             {/* ══════════════════════════════════════════
                 ENTRY FORM
             ══════════════════════════════════════════ */}
-            <section id="enter" className="relative py-20 lg:py-28 bg-brand-950 overflow-hidden">
-                {/* Background decoration */}
+            <section id="enter" className="relative py-14 sm:py-20 lg:py-28 bg-brand-950 overflow-hidden">
                 <div className="absolute inset-0 pointer-events-none">
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(251,191,36,0.10),transparent)]" />
                     <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent" />
-                    <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent" />
-                    <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: 'radial-gradient(circle, #fbbf24 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+                    <div className="absolute inset-0 opacity-[0.02]"
+                        style={{ backgroundImage: 'radial-gradient(circle, #fbbf24 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
                 </div>
 
-                <div className="relative z-10 container-inner">
-                    <div className="max-w-xl mx-auto">
+                <div className="relative z-10 container-inner px-4 sm:px-6">
+                    <div className="max-w-lg mx-auto">
 
                         {/* Heading */}
-                        <div className="text-center mb-10" data-aos="fade-up">
+                        <div className="text-center mb-8" data-aos="fade-up">
                             <span className="section-label mx-auto !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30">Final Step</span>
-                            <h2 className="font-serif text-4xl sm:text-5xl text-white font-bold mb-3">
+                            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white font-bold mb-3">
                                 Submit Your Entry
                             </h2>
-                            <p className="text-stone-400 text-base">
-                                Make sure you&apos;ve followed us and shared the reel first, then fill in your details below.
+                            <p className="text-stone-400 text-sm sm:text-base">
+                                Follow us and share the reel first, then fill in below.
                             </p>
                         </div>
 
-                        {/* Checklist reminder */}
-                        <div className="flex flex-col sm:flex-row gap-3 mb-8" data-aos="fade-up" data-aos-delay="100">
+                        {/* Pre-flight checklist */}
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-3 mb-6" data-aos="fade-up" data-aos-delay="80">
                             {[
                                 { icon: '✅', text: 'Followed @myperfecttrips' },
                                 { icon: '✅', text: 'Shared reel with 5 friends' },
                                 { icon: '📸', text: 'Screenshot ready to upload' },
                             ].map(item => (
                                 <div key={item.text}
-                                    className="flex-1 flex items-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-stone-300 text-sm font-medium">
-                                    <span>{item.icon}</span>
+                                    className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-stone-300 text-sm font-medium">
+                                    <span className="text-base shrink-0">{item.icon}</span>
                                     <span>{item.text}</span>
                                 </div>
                             ))}
@@ -467,7 +487,7 @@ export default function WinPage() {
                         <div
                             data-aos="zoom-in"
                             data-aos-delay="150"
-                            className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl shadow-black/40 p-6 sm:p-8">
+                            className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl shadow-black/40 p-5 sm:p-8">
                             <LuckyDrawForm />
                         </div>
                     </div>
@@ -475,20 +495,21 @@ export default function WinPage() {
             </section>
 
             {/* ══════════════════════════════════════════
-                SOCIAL PROOF STRIP
+                SOCIAL PROOF
             ══════════════════════════════════════════ */}
-            <section className="py-12 bg-white border-t border-stone-100">
-                <div className="container-inner">
-                    <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-16">
+            <section className="py-10 sm:py-12 bg-white border-t border-stone-100">
+                <div className="container-inner px-4 sm:px-6">
+                    {/* 2×2 grid on mobile → row on sm+ */}
+                    <div className="grid grid-cols-2 gap-6 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-14">
                         {[
                             { value: '15+', label: 'Years in Travel' },
-                            { value: '10,000+', label: 'Happy Travellers' },
+                            { value: '10K+', label: 'Happy Travellers' },
                             { value: '50+', label: 'Destinations' },
                             { value: '5★', label: 'Client Rating' },
                         ].map(s => (
                             <div key={s.label} className="text-center">
                                 <p className="font-serif text-3xl sm:text-4xl font-bold text-brand-950">{s.value}</p>
-                                <p className="text-stone-500 text-xs font-semibold uppercase tracking-widest mt-1">{s.label}</p>
+                                <p className="text-stone-500 text-[10px] sm:text-xs font-bold uppercase tracking-widest mt-1">{s.label}</p>
                             </div>
                         ))}
                     </div>
@@ -498,10 +519,10 @@ export default function WinPage() {
             {/* ══════════════════════════════════════════
                 T&Cs
             ══════════════════════════════════════════ */}
-            <section className="py-12 bg-stone-950">
-                <div className="container-inner max-w-2xl">
-                    <h3 className="text-stone-400 font-semibold text-sm mb-5 uppercase tracking-wider">Terms &amp; Conditions</h3>
-                    <ol className="space-y-2 text-stone-600 text-xs list-decimal pl-4">
+            <section className="py-10 sm:py-12 bg-stone-950">
+                <div className="container-inner px-4 sm:px-6 max-w-2xl">
+                    <h3 className="text-stone-400 font-semibold text-xs sm:text-sm mb-4 uppercase tracking-wider">Terms &amp; Conditions</h3>
+                    <ol className="space-y-2 text-stone-600 text-xs leading-relaxed list-decimal pl-4">
                         <li>This giveaway is open to UK residents aged 18 and over.</li>
                         <li>To enter, participants must follow @myperfecttrips on Instagram and share the giveaway reel with a minimum of 5 friends.</li>
                         <li>One entry per person. Duplicate entries will be disqualified.</li>
