@@ -7,12 +7,12 @@ import CountdownTimer from '@/components/CountdownTimer';
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
 
 export const metadata: Metadata = {
-    title: 'Win a FREE Holiday for Two | Lucky Draw – My Perfect Trips',
+    title: 'Win a FREE Holiday for One | Lucky Draw – My Perfect Trips',
     description: 'Enter our FREE holiday lucky draw! Follow @myperfecttrips, share our reel with 5 friends, and win a trip worth up to £3,000 to Dubai, Turkey, Paris, or Georgia. Winner announced 31 December 2026.',
     keywords: 'free trip giveaway UK, win free holiday, lucky draw 2026, My Perfect Trips giveaway, Dubai free trip, travel competition UK',
     alternates: { canonical: `${BASE}/lucky-draw` },
     openGraph: {
-        title: 'Win a FREE Holiday for Two — My Perfect Trips',
+        title: 'Win a FREE Holiday for One — My Perfect Trips',
         description: 'Follow us, share our reel with 5 friends, and win a holiday worth up to £3,000!',
         url: `${BASE}/lucky-draw`,
         siteName: 'My Perfect Trips',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Win a FREE Holiday for Two — My Perfect Trips',
+        title: 'Win a FREE Holiday for One — My Perfect Trips',
         description: 'Enter our lucky draw and win a free holiday worth up to £3,000!',
     },
 };
@@ -36,7 +36,7 @@ const schema = {
     '@context': 'https://schema.org',
     '@type': 'Event',
     name: 'My Perfect Trips Free Holiday Lucky Draw 2026',
-    description: 'Win a free trip for two to Dubai, Turkey, Paris, or Georgia worth up to £3,000.',
+    description: 'Win a free trip for one lucky winner to Dubai, Turkey, Paris, or Georgia worth up to £3,000.',
     startDate: '2026-10-20',
     endDate: '2026-12-31',
     organizer: { '@type': 'TravelAgency', name: 'My Perfect Trips', url: BASE },
@@ -67,7 +67,7 @@ export default function LuckyDrawPage() {
             <section className="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden">
 
                 {/* Vivid animated gradient background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-rose-500 to-violet-700 animate-gradient" />
+                <div className="absolute inset-0 bg-gradient-to-br from-sky-400 via-blue-600 to-indigo-700 animate-gradient" />
 
                 {/* Subtle travel photo overlay */}
                 <div className="absolute inset-0">
@@ -123,10 +123,10 @@ export default function LuckyDrawPage() {
                         <h1 className="font-serif font-black text-white leading-[0.9] tracking-tight drop-shadow-2xl"
                             style={{ fontSize: 'clamp(3rem, 14vw, 7rem)' }}>
                             A FREE<br />HOLIDAY<br />
-                            <span className="text-yellow-200">FOR TWO</span>
+                            <span className="text-yellow-200">FOR ONE!</span>
                         </h1>
                         <p className="mt-3 text-white font-bold text-base sm:text-xl">
-                            ✈️ Worth up to <span className="text-yellow-200 text-xl sm:text-2xl">£3,000</span> — Flights · Hotel · Transfers
+                            ✈️ Worth up to <span className="text-yellow-200 text-xl sm:text-2xl">£3,000</span> — Flights · Hotel · Transfers included
                         </p>
                     </div>
 
@@ -223,7 +223,7 @@ export default function LuckyDrawPage() {
             <section id="enter" className="relative py-14 sm:py-20 overflow-hidden">
 
                 {/* Background — complementary gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-700 via-pink-600 to-rose-500 animate-gradient" />
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-700 via-blue-600 to-sky-500 animate-gradient" />
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(255,255,255,0.08),transparent)]" />
                 <div className="absolute inset-0 opacity-[0.04]"
                     style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
@@ -278,22 +278,52 @@ export default function LuckyDrawPage() {
             </section>
 
             {/* ══════════════════════════════════════════
-                T&Cs — minimal
+                T&Cs — styled
             ══════════════════════════════════════════ */}
-            <section className="py-10 bg-stone-950">
-                <div className="max-w-2xl mx-auto px-5">
-                    <h3 className="text-stone-500 font-bold text-xs uppercase tracking-wider mb-4">Terms &amp; Conditions</h3>
-                    <ol className="space-y-1.5 text-stone-600 text-[11px] leading-relaxed list-decimal pl-4">
-                        <li>Open to UK residents aged 18 and over.</li>
-                        <li>Must follow @myperfecttrips on Instagram and share the giveaway reel with 5 friends to enter.</li>
-                        <li>One entry per person. Duplicates disqualified.</li>
-                        <li>Prize: one trip for two, worth up to £3,000 (Dubai, Turkey, Paris, or Georgia). Subject to availability and travel dates agreed with My Perfect Trips.</li>
-                        <li>Includes return flights from a UK airport and hotel accommodation. Travel insurance and personal expenses not included.</li>
-                        <li>Winner selected at random and announced 31 December 2026 via Instagram.</li>
-                        <li>Winner must claim within 30 days or prize is forfeit. No cash alternative.</li>
-                        <li>My Perfect Trips reserves the right to amend or withdraw this promotion at any time.</li>
-                        <li>Promoter: My Perfect Trips, Bartle House, 9 Oxford Court, Manchester M2 3WQ.</li>
-                    </ol>
+            <section className="py-14 sm:py-16 bg-gradient-to-b from-slate-900 to-slate-950">
+                <div className="max-w-3xl mx-auto px-5">
+
+                    {/* Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8 pb-5 border-b border-white/8">
+                        <div>
+                            <p className="text-sky-400 text-xs font-black uppercase tracking-widest mb-1">Competition Rules</p>
+                            <h3 className="text-white font-serif text-xl sm:text-2xl font-bold">Terms &amp; Conditions</h3>
+                        </div>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-stone-400 text-xs font-semibold">
+                            <span className="w-2 h-2 rounded-full bg-sky-400 shrink-0" />
+                            Closes 31 December 2026
+                        </div>
+                    </div>
+
+                    {/* Grid of terms */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {[
+                            { n: '01', text: 'Open to UK residents aged 18 and over only.' },
+                            { n: '02', text: 'Must follow @myperfecttrips on Instagram and share the giveaway reel with at least 5 friends.' },
+                            { n: '03', text: 'One entry per person. Duplicate or fraudulent entries will be disqualified.' },
+                            { n: '04', text: 'Prize: one free holiday for one person, worth up to £3,000 — to Dubai, Turkey, Paris, or Georgia. Subject to availability.' },
+                            { n: '05', text: 'Includes return flights from a UK airport and hotel accommodation. Travel insurance and personal expenses not included.' },
+                            { n: '06', text: 'Winner chosen at random and announced on 31 December 2026 via @myperfecttrips on Instagram.' },
+                            { n: '07', text: 'The winner must claim their prize within 30 days of announcement. Unclaimed prizes are forfeit. No cash alternative.' },
+                            { n: '08', text: 'My Perfect Trips reserves the right to amend or withdraw this promotion at any time without notice.' },
+                            { n: '09', text: 'Promoter: My Perfect Trips, Bartle House, 9 Oxford Court, Manchester M2 3WQ, United Kingdom.' },
+                        ].map(item => (
+                            <div key={item.n}
+                                className="flex gap-3 p-4 rounded-xl bg-white/4 border border-white/8 hover:border-sky-400/20 transition-colors">
+                                <span className="shrink-0 w-7 h-7 rounded-lg bg-sky-400/15 border border-sky-400/25 flex items-center justify-center text-sky-400 font-black text-[10px]">
+                                    {item.n}
+                                </span>
+                                <p className="text-stone-400 text-xs sm:text-sm leading-relaxed">{item.text}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <p className="mt-6 text-center text-stone-600 text-xs">
+                        For any queries contact{' '}
+                        <a href="mailto:info@myperfecttrips.com" className="text-sky-400 hover:text-sky-300 transition-colors underline underline-offset-2">
+                            info@myperfecttrips.com
+                        </a>
+                    </p>
                 </div>
             </section>
         </>
