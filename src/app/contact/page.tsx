@@ -131,7 +131,7 @@ export default async function ContactPage() {
                                     </div>
                                     <div>
                                         <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-brand-950">Email Us</h3>
-                                        <a href="mailto:info@myperfecttrips.com" className="text-lg font-medium hover:text-brand-700 transition-colors">info@myperfecttrips.com</a>
+                                        <a href={`mailto:${email}`} className="text-lg font-medium hover:text-brand-700 transition-colors">{email}</a>
                                         <p className="mt-1 text-sm text-stone-500">We aim to reply within 24 hours</p>
                                     </div>
                                 </li>

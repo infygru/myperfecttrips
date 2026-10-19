@@ -1,4 +1,4 @@
-import { createDirectus, rest, readSingleton, readItems } from '@directus/sdk';
+import { createDirectus, rest, readItems } from '@directus/sdk';
 import type { Package } from '@/types/package';
 import type { Enquiry } from '@/types/enquiry';
 import type { Lead } from '@/types/lead';
@@ -19,18 +19,18 @@ export const directus = createDirectus<CustomDirectusSchema>(directusUrl).with(r
 
 export async function getSiteSettings() {
     try {
-        const result = await directus.request(readSingleton("site_settings" as any));
-        // Directus SDK `readSingleton` will return an array directly if the collection is not a true singleton
-        if (Array.isArray(result)) {
-            return result[0] || null;
-        }
-        return result;
+        const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055';
+        const ADMIN_TOKEN = process.env.DIRECTUS_ADMIN_TOKEN || '';
+        const res = await fetch(`${DIRECTUS_URL}/items/site_settings?limit=1`, {
+            headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
+            next: { revalidate: 3600 },
+        });
+        if (!res.ok) return null;
+        const data = await res.json();
+        const items = data?.data;
+        if (Array.isArray(items)) return items[0] || null;
+        return items || null;
     } catch {
-        try {
-            const arr = await directus.request(readItems("site_settings" as any, { limit: 1 }));
-            return arr?.[0] || null;
-        } catch {
-            return null;
-        }
+        return null;
     }
 }

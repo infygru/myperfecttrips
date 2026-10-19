@@ -9,12 +9,15 @@ export interface DirectusSettings {
     public_note?: string;
 
     // Custom Added Fields
+    site_name?: string;
     hero_image?: string;
     hero_video?: string;
     contact_email?: string;
     contact_phone?: string;
+    whatsapp_number?: string;
     office_address?: string;
     facebook_url?: string;
     instagram_url?: string;
     linkedin_url?: string;
+    youtube_url?: string;
 }
