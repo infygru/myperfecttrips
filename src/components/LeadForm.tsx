@@ -79,7 +79,7 @@ export default function LeadForm({ prefilledPackage }: { prefilledPackage?: stri
                 </div>
                 <div>
                     <label htmlFor="phone" className={labelClass} style={{ color: "#6B4F3A" }}>Phone</label>
-                    <input type="tel" id="phone" name="phone" disabled={isSubmitting} className={inputClass} placeholder="+91 98765 43210" />
+                    <input type="tel" id="phone" name="phone" disabled={isSubmitting} className={inputClass} placeholder="+44 7123 456789" />
                 </div>
 
                 <input type="hidden" name="package_interest" value={prefilledPackage || "General Enquiry"} />

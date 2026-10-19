@@ -233,7 +233,7 @@ class Cursor {
     d.setFontSize(7);
     d.setTextColor(170, 170, 178);
     d.text(
-      "My Perfect Trips  |  A Brand of Infygru Private Limited",
+      "My Perfect Trips  |  myperfecttrips.com",
       PW / 2, PH - FOT_H + FOT_H / 2 + capH(7) / 2,
       { align: "center" },
     );
@@ -288,7 +288,7 @@ export async function generateItineraryPdf(
     d.setFont("helvetica", "bold");
     d.setFontSize(14);
     t(d, WHITE);
-    d.text("IG HOLIDAYS", ML, HDR_H / 2 + capH(14) / 2);
+    d.text("MY PERFECT TRIPS", ML, HDR_H / 2 + capH(14) / 2);
     d.setFont("helvetica", "normal");
     d.setFontSize(7);
     t(d, GOLD);
@@ -297,7 +297,7 @@ export async function generateItineraryPdf(
 
   // Header right — date + contacts
   const dateStr = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-  const contactLines = ["myperfecttrips.com", "+91 8807709919", "info@myperfecttrips.com"];
+  const contactLines = ["myperfecttrips.com", "+44 7895910015", "info@myperfecttrips.com"];
   d.setFont("helvetica", "bold");
   d.setFontSize(7);
   t(d, GOLD);
@@ -578,9 +578,9 @@ export async function generateItineraryPdf(
   k(d, LINE);
 
   const contacts = [
-    ["Phone",    "+91 8807709919"],
+    ["Phone",    "+44 7895910015"],
     ["Email",    "info@myperfecttrips.com"],
-    ["WhatsApp", "+91 8807709919"],
+    ["WhatsApp", "+44 7895910015"],
     ["Website",  "www.myperfecttrips.com"],
   ];
   d.setFontSize(8.5);
@@ -614,5 +614,5 @@ export async function generateItineraryPdf(
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "") || "itinerary";
-  d.save(`${fname}-igholidays.pdf`);
+  d.save(`${fname}-myperfecttrips.pdf`);
 }

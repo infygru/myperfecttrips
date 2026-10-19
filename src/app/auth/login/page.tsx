@@ -107,7 +107,7 @@ export default async function LoginPage() {
                 <div key={l} className="h-7 w-7 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 border-2 border-brand-950/80 flex items-center justify-center text-[10px] font-bold text-brand-950">{l}</div>
               ))}
             </div>
-            <p className="text-xs text-stone-400">Trusted by <span className="text-white font-semibold">10,000+</span> travellers across India</p>
+            <p className="text-xs text-stone-400">Trusted by <span className="text-white font-semibold">10,000+</span> happy travellers</p>
           </div>
         </div>
       </div>

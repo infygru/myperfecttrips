@@ -8,15 +8,15 @@ import { servicesList } from "@/lib/servicesData";
 import CountUpNumber from "@/components/CountUpNumber";
 
 export const metadata: Metadata = {
-    title: "Travel Services in Chennai & India | Corporate MICE, Visa, Group & Holiday Planning | My Perfect Trips",
-    description: "My Perfect Trips offers complete travel services in India — Corporate MICE events, group travel bookings, visa assistance, college tours, corporate travel packages, and bespoke luxury holiday planning. Best travel agency in Chennai.",
-    keywords: "travel services India, corporate MICE Chennai, group travel India, visa assistance Chennai, bespoke holiday planning India, travel agency Chennai, holiday packages India, corporate travel management",
+    title: "Travel Services in Manchester & the UK | Corporate MICE, Visa, Group & Holiday Planning | My Perfect Trips",
+    description: "My Perfect Trips offers complete travel services across the UK — Corporate MICE events, group travel bookings, visa assistance, college tours, corporate travel packages, and bespoke luxury holiday planning. Manchester's leading travel agency.",
+    keywords: "travel services UK, corporate MICE Manchester, group travel UK, visa assistance Manchester, bespoke holiday planning UK, travel agency Manchester, holiday packages UK, corporate travel management",
     alternates: {
         canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com"}/services`,
     },
     openGraph: {
         title: "Travel Services | My Perfect Trips — Corporate MICE, Visa & Holiday Planning",
-        description: "Complete travel services from India's leading travel agency — corporate events, group tours, visa processing, and luxury holidays.",
+        description: "Complete travel services from Manchester's leading travel agency — corporate events, group tours, visa processing, and luxury holidays.",
         url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com"}/services`,
         type: "website",
     },
@@ -266,7 +266,7 @@ export default async function ServicesPage() {
                                 The Difference Is in the Details
                             </h2>
                             <p className="text-stone-500 leading-relaxed mb-8">
-                                With 15 years of operational excellence and a pan-India network, we deliver experiences that consistently exceed expectations. Every traveller is treated like a VIP — from the first enquiry to safe return.
+                                With 15 years of operational excellence and a global network, we deliver experiences that consistently exceed expectations. Every traveller is treated like a VIP — from the first enquiry to safe return.
                             </p>
                             <Link href="/about" className="inline-flex items-center gap-2 text-sm font-bold text-brand-950 hover-underline">
                                 Learn About Us <ArrowRight className="h-4 w-4" />

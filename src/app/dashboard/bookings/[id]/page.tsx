@@ -208,7 +208,7 @@ export default async function BookingDetailPage({ params }: Props) {
                         Subject to our{' '}
                         <Link href="/refund-policy" className="underline hover:text-stone-700">refund policy</Link>.
                         {' '}Need help? Call{' '}
-                        <a href="tel:+918807709919" className="font-medium text-stone-600 hover:text-stone-900">+91 8807709919</a>.
+                        <a href="tel:+447895910015" className="font-medium text-stone-600 hover:text-stone-900">+44 7895910015</a>.
                     </p>
                     <CancelBookingButton bookingId={b.id} />
                 </div>

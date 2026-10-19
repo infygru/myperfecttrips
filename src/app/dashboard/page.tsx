@@ -282,10 +282,10 @@ export default async function DashboardPage() {
                     <p className="text-sm font-semibold text-stone-900 mb-0.5">Need help?</p>
                     <p className="text-xs text-stone-400 mb-4">Our travel experts are happy to assist you</p>
                     <div className="space-y-2">
-                        <a href="tel:+918807709919"
+                        <a href="tel:+447895910015"
                             className="flex items-center gap-3 rounded-lg border border-stone-200 px-4 py-2.5 text-sm text-stone-700 hover:bg-stone-50 transition-colors">
                             <PhoneCall className="h-4 w-4 text-stone-400 shrink-0" />
-                            +91 88077 09919
+                            +44 7895 910015
                         </a>
                         <a href="mailto:info@myperfecttrips.com"
                             className="flex items-center gap-3 rounded-lg border border-stone-200 px-4 py-2.5 text-sm text-stone-700 hover:bg-stone-50 transition-colors">

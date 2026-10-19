@@ -222,7 +222,7 @@ export default function RegisterForm() {
     // ── STEP: OTP ──
     if (step === 'otp') {
         const normalized = form.phone.replace(/[^0-9]/g, '').slice(-10);
-        const masked = `+91 ${normalized.slice(0, 2)}XXXXXX${normalized.slice(-2)}`;
+        const masked = `${form.phone.slice(0, 4)}XXXXXX${normalized.slice(-2)}`;
         return (
             <div className="space-y-6">
                 <button onClick={() => { setStep('info'); setError(''); setOtp(''); }}
@@ -330,7 +330,7 @@ export default function RegisterForm() {
                 </label>
                 <div className="relative group flex items-center">
                     <div className="absolute left-0 h-full flex items-center pl-3.5 border-r border-stone-200 pr-3 pointer-events-none">
-                        <span className="text-sm font-semibold text-stone-600">🇮🇳 +91</span>
+                        <span className="text-sm font-semibold text-stone-600">🇬🇧 +44</span>
                     </div>
                     <input type="tel" suppressHydrationWarning value={form.phone} onChange={set('phone')}
                         placeholder="98765 43210" maxLength={10}

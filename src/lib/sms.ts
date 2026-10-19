@@ -64,13 +64,13 @@ export async function sendTravelReminderSMS(
     phone: string, name: string, packageTitle: string, daysLeft: number, travelDate: string
 ) {
     const when = daysLeft === 1 ? 'tomorrow' : `in ${daysLeft} days`;
-    const msg = `Hi ${name}, your trip to ${packageTitle} is ${when} (${travelDate}). Call +91 8807709919 for help. - My Perfect Trips`;
+    const msg = `Hi ${name}, your trip to ${packageTitle} is ${when} (${travelDate}). Call +44 7895910015 for help. - My Perfect Trips`;
     return sendSMS(phone, msg);
 }
 
 export async function sendBookingCancelledSMS(
     phone: string, name: string, packageTitle: string, reference: string
 ) {
-    const msg = `Hi ${name}, your booking for ${packageTitle} (Ref: ${reference}) has been cancelled. Call +91 8807709919 for refunds. - My Perfect Trips`;
+    const msg = `Hi ${name}, your booking for ${packageTitle} (Ref: ${reference}) has been cancelled. Call +44 7895910015 for refunds. - My Perfect Trips`;
     return sendSMS(phone, msg);
 }

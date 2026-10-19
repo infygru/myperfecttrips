@@ -63,10 +63,10 @@ async function loadRazorpaySDK(): Promise<void> {
     });
 }
 
-/** 10-digit Indian mobile: starts with 6,7,8,9 */
-function isValidIndianPhone(val: string): boolean {
-    const digits = val.replace(/\D/g, '').slice(-10);
-    return digits.length === 10 && /^[6-9]/.test(digits);
+/** UK/international phone: at least 7 digits */
+function isValidPhone(val: string): boolean {
+    const digits = val.replace(/\D/g, '');
+    return digits.length >= 7 && digits.length <= 15;
 }
 
 export default function CheckoutForm({
@@ -190,8 +190,8 @@ export default function CheckoutForm({
     // ── Send / Resend OTP ─────────────────────────────────────────────────────
     async function handleSendOtp() {
         setOtpError('');
-        if (!isValidIndianPhone(phone)) {
-            setOtpError('Enter a valid 10-digit Indian mobile number (starts with 6–9)');
+        if (!isValidPhone(phone)) {
+            setOtpError('Enter a valid phone number');
             return;
         }
         setSendingOtp(true);
@@ -250,7 +250,7 @@ export default function CheckoutForm({
         setError('');
 
         if (!travelDate) { setError('Please select a travel date'); return; }
-        if (!isValidIndianPhone(phone)) { setError('Please enter a valid 10-digit mobile number'); return; }
+        if (!isValidPhone(phone)) { setError('Please enter a valid phone number'); return; }
         if (!phoneVerified) { setError('Please verify your mobile number with OTP before proceeding'); return; }
 
         setLoading(true);
@@ -410,7 +410,7 @@ export default function CheckoutForm({
                 {/* Phone input row */}
                 <div className="flex gap-2">
                     <div className="flex items-center h-11 rounded-xl border border-stone-200 bg-stone-50 px-3 text-sm font-semibold text-stone-500 shrink-0">
-                        +91
+                        +44
                     </div>
                     <input
                         type="tel"
@@ -418,7 +418,7 @@ export default function CheckoutForm({
                         maxLength={10}
                         value={phone.replace(/\D/g, '').slice(-10)}
                         onChange={e => handlePhoneChange(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                        placeholder="10-digit mobile number"
+                        placeholder="7123 456789"
                         disabled={phoneVerified}
                         className={`flex-1 h-11 rounded-xl border px-4 text-sm outline-none transition-all
                             ${phoneVerified
@@ -435,7 +435,7 @@ export default function CheckoutForm({
                     ) : (
                         <button type="button"
                             onClick={handleSendOtp}
-                            disabled={sendingOtp || !isValidIndianPhone(phone)}
+                            disabled={sendingOtp || !isValidPhone(phone)}
                             className="h-11 px-4 rounded-xl bg-brand-900 text-white text-xs font-bold hover:bg-brand-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0 whitespace-nowrap">
                             {sendingOtp ? <Loader2 className="h-4 w-4 animate-spin" /> : otpSent ? 'Resend OTP' : 'Send OTP'}
                         </button>
@@ -443,10 +443,10 @@ export default function CheckoutForm({
                 </div>
 
                 {/* Validation hint */}
-                {!phoneVerified && phone.length > 0 && !isValidIndianPhone(phone) && (
+                {!phoneVerified && phone.length > 0 && !isValidPhone(phone) && (
                     <p className="text-xs text-red-500 flex items-center gap-1">
                         <AlertCircle className="h-3 w-3 shrink-0" />
-                        Must be a 10-digit Indian mobile number starting with 6, 7, 8 or 9
+                        Please enter a valid phone number
                     </p>
                 )}
 

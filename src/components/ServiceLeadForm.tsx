@@ -75,7 +75,7 @@ export default function ServiceLeadForm({ serviceType, isCorporate = false, dark
             </div>
             <div>
                 <label className={labelClass}>Phone Number</label>
-                <input type="tel" name="phone" disabled={isSubmitting} className={inputClass} placeholder="+91 98765 43210" />
+                <input type="tel" name="phone" disabled={isSubmitting} className={inputClass} placeholder="+44 7123 456789" />
             </div>
             {isCorporate && (
                 <div>

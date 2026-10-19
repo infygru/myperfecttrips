@@ -145,7 +145,7 @@ export async function sendBookingConfirmationEmail(data: BookingEmailData): Prom
           <div style="font-size:13px; color:#57534e; line-height:1.8;">
             <p style="margin:0 0 6px;">📞 Our travel expert will call you within <strong>24 hours</strong> to confirm your itinerary.</p>
             <p style="margin:0 0 6px;">📋 You'll receive a detailed day-by-day itinerary and hotel confirmation.</p>
-            <p style="margin:0;">💬 For any queries, call us at <strong>+91 8807709919</strong> or reply to this email.</p>
+            <p style="margin:0;">💬 For any queries, call us at <strong>+44 7895910015</strong> or reply to this email.</p>
           </div>
 
           <div style="text-align:center;">
@@ -155,8 +155,8 @@ export async function sendBookingConfirmationEmail(data: BookingEmailData): Prom
 
         <!-- Footer -->
         <div style="${FOOTER_STYLE}">
-          <p style="margin:0 0 4px;">My Perfect Trips — A brand of Infygru Private Limited</p>
-          <p style="margin:0;">Tamil Nadu, India · +91 8807709919 · info@myperfecttrips.com</p>
+          <p style="margin:0 0 4px;">My Perfect Trips</p>
+          <p style="margin:0;">Bartle House, 9 Oxford Court, Manchester M2 3WQ · +44 7895910015 · info@myperfecttrips.com</p>
         </div>
       </div>
     </body>`;
@@ -267,7 +267,7 @@ export async function sendOTPEmail(email: string, otp: string, phone: string): P
         </div>
         <div style="${BODY_STYLE}">
           <p style="color:#57534e; font-size:14px; margin:0 0 20px;">
-            Use the code below to verify your mobile number <strong style="color:#1c1917;">+91 ${phone}</strong>
+            Use the code below to verify your mobile number <strong style="color:#1c1917;">${phone}</strong>
           </p>
           <div style="text-align:center; margin:28px 0;">
             <div style="display:inline-block; background:#1c1917; border-radius:16px; padding:20px 48px;">
@@ -329,8 +329,8 @@ export async function sendWelcomeEmail(name: string, email: string): Promise<boo
         </div>
 
         <div style="${FOOTER_STYLE}">
-          <p style="margin:0 0 4px;">My Perfect Trips — A brand of Infygru Private Limited</p>
-          <p style="margin:0;">+91 8807709919 · info@myperfecttrips.com · myperfecttrips.com</p>
+          <p style="margin:0 0 4px;">My Perfect Trips</p>
+          <p style="margin:0;">+44 7895910015 · info@myperfecttrips.com · myperfecttrips.com</p>
         </div>
       </div>
     </body>`;

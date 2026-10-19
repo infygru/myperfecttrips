@@ -41,7 +41,7 @@ export const servicesList: ServiceData[] = [
     shortDesc: "End-to-end planning and flawless execution for corporate events of every scale — from intimate boardroom meetings to grand international exhibitions.",
     Icon: Building2,
     isCorporate: true,
-    overview: "My Perfect Trips is a leading Corporate MICE specialist trusted by enterprises across India. We take full ownership of your event — from initial concept to post-event analysis — so your team can focus entirely on business outcomes. Our dedicated MICE desk operates round the clock, managing delegate travel, venue contracting, audio-visual production, themed gala dinners, and everything in between.",
+    overview: "My Perfect Trips is a leading Corporate MICE specialist trusted by businesses across the UK. We take full ownership of your event — from initial concept to post-event analysis — so your team can focus entirely on business outcomes. Our dedicated MICE desk operates round the clock, managing delegate travel, venue contracting, audio-visual production, themed gala dinners, and everything in between.",
     features: [
       { title: "Venue Scouting & Contracting", desc: "Premium venues globally — from luxury hotel ballrooms to purpose-built convention centres." },
       { title: "Delegate Travel Management", desc: "Coordinated flights, visas, transfers, and hotel blocks for groups of any size." },
@@ -69,8 +69,8 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["corporate-travel", "group-travel"],
     accentColor: { hex: "#0EA5E9", rgb: "14,165,233", light: "#E0F2FE" },
-    seoDescription: "Expert Corporate MICE services in Chennai, India — meetings, incentives, conferences and exhibitions managed end-to-end by My Perfect Trips.",
-    seoKeywords: ["corporate MICE services India", "MICE event management Chennai", "corporate event planning India", "incentive tour India", "conference management company Chennai", "corporate travel management", "B2B travel agency India", "corporate offsite planning"],
+    seoDescription: "Expert Corporate MICE services in Manchester, UK — meetings, incentives, conferences and exhibitions managed end-to-end by My Perfect Trips.",
+    seoKeywords: ["corporate MICE services UK", "MICE event management Manchester", "corporate event planning UK", "incentive travel UK", "conference management company Manchester", "corporate travel management", "B2B travel agency UK", "corporate offsite planning UK"],
   },
   {
     slug: "corporate-travel",
@@ -107,8 +107,8 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["corporate-mice", "visa-assistance"],
     accentColor: { hex: "#8B5CF6", rgb: "139,92,246", light: "#EDE9FE" },
-    seoDescription: "Streamlined corporate travel packages for executives and teams in India. My Perfect Trips provides policy-compliant business travel management with 24/7 support.",
-    seoKeywords: ["corporate travel packages India", "business travel management Chennai", "executive travel services India", "corporate tour organizer India", "business travel agency Chennai", "bulk airfare booking India", "corporate travel policy management"],
+    seoDescription: "Streamlined corporate travel packages for executives and teams across the UK. My Perfect Trips provides policy-compliant business travel management with 24/7 support.",
+    seoKeywords: ["corporate travel packages UK", "business travel management Manchester", "executive travel services UK", "corporate tour organizer UK", "business travel agency Manchester", "bulk airfare booking UK", "corporate travel policy management UK"],
   },
   {
     slug: "group-travel",
@@ -145,8 +145,8 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["college-tours", "holiday-planning"],
     accentColor: { hex: "#10B981", rgb: "16,185,129", light: "#D1FAE5" },
-    seoDescription: "Group travel bookings for families, friend groups, and associations in India. My Perfect Trips handles everything — airfare, hotels, activities, and on-trip support.",
-    seoKeywords: ["group travel packages India", "group tour booking India", "family group tours India", "group holiday packages Chennai", "bulk travel booking India", "group tour operators India", "social group travel India"],
+    seoDescription: "Group travel bookings for families, friend groups, and associations across the UK. My Perfect Trips handles everything — airfare, hotels, activities, and on-trip support.",
+    seoKeywords: ["group travel packages UK", "group tour booking UK", "family group tours UK", "group holiday packages Manchester", "bulk travel booking UK", "group tour operators UK", "social group travel UK"],
   },
   {
     slug: "college-tours",
@@ -183,8 +183,8 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["group-travel", "holiday-planning"],
     accentColor: { hex: "#F97316", rgb: "249,115,22", light: "#FFEDD5" },
-    seoDescription: "Safe, educational college tours and school excursions managed by My Perfect Trips. Trusted student travel operator in Chennai with safety-first protocols.",
-    seoKeywords: ["college tours India", "student travel packages India", "school excursions Chennai", "educational tours India", "college trip organizer India", "student group travel India", "college industrial visits India"],
+    seoDescription: "Safe, educational college tours and school excursions managed by My Perfect Trips. Trusted student travel operator in Manchester with safety-first protocols.",
+    seoKeywords: ["college tours UK", "student travel packages UK", "school excursions Manchester", "educational tours UK", "college trip organizer UK", "student group travel UK", "college industrial visits UK"],
   },
   {
     slug: "visa-assistance",
@@ -221,8 +221,8 @@ export const servicesList: ServiceData[] = [
     ],
     relatedSlugs: ["corporate-travel", "holiday-planning"],
     accentColor: { hex: "#F43F5E", rgb: "244,63,94", light: "#FFE4E6" },
-    seoDescription: "Professional visa assistance services for all major destinations. My Perfect Trips processes Schengen, UK, USA, UAE, and South-East Asian visas from Chennai.",
-    seoKeywords: ["visa assistance Chennai", "visa processing India", "Schengen visa India", "UK visa agent Chennai", "USA visa consultation India", "travel visa services Chennai", "visa agent near me", "visa documentation support India"],
+    seoDescription: "Professional visa assistance services for all major destinations. My Perfect Trips processes Schengen, USA, UAE, and South-East Asian visas from Manchester.",
+    seoKeywords: ["visa assistance Manchester", "visa processing UK", "Schengen visa UK", "UK visa agent Manchester", "USA visa consultation UK", "travel visa services Manchester", "visa agent near me", "visa documentation support UK"],
   },
   {
     slug: "holiday-planning",
@@ -252,7 +252,7 @@ export const servicesList: ServiceData[] = [
       { label: "Anniversary & Special Occasions", desc: "Milestone birthdays, retirement trips, and bucket-list journeys crafted with care." },
     ],
     faqs: [
-      { q: "What destinations do you specialise in for bespoke holidays?", a: "Globally — Maldives, Bali, Europe (Italy, Greece, France, Switzerland), Santorini, Dubai, Mauritius, Thailand, Sri Lanka, and extensive domestic India destinations." },
+      { q: "What destinations do you specialise in for bespoke holidays?", a: "Globally — Maldives, Bali, Europe (Italy, Greece, France, Switzerland), Santorini, Dubai, Mauritius, Thailand, Sri Lanka, and more." },
       { q: "Can you accommodate last-minute bespoke requests?", a: "For premium experiences, early planning yields better availability. However, we can create a beautiful itinerary within 72 hours for urgent requests using our partner network." },
       { q: "Do you cater to different budget levels?", a: "Our bespoke service spans luxury and ultra-luxury budgets. While we specialise in premium planning, we always seek the best value for your investment." },
       { q: "Can I modify the itinerary after booking?", a: "Minor adjustments are always accommodated. For significant changes, we work with suppliers to rearrange where possible, subject to availability and cancellation policies." },
@@ -260,7 +260,7 @@ export const servicesList: ServiceData[] = [
     relatedSlugs: ["group-travel", "visa-assistance"],
     accentColor: { hex: "#F59E0B", rgb: "245,158,11", light: "#FEF3C7" },
     seoDescription: "Bespoke luxury holiday planning for honeymoon couples and discerning travellers. My Perfect Trips crafts personalised itineraries to Maldives, Europe, Bali, and beyond.",
-    seoKeywords: ["bespoke holiday planning India", "luxury holiday packages India", "honeymoon packages Chennai", "customised tour packages India", "luxury travel agent India", "private holiday planner Chennai", "luxury international holidays India"],
+    seoKeywords: ["bespoke holiday planning UK", "luxury holiday packages UK", "honeymoon packages Manchester", "customised tour packages UK", "luxury travel agent UK", "private holiday planner Manchester", "luxury international holidays UK"],
   },
 ];
 

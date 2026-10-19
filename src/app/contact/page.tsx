@@ -34,7 +34,7 @@ export default async function ContactPage() {
     } catch { }
 
     const email = s?.contact_email || "info@myperfecttrips.com";
-    const phone = s?.contact_phone || "+91 98765 43210";
+    const phone = s?.contact_phone || "+44 7123 456789";
     const address = s?.office_address || "Bartle House, 9 Oxford Court, Manchester, M2 3WQ";
     const localBusinessSchema = {
         "@context": "https://schema.org",
@@ -152,8 +152,7 @@ export default async function ContactPage() {
                         {/* My Perfect Trips Brand Statement */}
                         <div className="rounded-[2rem] bg-stone-100 border border-stone-200 p-6 text-center">
                             <p className="text-xs text-stone-500 leading-relaxed">
-                                <strong className="text-stone-700">My Perfect Trips</strong> is an official brand of{" "}
-                                <strong className="text-stone-700">Infygru Private Limited</strong>.
+                                <strong className="text-stone-700">My Perfect Trips</strong> is a Manchester-based travel agency serving customers across the UK.
                             </p>
                             <div className="flex flex-wrap items-center justify-center gap-3 mt-3 text-xs text-brand-600">
                                 <a href="/terms" className="hover:underline">Terms</a>

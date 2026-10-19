@@ -103,7 +103,7 @@ export default async function PaymentSuccessPage({ searchParams }: Props) {
                         <li>✓ Our team will call you within 24 hours to confirm all details</li>
                         <li>✓ You&apos;ll receive SMS reminders 7 days &amp; 1 day before your trip</li>
                         <li>✓ Your itinerary and vouchers will be sent to your email</li>
-                        <li>✓ Call us anytime at +91 8807709919 for assistance</li>
+                        <li>✓ Call us anytime at +44 7895910015 for assistance</li>
                     </ul>
                 </div>
 

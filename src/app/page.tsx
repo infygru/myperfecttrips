@@ -1,7 +1,6 @@
 import { directus, getSiteSettings } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import HeroSearchTabs from "@/components/HeroSearchTabs";
-import VisaDestinationTabs from "@/components/VisaDestinationTabs";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -92,11 +91,6 @@ export default async function Home() {
     }
   }
 
-  // Visa-friendly packages
-  const visaFreePackages     = allPackages.filter((p: any) => p.visa_status === "visa_free" && p.image).slice(0, 8);
-  const visaOnArrivalPackages = allPackages.filter((p: any) => p.visa_status === "visa_on_arrival" && p.image).slice(0, 8);
-  const showVisaSection      = visaFreePackages.length > 0 || visaOnArrivalPackages.length > 0;
-
   // Budget packages: domestic < £10k, international < £50k
   const budgetDomestic      = domesticPackages.filter(p => p.price > 0 && p.price <= 10000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
   const budgetInternational = internationalPackages.filter(p => p.price > 0 && p.price <= 50000 && p.image).sort((a, b) => a.price - b.price).slice(0, 3);
@@ -176,7 +170,7 @@ export default async function Home() {
             </span>
           </h1>
           <p className="hero-anim-3 mb-6 mt-5 max-w-xl text-sm sm:text-lg text-stone-300 font-light leading-relaxed">
-            {settings?.tagline || "Expertly crafting domestic and international tours. Your trusted travel partner in India."}
+            {settings?.tagline || "Expertly crafting bespoke holiday packages from Manchester. Your trusted UK travel partner."}
           </p>
           <div className="hero-anim-4 w-full mt-6 relative z-20">
             <HeroSearchTabs />
@@ -327,188 +321,6 @@ export default async function Home() {
       </section>
 
       {/* ── VISA DESTINATIONS ── */}
-      {showVisaSection && (
-        <VisaDestinationTabs
-          visaFree={visaFreePackages}
-          visaOnArrival={visaOnArrivalPackages}
-          dUrl={dUrl}
-        />
-      )}
-
-      {/* ── DOMESTIC vs INTERNATIONAL ── */}
-      {(domesticPackages.length > 0 || internationalPackages.length > 0) && (() => {
-        const domesticBannerImg = domesticPackages.find((p: any) => p.image)?.image;
-        const intlBannerImg = internationalPackages.find((p: any) => p.image)?.image;
-        const domesticDests = [...new Set(domesticPackages.map((p: any) => p.destination).filter(Boolean))].slice(0, 4) as string[];
-        const intlDests = [...new Set(internationalPackages.map((p: any) => p.destination).filter(Boolean))].slice(0, 4) as string[];
-        return (
-          <section className="py-12 lg:py-20 bg-stone-100">
-            <div className="container-inner">
-              <div className="mb-8 text-center" data-aos="fade-up">
-                <span className="section-label mx-auto">Explore by Region</span>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl text-brand-950 font-medium tracking-tight">Domestic & International Tours</h2>
-                <p className="mt-2 text-sm text-stone-500 max-w-md mx-auto">Choose from our handpicked tours across India and around the world</p>
-              </div>
-
-              {/* Hero Banners */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-
-                {/* Domestic Banner */}
-                <Link href="/packages?package_type=domestic"
-                  data-aos="fade-right"
-                  data-aos-delay="100"
-                  className="group relative h-72 sm:h-80 overflow-hidden rounded-3xl bg-brand-950 block">
-                  {domesticBannerImg && (
-                    <Image src={`${dUrl}/assets/${domesticBannerImg}`} alt="Domestic Tours" fill
-                      className="object-cover opacity-55 transition-transform duration-700 group-hover:scale-110" />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/80 via-brand-900/70 to-brand-900/40" />
-                  <div className="absolute inset-0 flex flex-col justify-between p-7">
-                    <div>
-                      <span className="inline-flex items-center rounded-full bg-emerald-400/20 border border-emerald-400/40 px-3.5 py-1 text-xs font-bold text-emerald-300 uppercase tracking-widest">
-                        Domestic
-                      </span>
-                    </div>
-                    <div>
-                      <h3 className="font-serif text-3xl sm:text-4xl font-medium text-white mb-3">Explore India</h3>
-                      {domesticDests.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 mb-5">
-                          {domesticDests.map((d) => (
-                            <span key={d} className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs text-white/75">{d}</span>
-                          ))}
-                        </div>
-                      )}
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-bold text-emerald-300">{domesticPackages.length} packages</span>
-                        <span className="flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-brand-950 transition-all group-hover:bg-gold-400">
-                          View All <ArrowRight className="h-3.5 w-3.5" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-
-                {/* International Banner */}
-                <Link href="/packages?package_type=international"
-                  data-aos="fade-left"
-                  data-aos-delay="100"
-                  className="group relative h-72 sm:h-80 overflow-hidden rounded-3xl bg-brand-950 block">
-                  {intlBannerImg && (
-                    <Image src={`${dUrl}/assets/${intlBannerImg}`} alt="International Tours" fill
-                      className="object-cover opacity-55 transition-transform duration-700 group-hover:scale-110" />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-brand-900/70 to-brand-900/40" />
-                  <div className="absolute inset-0 flex flex-col justify-between p-7">
-                    <div>
-                      <span className="inline-flex items-center rounded-full bg-blue-400/20 border border-blue-400/40 px-3.5 py-1 text-xs font-bold text-blue-300 uppercase tracking-widest">
-                        International
-                      </span>
-                    </div>
-                    <div>
-                      <h3 className="font-serif text-3xl sm:text-4xl font-medium text-white mb-3">Explore the World</h3>
-                      {intlDests.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 mb-5">
-                          {intlDests.map((d) => (
-                            <span key={d} className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs text-white/75">{d}</span>
-                          ))}
-                        </div>
-                      )}
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-bold text-blue-300">{internationalPackages.length} packages</span>
-                        <span className="flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-brand-950 transition-all group-hover:bg-gold-400">
-                          View All <ArrowRight className="h-3.5 w-3.5" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-
-              {/* Package Cards — horizontal scroll on mobile, grid on desktop */}
-              {domesticPackages.length > 0 && (
-                <div className="mb-8">
-                  <div className="flex items-center justify-between mb-4" data-aos="fade-up">
-                    <div className="flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
-                      <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">Domestic Tours</h3>
-                    </div>
-                    <Link href="/packages?package_type=domestic" className="text-xs font-semibold text-brand-600 hover:text-brand-800 transition-colors">
-                      See all {domesticPackages.length} →
-                    </Link>
-                  </div>
-                  <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 pb-2 scrollbar-hide">
-                    {domesticPackages.slice(0, 4).map((pkg: any, idx: number) => {
-                      const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
-                      return (
-                        <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
-                          data-aos="fade-up"
-                          data-aos-delay={String(idx * 80)}
-                          className="group flex flex-col shrink-0 w-[68vw] sm:w-auto snap-center overflow-hidden rounded-2xl bg-white border border-stone-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                          <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
-                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                            {pkg.duration_nights && (
-                              <span className="absolute bottom-2 right-2 flex items-center gap-1 rounded-lg bg-black/70 px-2 py-0.5 text-[10px] font-medium text-white">
-                                <Clock className="h-2.5 w-2.5 text-gold-400" />{pkg.duration_nights}N/{pkg.duration_days}D
-                              </span>
-                            )}
-                          </div>
-                          <div className="p-3.5">
-                            <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">{pkg.title}</p>
-                            {pkg.destination && <p className="text-[11px] text-stone-400 flex items-center gap-0.5 mb-2"><MapPin className="h-2.5 w-2.5 shrink-0" />{pkg.destination}</p>}
-                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "On Request"}</p>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {internationalPackages.length > 0 && (
-                <div>
-                  <div className="flex items-center justify-between mb-4" data-aos="fade-up">
-                    <div className="flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
-                      <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500">International Tours</h3>
-                    </div>
-                    <Link href="/packages?package_type=international" className="text-xs font-semibold text-brand-600 hover:text-brand-800 transition-colors">
-                      See all {internationalPackages.length} →
-                    </Link>
-                  </div>
-                  <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 pb-2 scrollbar-hide">
-                    {internationalPackages.slice(0, 4).map((pkg: any, idx: number) => {
-                      const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
-                      return (
-                        <Link key={pkg.id} href={`/packages/${pkg.slug || pkg.id}`}
-                          data-aos="fade-up"
-                          data-aos-delay={String(idx * 80)}
-                          className="group flex flex-col shrink-0 w-[68vw] sm:w-auto snap-center overflow-hidden rounded-2xl bg-white border border-stone-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                          <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
-                            {imgUrl ? <Image src={imgUrl} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" /> : <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                            {pkg.duration_nights && (
-                              <span className="absolute bottom-2 right-2 flex items-center gap-1 rounded-lg bg-black/70 px-2 py-0.5 text-[10px] font-medium text-white">
-                                <Clock className="h-2.5 w-2.5 text-gold-400" />{pkg.duration_nights}N/{pkg.duration_days}D
-                              </span>
-                            )}
-                          </div>
-                          <div className="p-3.5">
-                            <p className="text-sm font-semibold text-stone-900 group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">{pkg.title}</p>
-                            {pkg.destination && <p className="text-[11px] text-stone-400 flex items-center gap-0.5 mb-2"><MapPin className="h-2.5 w-2.5 shrink-0" />{pkg.destination}</p>}
-                            <p className="text-sm font-bold text-brand-700">{pkg.price ? `£${Number(pkg.price).toLocaleString("en-GB")}` : "On Request"}</p>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-          </section>
-        );
-      })()}
-
       {/* ── EXPLORE BY THEME ── */}
       {themePackages.length > 0 && (
         <section className="py-12 lg:py-16 bg-stone-50">
@@ -665,7 +477,7 @@ export default async function Home() {
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div data-aos="fade-right">
               <span className="section-label !text-gold-400 before:!bg-gold-400/30 after:!bg-gold-400/30">Why Choose Us?</span>
-              <h2 className="mb-4 font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-medium">Top Rated Travel Planners in India.</h2>
+              <h2 className="mb-4 font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-medium">Top Rated Travel Planners in the UK.</h2>
               <p className="mb-8 text-sm sm:text-base leading-relaxed text-stone-300">
                 With over 15 years of curating bespoke domestic & international trips, our extensive global network guarantees unparalleled service to make your dream holidays spectacular.
               </p>
@@ -788,20 +600,20 @@ export default async function Home() {
           <div className="max-w-3xl mx-auto space-y-4">
             {[
               {
-                q: "What makes My Perfect Trips the best travel agency in India?",
-                a: "My Perfect Trips (myperfecttrips.com) offers 100% customisable itineraries, completely transparent pricing with zero hidden charges, and 24/7 on-trip support. With over 15 years of expertise as premium luxury tour operators, we guarantee exceptional quality for both international and domestic holiday packages."
+                q: "What makes My Perfect Trips the best travel agency in the UK?",
+                a: "My Perfect Trips is a Manchester-based travel agency offering 100% customisable itineraries, completely transparent pricing with zero hidden charges, and 24/7 on-trip support. As a premium UK travel agency, we specialise in bespoke international holiday packages, honeymoon tours, family trips, and corporate travel — all priced in GBP."
               },
               {
-                q: "Do you offer international holiday packages from India?",
-                a: "Yes, we specialise in international tour packages to over 50+ countries. Some of our top-selling destinations include the Maldives, Bali, Thailand, Europe, Dubai, and Singapore. We handle everything from flight bookings and visas to luxury accommodations."
+                q: "Do you offer international holiday packages from the UK?",
+                a: "Yes, we specialise in international holiday packages departing from the UK to over 50+ countries. Top destinations include the Maldives, Bali, Thailand, Dubai, Europe, and Singapore. We handle everything from flights and visas to luxury hotel stays — with transparent GBP pricing."
               },
               {
                 q: "Are your honeymoon packages customisable?",
-                a: "Absolutely. We are renowned as top honeymoon planners in India because we tailor every single detail to your preferences. Whether you want a private pool villa in the Maldives or a romantic European escape, we craft it to perfection."
+                a: "Absolutely. We tailor every honeymoon to your exact preferences and budget. Whether you dream of a private pool villa in the Maldives, a safari in Kenya, or a romantic European escape, our Manchester-based team crafts it to perfection with no hidden costs."
               },
               {
                 q: "Does My Perfect Trips help with Corporate MICE travel?",
-                a: "Yes, we are experts in Corporate MICE (Meetings, Incentives, Conferences, and Exhibitions). We manage complex logistics, multi-city flights, premium stays, and event planning for group sizes ranging from 50 to 500+ professionals globally."
+                a: "Yes, we are experts in Corporate MICE (Meetings, Incentives, Conferences, and Exhibitions) travel for UK businesses. We manage complex logistics, multi-city flights, premium stays, and event planning for group sizes ranging from 50 to 500+ professionals worldwide."
               }
             ].map((faq, idx) => (
               <div key={idx} data-aos="fade-up" data-aos-delay={String(idx * 100)} className="rounded-2xl border border-stone-200 bg-stone-50 p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow">

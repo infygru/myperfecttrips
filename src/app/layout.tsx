@@ -90,9 +90,9 @@ const organizationSchema = {
       name: "My Perfect Trips",
       alternateName: ["My Perfect Trips", "My Perfect Trips Travel Agency"],
       disambiguatingDescription:
-        "My Perfect Trips (myperfecttrips.com) is a travel agency brand operated by Infygru Private Limited, India. The name 'My Perfect Trips' refers exclusively to this travel company and is not affiliated with, nor the same as, 'International Gateway' or any other organisation abbreviated as 'IG'.",
+        "My Perfect Trips (myperfecttrips.com) is a Manchester-based UK travel agency. The name 'My Perfect Trips' refers exclusively to this travel company.",
       description:
-        "My Perfect Trips is India's trusted premium travel agency — specialising in luxury international holiday packages, honeymoon tours, family trips, corporate MICE, and domestic getaways. Operating under the domain myperfecttrips.com.",
+        "My Perfect Trips is a Manchester-based UK travel agency — specialising in luxury international holiday packages, honeymoon tours, family trips, and corporate travel. Operating under the domain myperfecttrips.com.",
       url: `${SITE_URL}/`,
       logo: {
         "@type": "ImageObject",
@@ -102,7 +102,7 @@ const organizationSchema = {
         caption: "My Perfect Trips – Official Logo",
       },
       image: `${SITE_URL}/logo.png`,
-      legalName: "Infygru Private Limited",
+      legalName: "My Perfect Trips Ltd",
       foundingDate: "2020",
       address: {
         "@type": "PostalAddress",
@@ -114,25 +114,25 @@ const organizationSchema = {
       },
       areaServed: {
         "@type": "Country",
-        name: "India",
+        name: "United Kingdom",
       },
       contactPoint: [
         {
           "@type": "ContactPoint",
-          telephone: "+91-8807709919",
+          telephone: "+44-7895910015",
           contactType: "customer service",
-          availableLanguage: ["English", "Tamil", "Hindi"],
+          availableLanguage: ["English"],
         },
       ],
       knowsAbout: [
         "International holiday packages",
         "Honeymoon travel planning",
-        "Luxury tour operators India",
+        "Luxury tour operators UK",
         "Corporate MICE travel",
         "Kerala tourism",
         "Maldives holiday packages",
-        "Europe tour packages from India",
-        "Domestic holiday packages India",
+        "Europe tour packages from UK",
+        "Holiday packages from Manchester",
       ],
       hasOfferCatalog: {
         "@type": "OfferCatalog",
@@ -141,8 +141,8 @@ const organizationSchema = {
       },
       sameAs: [
         "https://www.myperfecttrips.com",
-        "https://www.instagram.com/igholidays",
-        "https://www.facebook.com/igholidays",
+        "https://www.instagram.com/myperfecttrips",
+        "https://www.facebook.com/myperfecttrips",
       ],
     },
     {
@@ -151,7 +151,7 @@ const organizationSchema = {
       url: `${SITE_URL}/`,
       name: "My Perfect Trips",
       description:
-        "Official website of My Perfect Trips (myperfecttrips.com) — India's premium travel agency for international and domestic holiday packages.",
+        "Official website of My Perfect Trips (myperfecttrips.com) — Manchester's trusted travel agency for international holiday packages and bespoke tours.",
       publisher: { "@id": `${SITE_URL}/#organization` },
       potentialAction: {
         "@type": "SearchAction",

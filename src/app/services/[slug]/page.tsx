@@ -17,7 +17,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
     if (!svc) return { title: "Service Not Found | My Perfect Trips" };
     return {
-        title: `${svc.title} in India | My Perfect Trips — ${svc.tagline}`,
+        title: `${svc.title} | My Perfect Trips — ${svc.tagline}`,
         description: svc.seoDescription,
         keywords: svc.seoKeywords.join(", "),
         alternates: { canonical: `${baseUrl}/services/${slug}` },
@@ -270,12 +270,12 @@ export default async function ServiceDetailPage(props: Props) {
                                 <p className="text-xs font-bold uppercase tracking-widest" style={{ color: accent.hex }}>Prefer to Call?</p>
                             </div>
                             <a
-                                href="tel:+918807709919"
+                                href="tel:+447895910015"
                                 className="font-serif text-xl font-medium text-brand-950 hover:opacity-70 transition-opacity block mb-1"
                             >
-                                +91 8807709919
+                                +44 7895910015
                             </a>
-                            <p className="text-stone-400 text-xs">Mon–Sat, 9 AM – 7 PM IST</p>
+                            <p className="text-stone-400 text-xs">Mon–Fri, 9 AM – 6 PM GMT</p>
                         </div>
                     </div>
                 </div>

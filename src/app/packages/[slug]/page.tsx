@@ -40,7 +40,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
             return {
                 title,
                 description,
-                keywords: [pkg.title, destStr, pkg.category, "holiday package", "tour package India", "My Perfect Trips"].filter(Boolean).join(", "),
+                keywords: [pkg.title, destStr, pkg.category, "holiday package UK", "tour package", "My Perfect Trips", "Manchester travel agency"].filter(Boolean).join(", "),
                 alternates: { canonical: canonicalUrl },
                 openGraph: {
                     title,
@@ -103,7 +103,7 @@ export default async function PackageDetailPage(props: Props) {
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const imgUrl = pkg.image ? `${dUrl}/assets/${pkg.image}` : null;
-    const phone = "+91 8807709919";
+    const phone = "+44 7895910015";
 
     // Fetch site settings for logo + payment offers in parallel
     const [siteSettings, paymentOffers] = await Promise.all([
@@ -146,7 +146,7 @@ export default async function PackageDetailPage(props: Props) {
         offers: pkg.price ? {
             "@type": "Offer",
             price: String(pkg.price),
-            priceCurrency: "INR",
+            priceCurrency: "GBP",
             availability: "https://schema.org/InStock",
             url: `${baseUrl}/packages/${pkg.slug}`,
         } : undefined,

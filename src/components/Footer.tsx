@@ -51,7 +51,7 @@ export default async function Footer() {
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const logoUrl  = s?.logo            ? `${dUrl}/assets/${s.logo}` : null;
     const email    = s?.contact_email   || "info@myperfecttrips.com";
-    const phone    = s?.contact_phone   || "+91 8807709919";
+    const phone    = s?.contact_phone   || "+44 7895910015";
     const address  = s?.office_address  || "Bartle House, 9 Oxford Court, Manchester, M2 3WQ";
     const fbUrl    = s?.facebook_url    || "#";
     const igUrl    = s?.instagram_url   || "#";

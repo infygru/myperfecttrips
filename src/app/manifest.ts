@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
     return {
         name: "My Perfect Trips",
         short_name: "My Perfect Trips",
-        description: "India's trusted travel agency — premium holiday packages, honeymoon tours, corporate MICE, and more.",
+        description: "Manchester's trusted UK travel agency — bespoke holiday packages, honeymoon tours, corporate travel, and more.",
         start_url: "/",
         display: "standalone",
         background_color: "#14141a",

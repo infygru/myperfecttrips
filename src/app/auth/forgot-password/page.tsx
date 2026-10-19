@@ -27,9 +27,9 @@ export default function ForgotPasswordPage() {
                     </p>
 
                     <div className="space-y-3">
-                        <a href="tel:+918807709919"
+                        <a href="tel:+447895910015"
                             className="flex w-full items-center justify-center gap-2 h-11 rounded-xl bg-brand-900 text-white text-sm font-semibold hover:bg-brand-800 transition-colors">
-                            Call +91 8807709919
+                            Call +44 7895910015
                         </a>
                         <a href="https://wa.me/918807709919" target="_blank" rel="noopener noreferrer"
                             className="flex w-full items-center justify-center gap-2 h-11 rounded-xl border-2 border-stone-200 text-sm font-semibold text-stone-700 hover:bg-stone-50 transition-colors">

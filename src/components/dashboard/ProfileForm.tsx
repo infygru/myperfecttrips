@@ -234,7 +234,7 @@ export default function ProfileForm({ user }: { user: any }) {
                                 type="tel"
                                 value={info.phone}
                                 onChange={e => setInfo(f => ({ ...f, phone: e.target.value }))}
-                                placeholder="+91 98765 43210"
+                                placeholder="+44 7123 456789"
                                 className="w-full rounded-xl border border-stone-200 py-2.5 pl-9 pr-3 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/10 transition-all"
                             />
                         </div>

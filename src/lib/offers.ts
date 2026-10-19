@@ -36,7 +36,7 @@ const DEFAULT_OFFERS: PaymentOffer[] = [
   {
     id: 3,
     title: '5% cashback on Net Banking',
-    subtitle: 'Valid on all major Indian banks',
+    subtitle: 'Valid on all major UK banks',
     payment_method: 'netbanking',
     discount_label: '5% BACK',
     badge_color: 'green',

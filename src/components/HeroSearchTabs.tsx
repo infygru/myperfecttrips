@@ -481,7 +481,7 @@ export default function HeroSearchTabs() {
                                 <Phone className="h-5 w-5 text-brand-600 flex-shrink-0" />
                                 <div className="flex flex-col w-full min-w-0">
                                     <label htmlFor="usr-phone" className={labelClass}>Mobile No.</label>
-                                    <input id="usr-phone" type="tel" placeholder="+91 98765 43210"
+                                    <input id="usr-phone" type="tel" placeholder="+44 7123 456789"
                                         className={inputClass} value={phone}
                                         onChange={(e) => setPhone(e.target.value)} required />
                                 </div>
