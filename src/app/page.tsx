@@ -44,10 +44,10 @@ export default async function Home() {
   let testimonials: any[] = [];
 
   try { settings = await getSiteSettings(); } catch { }
-  try { allPackages = (await directus.request(readItems("packages" as any, { limit: 100 }))) as any[]; } catch { }
+  try { allPackages = (await directus.request(readItems("Packages" as any, { limit: 100 }))) as any[]; } catch { }
   try {
     latestBlogs = (await directus.request(
-      readItems("blog_posts" as any, { limit: 3, sort: ["-id"] as any })
+      readItems("Blog_Posts" as any, { limit: 3, sort: ["-id"] as any })
     )) as any[];
   } catch { }
   try {

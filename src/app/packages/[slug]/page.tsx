@@ -25,7 +25,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
     try {
         const result = (await directus.request(
-            readItems("packages" as any, { filter: { slug: { _eq: slug } } as any, limit: 1 })
+            readItems("Packages" as any, { filter: { slug: { _eq: slug } } as any, limit: 1 })
         )) as any[];
         const pkg = result?.[0];
         
@@ -75,7 +75,7 @@ export default async function PackageDetailPage(props: Props) {
 
     try {
         const result = (await directus.request(
-            readItems("packages" as any, { filter: { slug: { _eq: slug } } as any, limit: 1 })
+            readItems("Packages" as any, { filter: { slug: { _eq: slug } } as any, limit: 1 })
         )) as any[];
         if (!result?.length) {
             console.error(`[package detail] no package found for slug: "${slug}"`);
@@ -89,7 +89,7 @@ export default async function PackageDetailPage(props: Props) {
 
     // Fetch related packages (same category, exclude current)
     try {
-        const all = (await directus.request(readItems("packages" as any, { limit: 50 }))) as any[];
+        const all = (await directus.request(readItems("Packages" as any, { limit: 50 }))) as any[];
         relatedPackages = all
             .filter((p) => p.id !== pkg.id && (pkg.category ? p.category === pkg.category : true))
             .slice(0, 3);

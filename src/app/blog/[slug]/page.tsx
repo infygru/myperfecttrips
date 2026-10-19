@@ -15,11 +15,11 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
     try {
         let result = (await directus.request(
-            readItems("blog_posts" as any, { filter: { slug: { _eq: slug }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
+            readItems("Blog_Posts" as any, { filter: { slug: { _eq: slug }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
         )) as any[];
         if (!result?.length && /^\d+$/.test(slug)) {
             result = (await directus.request(
-                readItems("blog_posts" as any, { filter: { id: { _eq: Number(slug) }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
+                readItems("Blog_Posts" as any, { filter: { id: { _eq: Number(slug) }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
             )) as any[];
         }
         const post = result?.[0];
@@ -66,18 +66,18 @@ export default async function BlogDetailPage(props: Props) {
 
     try {
         let result = (await directus.request(
-            readItems("blog_posts" as any, { filter: { slug: { _eq: slug }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
+            readItems("Blog_Posts" as any, { filter: { slug: { _eq: slug }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
         )) as any[];
         if (!result?.length && /^\d+$/.test(slug)) {
             result = (await directus.request(
-                readItems("blog_posts" as any, { filter: { id: { _eq: Number(slug) }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
+                readItems("Blog_Posts" as any, { filter: { id: { _eq: Number(slug) }, status: { _in: ["published", "Published", "Live", "live"] } } as any, limit: 1 })
             )) as any[];
         }
         if (!result?.length) return notFound();
         post = result[0];
 
         recentPosts = (await directus.request(
-            readItems("blog_posts" as any, {
+            readItems("Blog_Posts" as any, {
                 filter: { id: { _neq: post.id }, status: { _in: ["published", "Published", "Live", "live"] } } as any,
                 limit: 3,
                 sort: ["-id"] as any,

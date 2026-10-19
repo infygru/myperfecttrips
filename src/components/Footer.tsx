@@ -18,7 +18,7 @@ export default async function Footer() {
 
     try {
         const pkgs = (await directus.request(
-            readItems("packages" as any, {
+            readItems("Packages" as any, {
                 limit: 100,
                 fields: ["title", "slug", "package_type", "destination"] as any,
             })

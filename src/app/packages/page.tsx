@@ -54,7 +54,7 @@ export default async function PackagesPage(props: {
 
     let packages: any[] = [];
     try {
-        packages = (await directus.request(readItems("packages" as any, { limit: 200 }))) as any[];
+        packages = (await directus.request(readItems("Packages" as any, { limit: 200 }))) as any[];
     } catch (err) {
         console.error('[packages page] failed to fetch packages:', err);
     }

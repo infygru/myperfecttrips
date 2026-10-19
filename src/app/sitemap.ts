@@ -31,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let packages: any[] = [];
   try {
     packages = await directus.request(
-      readItems("packages" as any, { fields: ["slug", "date_updated"] as any, limit: 500 })
+      readItems("Packages" as any, { fields: ["slug", "date_updated"] as any, limit: 500 })
     );
   } catch (err) {
     console.error("Sitemap: failed to fetch packages", err);
@@ -49,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let blogs: any[] = [];
   try {
     blogs = await directus.request(
-      readItems("blog_posts" as any, { fields: ["slug", "date_updated"] as any, limit: 500 })
+      readItems("Blog_Posts" as any, { fields: ["slug", "date_updated"] as any, limit: 500 })
     );
   } catch (err) {
     console.error("Sitemap: failed to fetch blog posts", err);
