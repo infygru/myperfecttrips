@@ -11,11 +11,11 @@ export const metadata: Metadata = {
     title: 'Win a FREE Trip for Two | Lucky Draw Giveaway – My Perfect Trips',
     description: 'Enter our FREE holiday lucky draw! Follow @myperfecttrips on Instagram, share our reel with 5 friends, and win a trip worth up to £3,000 to Dubai, Turkey, Paris, or Georgia. Winner announced 31 December 2026.',
     keywords: 'free trip giveaway UK, win free holiday, lucky draw 2026, My Perfect Trips giveaway, Dubai free trip, Paris giveaway, travel competition UK',
-    alternates: { canonical: `${BASE}/win` },
+    alternates: { canonical: `${BASE}/lucky-draw` },
     openGraph: {
         title: 'Win a FREE Holiday for Two — My Perfect Trips Giveaway',
         description: 'Follow us, share our reel with 5 friends, and enter to win a holiday worth up to £3,000. Dubai · Turkey · Paris · Georgia.',
-        url: `${BASE}/win`,
+        url: `${BASE}/lucky-draw`,
         siteName: 'My Perfect Trips',
         type: 'website',
     },
@@ -108,7 +108,7 @@ const schema = {
     startDate: '2026-10-20',
     endDate: '2026-12-31',
     organizer: { '@type': 'TravelAgency', name: 'My Perfect Trips', url: BASE },
-    url: `${BASE}/win`,
+    url: `${BASE}/lucky-draw`,
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
 };
