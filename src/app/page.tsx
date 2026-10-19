@@ -69,7 +69,8 @@ export default async function Home() {
   // Trending destinations — derived from packages.destination + destination_image
   const destMap = new Map<string, { name: string; image: string | null; count: number }>();
   for (const pkg of allPackages) {
-    const name: string = pkg.destination || (Array.isArray(pkg.destinations) && pkg.destinations[0]) || "";
+    const rawName = pkg.destination || (Array.isArray(pkg.destinations) && pkg.destinations[0]) || "";
+    const name: string = typeof rawName === 'string' ? rawName : "";
     if (!name) continue;
     const key = name.toLowerCase();
     if (destMap.has(key)) {
