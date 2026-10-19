@@ -16,8 +16,8 @@ export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  let title = "My Perfect Trips – Official Site | Best Holiday Packages & Flights from India | myperfecttrips.com";
-  let description = "My Perfect Trips (myperfecttrips.com) — India's trusted travel agency. Book premium international & domestic holiday packages, honeymoon tours, family trips, and corporate MICE. Get a free quote today.";
+  let title = "My Perfect Trips – UK Travel Agency | Bespoke Holiday Packages | myperfecttrips.com";
+  let description = "My Perfect Trips — Manchester's trusted travel agency. Book premium international holiday packages, honeymoon tours, family trips, and corporate travel. Get a free quote today.";
   let ogImage = undefined;
   try {
     const settings = await getSiteSettings();
@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    keywords: "holiday packages India, international tour packages, domestic tour packages, honeymoon packages, My Perfect Trips, travel agency India",
+    keywords: "holiday packages UK, international tour packages, honeymoon packages, My Perfect Trips, travel agency Manchester, luxury holidays UK",
     openGraph: { title, description, url: baseUrl, images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: "My Perfect Trips" }] : [], type: "website" },
     twitter: { card: "summary_large_image", title, description, images: ogImage ? [ogImage] : [] },
     alternates: { canonical: baseUrl },

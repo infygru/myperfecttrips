@@ -25,8 +25,8 @@ const syne = Syne({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const defaultTitle = "My Perfect Trips – Official Travel Agency | myperfecttrips.com | Luxury Holiday Packages India";
-  const defaultDesc = "My Perfect Trips (myperfecttrips.com) is India's premier travel agency for luxury international & domestic holiday packages, honeymoon tours, and corporate MICE. 10,000+ happy travellers. Book today.";
+  const defaultTitle = "My Perfect Trips – UK Travel Agency | Luxury Holiday Packages | myperfecttrips.com";
+  const defaultDesc = "My Perfect Trips is a Manchester-based travel agency offering bespoke international holiday packages, honeymoon tours, family travel, and corporate trips. 10,000+ happy travellers. Book today.";
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   try {
@@ -47,7 +47,7 @@ export async function generateMetadata(): Promise<Metadata> {
         url: baseUrl,
         siteName: "My Perfect Trips",
         type: "website",
-        locale: "en_IN",
+        locale: "en_GB",
       },
       twitter: {
         card: "summary_large_image",
@@ -67,7 +67,7 @@ export async function generateMetadata(): Promise<Metadata> {
         url: baseUrl,
         siteName: "My Perfect Trips",
         type: "website",
-        locale: "en_IN",
+        locale: "en_GB",
       },
       twitter: {
         card: "summary_large_image",

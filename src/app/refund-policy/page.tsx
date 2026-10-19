@@ -24,7 +24,7 @@ export default function RefundPolicyPage() {
 
             <section className="container-inner -mt-12 relative z-20">
                 <div className="rounded-[2.5rem] bg-white p-8 sm:p-16 shadow-2xl border border-stone-100 prose prose-stone max-w-none prose-headings:font-serif prose-headings:font-medium prose-headings:text-brand-950 prose-a:text-brand-700">
-                    <p className="lead">At <strong>My Perfect Trips</strong> (Infygru Private Limited), we understand that plans change. This policy outlines our cancellation and refund procedures for bookings made through us.</p>
+                    <p className="lead">At <strong>My Perfect Trips</strong> (My Perfect Trips Ltd), we understand that plans change. This policy outlines our cancellation and refund procedures for bookings made through us.</p>
 
                     <h2>1. Cancellation by the Client</h2>
                     <p>Cancellation charges are calculated from the date we receive your written cancellation notice at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>, and are as follows:</p>
@@ -67,7 +67,7 @@ export default function RefundPolicyPage() {
                     <p>To request a cancellation or discuss a refund, please contact us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a> with your booking reference number.</p>
 
                     <hr />
-                    <p className="text-sm text-stone-500">My Perfect Trips is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
+                    <p className="text-sm text-stone-500">My Perfect Trips Ltd — Registered in England and Wales.</p>
                 </div>
             </section>
         </main>

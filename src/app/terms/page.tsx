@@ -5,7 +5,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
 export const metadata: Metadata = {
     title: "Terms & Conditions | My Perfect Trips",
-    description: "Read the Terms & Conditions for using My Perfect Trips – an official brand of Infygru Private Limited. Governs bookings, payments, cancellations, and use of our services.",
+    description: "Read the Terms & Conditions for using My Perfect Trips – an official brand of My Perfect Trips Ltd. Governs bookings, payments, cancellations, and use of our services.",
     alternates: { canonical: `${BASE}/terms` },
     robots: { index: true, follow: false },
     openGraph: { title: "Terms & Conditions | My Perfect Trips", url: `${BASE}/terms`, siteName: "My Perfect Trips", type: "website" },
@@ -25,13 +25,13 @@ export default function TermsPage() {
 
             <section className="container-inner -mt-12 relative z-20">
                 <div className="rounded-[2.5rem] bg-white p-8 sm:p-16 shadow-2xl border border-stone-100 prose prose-stone max-w-none prose-headings:font-serif prose-headings:font-medium prose-headings:text-brand-950 prose-a:text-brand-700">
-                    <p className="lead">Welcome to <strong>My Perfect Trips</strong>, an official brand of <strong>Infygru Private Limited</strong>. By accessing or using our website and services, you agree to the following Terms &amp; Conditions. Please read them carefully.</p>
+                    <p className="lead">Welcome to <strong>My Perfect Trips</strong>, an official brand of <strong>My Perfect Trips Ltd</strong>. By accessing or using our website and services, you agree to the following Terms &amp; Conditions. Please read them carefully.</p>
 
                     <h2>1. Acceptance of Terms</h2>
                     <p>By using myperfecttrips.com, you confirm that you are at least 18 years old and legally capable of entering into binding agreements. If you are booking on behalf of others, you accept these terms on their behalf as well.</p>
 
                     <h2>2. Services Offered</h2>
-                    <p>My Perfect Trips, operated by Infygru Private Limited, provides travel planning and booking services including but not limited to holiday packages, flight bookings, hotel bookings, visa assistance, and travel insurance referrals. We act as an intermediary between clients and travel service providers.</p>
+                    <p>My Perfect Trips, operated by My Perfect Trips Ltd, provides travel planning and booking services including but not limited to holiday packages, flight bookings, hotel bookings, visa assistance, and travel insurance referrals. We act as an intermediary between clients and travel service providers.</p>
 
                     <h2>3. Booking and Payments</h2>
                     <ul>
@@ -54,16 +54,16 @@ export default function TermsPage() {
                     <p>My Perfect Trips acts as an agent for airlines, hotels, and tour operators. We are not liable for failure to perform, delays, changes, or cancellations caused by or arising out of events beyond our reasonable control, including natural disasters, pandemics, government actions, or supplier insolvencies.</p>
 
                     <h2>8. Intellectual Property</h2>
-                    <p>All content on this website, including text, images, logos, and designs, is the intellectual property of Infygru Private Limited or its licensors and may not be reproduced without written consent.</p>
+                    <p>All content on this website, including text, images, logos, and designs, is the intellectual property of My Perfect Trips Ltd or its licensors and may not be reproduced without written consent.</p>
 
                     <h2>9. Governing Law</h2>
-                    <p>These Terms &amp; Conditions are governed by the laws of India. Any disputes will be subject to the exclusive jurisdiction of the courts in Tamil Nadu, India.</p>
+                    <p>These Terms &amp; Conditions are governed by the laws of England and Wales. Any disputes will be subject to the exclusive jurisdiction of the courts of England and Wales.</p>
 
                     <h2>10. Contact Us</h2>
                     <p>For any queries regarding these Terms &amp; Conditions, please contact us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>.</p>
 
                     <hr />
-                    <p className="text-sm text-stone-500">My Perfect Trips is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
+                    <p className="text-sm text-stone-500">My Perfect Trips Ltd — Registered in England and Wales.</p>
                 </div>
             </section>
         </main>

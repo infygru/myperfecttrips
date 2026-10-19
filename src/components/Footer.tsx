@@ -89,13 +89,13 @@ export default async function Footer() {
                         </Link>
 
                         <p className="text-sm leading-relaxed text-stone-400 max-w-sm">
-                            India's premium travel agency crafting bespoke domestic &amp; international holidays,
-                            honeymoon tours, family packages, corporate MICE, and luxury retreats since 2009.
+                            Manchester-based travel specialists crafting bespoke international holidays,
+                            honeymoon tours, family packages, corporate travel, and luxury retreats.
                         </p>
 
                         {/* Trust badges */}
                         <div className="flex flex-wrap gap-2">
-                            {["15+ Yrs Experience", "10,000+ Happy Travellers", "24/7 Support"].map((b) => (
+                            {["UK Based Agency", "10,000+ Happy Travellers", "24/7 Support"].map((b) => (
                                 <span key={b} className="rounded-full border border-brand-800 bg-brand-900/60 px-3 py-1 text-[10px] font-semibold text-stone-400">
                                     {b}
                                 </span>
@@ -164,20 +164,11 @@ export default async function Footer() {
                                     </li>
                                 ))
                             ) : (
-                                [
-                                    { name: "Kerala Backwaters Tour",    href: "/packages?package_type=domestic" },
-                                    { name: "Rajasthan Heritage Circuit", href: "/packages?package_type=domestic" },
-                                    { name: "Goa Beach Holiday",          href: "/packages?package_type=domestic" },
-                                    { name: "Himachal Pradesh Escape",    href: "/packages?package_type=domestic" },
-                                    { name: "Andaman Island Package",     href: "/packages?package_type=domestic" },
-                                    { name: "Kashmir Paradise Tour",      href: "/packages?package_type=domestic" },
-                                ].map((l) => (
-                                    <li key={l.name}>
-                                        <Link href={l.href} className="text-stone-400 transition-colors hover:text-gold-300">
-                                            {l.name}
-                                        </Link>
-                                    </li>
-                                ))
+                                <li>
+                                    <Link href="/packages?package_type=domestic" className="text-stone-400 transition-colors hover:text-gold-300">
+                                        View All Packages
+                                    </Link>
+                                </li>
                             )}
                             <li className="pt-1">
                                 <Link href="/packages?package_type=domestic"
@@ -204,20 +195,11 @@ export default async function Footer() {
                                     </li>
                                 ))
                             ) : (
-                                [
-                                    { name: "Maldives Luxury Package",  href: "/packages" },
-                                    { name: "Dubai & Abu Dhabi Tour",   href: "/packages" },
-                                    { name: "Thailand Beach Getaway",   href: "/packages" },
-                                    { name: "Bali Honeymoon Package",   href: "/packages" },
-                                    { name: "Singapore Family Tour",    href: "/packages" },
-                                    { name: "Europe Grand Tour",        href: "/packages" },
-                                ].map((l) => (
-                                    <li key={l.name}>
-                                        <Link href={l.href} className="text-stone-400 transition-colors hover:text-gold-300">
-                                            {l.name}
-                                        </Link>
-                                    </li>
-                                ))
+                                <li>
+                                    <Link href="/packages?package_type=international" className="text-stone-400 transition-colors hover:text-gold-300">
+                                        View All Packages
+                                    </Link>
+                                </li>
                             )}
                             <li className="pt-1">
                                 <Link href="/packages?package_type=international"
@@ -298,12 +280,10 @@ export default async function Footer() {
                 {/* ── SEO PARAGRAPH ── */}
                 <div className="mt-10 border-t border-brand-900 pt-10">
                     <p className="text-xs leading-relaxed text-stone-600 max-w-4xl">
-                        <strong className="text-stone-500">My Perfect Trips</strong> is a leading travel agency in India offering premium{" "}
-                        <Link href="/packages?package_type=domestic" className="hover:text-stone-400 transition-colors">domestic tour packages</Link> across
-                        Kerala, Rajasthan, Goa, Himachal Pradesh, Uttarakhand, Andaman, and Kashmir — and handcrafted{" "}
+                        <strong className="text-stone-500">My Perfect Trips</strong> is a Manchester-based travel agency offering premium{" "}
                         <Link href="/packages?package_type=international" className="hover:text-stone-400 transition-colors">international holiday packages</Link>{" "}
-                        to the Maldives, Dubai, Thailand, Bali, Singapore, Europe, and beyond. We specialise in
-                        honeymoon packages, family holidays, corporate MICE, group tours, and visa assistance.
+                        from the UK to destinations including the Maldives, Dubai, Thailand, Bali, Singapore, Europe, and beyond.
+                        We specialise in honeymoon packages, family holidays, corporate travel, group tours, and visa assistance.
                         Book with confidence — our expert team handles every detail.
                     </p>
                 </div>
@@ -314,8 +294,7 @@ export default async function Footer() {
                 <div className="container-inner flex flex-col items-center justify-between gap-4 py-6 sm:flex-row text-xs text-stone-500">
                     <div className="flex flex-col items-center gap-2 sm:items-start">
                         <p>
-                            &copy; {year} {siteName} &mdash; A brand of{" "}
-                            <span className="text-stone-400">Infygru Private Limited</span>. All rights reserved.
+                            &copy; {year} {siteName}. All rights reserved.
                         </p>
                         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 sm:justify-start">
                             <Link href="/privacy-policy"  className="hover:text-stone-300 transition-colors">Privacy</Link>
@@ -326,57 +305,14 @@ export default async function Footer() {
                         </div>
                     </div>
 
-                    {/* Payment icons */}
                     <div className="flex flex-col items-center gap-2 sm:items-end">
-                        <p className="text-[10px] uppercase tracking-widest text-stone-600">Secure Payments</p>
-                        <div className="flex items-center gap-2">
-                            {/* Visa */}
-                            <div className="flex h-7 w-12 items-center justify-center rounded bg-white px-1.5">
-                                <svg viewBox="0 0 780 500" className="h-4 w-auto" aria-label="Visa">
-                                    <path d="M293.2 348.7l33.4-195.7h53.4l-33.4 195.7h-53.4zm246.9-191.3c-10.6-4-27.1-8.3-47.7-8.3-52.6 0-89.6 26.5-89.9 64.5-.3 28.1 26.5 43.7 46.7 53.1 20.7 9.5 27.7 15.6 27.6 24.1-.1 13-16.6 19-31.9 19-21.3 0-32.6-3-50.1-10.3l-6.9-3.1-7.4 43.8c12.4 5.4 35.3 10.1 59.1 10.4 55.8 0 91.9-26.2 92.3-66.8.2-22.2-14-39.1-44.6-53-18.6-9-30-15-29.9-24.1 0-8.1 9.6-16.7 30.5-16.7 17.4-.3 30.1 3.5 39.8 7.5l4.8 2.3 7.6-44.4zm136.8-4.4h-41.1c-12.7 0-22.3 3.5-27.9 16.1l-79.2 179.6h56l11.2-29.2 68.2.1c1.6 6.8 6.5 29.1 6.5 29.1h49.4l-43.1-195.7zm-65.3 124.5l21.1-54.2c-.3.5 4.3-11.2 7-18.4l3.5 16.6 12 55.9-43.6.1zM240.8 153l-52.1 133.5-5.6-27.2c-9.7-31.5-40-65.6-73.8-82.7l47.7 171.8.3.3h55.9l83.2-195.7h-55.6z" fill="#1434CB"/>
-                                    <path d="M140.2 153H55.5l-.7 4c66.2 16.1 110 55 128.2 101.7l-18.5-89.2c-3.2-12.3-12.5-16-24.3-16.5z" fill="#F9A51A"/>
-                                </svg>
-                            </div>
-
-                            {/* Mastercard */}
-                            <div className="flex h-7 w-12 items-center justify-center rounded bg-[#1a1a1a] px-1.5">
-                                <svg viewBox="0 0 131.39 86.9" className="h-5 w-auto" aria-label="Mastercard">
-                                    <rect width="131.39" height="86.9" rx="8" fill="#252525"/>
-                                    <circle cx="49.02" cy="43.45" r="28.25" fill="#EB001B"/>
-                                    <circle cx="82.37" cy="43.45" r="28.25" fill="#F79E1B"/>
-                                    <path d="M65.7 19.73a28.24 28.24 0 0 1 0 47.44 28.24 28.24 0 0 1 0-47.44z" fill="#FF5F00"/>
-                                </svg>
-                            </div>
-
-                            {/* UPI */}
-                            <div className="flex h-7 w-12 items-center justify-center rounded bg-white px-1.5">
-                                <svg viewBox="0 0 200 80" className="h-4 w-auto" aria-label="UPI">
-                                    <text x="50%" y="58%" dominantBaseline="middle" textAnchor="middle"
-                                        fontFamily="Arial, sans-serif" fontWeight="900" fontSize="38" fill="#097939">
-                                        UPI
-                                    </text>
-                                </svg>
-                            </div>
-
-                            {/* RuPay */}
-                            <div className="flex h-7 w-14 items-center justify-center rounded bg-white px-1.5">
-                                <svg viewBox="0 0 220 80" className="h-4 w-auto" aria-label="RuPay">
-                                    <text x="50%" y="58%" dominantBaseline="middle" textAnchor="middle"
-                                        fontFamily="Arial, sans-serif" fontWeight="900" fontSize="30" fill="#1a4f99">
-                                        RuPay
-                                    </text>
-                                </svg>
-                            </div>
-
-                            {/* Razorpay */}
-                            <div className="flex h-7 w-14 items-center justify-center rounded bg-[#072654] px-1.5">
-                                <svg viewBox="0 0 200 70" className="h-4 w-auto" aria-label="Razorpay">
-                                    <text x="50%" y="58%" dominantBaseline="middle" textAnchor="middle"
-                                        fontFamily="Arial, sans-serif" fontWeight="700" fontSize="22" fill="#3395FF">
-                                        razorpay
-                                    </text>
-                                </svg>
-                            </div>
+                        <p className="text-[10px] uppercase tracking-widest text-stone-600">Trusted &amp; Secure</p>
+                        <div className="flex items-center gap-3 text-xs text-stone-500">
+                            <span>ATOL Protected</span>
+                            <span className="text-stone-700">·</span>
+                            <span>ABTA Member</span>
+                            <span className="text-stone-700">·</span>
+                            <span>IATA Accredited</span>
                         </div>
                     </div>
                 </div>

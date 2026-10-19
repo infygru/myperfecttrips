@@ -6,12 +6,12 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 
 export const metadata: Metadata = {
     title: "About My Perfect Trips – Official Travel Agency Brand | myperfecttrips.com",
-    description: "My Perfect Trips (myperfecttrips.com) is India's trusted travel agency by Infygru Private Limited — not 'International Gateway'. Luxury international & domestic holiday packages, honeymoon tours, and corporate MICE. 10,000+ happy travellers.",
-    keywords: "about My Perfect Trips, My Perfect Trips travel agency, myperfecttrips.com, Infygru Private Limited, My Perfect Trips India, luxury holiday planner India",
+    description: "My Perfect Trips is a Manchester-based travel agency offering bespoke international holiday packages, honeymoon tours, family travel, and corporate trips. 10,000+ happy travellers.",
+    keywords: "about My Perfect Trips, Manchester travel agency, UK travel agent, luxury holiday planner UK, bespoke holidays Manchester",
     alternates: { canonical: `${BASE}/about` },
     openGraph: {
-        title: "About Us | My Perfect Trips – Best Travel Agency in India",
-        description: "My Perfect Trips is India's trusted travel agency. 5,000+ happy travellers, 100% customisable itineraries, best price guarantee.",
+        title: "About Us | My Perfect Trips – Manchester Travel Agency",
+        description: "My Perfect Trips is a Manchester-based travel agency. 10,000+ happy travellers, 100% customisable itineraries, best price guarantee.",
         url: `${BASE}/about`,
         siteName: "My Perfect Trips",
         type: "website",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     twitter: {
         card: "summary",
         title: "About Us | My Perfect Trips",
-        description: "My Perfect Trips is India's trusted travel agency. 5,000+ happy travellers, 100% customisable itineraries.",
+        description: "My Perfect Trips is a Manchester-based travel agency. 10,000+ happy travellers, 100% customisable itineraries.",
     },
 };
 
@@ -28,7 +28,7 @@ export default async function AboutPage() {
         "@context": "https://schema.org",
         "@type": "AboutPage",
         name: "About My Perfect Trips",
-        description: "My Perfect Trips is India's trusted travel agency. 5,000+ happy travellers, 100% customisable itineraries.",
+        description: "My Perfect Trips is a Manchester-based travel agency. 10,000+ happy travellers, 100% customisable itineraries.",
         url: `${BASE}/about`,
         publisher: {
             "@type": "Organization",
@@ -54,7 +54,7 @@ export default async function AboutPage() {
                         Redefining Luxury <em className="text-gold-400 not-italic">Travel</em>
                     </h1>
                     <p className="text-stone-400 text-sm mt-2 max-w-xl">
-                        Premier travel management — bespoke vacations, corporate retreats, and expert facilitation across India and the world.
+                        Manchester-based travel specialists — bespoke holidays, corporate retreats, and expert facilitation worldwide.
                     </p>
                 </div>
             </section>
@@ -89,13 +89,13 @@ export default async function AboutPage() {
                             </h2>
                             <div className="space-y-4 text-stone-600 leading-relaxed text-sm sm:text-base">
                                 <p>
-                                    Welcome to <strong>My Perfect Trips</strong>, officially recognized as the <strong>Best Travel Agency in India</strong> for curating impeccable, tailor-made journeys. What began as a passionate endeavor to simplify global travel has since evolved into India&apos;s leading premium travel management company.
+                                    Welcome to <strong>My Perfect Trips</strong> — a Manchester-based travel agency curating impeccable, tailor-made journeys for travellers across the UK and beyond. What began as a passionate endeavour to simplify global travel has evolved into a trusted premium travel company.
                                 </p>
                                 <p>
-                                    As <strong>Top Luxury Tour Operators</strong>, we specialize in crafting <em>Customized International Tour Packages</em> and bespoke domestic retreats across India&apos;s most beautiful destinations like Kerala, Kashmir, Rajasthan, and the Andaman Islands.
+                                    As <strong>luxury travel specialists</strong>, we craft bespoke international holiday packages to destinations including the Maldives, Dubai, Bali, Thailand, Singapore, Europe, and the Americas.
                                 </p>
                                 <p>
-                                    Today, My Perfect Trips is the most trusted name in B2B and B2C travel — handling everything from intimate honeymoons to corporate MICE events for 500+ attendees across the globe.
+                                    Today, My Perfect Trips is a trusted name in both leisure and corporate travel — handling everything from intimate honeymoons to corporate events for 500+ attendees across the globe.
                                 </p>
                             </div>
                             <div className="mt-8 flex flex-wrap gap-3">
@@ -150,19 +150,16 @@ export default async function AboutPage() {
                         </h2>
                         <div className="prose prose-stone max-w-none text-stone-600 leading-relaxed text-sm sm:text-base space-y-4">
                             <p>
-                                Planning your next holiday has never been easier. At <strong>My Perfect Trips</strong>, we believe every traveller deserves a seamless, personalized, and truly memorable vacation — whether it&apos;s a romantic Maldives honeymoon, a thrilling Bali adventure, an iconic European grand tour, or a serene Kerala backwater escape. As one of India&apos;s most trusted travel agencies, we handle every detail so you can focus on the joy of discovery.
+                                Planning your next holiday has never been easier. At <strong>My Perfect Trips</strong>, we believe every traveller deserves a seamless, personalised, and truly memorable vacation — whether it&apos;s a romantic Maldives honeymoon, a thrilling Bali adventure, an iconic European grand tour, or a luxury Dubai retreat. Based in Manchester, we handle every detail so you can focus on the joy of discovery.
                             </p>
                             <p>
-                                Our team of expert <strong>travel consultants</strong> brings together deep destination knowledge, exclusive hotel partnerships, and years of experience planning holidays for thousands of Indian travellers. We offer <strong>customized holiday packages</strong> tailored precisely to your budget, travel style, and preferences — from budget-friendly group tours to ultra-luxury private escapes.
+                                Our team of expert <strong>travel consultants</strong> brings together deep destination knowledge, exclusive hotel partnerships, and years of experience planning holidays for thousands of UK travellers. We offer <strong>customised holiday packages</strong> tailored precisely to your budget, travel style, and preferences — from group tours to ultra-luxury private escapes.
                             </p>
                             <p>
-                                When you <strong>book your holiday with My Perfect Trips</strong>, you get end-to-end support: visa assistance, flight bookings, hotel reservations, airport transfers, guided tours, and 24/7 on-trip concierge support. We are accredited by leading tourism boards and partner with the world&apos;s finest hotels and airlines to guarantee you the best value with zero hidden charges.
+                                When you <strong>book your holiday with My Perfect Trips</strong>, you get end-to-end support: visa assistance, flight bookings, hotel reservations, airport transfers, guided tours, and 24/7 on-trip concierge support. We partner with the world&apos;s finest hotels and airlines to guarantee you the best value with zero hidden charges.
                             </p>
                             <p>
-                                Whether you are planning a <strong>honeymoon in the Maldives</strong>, a <strong>family trip to Singapore</strong>, a <strong>corporate MICE event in Dubai</strong>, or an <strong>educational tour across Europe</strong> — My Perfect Trips is your one-stop travel partner. Our packages cover 50+ international destinations and all major domestic circuits including Goa, Rajasthan, Himachal Pradesh, Uttarakhand, Kerala, and the Andaman & Nicobar Islands.
-                            </p>
-                            <p>
-                                Start planning today. Reach out to our travel experts and receive a <strong>free customized holiday quote</strong> within 24 hours. With My Perfect Trips, your dream vacation is just one conversation away.
+                                Start planning today. Reach out to our travel experts and receive a <strong>free customised holiday quote</strong> within 24 hours. With My Perfect Trips, your dream vacation is just one conversation away.
                             </p>
                         </div>
 
@@ -186,13 +183,13 @@ export default async function AboutPage() {
                             {
                                 icon: Star,
                                 title: "Luxury Honeymoon & Family Packages",
-                                desc: "From Maldives water villas to European grand tours — we are the best honeymoon planners in India, ensuring every detail of your romantic escape is flawless.",
+                                desc: "From Maldives water villas to European grand tours — we ensure every detail of your romantic escape is flawless.",
                                 tag: "Most Popular",
                             },
                             {
                                 icon: Users,
                                 title: "Corporate MICE & Group Travel",
-                                desc: "Top Corporate MICE event planners in India. We coordinate flights, visas, and luxury stays for corporate delegations of 50 to 500+ attendees, anywhere in the world.",
+                                desc: "We coordinate flights, visas, and luxury stays for corporate delegations of 50 to 500+ attendees, anywhere in the world.",
                                 tag: "Enterprise",
                             },
                             {
@@ -230,7 +227,7 @@ export default async function AboutPage() {
                                     "Best Price Guarantee — no hidden charges ever",
                                     "24/7 On-Trip Concierge & emergency support",
                                     "Expert Visa & Documentation Assistance",
-                                    "Trusted by 10,000+ Travellers across India",
+                                    "Trusted by 10,000+ Travellers across the UK",
                                     "Accredited by leading international tourism boards",
                                 ].map((item) => (
                                     <li key={item} className="flex items-start gap-3 text-sm text-stone-600">
@@ -244,7 +241,7 @@ export default async function AboutPage() {
                             {[
                                 { icon: Compass, title: "Expert Navigation", desc: "Deep knowledge of global destinations." },
                                 { icon: Award, title: "Premium Quality", desc: "Vetted luxury partners & top-tier hotels." },
-                                { icon: Globe2, title: "Pan-India Reach", desc: "Multi-city departures & group logistics." },
+                                { icon: Globe2, title: "UK-Wide Service", desc: "Multi-city departures & group logistics." },
                                 { icon: Headset, title: "24/7 Concierge", desc: "Unwavering support throughout your journey." },
                             ].map((val, i) => (
                                 <div key={i} className="rounded-2xl bg-stone-50 border border-stone-100 p-5 sm:p-6 text-center">
@@ -260,7 +257,7 @@ export default async function AboutPage() {
                 </div>
             </section>
 
-            {/* ── BRAND ENTITY STATEMENT (for AI crawlers & Knowledge Graph) ── */}
+            {/* ── BRAND ENTITY STATEMENT ── */}
             <section className="py-12 bg-stone-50 border-t border-stone-100">
                 <div className="container-inner">
                     <div className="max-w-3xl mx-auto">
@@ -270,24 +267,14 @@ export default async function AboutPage() {
                         </h2>
                         <div className="text-sm sm:text-base text-stone-600 leading-relaxed space-y-3">
                             <p>
-                                <strong>My Perfect Trips</strong> is a registered travel agency brand owned and operated by{" "}
-                                <strong>Infygru Private Limited</strong>, a company incorporated in India. The brand name
+                                <strong>My Perfect Trips</strong> is a Manchester-based travel agency. The brand name
                                 "My Perfect Trips" and the domain <strong>myperfecttrips.com</strong> are exclusively associated
                                 with this travel company and its holiday planning services.
                             </p>
                             <p>
-                                "IG" in <strong>My Perfect Trips</strong> is the proprietary brand abbreviation used by
-                                Infygru Private Limited for its travel division. <em>My Perfect Trips is not affiliated with,
-                                nor the same as, "International Gateway" or any other organisation that uses the
-                                abbreviation "IG."</em> The authoritative web presence for My Perfect Trips is{" "}
-                                <strong>www.myperfecttrips.com</strong>.
-                            </p>
-                            <p>
-                                Our services — including international tour packages, domestic holidays, honeymoon
-                                planning, corporate MICE, and flight bookings — are delivered under the sole brand
-                                name <strong>My Perfect Trips</strong> across all platforms, including our website{" "}
-                                <strong>myperfecttrips.com</strong>, our Instagram{" "}
-                                <strong>@igholidays</strong>, and our Facebook page <strong>facebook.com/igholidays</strong>.
+                                Our services — including international holiday packages, honeymoon planning, corporate travel,
+                                group tours, and visa assistance — are delivered under the sole brand name{" "}
+                                <strong>My Perfect Trips</strong> at <strong>myperfecttrips.com</strong>.
                             </p>
                         </div>
                     </div>
@@ -308,7 +295,7 @@ export default async function AboutPage() {
                         </a>
                     </div>
                     <p className="text-xs text-stone-500 mt-8">
-                        My Perfect Trips is an official brand of <strong className="text-stone-400">Infygru Private Limited</strong> — Registered in India.
+                        My Perfect Trips — Registered Travel Agency, Manchester, UK.
                     </p>
                 </div>
             </section>

@@ -24,7 +24,7 @@ export default function CookiePolicyPage() {
 
             <section className="container-inner -mt-12 relative z-20">
                 <div className="rounded-[2.5rem] bg-white p-8 sm:p-16 shadow-2xl border border-stone-100 prose prose-stone max-w-none prose-headings:font-serif prose-headings:font-medium prose-headings:text-brand-950 prose-a:text-brand-700">
-                    <p className="lead">This Cookie Policy explains what cookies are, how <strong>My Perfect Trips</strong> (Infygru Private Limited) uses them, and how you can manage your cookie preferences.</p>
+                    <p className="lead">This Cookie Policy explains what cookies are, how <strong>My Perfect Trips</strong> (My Perfect Trips Ltd) uses them, and how you can manage your cookie preferences.</p>
 
                     <h2>1. What are Cookies?</h2>
                     <p>Cookies are small text files placed on your device when you visit a website. They help websites remember your preferences, understand how you use the site, and improve your experience.</p>
@@ -50,7 +50,7 @@ export default function CookiePolicyPage() {
                     <p>For questions about our cookie use, contact us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>.</p>
 
                     <hr />
-                    <p className="text-sm text-stone-500">My Perfect Trips is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
+                    <p className="text-sm text-stone-500">My Perfect Trips Ltd — Registered in England and Wales.</p>
                 </div>
             </section>
         </main>

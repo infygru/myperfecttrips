@@ -9,7 +9,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
 export const metadata: Metadata = {
     title: "Contact Us | My Perfect Trips – Travel Enquiries & Bookings",
     description: "Get in touch with My Perfect Trips for holiday packages, group bookings, visa assistance, and corporate travel. Call, WhatsApp, or email our expert travel consultants.",
-    keywords: "contact My Perfect Trips, travel enquiry India, holiday booking contact, travel agent Chennai",
+    keywords: "contact My Perfect Trips, travel enquiry UK, holiday booking Manchester, travel agent Manchester",
     alternates: { canonical: `${BASE}/contact` },
     openGraph: {
         title: "Contact Us | My Perfect Trips – Travel Enquiries & Bookings",

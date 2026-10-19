@@ -10,7 +10,7 @@ import SortSelect from "@/components/SortSelect";
 export async function generateMetadata(): Promise<Metadata> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
     const title = "Holiday Packages | My Perfect Trips – Premium Travel Agency";
-    const description = "Explore our handpicked collection of luxury holiday packages across India and the world. Customised itineraries for every traveller.";
+    const description = "Explore our handpicked collection of luxury international holiday packages. Bespoke itineraries for every traveller, from the UK.";
 
     return {
         title,
@@ -315,15 +315,15 @@ export default async function PackagesPage(props: {
                     <h2 className="font-serif text-2xl sm:text-3xl font-medium text-brand-950 mb-6">Explore Premium Holiday Packages with My Perfect Trips</h2>
                     <div className="prose prose-stone max-w-none text-stone-600 leading-relaxed text-sm sm:text-base space-y-4">
                         <p>
-                            Welcome to the ultimate collection of <strong>luxury holiday packages</strong> curated by the expert travel planners at My Perfect Trips. Whether you are looking for a romantic honeymoon escape, a thrilling family vacation, or a seamless corporate MICE trip, we have the perfect itinerary for you. We specialise in both domestic tours within India and international holiday packages to over 50 prominent global destinations.
+                            Welcome to the ultimate collection of <strong>luxury holiday packages</strong> curated by the expert travel planners at My Perfect Trips. Whether you are looking for a romantic honeymoon escape, a thrilling family vacation, or a seamless corporate trip, we have the perfect itinerary for you. We specialise in international holiday packages to over 50 destinations worldwide.
                         </p>
-                        <h3 className="font-serif text-xl font-medium text-brand-950 mt-8 mb-3">Popular International & Domestic Destinations</h3>
+                        <h3 className="font-serif text-xl font-medium text-brand-950 mt-8 mb-3">Popular International Destinations</h3>
                         <p>
-                            Our <strong>international tour packages from India</strong> cover highly sought-after locations like the Maldives, Bali, Dubai, Thailand, Singapore, and extensive European circuits. For domestic travelers, we offer deeply immersive experiences in Kashmir, Kerala, Rajasthan, Goa, and the Andaman Islands. We handpick top-tier accommodations, arrange seamless local transfers, and ensure you have access to exclusive sightseeing tours with expert guides.
+                            Our <strong>international holiday packages</strong> from the UK cover highly sought-after locations like the Maldives, Bali, Dubai, Thailand, Singapore, and extensive European circuits. We handpick top-tier accommodations, arrange seamless local transfers, and ensure you have access to exclusive sightseeing tours with expert guides.
                         </p>
-                        <h3 className="font-serif text-xl font-medium text-brand-950 mt-8 mb-3">Why Book Your Tour With Us?</h3>
+                        <h3 className="font-serif text-xl font-medium text-brand-950 mt-8 mb-3">Why Book Your Holiday With Us?</h3>
                         <p>
-                            As one of India&apos;s most trusted <strong>luxury tour operators</strong>, My Perfect Trips guarantees 100% customisable itineraries. We understand that no two travellers are the same. That is why our travel consultants work closely with you to design a tailored trip that fits your budget, time, and specific interests. With our "Best Price Guarantee," you can book with confidence knowing there are absolutely zero hidden fees. Plus, our 24/7 on-trip concierge service provides total peace of mind throughout your entire journey.
+                            As one of Manchester&apos;s most trusted <strong>luxury travel agencies</strong>, My Perfect Trips guarantees 100% customisable itineraries. We understand that no two travellers are the same. That is why our travel consultants work closely with you to design a tailored trip that fits your budget, time, and specific interests. With our "Best Price Guarantee," you can book with confidence knowing there are absolutely zero hidden fees. Plus, our 24/7 on-trip concierge service provides total peace of mind throughout your entire journey.
                         </p>
                         <p>
                             Browse our extensive list of holiday packages above, filter by destination, duration, or budget, and reach out to our team to get your free customised quote today!

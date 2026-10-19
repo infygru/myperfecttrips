@@ -1,7 +1,7 @@
 const RESEND_API_KEY  = process.env.RESEND_API_KEY || '';
 const FROM_EMAIL      = process.env.RESEND_FROM_EMAIL || 'My Perfect Trips <bookings@myperfecttrips.com>';
 const ADMIN_EMAIL     = process.env.ADMIN_EMAIL || 'info@myperfecttrips.com';
-const NOTIFY_EMAIL    = 'igholidays.in@gmail.com';
+const NOTIFY_EMAIL    = process.env.ADMIN_EMAIL || 'info@myperfecttrips.com';
 const ADMIN_EMAILS    = [ADMIN_EMAIL, NOTIFY_EMAIL];
 const SITE_URL        = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
 

@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="container-inner -mt-12 relative z-20">
                 <div className="rounded-[2.5rem] bg-white p-8 sm:p-16 shadow-2xl border border-stone-100 prose prose-stone max-w-none prose-headings:font-serif prose-headings:font-medium prose-headings:text-brand-950 prose-a:text-brand-700">
-                    <p className="lead">Your privacy matters to us. This Privacy Policy explains how <strong>Infygru Private Limited</strong> (operating as <strong>My Perfect Trips</strong>) collects, uses, and safeguards your personal information.</p>
+                    <p className="lead">Your privacy matters to us. This Privacy Policy explains how <strong>My Perfect Trips Ltd</strong> (operating as <strong>My Perfect Trips</strong>) collects, uses, and safeguards your personal information.</p>
 
                     <h2>1. Information We Collect</h2>
                     <p>We may collect the following personal information:</p>
@@ -73,7 +73,7 @@ export default function PrivacyPolicyPage() {
                     <p>For privacy-related queries: <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a></p>
 
                     <hr />
-                    <p className="text-sm text-stone-500">My Perfect Trips is an official brand of <strong>Infygru Private Limited</strong>. Registered in India.</p>
+                    <p className="text-sm text-stone-500">My Perfect Trips Ltd — Registered in England and Wales.</p>
                 </div>
             </section>
         </main>
