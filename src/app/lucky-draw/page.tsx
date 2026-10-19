@@ -8,12 +8,12 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
 
 export const metadata: Metadata = {
     title: 'Win a FREE Holiday for One | Lucky Draw – My Perfect Trips',
-    description: 'Enter our FREE holiday lucky draw! Follow @myperfecttrips, share our reel with 5 friends, and win a trip worth up to £3,000 to Dubai, Turkey, Paris, or Georgia. Winner announced 31 December 2026.',
+    description: 'Enter our FREE holiday lucky draw! Follow @myperfecttrips, share our reel with 5 friends, and win a free trip to Dubai, Turkey, Paris, or Georgia. Winner announced 31 December 2026.',
     keywords: 'free trip giveaway UK, win free holiday, lucky draw 2026, My Perfect Trips giveaway, Dubai free trip, travel competition UK',
     alternates: { canonical: `${BASE}/lucky-draw` },
     openGraph: {
         title: 'Win a FREE Holiday for One — My Perfect Trips',
-        description: 'Follow us, share our reel with 5 friends, and win a holiday worth up to £3,000!',
+        description: 'Follow us, share our reel with 5 friends, and win a free holiday!',
         url: `${BASE}/lucky-draw`,
         siteName: 'My Perfect Trips',
         type: 'website',
@@ -36,7 +36,7 @@ const schema = {
     '@context': 'https://schema.org',
     '@type': 'Event',
     name: 'My Perfect Trips Free Holiday Lucky Draw 2026',
-    description: 'Win a free trip for one lucky winner to Dubai, Turkey, Paris, or Georgia worth up to £3,000.',
+    description: 'Win a free trip for one lucky winner to Dubai, Turkey, Paris, or Georgia.',
     startDate: '2026-10-20',
     endDate: '2026-12-31',
     organizer: { '@type': 'TravelAgency', name: 'My Perfect Trips', url: BASE },
@@ -126,7 +126,7 @@ export default function LuckyDrawPage() {
                             <span className="text-yellow-200">FOR ONE!</span>
                         </h1>
                         <p className="mt-3 text-white font-bold text-base sm:text-xl">
-                            ✈️ Worth up to <span className="text-yellow-200 text-xl sm:text-2xl">£3,000</span> — Flights · Hotel · Transfers included
+                            ✈️ Flights · Hotel · Transfers — All Included
                         </p>
                     </div>
 
@@ -207,7 +207,7 @@ export default function LuckyDrawPage() {
                 <div className="ticker-track flex items-center whitespace-nowrap w-max">
                     {[0, 1].map(i => (
                         <div key={i} className="flex items-center gap-6 px-6">
-                            {['🏆 ONE LUCKY WINNER', '✈️ FLIGHTS INCLUDED', '🏨 HOTEL INCLUDED', '🚗 TRANSFERS INCLUDED', '💰 WORTH UP TO £3,000', '🇦🇪 DUBAI', '🇹🇷 TURKEY', '🇫🇷 PARIS', '🇬🇪 GEORGIA', '📸 SHARE & WIN'].map(item => (
+                            {['🏆 ONE LUCKY WINNER', '✈️ FLIGHTS INCLUDED', '🏨 HOTEL INCLUDED', '🚗 TRANSFERS INCLUDED', '🇦🇪 DUBAI', '🇹🇷 TURKEY', '🇫🇷 PARIS', '🇬🇪 GEORGIA', '📸 SHARE & WIN'].map(item => (
                                 <span key={item} className="text-rose-700 font-black text-xs tracking-widest uppercase">
                                     {item} <span className="text-rose-400 mx-1">·</span>
                                 </span>
@@ -301,7 +301,7 @@ export default function LuckyDrawPage() {
                             { n: '01', text: 'Open to UK residents aged 18 and over only.' },
                             { n: '02', text: 'Must follow @myperfecttrips on Instagram and share the giveaway reel with at least 5 friends.' },
                             { n: '03', text: 'One entry per person. Duplicate or fraudulent entries will be disqualified.' },
-                            { n: '04', text: 'Prize: one free holiday for one person, worth up to £3,000 — to Dubai, Turkey, Paris, or Georgia. Subject to availability.' },
+                            { n: '04', text: 'Prize: one free holiday for one person — to Dubai, Turkey, Paris, or Georgia (winner\'s choice). Subject to availability and travel dates agreed with My Perfect Trips.' },
                             { n: '05', text: 'Includes return flights from a UK airport and hotel accommodation. Travel insurance and personal expenses not included.' },
                             { n: '06', text: 'Winner chosen at random and announced on 31 December 2026 via @myperfecttrips on Instagram.' },
                             { n: '07', text: 'The winner must claim their prize within 30 days of announcement. Unclaimed prizes are forfeit. No cash alternative.' },
