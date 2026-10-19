@@ -11,8 +11,8 @@ const DESTINATIONS = [
 ];
 
 // text-base (16px) prevents iOS Safari from auto-zooming on input focus
-const inputClass = "w-full pl-10 pr-4 py-3.5 rounded-xl bg-white/15 border border-white/25 text-white placeholder-white/40 focus:outline-none focus:border-white/70 focus:bg-white/20 transition-all text-base sm:text-sm backdrop-blur-sm";
-const labelClass = "block text-xs font-bold uppercase tracking-widest text-white/70 mb-2";
+const inputClass = "w-full pl-10 pr-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all text-base sm:text-sm";
+const labelClass = "block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2";
 
 export default function LuckyDrawForm() {
     const [form, setForm] = useState({
@@ -105,7 +105,7 @@ export default function LuckyDrawForm() {
             <div>
                 <label className={labelClass}>Full Name <span className="text-red-400 normal-case tracking-normal">*</span></label>
                 <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input type="text" name="name" required value={form.name} onChange={handleChange}
                         placeholder="Your full name" className={inputClass} />
                 </div>
@@ -115,7 +115,7 @@ export default function LuckyDrawForm() {
             <div>
                 <label className={labelClass}>Email Address <span className="text-red-400 normal-case tracking-normal">*</span></label>
                 <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input type="email" name="email" required value={form.email} onChange={handleChange}
                         placeholder="you@example.com" className={inputClass} />
                 </div>
@@ -123,9 +123,9 @@ export default function LuckyDrawForm() {
 
             {/* Phone */}
             <div>
-                <label className={labelClass}>Phone <span className="text-white/40 normal-case tracking-normal font-normal">(optional)</span></label>
+                <label className={labelClass}>Phone <span className="text-slate-400 normal-case tracking-normal font-normal">(optional)</span></label>
                 <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input type="tel" name="phone" value={form.phone} onChange={handleChange}
                         placeholder="+44 7123 456789" className={inputClass} />
                 </div>
@@ -135,11 +135,11 @@ export default function LuckyDrawForm() {
             <div>
                 <label className={labelClass}>Instagram Handle <span className="text-red-400 normal-case tracking-normal">*</span></label>
                 <div className="relative">
-                    <Instagram className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+                    <Instagram className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input type="text" name="instagram_handle" required value={form.instagram_handle} onChange={handleChange}
                         placeholder="@yourusername" className={inputClass} />
                 </div>
-                <p className="mt-1.5 text-[11px] text-white/50">You must be following @myperfecttrips to qualify.</p>
+                <p className="mt-1.5 text-[11px] text-slate-400">You must be following @myperfecttrips to qualify.</p>
             </div>
 
             {/* Destination */}
@@ -164,7 +164,7 @@ export default function LuckyDrawForm() {
                 <label className={labelClass}>Proof Screenshot <span className="text-stone-600 normal-case tracking-normal font-normal">(recommended)</span></label>
                 <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="cursor-pointer border-2 border-dashed border-white/25 hover:border-white/60 rounded-2xl p-5 flex flex-col items-center gap-3 transition-all hover:bg-white/10">
+                    className="cursor-pointer border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-5 flex flex-col items-center gap-3 transition-all hover:bg-blue-50/50">
                     {screenshotPreview ? (
                         <img src={screenshotPreview} alt="Preview" className="max-h-36 rounded-xl object-contain" />
                     ) : (
@@ -173,8 +173,8 @@ export default function LuckyDrawForm() {
                                 <Upload className="w-6 h-6 text-stone-400" />
                             </div>
                             <div className="text-center">
-                                <p className="text-stone-300 text-sm font-medium">Upload your screenshot</p>
-                                <p className="text-stone-600 text-xs mt-0.5">Show you&apos;ve followed us &amp; shared the reel · JPG / PNG · max 10 MB</p>
+                                <p className="text-slate-600 text-sm font-medium">Upload your screenshot</p>
+                                <p className="text-slate-400 text-xs mt-0.5">Show you&apos;ve followed us &amp; shared the reel · JPG / PNG · max 10 MB</p>
                             </div>
                         </>
                     )}
@@ -183,7 +183,7 @@ export default function LuckyDrawForm() {
                 {screenshotPreview && (
                     <button type="button"
                         onClick={() => { setScreenshot(null); setScreenshotPreview(null); }}
-                        className="mt-2 text-xs text-white/50 hover:text-red-300 transition-colors">
+                        className="mt-2 text-xs text-slate-400 hover:text-red-500 transition-colors">
                         Remove screenshot
                     </button>
                 )}
@@ -199,7 +199,7 @@ export default function LuckyDrawForm() {
 
             {/* Submit */}
             <button type="submit" disabled={loading}
-                className="w-full py-4 rounded-xl bg-white hover:bg-yellow-50 text-rose-600 font-black text-base shadow-[0_6px_30px_rgba(255,255,255,0.25)] hover:shadow-[0_8px_40px_rgba(255,255,255,0.35)] transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0">
+                className="w-full py-4 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-black text-base shadow-[0_4px_20px_rgba(14,165,233,0.4)] hover:shadow-[0_6px_28px_rgba(14,165,233,0.55)] transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0">
                 {loading ? (
                     <span className="flex items-center justify-center gap-2">
                         <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
@@ -216,9 +216,9 @@ export default function LuckyDrawForm() {
                 )}
             </button>
 
-            <p className="text-center text-[11px] text-white/40 leading-relaxed">
+            <p className="text-center text-[11px] text-slate-400 leading-relaxed">
                 By entering you agree to our{' '}
-                <a href="/terms" className="underline underline-offset-2 hover:text-white/70 transition-colors">terms &amp; conditions</a>.
+                <a href="/terms" className="underline underline-offset-2 hover:text-slate-600 transition-colors">terms &amp; conditions</a>.
                 One entry per person. Open to UK residents 18+. Winner announced 31 December 2026.
             </p>
         </form>

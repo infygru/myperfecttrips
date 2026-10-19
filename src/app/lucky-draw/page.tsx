@@ -218,36 +218,25 @@ export default function LuckyDrawPage() {
             </div>
 
             {/* ══════════════════════════════════════════
-                ENTRY FORM — continuation of gradient
+                ENTRY FORM — clean white section
             ══════════════════════════════════════════ */}
-            <section id="enter" className="relative py-14 sm:py-20 overflow-hidden">
+            <section id="enter" className="relative py-14 sm:py-20 bg-gradient-to-b from-slate-50 to-white">
 
-                {/* Background — complementary gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-700 via-blue-600 to-sky-500 animate-gradient" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(255,255,255,0.08),transparent)]" />
-                <div className="absolute inset-0 opacity-[0.04]"
-                    style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
-
-                {/* Floating decoratives */}
-                <div className="absolute top-10 left-[5%] animate-float pointer-events-none opacity-20">
-                    <Star className="w-8 h-8 text-yellow-200 fill-yellow-200" />
-                </div>
-                <div className="absolute bottom-16 right-[8%] animate-float-2 pointer-events-none opacity-15">
-                    <Plane className="w-12 h-12 text-white rotate-45" />
-                </div>
+                {/* Coloured top accent line */}
+                <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600" />
 
                 <div className="relative z-10 max-w-lg mx-auto px-5">
 
                     {/* Heading */}
-                    <div className="text-center mb-7" data-aos="fade-up">
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/30 text-white text-xs font-bold uppercase tracking-widest mb-4">
+                    <div className="text-center mb-8" data-aos="fade-up">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-xs font-bold uppercase tracking-widest mb-4">
                             <Gift className="w-3.5 h-3.5" />
                             Final Step
                         </div>
-                        <h2 className="font-serif text-3xl sm:text-4xl font-black text-white mb-2">
+                        <h2 className="font-serif text-3xl sm:text-4xl font-black text-slate-900 mb-2">
                             Submit Your Entry
                         </h2>
-                        <p className="text-white/70 text-sm sm:text-base">
+                        <p className="text-slate-500 text-sm sm:text-base">
                             Follow &amp; share first — then fill in below.
                         </p>
                     </div>
@@ -255,23 +244,23 @@ export default function LuckyDrawPage() {
                     {/* Quick checklist */}
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 mb-6" data-aos="fade-up" data-aos-delay="80">
                         {[
-                            { icon: '✅', text: 'Followed @myperfecttrips' },
-                            { icon: '✅', text: 'Shared reel × 5 friends' },
-                            { icon: '📸', text: 'Screenshot ready' },
+                            { icon: '✅', text: 'Followed @myperfecttrips', cls: 'bg-emerald-50 border-emerald-200 text-emerald-800' },
+                            { icon: '✅', text: 'Shared reel × 5 friends',  cls: 'bg-emerald-50 border-emerald-200 text-emerald-800' },
+                            { icon: '📸', text: 'Screenshot ready',         cls: 'bg-sky-50    border-sky-200    text-sky-800' },
                         ].map(item => (
                             <div key={item.text}
-                                className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/15 border border-white/20 text-white text-xs sm:text-sm font-semibold backdrop-blur-sm">
-                                <span className="shrink-0">{item.icon}</span>
+                                className={`flex items-center gap-2.5 px-4 py-3 rounded-xl border text-xs sm:text-sm font-semibold ${item.cls}`}>
+                                <span className="shrink-0 text-base">{item.icon}</span>
                                 {item.text}
                             </div>
                         ))}
                     </div>
 
-                    {/* Form card — glass on vivid bg */}
+                    {/* Form card — solid white, high contrast */}
                     <div
-                        data-aos="zoom-in"
+                        data-aos="fade-up"
                         data-aos-delay="120"
-                        className="rounded-2xl sm:rounded-3xl bg-white/10 border border-white/20 backdrop-blur-xl shadow-2xl p-5 sm:p-8">
+                        className="rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-xl shadow-slate-200/80 p-5 sm:p-8">
                         <LuckyDrawForm />
                     </div>
                 </div>
