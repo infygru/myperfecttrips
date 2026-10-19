@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { directus } from "@/lib/directus";
+import { directusPublic as directus } from "@/lib/directus";
 import { createItem } from "@directus/sdk";
 import { Send, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 

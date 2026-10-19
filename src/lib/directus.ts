@@ -1,4 +1,4 @@
-import { createDirectus, rest, readItems } from '@directus/sdk';
+import { createDirectus, rest, readItems, staticToken } from '@directus/sdk';
 import type { Package } from '@/types/package';
 import type { Enquiry } from '@/types/enquiry';
 import type { Lead } from '@/types/lead';
@@ -14,8 +14,15 @@ interface CustomDirectusSchema {
 }
 
 const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055';
+const adminToken = process.env.DIRECTUS_ADMIN_TOKEN || '';
 
-export const directus = createDirectus<CustomDirectusSchema>(directusUrl).with(rest());
+// Admin client — used server-side for reading protected collections
+export const directus = createDirectus<CustomDirectusSchema>(directusUrl)
+    .with(staticToken(adminToken))
+    .with(rest());
+
+// Public client — used client-side (e.g. ContactForm enquiry submissions)
+export const directusPublic = createDirectus<CustomDirectusSchema>(directusUrl).with(rest());
 
 export async function getSiteSettings() {
     try {
