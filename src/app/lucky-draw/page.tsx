@@ -10,7 +10,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
 
 export const metadata: Metadata = {
     title: 'Win Your Dream Holiday FREE | Lucky Draw – My Perfect Trips',
-    description: 'Enter our FREE holiday lucky draw! Follow @myperfecttrips, share our reel with 5 friends, and win a free trip to Dubai, Turkey, Paris, or Georgia. Winner announced 30 December 2026.',
+    description: 'Enter our FREE holiday lucky draw! Follow @myperfecttrips, share our reel with 5 friends, and win a free trip to Dubai, Turkey, Paris, or Georgia. Draw closes 30 Dec, winner announced 31 December 2026.',
     keywords: 'free trip giveaway UK, win free holiday, lucky draw 2026, My Perfect Trips giveaway, Dubai free trip, travel competition UK',
     alternates: { canonical: `${BASE}/lucky-draw` },
     openGraph: {
@@ -128,7 +128,7 @@ export default function LuckyDrawPage() {
                             <span className="text-yellow-200">HOLIDAY!</span>
                         </h1>
                         <p className="mt-3 text-white font-bold text-base sm:text-xl">
-                            ✈️ Flights · Hotel · Transfers — All Included
+                            🏨 Hotel · Transfers — Included
                         </p>
                     </div>
 
@@ -188,10 +188,10 @@ export default function LuckyDrawPage() {
                     {/* COUNTDOWN */}
                     <div className="hero-anim-5 w-full">
                         <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-3">
-                            Winner announced in
+                            Draw closes in
                         </p>
                         <CountdownTimer target="2026-12-30T23:59:59" />
-                        <p className="mt-2 text-white/50 text-[11px]">30 December 2026 · Open to UK residents 18+</p>
+                        <p className="mt-2 text-white/50 text-[11px]">Closes 30 Dec · Winner announced 31 Dec 2026 · UK residents 18+</p>
                     </div>
 
                     {/* CTA */}
@@ -221,7 +221,7 @@ export default function LuckyDrawPage() {
                 <div className="ticker-track flex items-center whitespace-nowrap w-max">
                     {[0, 1].map(i => (
                         <div key={i} className="flex items-center gap-6 px-6">
-                            {['🏆 ONE LUCKY WINNER', '✈️ FLIGHTS INCLUDED', '🏨 HOTEL INCLUDED', '🚗 TRANSFERS INCLUDED', '🇦🇪 DUBAI', '🇹🇷 TURKEY', '🇫🇷 PARIS', '🇬🇪 GEORGIA', '📸 SHARE & WIN'].map(item => (
+                            {['🏆 ONE LUCKY WINNER', '🏨 HOTEL INCLUDED', '🚗 TRANSFERS INCLUDED', '🇦🇪 DUBAI', '🇹🇷 TURKEY', '🇫🇷 PARIS', '🇬🇪 GEORGIA', '📸 SHARE & WIN', '🎉 WINNER ANNOUNCED 31 DEC'].map(item => (
                                 <span key={item} className="text-rose-700 font-black text-xs tracking-widest uppercase">
                                     {item} <span className="text-rose-400 mx-1">·</span>
                                 </span>
@@ -319,8 +319,8 @@ export default function LuckyDrawPage() {
                             { n: '02', text: 'Must follow @myperfecttrips on Instagram and share the giveaway reel with at least 5 friends.' },
                             { n: '03', text: 'One entry per person. Duplicate or fraudulent entries will be disqualified.' },
                             { n: '04', text: 'Prize: one free holiday for one person — to Dubai, Turkey, Paris, or Georgia (winner\'s choice). Subject to availability and travel dates agreed with My Perfect Trips.' },
-                            { n: '05', text: 'Includes return flights from a UK airport and hotel accommodation. Travel insurance and personal expenses not included.' },
-                            { n: '06', text: 'Winner chosen at random and announced on 30 December 2026 via @myperfecttrips on Instagram.' },
+                            { n: '05', text: 'Includes hotel accommodation and airport transfers. Flights, visa costs, and personal expenses are not included.' },
+                            { n: '06', text: 'Draw closes 30 December 2026. Winner chosen at random and announced on 31 December 2026 via @myperfecttrips on Instagram.' },
                             { n: '07', text: 'The winner must claim their prize within 30 days of announcement. Unclaimed prizes are forfeit. No cash alternative.' },
                             { n: '08', text: 'My Perfect Trips reserves the right to amend or withdraw this promotion at any time without notice.' },
                             { n: '09', text: 'Promoter: My Perfect Trips, Bartle House, 9 Oxford Court, Manchester M2 3WQ, United Kingdom.' },
