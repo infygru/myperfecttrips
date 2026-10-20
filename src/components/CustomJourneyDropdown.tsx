@@ -52,10 +52,10 @@ export default function CustomJourneyDropdown({ packageTitle }: { packageTitle: 
                         <div className="min-w-0">
                             <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-0.5">Or email us directly</p>
                             <a
-                                href="mailto:info@myperfecttrips.com"
+                                href="mailto:sales@myperfecttrips.com"
                                 className="text-sm font-semibold text-brand-800 hover:text-brand-600 transition-colors truncate block"
                             >
-                                info@myperfecttrips.com
+                                sales@myperfecttrips.com
                             </a>
                         </div>
                     </div>

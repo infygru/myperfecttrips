@@ -297,7 +297,7 @@ export async function generateItineraryPdf(
 
   // Header right — date + contacts
   const dateStr = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-  const contactLines = ["myperfecttrips.com", "+44 7895910015", "info@myperfecttrips.com"];
+  const contactLines = ["myperfecttrips.com", "+44 7895910015", "sales@myperfecttrips.com"];
   d.setFont("helvetica", "bold");
   d.setFontSize(7);
   t(d, GOLD);
@@ -579,7 +579,7 @@ export async function generateItineraryPdf(
 
   const contacts = [
     ["Phone",    "+44 7895910015"],
-    ["Email",    "info@myperfecttrips.com"],
+    ["Email",    "sales@myperfecttrips.com"],
     ["WhatsApp", "+44 7895910015"],
     ["Website",  "www.myperfecttrips.com"],
   ];

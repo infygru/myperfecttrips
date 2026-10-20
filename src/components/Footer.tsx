@@ -50,7 +50,7 @@ export default async function Footer() {
 
     const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
     const logoUrl  = s?.logo            ? `${dUrl}/assets/${s.logo}` : null;
-    const email    = s?.contact_email   || "info@myperfecttrips.com";
+    const email    = s?.contact_email   || "sales@myperfecttrips.com";
     const phone    = s?.contact_phone   || "+44 7895910015";
     const address  = s?.office_address  || "Bartle House, 9 Oxford Court, Manchester, M2 3WQ";
     const fbUrl    = s?.facebook_url    || "#";
@@ -305,16 +305,6 @@ export default async function Footer() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col items-center gap-2 sm:items-end">
-                        <p className="text-[10px] uppercase tracking-widest text-stone-600">Trusted &amp; Secure</p>
-                        <div className="flex items-center gap-3 text-xs text-stone-500">
-                            <span>ATOL Protected</span>
-                            <span className="text-stone-700">·</span>
-                            <span>ABTA Member</span>
-                            <span className="text-stone-700">·</span>
-                            <span>IATA Accredited</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </footer>

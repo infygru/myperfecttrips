@@ -58,7 +58,7 @@ export default function PrivacyPolicyPage() {
                     <p>We retain personal data for as long as necessary to provide our services and comply with legal obligations, generally up to 5 years for booking-related records.</p>
 
                     <h2>5. Your Rights</h2>
-                    <p>You have the right to access, correct, or request deletion of your personal data at any time by contacting us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>.</p>
+                    <p>You have the right to access, correct, or request deletion of your personal data at any time by contacting us at <a href="mailto:sales@myperfecttrips.com">sales@myperfecttrips.com</a>.</p>
 
                     <h2>6. Security</h2>
                     <p>We implement appropriate technical and organizational measures to protect your data against unauthorized access, alteration, disclosure, or destruction.</p>
@@ -70,7 +70,7 @@ export default function PrivacyPolicyPage() {
                     <p>We may update this Privacy Policy from time to time. We will notify you of significant changes via our website or email.</p>
 
                     <h2>9. Contact Us</h2>
-                    <p>For privacy-related queries: <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a></p>
+                    <p>For privacy-related queries: <a href="mailto:sales@myperfecttrips.com">sales@myperfecttrips.com</a></p>
 
                     <hr />
                     <p className="text-sm text-stone-500">My Perfect Trips Ltd — Registered in England and Wales.</p>

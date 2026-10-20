@@ -290,8 +290,8 @@ export default async function AboutPage() {
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                         <Link href="/contact" className="btn-gold w-full sm:w-auto text-sm">Contact Our Experts</Link>
-                        <a href="mailto:info@myperfecttrips.com" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 text-sm">
-                            info@myperfecttrips.com
+                        <a href="mailto:sales@myperfecttrips.com" className="btn-outline w-full sm:w-auto !bg-transparent !text-white !border-white/30 hover:!bg-white/10 text-sm">
+                            sales@myperfecttrips.com
                         </a>
                     </div>
                     <p className="text-xs text-stone-500 mt-8">

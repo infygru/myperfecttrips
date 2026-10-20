@@ -42,7 +42,7 @@ export default function TermsPage() {
                     </ul>
 
                     <h2>4. Cancellations and Refunds</h2>
-                    <p>Cancellations must be communicated in writing to <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>. Applicable cancellation charges depend on the timing of cancellation and the policies of airlines, hotels, and other suppliers involved. Please also refer to our <Link href="/refund-policy">Refund Policy</Link>.</p>
+                    <p>Cancellations must be communicated in writing to <a href="mailto:sales@myperfecttrips.com">sales@myperfecttrips.com</a>. Applicable cancellation charges depend on the timing of cancellation and the policies of airlines, hotels, and other suppliers involved. Please also refer to our <Link href="/refund-policy">Refund Policy</Link>.</p>
 
                     <h2>5. Passports, Visas, and Health Requirements</h2>
                     <p>It is the client's responsibility to ensure they hold valid travel documents for all destinations. My Perfect Trips will provide guidance but bears no liability for denied boarding, entry, or visa refusals.</p>
@@ -60,7 +60,7 @@ export default function TermsPage() {
                     <p>These Terms &amp; Conditions are governed by the laws of England and Wales. Any disputes will be subject to the exclusive jurisdiction of the courts of England and Wales.</p>
 
                     <h2>10. Contact Us</h2>
-                    <p>For any queries regarding these Terms &amp; Conditions, please contact us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>.</p>
+                    <p>For any queries regarding these Terms &amp; Conditions, please contact us at <a href="mailto:sales@myperfecttrips.com">sales@myperfecttrips.com</a>.</p>
 
                     <hr />
                     <p className="text-sm text-stone-500">My Perfect Trips Ltd — Registered in England and Wales.</p>

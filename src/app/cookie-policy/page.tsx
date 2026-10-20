@@ -47,7 +47,7 @@ export default function CookiePolicyPage() {
                     <p>On your first visit, we will ask for your consent to place non-essential cookies. You can change your preferences at any time by clearing your browser cookies and revisiting our site.</p>
 
                     <h2>6. Contact Us</h2>
-                    <p>For questions about our cookie use, contact us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>.</p>
+                    <p>For questions about our cookie use, contact us at <a href="mailto:sales@myperfecttrips.com">sales@myperfecttrips.com</a>.</p>
 
                     <hr />
                     <p className="text-sm text-stone-500">My Perfect Trips Ltd — Registered in England and Wales.</p>

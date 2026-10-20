@@ -1,7 +1,7 @@
 const RESEND_API_KEY  = process.env.RESEND_API_KEY || '';
 const FROM_EMAIL      = process.env.RESEND_FROM_EMAIL || 'My Perfect Trips <bookings@myperfecttrips.com>';
-const ADMIN_EMAIL     = process.env.ADMIN_EMAIL || 'info@myperfecttrips.com';
-const NOTIFY_EMAIL    = process.env.ADMIN_EMAIL || 'info@myperfecttrips.com';
+const ADMIN_EMAIL     = process.env.ADMIN_EMAIL || 'sales@myperfecttrips.com';
+const NOTIFY_EMAIL    = process.env.ADMIN_EMAIL || 'sales@myperfecttrips.com';
 const ADMIN_EMAILS    = [ADMIN_EMAIL, NOTIFY_EMAIL];
 const SITE_URL        = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
 
@@ -156,7 +156,7 @@ export async function sendBookingConfirmationEmail(data: BookingEmailData): Prom
         <!-- Footer -->
         <div style="${FOOTER_STYLE}">
           <p style="margin:0 0 4px;">My Perfect Trips</p>
-          <p style="margin:0;">Bartle House, 9 Oxford Court, Manchester M2 3WQ · +44 7895910015 · info@myperfecttrips.com</p>
+          <p style="margin:0;">Bartle House, 9 Oxford Court, Manchester M2 3WQ · +44 7895910015 · sales@myperfecttrips.com</p>
         </div>
       </div>
     </body>`;
@@ -330,7 +330,7 @@ export async function sendWelcomeEmail(name: string, email: string): Promise<boo
 
         <div style="${FOOTER_STYLE}">
           <p style="margin:0 0 4px;">My Perfect Trips</p>
-          <p style="margin:0;">+44 7895910015 · info@myperfecttrips.com · myperfecttrips.com</p>
+          <p style="margin:0;">+44 7895910015 · sales@myperfecttrips.com · myperfecttrips.com</p>
         </div>
       </div>
     </body>`;

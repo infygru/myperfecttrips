@@ -27,7 +27,7 @@ export default function RefundPolicyPage() {
                     <p className="lead">At <strong>My Perfect Trips</strong> (My Perfect Trips Ltd), we understand that plans change. This policy outlines our cancellation and refund procedures for bookings made through us.</p>
 
                     <h2>1. Cancellation by the Client</h2>
-                    <p>Cancellation charges are calculated from the date we receive your written cancellation notice at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a>, and are as follows:</p>
+                    <p>Cancellation charges are calculated from the date we receive your written cancellation notice at <a href="mailto:sales@myperfecttrips.com">sales@myperfecttrips.com</a>, and are as follows:</p>
                     <ul>
                         <li><strong>60+ days before departure:</strong> Loss of deposit only.</li>
                         <li><strong>45–59 days before departure:</strong> 25% of total package cost.</li>
@@ -64,7 +64,7 @@ export default function RefundPolicyPage() {
                     <p>We strongly recommend purchasing comprehensive travel insurance which may cover cancellation costs in certain circumstances. Please consult your insurance provider for details.</p>
 
                     <h2>7. Contact Us</h2>
-                    <p>To request a cancellation or discuss a refund, please contact us at <a href="mailto:info@myperfecttrips.com">info@myperfecttrips.com</a> with your booking reference number.</p>
+                    <p>To request a cancellation or discuss a refund, please contact us at <a href="mailto:sales@myperfecttrips.com">sales@myperfecttrips.com</a> with your booking reference number.</p>
 
                     <hr />
                     <p className="text-sm text-stone-500">My Perfect Trips Ltd — Registered in England and Wales.</p>

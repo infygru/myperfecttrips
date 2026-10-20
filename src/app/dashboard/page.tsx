@@ -287,10 +287,10 @@ export default async function DashboardPage() {
                             <PhoneCall className="h-4 w-4 text-stone-400 shrink-0" />
                             +44 7895 910015
                         </a>
-                        <a href="mailto:info@myperfecttrips.com"
+                        <a href="mailto:sales@myperfecttrips.com"
                             className="flex items-center gap-3 rounded-lg border border-stone-200 px-4 py-2.5 text-sm text-stone-700 hover:bg-stone-50 transition-colors">
                             <Mail className="h-4 w-4 text-stone-400 shrink-0" />
-                            info@myperfecttrips.com
+                            sales@myperfecttrips.com
                         </a>
                     </div>
                 </div>

@@ -33,7 +33,7 @@ export default async function ContactPage() {
         s = await getSiteSettings();
     } catch { }
 
-    const email = s?.contact_email || "info@myperfecttrips.com";
+    const email = s?.contact_email || "sales@myperfecttrips.com";
     const phone = s?.contact_phone || "+44 7123 456789";
     const address = s?.office_address || "Bartle House, 9 Oxford Court, Manchester, M2 3WQ";
     const localBusinessSchema = {
