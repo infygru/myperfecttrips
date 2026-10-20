@@ -127,7 +127,7 @@ export default function LuckyDrawPage() {
                             WIN YOUR<br />DREAM<br />
                             <span className="text-yellow-200">HOLIDAY!</span>
                         </h1>
-                        <p className="mt-3 text-white font-bold text-base sm:text-xl">
+                        <p className="mt-3 text-white font-bold text-xs sm:text-sm">
                             🏨 Hotel with Breakfast · 🎡 All Activities · 🚗 Transfers — Complete Land Package
                         </p>
                     </div>
