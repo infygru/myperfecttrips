@@ -128,7 +128,7 @@ export default function LuckyDrawPage() {
                             <span className="text-yellow-200">HOLIDAY!</span>
                         </h1>
                         <p className="mt-3 text-white font-bold text-base sm:text-xl">
-                            🏨 Hotel · Transfers — Included
+                            🏨 Hotel with Breakfast · 🎡 All Activities · 🚗 Transfers — Complete Land Package
                         </p>
                     </div>
 
@@ -221,7 +221,7 @@ export default function LuckyDrawPage() {
                 <div className="ticker-track flex items-center whitespace-nowrap w-max">
                     {[0, 1].map(i => (
                         <div key={i} className="flex items-center gap-6 px-6">
-                            {['🏆 ONE LUCKY WINNER', '🏨 HOTEL INCLUDED', '🚗 TRANSFERS INCLUDED', '🇦🇪 DUBAI', '🇹🇷 TURKEY', '🇫🇷 PARIS', '🇬🇪 GEORGIA', '📸 SHARE & WIN', '🎉 WINNER ANNOUNCED 31 DEC'].map(item => (
+                            {['🏆 ONE LUCKY WINNER', '🏨 HOTEL WITH BREAKFAST', '🎡 ALL ACTIVITIES INCLUDED', '🚗 TRANSFERS INCLUDED', '🌍 COMPLETE LAND PACKAGE', '🇦🇪 DUBAI', '🇹🇷 TURKEY', '🇫🇷 PARIS', '🇬🇪 GEORGIA', '📸 SHARE & WIN', '🎉 WINNER ANNOUNCED 31 DEC'].map(item => (
                                 <span key={item} className="text-rose-700 font-black text-xs tracking-widest uppercase">
                                     {item} <span className="text-rose-400 mx-1">·</span>
                                 </span>
@@ -319,7 +319,7 @@ export default function LuckyDrawPage() {
                             { n: '02', text: 'Must follow @myperfecttrips on Instagram and share the giveaway reel with at least 5 friends.' },
                             { n: '03', text: 'One entry per person. Duplicate or fraudulent entries will be disqualified.' },
                             { n: '04', text: 'Prize: one free holiday for one person — to Dubai, Turkey, Paris, or Georgia (winner\'s choice). Subject to availability and travel dates agreed with My Perfect Trips.' },
-                            { n: '05', text: 'Includes hotel accommodation and airport transfers. Visa costs and personal expenses are not included.' },
+                            { n: '05', text: 'This is a complete land package — includes hotel accommodation with breakfast, all activities, and airport transfers. Visa costs and personal expenses are not included.' },
                             { n: '06', text: 'Draw closes 30 December 2026. Winner chosen at random and announced on 31 December 2026 via @myperfecttrips on Instagram.' },
                             { n: '07', text: 'The winner must claim their prize within 30 days of announcement. Unclaimed prizes are forfeit. No cash alternative.' },
                             { n: '08', text: 'My Perfect Trips reserves the right to amend or withdraw this promotion at any time without notice.' },
