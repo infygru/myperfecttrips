@@ -323,7 +323,6 @@ export default function LuckyDrawPage() {
                             { n: '06', text: 'Draw closes 30 December 2026. Winner chosen at random and announced on 31 December 2026 via @myperfecttrips on Instagram.' },
                             { n: '07', text: 'The winner must claim their prize within 30 days of announcement. Unclaimed prizes are forfeit. No cash alternative.' },
                             { n: '08', text: 'My Perfect Trips reserves the right to amend or withdraw this promotion at any time without notice.' },
-                            { n: '09', text: 'Promoter: My Perfect Trips, Bartle House, 9 Oxford Court, Manchester M2 3WQ, United Kingdom.' },
                         ].map(item => (
                             <div key={item.n}
                                 className="flex gap-3 p-4 rounded-xl bg-white/4 border border-white/8 hover:border-sky-400/20 transition-colors">
