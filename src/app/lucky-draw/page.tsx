@@ -1,27 +1,29 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { Gift, CheckCircle, Plane, Star, Sparkles } from 'lucide-react';
+import { Gift, Plane, Star, Instagram } from 'lucide-react';
 import LuckyDrawForm from '@/components/LuckyDrawForm';
 import CountdownTimer from '@/components/CountdownTimer';
+
+const IG_URL = 'https://www.instagram.com/myperfecttrips';
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
 
 export const metadata: Metadata = {
-    title: 'Win a FREE Holiday for One | Lucky Draw – My Perfect Trips',
+    title: 'Win Your Dream Holiday FREE | Lucky Draw – My Perfect Trips',
     description: 'Enter our FREE holiday lucky draw! Follow @myperfecttrips, share our reel with 5 friends, and win a free trip to Dubai, Turkey, Paris, or Georgia. Winner announced 30 December 2026.',
     keywords: 'free trip giveaway UK, win free holiday, lucky draw 2026, My Perfect Trips giveaway, Dubai free trip, travel competition UK',
     alternates: { canonical: `${BASE}/lucky-draw` },
     openGraph: {
-        title: 'Win a FREE Holiday for One — My Perfect Trips',
-        description: 'Follow us, share our reel with 5 friends, and win a free holiday!',
+        title: 'Win Your Dream Holiday FREE — My Perfect Trips',
+        description: 'Follow us on Instagram, share our reel with 5 friends, and win a free holiday!',
         url: `${BASE}/lucky-draw`,
         siteName: 'My Perfect Trips',
         type: 'website',
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Win a FREE Holiday for One — My Perfect Trips',
-        description: 'Enter our lucky draw and win a free holiday worth up to £3,000!',
+        title: 'Win Your Dream Holiday FREE — My Perfect Trips',
+        description: 'Follow @myperfecttrips on Instagram, enter our lucky draw and win a free holiday!',
     },
 };
 
@@ -118,12 +120,12 @@ export default function LuckyDrawPage() {
                     {/* HEADLINE */}
                     <div className="hero-anim-2">
                         <p className="text-white/80 font-serif text-sm sm:text-base font-light tracking-wider mb-1">
-                            My Perfect Trips is giving away
+                            Could this be your next adventure?
                         </p>
                         <h1 className="font-serif font-black text-white leading-[0.9] tracking-tight drop-shadow-2xl"
                             style={{ fontSize: 'clamp(3rem, 14vw, 7rem)' }}>
-                            A FREE<br />HOLIDAY<br />
-                            <span className="text-yellow-200">FOR ONE!</span>
+                            WIN YOUR<br />DREAM<br />
+                            <span className="text-yellow-200">HOLIDAY!</span>
                         </h1>
                         <p className="mt-3 text-white font-bold text-base sm:text-xl">
                             ✈️ Flights · Hotel · Transfers — All Included
@@ -151,12 +153,24 @@ export default function LuckyDrawPage() {
                         ))}
                     </div>
 
-                    {/* STEPS — compact horizontal row */}
-                    <div className="hero-anim-4 w-full">
-                        <div className="flex items-center justify-center gap-1 sm:gap-2 flex-wrap">
+                    {/* INSTAGRAM FOLLOW CTA */}
+                    <div className="hero-anim-4 w-full flex flex-col items-center gap-3">
+                        <p className="text-white/70 text-xs font-bold uppercase tracking-widest">Step 1 — Follow us to enter</p>
+                        <a
+                            href={IG_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-3 px-6 py-3 rounded-full font-black text-sm text-white transition-all duration-200 active:scale-95 hover:scale-105"
+                            style={{ background: 'linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4)' }}
+                        >
+                            <Instagram className="w-5 h-5 shrink-0" />
+                            Follow @myperfecttrips on Instagram
+                        </a>
+
+                        {/* remaining steps */}
+                        <div className="flex items-center justify-center gap-1 sm:gap-2 flex-wrap mt-1">
                             {[
-                                { n: '01', label: 'Follow us' },
-                                { n: '02', label: 'Share reel' },
+                                { n: '02', label: 'Share reel × 5' },
                                 { n: '03', label: 'Fill form' },
                                 { n: '04', label: '🏆 Win!' },
                             ].map((s, i) => (
@@ -165,7 +179,7 @@ export default function LuckyDrawPage() {
                                         <span className="text-yellow-200 font-black text-[10px] sm:text-xs">{s.n}</span>
                                         <span className="text-white font-semibold text-[10px] sm:text-xs">{s.label}</span>
                                     </div>
-                                    {i < 3 && <span className="text-white/50 font-bold text-xs">→</span>}
+                                    {i < 2 && <span className="text-white/50 font-bold text-xs">→</span>}
                                 </div>
                             ))}
                         </div>
@@ -239,6 +253,20 @@ export default function LuckyDrawPage() {
                         <p className="text-slate-500 text-sm sm:text-base">
                             Follow &amp; share first — then fill in below.
                         </p>
+                    </div>
+
+                    {/* Instagram follow button */}
+                    <div className="flex justify-center mb-5" data-aos="fade-up" data-aos-delay="60">
+                        <a
+                            href={IG_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full font-black text-sm text-white shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                            style={{ background: 'linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4)' }}
+                        >
+                            <Instagram className="w-4 h-4 shrink-0" />
+                            Follow @myperfecttrips on Instagram
+                        </a>
                     </div>
 
                     {/* Quick checklist */}
