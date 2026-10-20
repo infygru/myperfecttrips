@@ -302,30 +302,50 @@ const packages = [
 
 const testimonials = [
   {
-    client_name: 'Sarah & James Thompson',
+    name: 'Sarah & James Thompson',
     location: 'Manchester',
-    quote: 'My Perfect Trips organised our Maldives honeymoon and it was absolutely flawless. Every detail was taken care of — from the overwater villa upgrade to the sunset cruise. We felt completely looked after from start to finish.',
+    tour_name: 'Maldives Honeymoon Package',
+    text: 'My Perfect Trips organised our Maldives honeymoon and it was absolutely flawless. Every detail was taken care of — from the overwater villa upgrade to the sunset cruise. We felt completely looked after from start to finish.',
     rating: 5,
     status: 'published',
   },
   {
-    client_name: 'Priya Sharma',
+    name: 'Priya Sharma',
     location: 'London',
-    quote: 'Booked a last-minute Dubai package and I was genuinely impressed. The team sorted flights, hotel, and the desert safari within 24 hours. Transparent pricing, no hidden costs, and the hotel was even better than pictured.',
+    tour_name: 'Dubai City & Desert Adventure',
+    text: 'Booked a last-minute Dubai package and I was genuinely impressed. The team sorted flights, hotel, and the desert safari within 24 hours. Transparent pricing, no hidden costs, and the hotel was even better than pictured.',
     rating: 5,
     status: 'published',
   },
   {
-    client_name: 'David & Claire Hutchinson',
+    name: 'David & Claire Hutchinson',
     location: 'Leeds',
-    quote: 'We\'ve used several travel agencies over the years but My Perfect Trips is a cut above. Our Greece trip — Santorini and Athens — was perfectly paced with genuine insider recommendations. Already planning our next trip with them.',
+    tour_name: 'Santorini & Athens – Greek Island Dream',
+    text: 'We\'ve used several travel agencies over the years but My Perfect Trips is a cut above. Our Greece trip — Santorini and Athens — was perfectly paced with genuine insider recommendations. Already planning our next trip with them.',
     rating: 5,
     status: 'published',
   },
   {
-    client_name: 'Mohammed Al-Rashid',
+    name: 'Mohammed Al-Rashid',
     location: 'Birmingham',
-    quote: 'The Japan itinerary they put together for us was incredible. Eleven days, four cities, bullet trains — all perfectly coordinated. Our expert was on hand via WhatsApp throughout the trip. Outstanding service.',
+    tour_name: 'Japan Cherry Blossom & Culture Tour',
+    text: 'The Japan itinerary they put together for us was incredible. Eleven days, four cities, bullet trains — all perfectly coordinated. Our expert was on hand via WhatsApp throughout the trip. Outstanding service.',
+    rating: 5,
+    status: 'published',
+  },
+  {
+    name: 'Claire & Tom Bradley',
+    location: 'Belfast',
+    tour_name: 'Bali Tropical Discovery – 8 Days',
+    text: 'Bali was everything we dreamed of and more. My Perfect Trips handled every single detail — the private villa in Ubud, the sunrise trek up Mount Batur, the cooking class. Genuinely the best holiday we\'ve ever had.',
+    rating: 5,
+    status: 'published',
+  },
+  {
+    name: 'Aisha Patel',
+    location: 'Birmingham',
+    tour_name: 'Mauritius All-Inclusive Beach Holiday',
+    text: 'The all-inclusive Mauritius package was incredible value. Beautiful resort, stunning beaches, and everything was sorted before we even landed. My Perfect Trips made the whole experience completely stress-free.',
     rating: 5,
     status: 'published',
   },
@@ -342,7 +362,7 @@ for (const pkg of packages) {
 console.log('\nSeeding testimonials...');
 for (const t of testimonials) {
   const result = await post('testimonials', t);
-  if (result) console.log(`  ✓ Testimonial: ${t.client_name}`);
+  if (result) console.log(`  ✓ Testimonial: ${t.name}`);
 }
 
 console.log('\nDone.');
