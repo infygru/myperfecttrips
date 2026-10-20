@@ -272,12 +272,12 @@ export default function LuckyDrawPage() {
                     {/* Quick checklist */}
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 mb-6" data-aos="fade-up" data-aos-delay="80">
                         {[
-                            { icon: '✅', text: 'Followed @myperfecttrips', cls: 'bg-emerald-50 border-emerald-200 text-emerald-800' },
+                            { icon: '✅', text: 'Followed us on Instagram', cls: 'bg-emerald-50 border-emerald-200 text-emerald-800' },
                             { icon: '✅', text: 'Shared reel × 5 friends',  cls: 'bg-emerald-50 border-emerald-200 text-emerald-800' },
                             { icon: '📸', text: 'Screenshot ready',         cls: 'bg-sky-50    border-sky-200    text-sky-800' },
                         ].map(item => (
                             <div key={item.text}
-                                className={`flex items-center gap-2.5 px-4 py-3 rounded-xl border text-xs sm:text-sm font-semibold ${item.cls}`}>
+                                className={`flex items-center gap-2.5 px-4 py-3 rounded-xl border text-xs font-semibold ${item.cls}`}>
                                 <span className="shrink-0 text-base">{item.icon}</span>
                                 {item.text}
                             </div>
