@@ -87,7 +87,7 @@ export default function LuckyDrawForm() {
                     <h3 className="text-2xl font-bold text-white font-serif mb-2">You&apos;re Entered!</h3>
                     <p className="text-stone-400 text-sm max-w-xs mx-auto leading-relaxed">
                         Your entry is confirmed. The lucky winner will be announced on{' '}
-                        <span className="text-gold-400 font-semibold">31 December 2026</span>. Good luck!
+                        <span className="text-gold-400 font-semibold">1 January 2027</span>. Good luck!
                     </p>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-stone-400 text-xs">
@@ -219,7 +219,7 @@ export default function LuckyDrawForm() {
             <p className="text-center text-[11px] text-slate-400 leading-relaxed">
                 By entering you agree to our{' '}
                 <a href="/terms" className="underline underline-offset-2 hover:text-slate-600 transition-colors">terms &amp; conditions</a>.
-                One entry per person. Open to UK residents 18+. Winner announced 31 December 2026.
+                One entry per person. Open to UK residents 18+. Winner announced 1 January 2027.
             </p>
         </form>
     );
