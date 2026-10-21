@@ -64,8 +64,15 @@ export default function PopupBanner({ imageUrl, linkUrl }: Props) {
                     </div>
                 </a>
 
-                <p className="mt-3 text-center text-[11px] text-white/50">
-                    Click the image to learn more · Tap outside to close
+                <a
+                    href={linkUrl}
+                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-white py-3 text-sm font-black text-rose-600 shadow-lg hover:bg-yellow-50 transition-colors"
+                >
+                    🎁 Enter the Free Giveaway
+                </a>
+
+                <p className="mt-2 text-center text-[11px] text-white/50">
+                    Tap outside to close
                 </p>
             </div>
         </div>
