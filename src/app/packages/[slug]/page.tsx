@@ -30,7 +30,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         const pkg = result?.[0];
         
         if (pkg) {
-            const destStr = pkg.destination || pkg.destinations?.join(", ") || "";
+            const destStr = (typeof pkg.destination === 'string' ? pkg.destination : null) || pkg.destinations?.join(", ") || "";
             const title = `${pkg.title} | ${destStr ? destStr + " " : ""}Holiday Package — My Perfect Trips`;
             const description = `Book ${pkg.title}${destStr ? " in " + destStr : ""} — ${pkg.duration_nights ? pkg.duration_nights + " nights / " + pkg.duration_days + " days" : "premium"} ${pkg.category ? pkg.category.toLowerCase() : "holiday"} package. Starting from ${pkg.price ? "£" + Number(pkg.price).toLocaleString("en-GB") : "custom pricing"}. Customised itinerary, best price guarantee, 24/7 support. Book with My Perfect Trips.`;
             const canonicalUrl = `${baseUrl}/packages/${slug}`;
@@ -132,7 +132,7 @@ export default async function PackageDetailPage(props: Props) {
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myperfecttrips.com";
     const packageUrl = `${baseUrl}/packages/${pkg.slug}`;
-    const destStr = pkg.destination || pkg.destinations?.join(", ") || "";
+    const destStr = (typeof pkg.destination === 'string' ? pkg.destination : null) || pkg.destinations?.join(", ") || "";
     const packageSchema = {
         "@context": "https://schema.org",
         "@type": "Product",
@@ -435,18 +435,19 @@ export default async function PackageDetailPage(props: Props) {
 
                         {/* Inclusions & Exclusions */}
                         {(() => {
-                            // Parse either plain "one item per line" text OR legacy HTML (comma-separated inside <p> tags)
-                            function parseList(raw: string): string[] {
-                                if (!raw?.trim()) return [];
-                                // Strip HTML tags from each line individually, preserving line breaks
+                            // Parse inclusions/exclusions — handles JSON arrays, plain text, or legacy HTML
+                            function parseList(raw: any): string[] {
+                                if (!raw) return [];
+                                // Directus may return a JSON array directly
+                                if (Array.isArray(raw)) return raw.map(String).filter(Boolean);
+                                if (typeof raw !== 'string') return [];
+                                if (!raw.trim()) return [];
                                 const stripHtml = (s: string) =>
                                     s.replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/\s+/g, " ").trim();
-                                // Split by newline first (new plain-text format); fall back to comma (legacy HTML)
                                 const lines = raw.split(/\r?\n/);
                                 if (lines.length > 1) {
                                     return lines.map(stripHtml).filter(Boolean);
                                 }
-                                // Single line — strip HTML then split by comma
                                 return stripHtml(raw).split(",").map((s: string) => s.trim()).filter(Boolean);
                             }
                             const inclList = parseList(pkg.inclusions) || defaultInclusions;
