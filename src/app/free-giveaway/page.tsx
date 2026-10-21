@@ -10,7 +10,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
 
 export const metadata: Metadata = {
     title: 'Win Your Dream Holiday FREE | Free Giveaway – My Perfect Trips',
-    description: 'Enter our FREE holiday giveaway! Follow @myperfecttrips, share our reel with 5 friends, and win a free trip to Dubai, Turkey, Paris, or Georgia. Giveaway closes 31 Jan 2027, winner announced January 2027.',
+    description: 'Enter our FREE holiday giveaway! Follow @myperfecttrips, share our reel with 5 friends, and win a free trip to Dubai, Turkey, Paris, or Georgia. Winner announced January 2027.',
     keywords: 'free trip giveaway UK, win free holiday, free giveaway 2027, My Perfect Trips giveaway, Dubai free trip, travel competition UK',
     alternates: { canonical: `${BASE}/free-giveaway` },
     openGraph: {
@@ -191,7 +191,7 @@ export default function FreeGiveawayPage() {
                             Giveaway closes in
                         </p>
                         <CountdownTimer target="2027-01-31T23:59:59" />
-                        <p className="mt-2 text-white/50 text-[11px]">Closes 31 Jan 2027 · Winner announced January 2027 · UK residents 18+</p>
+                        <p className="mt-2 text-white/50 text-[11px]">Winner announced January 2027 · UK residents 18+</p>
                     </div>
 
                     {/* CTA */}
@@ -308,7 +308,7 @@ export default function FreeGiveawayPage() {
                         </div>
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-stone-400 text-xs font-semibold">
                             <span className="w-2 h-2 rounded-full bg-sky-400 shrink-0" />
-                            Closes 31 January 2027 · Winner announced January 2027
+                            Winner announced January 2027
                         </div>
                     </div>
 
