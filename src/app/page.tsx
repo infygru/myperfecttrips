@@ -1,5 +1,6 @@
 import { directus, getSiteSettings } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
+import PopupBanner from "@/components/PopupBanner";
 import HeroSearchTabs from "@/components/HeroSearchTabs";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,12 +37,31 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+async function getActivePopup(): Promise<{ imageUrl: string; linkUrl: string } | null> {
+  try {
+    const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055';
+    const items = (await directus.request(
+      readItems('site_popups' as any, {
+        filter: { active: { _eq: true } },
+        limit: 1,
+        fields: ['image', 'link_url'] as any,
+      })
+    )) as any[];
+    const item = items?.[0];
+    if (!item?.image) return null;
+    return { imageUrl: `${dUrl}/assets/${item.image}`, linkUrl: item.link_url || '/free-giveaway' };
+  } catch {
+    return null;
+  }
+}
+
 export default async function Home() {
   let settings: any = null;
   let allPackages: any[] = [];
   let latestBlogs: any[] = [];
   let testimonials: any[] = [];
 
+  const popup = await getActivePopup();
   try { settings = await getSiteSettings(); } catch { }
   try { allPackages = (await directus.request(readItems("Packages" as any, { limit: 100 }))) as any[]; } catch { }
   try {
@@ -135,6 +155,8 @@ export default async function Home() {
   };
 
   return (
+    <>
+    {popup && <PopupBanner imageUrl={popup.imageUrl} linkUrl={popup.linkUrl} />}
     <main className="flex min-h-screen flex-col bg-stone-50 overflow-x-hidden">
       <script
         type="application/ld+json"
@@ -605,5 +627,6 @@ export default async function Home() {
         </div>
       </section>
     </main>
+    </>
   );
 }
