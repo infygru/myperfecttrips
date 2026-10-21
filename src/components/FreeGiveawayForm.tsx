@@ -24,6 +24,8 @@ export default function FreeGiveawayForm() {
     });
     const [screenshot, setScreenshot] = useState<File | null>(null);
     const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
+    const [gdprConsent, setGdprConsent] = useState(false);
+    const [marketingConsent, setMarketingConsent] = useState(false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
@@ -52,6 +54,10 @@ export default function FreeGiveawayForm() {
             setError('Please select your preferred destination.');
             return;
         }
+        if (!gdprConsent) {
+            setError('You must agree to the data processing consent to enter.');
+            return;
+        }
         const data = new FormData();
         data.append('name', form.name);
         data.append('email', form.email);
@@ -59,6 +65,8 @@ export default function FreeGiveawayForm() {
         data.append('instagram_handle', form.instagram_handle.startsWith('@')
             ? form.instagram_handle : `@${form.instagram_handle}`);
         data.append('preferred_destination', form.preferred_destination);
+        data.append('gdpr_consent', 'true');
+        data.append('marketing_consent', marketingConsent ? 'true' : 'false');
         if (screenshot) data.append('screenshot', screenshot);
 
         setLoading(true);
@@ -187,6 +195,35 @@ export default function FreeGiveawayForm() {
                         Remove screenshot
                     </button>
                 )}
+            </div>
+
+            {/* GDPR Consent — required */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
+                <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                        type="checkbox"
+                        checked={gdprConsent}
+                        onChange={e => setGdprConsent(e.target.checked)}
+                        className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-blue-600 cursor-pointer"
+                    />
+                    <span className="text-xs text-slate-600 leading-relaxed">
+                        <span className="font-bold text-slate-800">I agree</span> that My Perfect Trips may store and use the personal data I have provided above solely to administer this giveaway and contact me if I win, in accordance with the{' '}
+                        <a href="/privacy-policy" className="text-blue-600 underline underline-offset-2 hover:text-blue-500 transition-colors">Privacy Policy</a>.{' '}
+                        <span className="text-red-500 font-semibold">*</span>
+                    </span>
+                </label>
+
+                <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                        type="checkbox"
+                        checked={marketingConsent}
+                        onChange={e => setMarketingConsent(e.target.checked)}
+                        className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-blue-600 cursor-pointer"
+                    />
+                    <span className="text-xs text-slate-500 leading-relaxed">
+                        I&apos;d also like to receive travel inspiration, exclusive offers, and news from My Perfect Trips by email. You can unsubscribe at any time.
+                    </span>
+                </label>
             </div>
 
             {/* Error */}

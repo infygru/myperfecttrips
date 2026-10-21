@@ -12,6 +12,8 @@ export async function POST(req: NextRequest) {
         const phone                = (formData.get('phone') as string)?.trim();
         const instagram_handle     = (formData.get('instagram_handle') as string)?.trim();
         const preferred_destination = formData.get('preferred_destination') as string;
+        const gdpr_consent         = formData.get('gdpr_consent') === 'true';
+        const marketing_consent    = formData.get('marketing_consent') === 'true';
         const screenshot           = formData.get('screenshot') as File | null;
 
         if (!name || !email || !instagram_handle || !preferred_destination) {
@@ -56,6 +58,8 @@ export async function POST(req: NextRequest) {
                 phone: phone || null,
                 instagram_handle,
                 preferred_destination,
+                gdpr_consent,
+                marketing_consent,
                 screenshot: screenshotFileId,
                 status: 'pending',
             }),
