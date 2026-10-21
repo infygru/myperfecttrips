@@ -14,7 +14,7 @@ const DESTINATIONS = [
 const inputClass = "w-full pl-10 pr-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all text-base sm:text-sm";
 const labelClass = "block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2";
 
-export default function LuckyDrawForm() {
+export default function FreeGiveawayForm() {
     const [form, setForm] = useState({
         name: '',
         email: '',
@@ -63,7 +63,7 @@ export default function LuckyDrawForm() {
 
         setLoading(true);
         try {
-            const res = await fetch('/api/lucky-draw/submit', { method: 'POST', body: data });
+            const res = await fetch('/api/free-giveaway/submit', { method: 'POST', body: data });
             const json = await res.json();
             if (!res.ok) throw new Error(json.error || 'Submission failed');
             setSuccess(true);
@@ -86,13 +86,13 @@ export default function LuckyDrawForm() {
                 <div>
                     <h3 className="text-2xl font-bold text-white font-serif mb-2">You&apos;re Entered!</h3>
                     <p className="text-stone-400 text-sm max-w-xs mx-auto leading-relaxed">
-                        Your entry is confirmed. The lucky winner will be announced in{' '}
+                        Your entry is confirmed. The winner will be announced in{' '}
                         <span className="text-gold-400 font-semibold">January 2027</span>. Good luck!
                     </p>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-stone-400 text-xs">
                     <Gift className="w-3.5 h-3.5 text-gold-400" />
-                    Share with more friends to spread the luck!
+                    Share with more friends to spread the word!
                 </div>
             </div>
         );
@@ -211,7 +211,7 @@ export default function LuckyDrawForm() {
                 ) : (
                     <span className="flex items-center justify-center gap-2">
                         <Gift className="w-5 h-5" />
-                        Enter the Lucky Draw
+                        Enter the Free Giveaway
                     </span>
                 )}
             </button>

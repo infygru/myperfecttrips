@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Gift, Plane, Star, Instagram } from 'lucide-react';
-import LuckyDrawForm from '@/components/LuckyDrawForm';
+import FreeGiveawayForm from '@/components/FreeGiveawayForm';
 import CountdownTimer from '@/components/CountdownTimer';
 
 const IG_URL = 'https://www.instagram.com/myperfecttrips';
@@ -9,21 +9,21 @@ const IG_URL = 'https://www.instagram.com/myperfecttrips';
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://myperfecttrips.com';
 
 export const metadata: Metadata = {
-    title: 'Win Your Dream Holiday FREE | Lucky Draw – My Perfect Trips',
-    description: 'Enter our FREE holiday lucky draw! Follow @myperfecttrips, share our reel with 5 friends, and win a free trip to Dubai, Turkey, Paris, or Georgia. Draw closes 30 Dec, winner announced 1 January 2027.',
-    keywords: 'free trip giveaway UK, win free holiday, lucky draw 2026, My Perfect Trips giveaway, Dubai free trip, travel competition UK',
-    alternates: { canonical: `${BASE}/lucky-draw` },
+    title: 'Win Your Dream Holiday FREE | Free Giveaway – My Perfect Trips',
+    description: 'Enter our FREE holiday giveaway! Follow @myperfecttrips, share our reel with 5 friends, and win a free trip to Dubai, Turkey, Paris, or Georgia. Giveaway closes 31 Jan 2027, winner announced January 2027.',
+    keywords: 'free trip giveaway UK, win free holiday, free giveaway 2027, My Perfect Trips giveaway, Dubai free trip, travel competition UK',
+    alternates: { canonical: `${BASE}/free-giveaway` },
     openGraph: {
         title: 'Win Your Dream Holiday FREE — My Perfect Trips',
         description: 'Follow us on Instagram, share our reel with 5 friends, and win a free holiday!',
-        url: `${BASE}/lucky-draw`,
+        url: `${BASE}/free-giveaway`,
         siteName: 'My Perfect Trips',
         type: 'website',
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Win Your Dream Holiday FREE — My Perfect Trips',
-        description: 'Follow @myperfecttrips on Instagram, enter our lucky draw and win a free holiday!',
+        description: 'Follow @myperfecttrips on Instagram, enter our free giveaway and win a free holiday!',
     },
 };
 
@@ -37,15 +37,15 @@ const DESTINATIONS = [
 const schema = {
     '@context': 'https://schema.org',
     '@type': 'Event',
-    name: 'My Perfect Trips Free Holiday Lucky Draw 2026',
-    description: 'Win a free trip for one lucky winner to Dubai, Turkey, Paris, or Georgia.',
+    name: 'My Perfect Trips Free Holiday Giveaway 2027',
+    description: 'Win a free trip for one winner to Dubai, Turkey, Paris, or Georgia.',
     startDate: '2026-10-20',
-    endDate: '2026-12-31',
+    endDate: '2027-01-31',
     organizer: { '@type': 'TravelAgency', name: 'My Perfect Trips', url: BASE },
-    url: `${BASE}/lucky-draw`,
+    url: `${BASE}/free-giveaway`,
 };
 
-export default function LuckyDrawPage() {
+export default function FreeGiveawayPage() {
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
@@ -113,7 +113,7 @@ export default function LuckyDrawPage() {
                     {/* Top badge */}
                     <div className="hero-anim-1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 border border-white/40 backdrop-blur-sm text-white text-xs font-black uppercase tracking-widest">
                         <Gift className="w-3.5 h-3.5 shrink-0" />
-                        Free Trip Giveaway 2026
+                        Free Holiday Giveaway 2027
                         <Gift className="w-3.5 h-3.5 shrink-0" />
                     </div>
 
@@ -188,10 +188,10 @@ export default function LuckyDrawPage() {
                     {/* COUNTDOWN */}
                     <div className="hero-anim-5 w-full">
                         <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-3">
-                            Draw closes in
+                            Giveaway closes in
                         </p>
-                        <CountdownTimer target="2026-12-30T23:59:59" />
-                        <p className="mt-2 text-white/50 text-[11px]">Closes 30 Dec · Winner announced 1 Jan 2027 · UK residents 18+</p>
+                        <CountdownTimer target="2027-01-31T23:59:59" />
+                        <p className="mt-2 text-white/50 text-[11px]">Closes 31 Jan 2027 · Winner announced January 2027 · UK residents 18+</p>
                     </div>
 
                     {/* CTA */}
@@ -199,7 +199,7 @@ export default function LuckyDrawPage() {
                         <a href="#enter"
                             className="glow-btn w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 sm:px-12 py-4 sm:py-5 rounded-full bg-white text-rose-600 font-black text-base sm:text-lg hover:bg-yellow-50 transition-all duration-200 active:scale-95">
                             <Gift className="w-5 h-5 shrink-0" />
-                            Enter the Draw — It&apos;s Free!
+                            Enter the Giveaway — It&apos;s Free!
                         </a>
                         <p className="text-white/50 text-[11px] font-medium">No purchase necessary · One entry per person</p>
                     </div>
@@ -221,7 +221,7 @@ export default function LuckyDrawPage() {
                 <div className="ticker-track flex items-center whitespace-nowrap w-max">
                     {[0, 1].map(i => (
                         <div key={i} className="flex items-center gap-6 px-6">
-                            {['🏆 ONE LUCKY WINNER', '🏨 HOTEL WITH BREAKFAST', '🎡 ALL ACTIVITIES INCLUDED', '🚗 TRANSFERS INCLUDED', '🌍 COMPLETE LAND PACKAGE', '🇦🇪 DUBAI', '🇹🇷 TURKEY', '🇫🇷 PARIS', '🇬🇪 GEORGIA', '📸 SHARE & WIN', '🎉 WINNER ANNOUNCED 1 JAN 2027'].map(item => (
+                            {['🏆 ONE WINNER', '🏨 HOTEL WITH BREAKFAST', '🎡 ALL ACTIVITIES INCLUDED', '🚗 TRANSFERS INCLUDED', '🌍 COMPLETE LAND PACKAGE', '🇦🇪 DUBAI', '🇹🇷 TURKEY', '🇫🇷 PARIS', '🇬🇪 GEORGIA', '📸 SHARE & WIN', '🎉 WINNER ANNOUNCED JAN 2027'].map(item => (
                                 <span key={item} className="text-rose-700 font-black text-xs tracking-widest uppercase">
                                     {item} <span className="text-rose-400 mx-1">·</span>
                                 </span>
@@ -289,7 +289,7 @@ export default function LuckyDrawPage() {
                         data-aos="fade-up"
                         data-aos-delay="120"
                         className="rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-xl shadow-slate-200/80 p-5 sm:p-8">
-                        <LuckyDrawForm />
+                        <FreeGiveawayForm />
                     </div>
                 </div>
             </section>
@@ -308,7 +308,7 @@ export default function LuckyDrawPage() {
                         </div>
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-stone-400 text-xs font-semibold">
                             <span className="w-2 h-2 rounded-full bg-sky-400 shrink-0" />
-                            Closes 30 December 2026 · Winner announced 1 January 2027
+                            Closes 31 January 2027 · Winner announced January 2027
                         </div>
                     </div>
 
@@ -320,7 +320,7 @@ export default function LuckyDrawPage() {
                             { n: '03', text: 'One entry per person. Duplicate or fraudulent entries will be disqualified.' },
                             { n: '04', text: 'Prize: one free holiday for one person — to Dubai, Turkey, Paris, or Georgia (winner\'s choice). Subject to availability and travel dates agreed with My Perfect Trips.' },
                             { n: '05', text: 'This is a complete land package — includes hotel accommodation with breakfast, all activities, and airport transfers. Visa costs and personal expenses are not included.' },
-                            { n: '06', text: 'Winner chosen at random and announced on 1 January 2027 via @myperfecttrips on Instagram.' },
+                            { n: '06', text: 'Winner chosen at random and announced in January 2027 via @myperfecttrips on Instagram.' },
                             { n: '07', text: 'The winner must claim their prize within 30 days of announcement. Unclaimed prizes are forfeit. No cash alternative.' },
                             { n: '08', text: 'My Perfect Trips reserves the right to amend or withdraw this promotion at any time without notice.' },
                         ].map(item => (

@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
             }
             const upload = new FormData();
             upload.append('file', screenshot, screenshot.name);
-            upload.append('title', `Lucky Draw Screenshot – ${name}`);
+            upload.append('title', `Giveaway Screenshot – ${name}`);
 
             const uploadRes = await fetch(`${DIRECTUS_URL}/files`, {
                 method: 'POST',
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ success: true });
     } catch (err: any) {
-        console.error('[LuckyDraw submit]', err);
+        console.error('[FreeGiveaway submit]', err);
         return NextResponse.json({ error: err.message || 'Submission failed.' }, { status: 500 });
     }
 }
