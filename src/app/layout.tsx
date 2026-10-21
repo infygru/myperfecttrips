@@ -9,8 +9,10 @@ import CookieBanner from "@/components/CookieBanner";
 import AOSProvider from "@/components/AOSProvider";
 import NotificationBar from "@/components/NotificationBar";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import { getSiteSettings } from "@/lib/directus";
+import { getSiteSettings, directus } from "@/lib/directus";
+import { readItems } from "@directus/sdk";
 import type { DirectusSettings } from "@/types/settings";
+import PopupBanner from "@/components/PopupBanner";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -165,7 +167,26 @@ const organizationSchema = {
   ],
 };
 
+async function getActivePopup(): Promise<{ imageUrl: string; linkUrl: string } | null> {
+  try {
+    const dUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055';
+    const items = (await directus.request(
+      readItems('site_popups' as any, {
+        filter: { active: { _eq: true } },
+        limit: 1,
+        fields: ['image', 'link_url'] as any,
+      })
+    )) as any[];
+    const item = items?.[0];
+    if (!item?.image) return null;
+    return { imageUrl: `${dUrl}/assets/${item.image}`, linkUrl: item.link_url || '/free-giveaway' };
+  } catch {
+    return null;
+  }
+}
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const popup = await getActivePopup();
   return (
     <html lang="en" suppressHydrationWarning className={`${jakarta.variable} ${syne.variable} scroll-smooth`}>
       <head>
@@ -176,6 +197,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="flex min-h-screen flex-col bg-stone-50 antialiased font-sans overflow-x-hidden">
         <GoogleAnalytics />
+        {popup && <PopupBanner imageUrl={popup.imageUrl} linkUrl={popup.linkUrl} />}
         <AuthProvider>
           <LayoutShell
             notificationBar={<NotificationBar />}
