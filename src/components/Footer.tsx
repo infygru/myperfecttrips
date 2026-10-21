@@ -294,7 +294,10 @@ export default async function Footer() {
                 <div className="container-inner flex flex-col items-center justify-between gap-4 py-6 sm:flex-row text-xs text-stone-500">
                     <div className="flex flex-col items-center gap-2 sm:items-start">
                         <p>
-                            &copy; {year} {siteName}. All rights reserved.
+                            &copy; {year} My Perfect Trips Ltd. Registered in England and Wales (Company No.&nbsp;15935722).
+                        </p>
+                        <p className="text-stone-600">
+                            Registered Office: 9 Oxford Court, Manchester, M2&nbsp;3WQ, United Kingdom.
                         </p>
                         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 sm:justify-start">
                             <Link href="/privacy-policy"  className="hover:text-stone-300 transition-colors">Privacy</Link>
