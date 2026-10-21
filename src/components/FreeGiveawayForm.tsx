@@ -94,8 +94,8 @@ export default function FreeGiveawayForm() {
                 <div>
                     <h3 className="text-2xl font-bold text-white font-serif mb-2">You&apos;re Entered!</h3>
                     <p className="text-stone-400 text-sm max-w-xs mx-auto leading-relaxed">
-                        Your entry is confirmed. The winner will be announced in{' '}
-                        <span className="text-gold-400 font-semibold">January 2027</span>. Good luck!
+                        Your entry is confirmed. The winner will be announced soon via{' '}
+                        <span className="text-gold-400 font-semibold">@myperfecttrips</span> on Instagram. Good luck!
                     </p>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-stone-400 text-xs">
@@ -256,7 +256,7 @@ export default function FreeGiveawayForm() {
             <p className="text-center text-[11px] text-slate-400 leading-relaxed">
                 By entering you agree to our{' '}
                 <a href="/terms" className="underline underline-offset-2 hover:text-slate-600 transition-colors">terms &amp; conditions</a>.
-                One entry per person. Open to UK residents 18+. Winner announced January 2027.
+                One entry per person. Open to UK residents 18+. Winner announced via @myperfecttrips on Instagram.
             </p>
         </form>
     );

@@ -191,7 +191,7 @@ export default function FreeGiveawayPage() {
                             Giveaway closes in
                         </p>
                         <CountdownTimer target="2027-01-31T23:59:59" />
-                        <p className="mt-2 text-white/50 text-[11px]">Winner announced January 2027 · UK residents 18+</p>
+                        <p className="mt-2 text-white/50 text-[11px]">UK residents 18+ · No purchase necessary</p>
                     </div>
 
                     {/* CTA */}
@@ -308,7 +308,7 @@ export default function FreeGiveawayPage() {
                         </div>
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-stone-400 text-xs font-semibold">
                             <span className="w-2 h-2 rounded-full bg-sky-400 shrink-0" />
-                            Winner announced January 2027
+                            Winner announced soon
                         </div>
                     </div>
 
@@ -320,7 +320,7 @@ export default function FreeGiveawayPage() {
                             { n: '03', text: 'One entry per person. Duplicate or fraudulent entries will be disqualified.' },
                             { n: '04', text: 'Prize: one free holiday for one person — to Dubai, Turkey, Paris, or Georgia (winner\'s choice). Subject to availability and travel dates agreed with My Perfect Trips.' },
                             { n: '05', text: 'This is a complete land package — includes hotel accommodation with breakfast, all activities, and airport transfers. Visa costs and personal expenses are not included.' },
-                            { n: '06', text: 'Winner chosen at random and announced in January 2027 via @myperfecttrips on Instagram.' },
+                            { n: '06', text: 'Winner chosen at random and announced via @myperfecttrips on Instagram once the giveaway closes.' },
                             { n: '07', text: 'The winner must claim their prize within 30 days of announcement. Unclaimed prizes are forfeit. No cash alternative.' },
                             { n: '08', text: 'My Perfect Trips reserves the right to amend or withdraw this promotion at any time without notice.' },
                         ].map(item => (
